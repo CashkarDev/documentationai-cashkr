@@ -44,16 +44,16 @@
             "group": "Cashkr Website",
             "pages": [
               {
-                "title": "My Profile",
-                "path": "my-profile"
-              },
-              {
                 "title": "Overview",
                 "path": "overview"
               },
               {
                 "title": "Login & Registration",
                 "path": "login-registration"
+              },
+              {
+                "title": "My Profile",
+                "path": "my-profile"
               }
             ],
             "icon": "airplay"
