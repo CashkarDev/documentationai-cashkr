@@ -54,6 +54,10 @@
               {
                 "title": "My Profile",
                 "path": "my-profile"
+              },
+              {
+                "title": "Payment",
+                "path": "payment"
               }
             ],
             "icon": "airplay"

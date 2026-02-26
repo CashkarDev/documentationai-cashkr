@@ -1,0 +1,95 @@
+---
+title: Payment
+description: Define and manage user payout details for the Cashkr Website Payment screen, including profile storage, payout usage, and validation expectations.
+---
+
+## What the Payment screen shows
+
+The Payment screen shows the user's stored payout details that Cashkr uses to send money after a device pickup and order completion. Users can add or update either bank account details or a UPI ID.
+
+<Callout kind="info">
+
+Payment details are stored on the user's profile and used during payout processing after an order is successfully completed. Any change to payment details affects future payouts for that user.
+
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the Payment section" icon="folder" title-type="p">
+
+  - Open the **Profile** menu on the Cashkr Website.
+  - Select the **Payment** option to view existing payout details (if any).
+
+  </Step>
+
+  <Step title="Add payout details" icon="plus" title-type="p">
+
+  - On the Payment screen, add either **Bank Details** or a **UPI ID** for receiving payouts.
+  - Save the details so they are stored against the user's profile.
+
+  </Step>
+
+  <Step title="Update payout details" icon="edit" title-type="p">
+
+  - When the user edits Bank Details or UPI ID and saves, update the stored payout method on the profile.
+  - Reflect the updated details anywhere payouts are calculated or displayed.
+
+  </Step>
+</Steps>
+
+## System behavior and connections
+
+Payment information is part of the user profile and feeds into payout processing and related surfaces.
+
+- Store Bank Account and UPI details as fields on the **user profile**.
+- Use these fields during **payout processing** after an order is marked as completed.
+- Link the same payment details into:
+  - The **admin/vendor payout flow** for calculating and executing payouts.
+  - The **customer app**, so changes made on the website appear consistently across platforms.
+
+<Callout kind="tip">
+
+Align profile data models across Website, Admin Panel, Vendor flows, and Customer App so a single source of truth for Bank/UPI details drives all payout calculations and displays.
+
+</Callout>
+
+## Developer and tester notes
+
+**For developers**
+
+- Save payment details (Bank Account and UPI ID) securely with **encryption** in the database.
+- Add backend validation to:
+  - Reject malformed or incomplete bank details.
+  - Reject invalid UPI IDs.
+- Ensure payout logic uses the **current profile values** so recent updates are available for post-order payouts.
+- Propagate profile changes so updated payment details reflect consistently across:
+  - **Website**
+  - **Admin Panel**
+  - **Customer App**
+
+<Callout kind="tip">
+
+Treat payment detail changes as profile-level updates so all future payouts see the latest Bank/UPI details without extra configuration.
+
+</Callout>
+
+**For testers**
+
+- Verify that adding **invalid Bank details** or an **invalid UPI ID** shows a clear error and does not save the record.
+- Verify that **updates reflect across systems**:
+  - Change existing Bank or UPI details on the Payment screen.
+  - Confirm the updated values:
+    - Display correctly on the Payment screen.
+    - Are available in the Admin Panel and any payout-related views.
+    - Appear correctly in the Customer App.
+- During an **end-to-end order flow**, confirm that after order completion, payout processing is linked to the stored Bank/UPI details on the user's profile.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750931935.png"
+  width="1600"
+  height="789"
+  alt="Cashkr Website Payment screen showing stored bank and UPI payout details"
+/>
