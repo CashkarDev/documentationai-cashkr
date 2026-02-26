@@ -39,12 +39,12 @@
             "group": "Cashkr Website",
             "pages": [
               {
-                "title": "Login & Registration",
-                "path": "login-registration"
-              },
-              {
                 "title": "Overview",
                 "path": "overview"
+              },
+              {
+                "title": "Login & Registration",
+                "path": "login-registration"
               }
             ],
             "icon": "airplay"
