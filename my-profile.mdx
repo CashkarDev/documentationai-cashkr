@@ -1,0 +1,109 @@
+---
+title: My Profile
+description: Understand the My Profile screen on the Cashkr Website, including editable fields, locked phone behavior, data flow, and QA expectations.
+---
+
+## What the My Profile screen shows
+
+The My Profile screen displays the user's basic account information and lets them update allowed profile details.
+
+- Editable fields: **First Name**, **Last Name**, **Email**
+- Non-editable field: **Phone number** (locked)
+- Primary action: **Save** to persist changes
+
+<Callout kind="info">
+
+The phone number is locked on the My Profile screen and must not be editable. Use the phone number as the primary login identifier and keep it consistent across Website, Admin Panel, and Customer App.
+
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the My Profile screen" icon="user" title-type="p">
+
+  - Click the **Profile** icon in the website header.
+  - Navigate to the **My Profile** screen.
+
+  </Step>
+
+  <Step title="View current profile details" icon="eye" title-type="p">
+
+  - See the user's **First Name**, **Last Name**, **Email**, and **Phone number**.
+  - Display the phone number in a **read-only** state.
+
+  </Step>
+
+  <Step title="Edit allowed fields" icon="edit" title-type="p">
+
+  - Allow the user to update **First Name**, **Last Name**, and **Email**.
+  - Do not allow any edit interaction on the **Phone number** field (no cursor focus, no keyboard input).
+
+  </Step>
+
+  <Step title="Save changes" icon="check-circle" title-type="p">
+
+  - When the user clicks **Save**, persist the edited **Name** and **Email** to the customer profile.
+  - After a successful save, show the updated details on the My Profile screen.
+
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+
+For a smoother UX, keep the **Save** button disabled until at least one editable field changes and basic validation (for example, email format) passes.
+
+</Callout>
+
+## System logic and data flow
+
+Edits made on the My Profile screen update the core customer profile and stay consistent across surfaces.
+
+- Store updated **First Name**, **Last Name**, and **Email** in the **customer profile table**.
+- Keep the **Phone number** locked to protect login integrity and prevent accidental mismatches.
+- Ensure changes sync across:
+  - **Cashkr Website** (My Profile and any other user-facing display)
+  - **Admin Panel** customer records (orders and leads sections)
+  - **Customer App** profile views
+
+<Callout kind="info">
+
+Treat profile data as a single source of truth. Any change made on the My Profile screen must be reflected in the Admin Panel and Customer App views that show customer identity details.
+
+</Callout>
+
+<Callout kind="tip">
+
+When implementing sync, prefer event-based or queued updates over direct cross-system writes to reduce coupling and make failures easier to monitor.
+
+</Callout>
+
+## Developer and tester notes
+
+**For developers**
+
+- Persist profile edits:
+  - Save **First Name**, **Last Name**, and **Email** to the **user profile table**.
+  - Use the same data source for Website, Admin Panel, and Customer App to avoid divergence.
+- Lock phone number:
+  - Make the **Phone number** field read-only on the **front-end** (no editing UI).
+  - Enforce immutability on the **back-end** so API calls cannot modify the phone number.
+- Handle sensitive data:
+  - Encrypt sensitive information such as **Email** at rest.
+  - Apply appropriate access controls so only authorized services can read decrypted values.
+
+**For testers**
+
+- Verify editable fields:
+  - Change **First Name** and **Last Name**, save, and confirm updates on the **My Profile** screen.
+  - Change **Email**, save, and confirm the new email appears on the **My Profile** screen.
+- Check cross-system consistency:
+  - Confirm updated **Name** and **Email** appear correctly in the **Admin Panel** (customer record, orders, and leads).
+  - Confirm the same updates appear in the **Customer App** profile views.
+- Confirm phone number lock:
+  - Ensure the **Phone number** field cannot be edited on the UI (no cursor, no keyboard input, no edit icon).
+  - Attempt to change the phone number via any available flows and verify that the back-end rejects such changes.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750930435.png" alt="My Profile screen on the Cashkr Website showing basic user information" width="1600" height="778" />
