@@ -1,0 +1,204 @@
+---
+title: Login & Registration
+description: >-
+  Allow customers to log in or register on the Cashkr Website using phone number
+  and OTP, with shared authentication across the Customer App.
+---
+## Overview
+
+Login and registration on the Cashkr Website use a phone-number plus one-time password (OTP) flow that also powers authentication in the Customer App. The logged-in state is required for placing trade-in orders, viewing history, rescheduling, and deleting an account.
+
+## Where customers access login
+
+Customers start the flow from the website header:
+
+- Click the **Profile** icon in the top navigation bar.
+
+- The login dialog or panel opens with the phone number field.
+
+## Prerequisites
+
+- The customer has access to the **mobile number** they enter.
+
+- SMS delivery is functioning so the OTP can be received.
+
+- The shared authentication service used by both the **Cashkr Website** and **Customer App** is online.
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the profile menu" icon="user" title-type="p">
+    - Click the **Profile** icon in the website header.
+
+    - The login panel opens with a phone number input.
+  </Step>
+
+  <Step title="Enter phone number" icon="phone" title-type="p">
+    - Enter the **phone number** to use as the account identifier.
+
+    - Edit or correct the number before requesting the OTP if it is wrong.
+  </Step>
+
+  <Step title="Receive and enter OTP" icon="shield" title-type="p">
+    - Submit the phone number to trigger **OTP** sending.
+
+    - Enter the received OTP within the allowed time window.
+  </Step>
+
+  <Step title="Continue as new or existing user" icon="arrow-right" title-type="p">
+    - If the phone number is not found, the customer completes a short registration.
+
+    - If the phone number already exists, the customer is logged in directly and the session starts.
+  </Step>
+</Steps>
+
+<Callout kind="info" collapsed="false">
+  OTP codes are valid only for a limited time. After expiry, show an error and provide a **Resend OTP** action that issues a fresh code.
+</Callout>
+
+## New vs existing user behavior
+
+<Tabs>
+  <Tab title="New user" icon="plus">
+    For phone numbers that do not yet exist in the customer database:
+
+    - After OTP verification succeeds, show a short **registration form**.
+
+    - Collect:
+
+      - **First name**
+
+      - **Last name**
+
+      - **Email address**
+
+      - **Date of Birth**
+
+    - On submission:
+
+      - Create a new customer record using the phone number as the **unique identifier**.
+
+      - Store the name and email in the customer database.
+
+      - Start an authenticated session and treat the customer as logged in.
+  </Tab>
+
+  <Tab title="Existing user" icon="check-circle">
+    For phone numbers already present in the customer database:
+
+    - After OTP verification succeeds, skip the registration form.
+
+    - Log the customer in immediately using the existing profile data.
+
+    - Start an authenticated session and redirect or update the UI to the logged-in state.
+  </Tab>
+</Tabs>
+
+## System rules and validation
+
+- **Phone number as identifier**
+
+  - Use the **phone number** as the primary and unique identifier for customer accounts.
+
+  - Reject registration when another active account already uses the same number.
+
+- **OTP validation**
+
+  - Generate an OTP tied to the phone number and a short expiry time.
+
+  - Validate OTPs through the backend service before creating or resuming a session.
+
+  - Invalidate OTPs after first successful use or when they expire.
+
+- **Profile data persistence**
+
+  - For new users, persist **first name**, **last name**, **email address**, and **phone number** in the customer database.
+
+  - For existing users, reuse stored profile data without prompting again.
+
+- **Session handling**
+
+  - After successful login, create a **session token** and associate it with the customer.
+
+  - Ensure the same auth infrastructure is shared between the **Cashkr Website** and the **Customer App** so sessions and identity remain consistent.
+
+## Common errors
+
+Handle and surface clear messages for at least these cases:
+
+- **Invalid phone number**
+
+  - Format validation fails or number is not supported.
+
+  - Show a validation message and prevent sending OTP until fixed.
+
+- **Incorrect OTP**
+
+  - Entered OTP does not match the generated code.
+
+  - Show an error and allow limited retry attempts.
+
+- **Expired OTP**
+
+  - OTP is entered after the configured validity period.
+
+  - Show an expiry message and prompt the customer to **Resend OTP**.
+
+- **Too many attempts**
+
+  - The customer exceeds allowed OTP requests or verification attempts.
+
+  - Optionally throttle or temporarily block further attempts and show a clear explanation.
+
+## Developer and tester notes
+
+**For developers**
+
+- Ensure phone numbers are:
+
+  - Validated for correctness and normalized to a single canonical format.
+
+  - Enforced as **unique identifiers** in the customer database.
+
+- Implement OTP handling:
+
+  - Generate, store, and **expire OTPs** after the configured time window.
+
+  - Invalidate OTPs after successful verification.
+
+- Persist profile data:
+
+  - Save **first name**, **last name**, **email address**, and phone number for new users.
+
+- Manage sessions:
+
+  - Generate a **session token** on successful login.
+
+  - Store and validate the token consistently across the Cashkr Website and Customer App.
+
+**For testers**
+
+- Verify OTP behavior:
+
+  - Enter an **incorrect OTP** and confirm the correct error message appears.
+
+  - Wait for OTP **expiry** and confirm a failure message plus working **Resend OTP** option.
+
+- Check account creation:
+
+  - Use a phone number that has no existing account, complete registration, and confirm the new user is saved and logged in.
+
+- Check existing user flow:
+
+  - Log in with a phone number that already exists and confirm the site skips registration and logs in directly.
+
+- Test edge cases:
+
+  - Try duplicate phone numbers during registration and confirm proper handling.
+
+  - Attempt logins from **multiple devices or browsers** and verify session behavior and constraints are as designed.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750929509.png" width="1600" height="794" />
+

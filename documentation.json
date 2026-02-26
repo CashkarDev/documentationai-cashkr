@@ -15,7 +15,7 @@
         "icon": "book",
         "groups": [
           {
-            "group": "Start Here",
+            "group": "About Cashkr",
             "icon": "rocket",
             "pages": [
               {
@@ -34,6 +34,35 @@
                 "icon": "code"
               }
             ]
+          },
+          {
+            "group": "Cashkr Website",
+            "pages": [
+              {
+                "title": "Login & Registration",
+                "path": "login-registration"
+              },
+              {
+                "title": "Overview",
+                "path": "overview"
+              }
+            ],
+            "icon": "airplay"
+          },
+          {
+            "group": "Customer App",
+            "pages": [],
+            "icon": "album"
+          },
+          {
+            "group": "Vendor App",
+            "pages": [],
+            "icon": "align-center"
+          },
+          {
+            "group": "Admin Panel",
+            "pages": [],
+            "icon": "airplay-icon"
           },
           {
             "group": "Components",
