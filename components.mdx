@@ -1,92 +1,156 @@
 ---
-title: Components (Sample)
-description: A small showcase of the built-in MDX components with usage guidelines.
+title: Components
+description: Understand how the Cashkr Website, Customer App, Vendor App, and Admin Panel work together to power device trade-ins.
 ---
 
-## Quick component tour
+## How Cashkr fits together
 
-<Callout kind="info">
-These are example components from Documentation.AI. Use them to make pages easier to scan.
-</Callout>
+Cashkr connects customers, vendors, and internal teams across four main product surfaces. Each one focuses on a different part of the trade-in journey but they all share the same backend services for identity, pricing, and orders.
 
-<Columns cols={3}>
-  <Card title="Callout" icon="info" href="/components/callouts">
-    Use for tips, warnings, and important notes.
+<Columns cols="2">
+  <Card title="Cashkr Website" href="/overview" icon="monitor">
+    Public entry point for discovering Cashkr, checking prices, and creating online trade-in requests.
   </Card>
-  <Card title="Steps" icon="check-circle" href="/components/steps">
-    Break tasks into easy, numbered actions.
-  </Card>
-  <Card title="Tabs" icon="layers" href="/components/tabs">
-    Keep alternate examples tidy.
+  <Card title="Customer App" href="/quickstart" icon="smartphone">
+    Mobile experience for customers to manage trade-ins, track status, and complete required actions.
   </Card>
 </Columns>
 
-### Callout: usage tips
+<Columns cols="2">
+  <Card title="Vendor App" href="/quickstart" icon="users">
+    Tool for field agents and store partners to pick up devices, verify condition, and close orders.
+  </Card>
+  <Card title="Admin Panel" href="/quickstart" icon="settings">
+    Internal console for operations, finance, and support teams to manage leads, pricing, vendors, and payouts.
+  </Card>
+</Columns>
 
-**When to use**
+<Callout kind="info">
+Detailed, surface-specific docs for the apps and Admin Panel may be added over time. Use this page as a high-level map of the main components and how they share data.
+</Callout>
 
-- Highlight important warnings or constraints that affect success
-- Call out tips that save time or prevent common mistakes
-- Emphasize prerequisites, permissions, or irreversible actions
+Shared backend services include:
 
-**When not to use**
+- Phone-number and one-time password authentication for login and registration
+- Device catalog and pricing rules that drive quotes across all surfaces
+- Order, payment, and vendor management that keep requests in sync end to end
 
-- For every minor detail; overuse makes real warnings easy to ignore
-- As a replacement for clear prose and headings
-- To hide critical blocking information at the bottom of a long page
+## Cashkr Website
 
-## Steps (sample)
+The Cashkr Website is the public-facing entry point where people discover, evaluate, and sell their old devices online. It focuses on acquisition, education, and conversion into trade-in requests.
 
-<Steps>
-  <Step title="Add a heading" icon="type">
-    Start each page with a clear, short title.
-  </Step>
-  <Step title="Explain the goal" icon="target">
-    Tell readers what they will achieve.
-  </Step>
-  <Step title="Link to next steps" icon="arrow-right">
-    Point to the next page they should read.
-  </Step>
-</Steps>
+**Who uses it**
 
-### Steps: usage tips
+- New and returning customers who are not yet in any app
+- Visitors arriving from marketing campaigns, search, or referrals
+- Support agents who guide customers through the website flow during calls
 
-**When to use**
+**Primary responsibilities**
 
-- Readers must follow actions in a specific order
-- You describe tasks that can be completed in one sitting
-- You want to separate conceptual explanation from hands-on actions
+- Explain how Cashkr works, eligibility, and supported device categories
+- Let customers check indicative prices for devices before committing
+- Start trade-in flows that capture basic contact and device details
+- Hand off authenticated customers to the Customer App where needed
 
-**When not to use**
+**Main data it creates and consumes**
 
-- For unordered checklists where sequence does not matter
-- To document background concepts or architecture
-- For long, branching workflows that need their own dedicated guide
+- Reads: device catalog, pricing rules, available pickup or drop-off areas
+- Creates: leads, initial trade-in requests, and pre-authenticated sessions
+- Updates: contact details tied to a phone number after OTP verification
 
-## Tabs (sample)
+Authentication on the Website uses a phone-number plus one-time password flow that is shared with the Customer App, so the same identity and sessions carry across channels.
 
-<Tabs>
-  <Tab title="CLI" icon="terminal">
-    ```bash
-    docs init my-project
-    docs dev
-    ```
-  </Tab>
-  <Tab title="UI" icon="mouse-pointer">
-    Open the editor, choose a page, and start writing.
-  </Tab>
-</Tabs>
+## Customer App
 
-### Tabs: usage tips
+The Customer App gives individuals a focused environment to manage the full lifecycle of their device trade-ins after they first engage on the Website or directly in the app.
 
-**When to use**
+**Who uses it**
 
-- You show the same idea in multiple languages or platforms
-- You provide alternate setup paths, such as CLI versus UI
-- You want to keep short variants in one compact section
+- Customers who have created or want to create trade-in requests
+- Returning users who want to track status, reschedule pickups, or add devices
 
-**When not to use**
+**Primary responsibilities**
 
-- When one variant is strongly recommended over the others
-- For long, independent flows that deserve separate pages
-- When content differs so much that readers must read all variants anyway
+- Authenticate customers using the shared phone-number plus OTP flow
+- Capture detailed device information, photos, and condition checks
+- Show live status for each trade-in from request to payout
+- Coordinate customer actions such as confirming pickup times or bank details
+
+**Main data it creates and consumes**
+
+- Reads: device catalog and pricing, live order status, vendor assignment, payout status
+- Creates: new trade-in orders, device condition reports, customer preferences
+- Updates: pickup slots, contact and payout information, cancellation or change requests
+
+Because the Customer App sits on top of the same backend as the Website, any change to a trade-in is reflected in the Admin Panel and Vendor App in near real time.
+
+## Vendor App
+
+The Vendor App is for agents, store partners, and logistics vendors who turn online trade-in requests into completed pickups and verified devices.
+
+**Who uses it**
+
+- Field agents who travel to customers for pickups
+- Store partners who accept in-person drop-offs
+- Vendor managers who oversee on-the-ground operations
+
+**Primary responsibilities**
+
+- Receive assigned orders and routing details from the central system
+- Validate device condition on-site against what the customer declared
+- Capture final device checklists, photos, and acceptance or rejection decisions
+- Confirm pickups, handovers, and cash or digital payouts where applicable
+
+**Main data it creates and consumes**
+
+- Reads: assigned orders, customer contact and address, expected device details and quoted price
+- Creates: verification results, condition adjustments, pickup completion events
+- Updates: order status, final approved price, payout confirmation, and vendor performance metrics
+
+Data from the Vendor App feeds directly into the Admin Panel for quality checks, exception handling, and financial reconciliation.
+
+## Admin Panel
+
+The Admin Panel is the internal command center that coordinates leads, orders, vendors, pricing, and financial flows across Cashkr.
+
+**Who uses it**
+
+- Operations teams that manage order queues and exceptions
+- Vendor and partner managers who oversee capacity and quality
+- Finance teams that track payouts, settlements, and margins
+- Support teams who respond to customer and vendor queries
+
+**Primary responsibilities**
+
+- Monitor and prioritize incoming leads and active orders
+- Configure vendor coverage, assignment rules, and capacity
+- Manage pricing strategies, device catalogs, and promotional programs
+- Oversee payments to customers and vendors, and handle disputes
+
+**Main data it creates and consumes**
+
+- Reads: all orders, device and pricing data, vendor performance, payment history
+- Creates: pricing updates, vendor records, manual adjustments or overrides
+- Updates: order routing, escalations, refunds, and payout statuses
+
+The Admin Panel is the main interface to backend services such as order management, catalog configuration, and financial reporting, ensuring that changes apply consistently to the Website, Customer App, and Vendor App.
+
+## Related docs
+
+<Columns cols="2">
+  <Card title="Website overview" href="/overview" icon="monitor" horizontal="false">
+    Dive deeper into the Cashkr Website responsibilities, flows, and user journeys.
+  </Card>
+  <Card title="Login and registration" href="/login-registration" icon="lock" horizontal="false">
+    Learn how phone-number and one-time password authentication works for customers.
+  </Card>
+</Columns>
+
+<Columns cols="2">
+  <Card title="API authentication" href="/authentication" icon="shield" horizontal="false">
+    See how backend services authenticate and authorize API requests.
+  </Card>
+  <Card title="Quickstart" href="/quickstart" icon="zap" horizontal="false">
+    Get a fast, end-to-end view of setting up and testing a basic Cashkr flow.
+  </Card>
+</Columns>

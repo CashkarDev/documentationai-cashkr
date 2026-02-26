@@ -29,6 +29,11 @@
                 "icon": "zap"
               },
               {
+                "title": "Authentication",
+                "path": "authentication",
+                "icon": "lock"
+              },
+              {
                 "title": "Components",
                 "path": "components",
                 "icon": "code"
