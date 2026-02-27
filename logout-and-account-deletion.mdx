@@ -1,0 +1,153 @@
+---
+title: Logout and Account deletion
+description: Define expected behavior, flows, and data handling for logout and account deletion on the Cashkr Website for product, dev, and QA teams.
+---
+
+## Logout
+
+### What it shows
+
+A clickable **Logout** option available from the profile dropdown in the website header. When the user selects Logout, the website signs them out and returns them to the homepage.
+
+### Step-by-step user flow
+
+<Steps>
+  <Step title="Open the profile menu" icon="user" title-type="p">
+
+  - Click the **Profile** icon in the website header to open the profile dropdown.
+
+  </Step>
+
+  <Step title="Select Logout" icon="x-circle" title-type="p">
+
+  - Click **Logout** in the dropdown menu.
+  - The website logs the user out and redirects them to the homepage.
+
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+- Logout must **clear the active user session** from the browser and backend.
+- After logout, the user must be **redirected to the homepage**, not left on a restricted page.
+- Logged-out users must **not** access restricted areas such as order details or profile until they log in again.
+
+</Callout>
+
+### System logic
+
+The logout flow signs the user out across the browser and backend, then sends them to the homepage.
+
+- Clear the user session from **browser storage** (for example, session token, auth data).
+- Invalidate the **session token on the backend** so it cannot be reused.
+- Redirect the user to the **homepage** after successful logout.
+
+### Developer and tester notes
+
+**For developers**
+
+- Ensure the **session token** is fully **cleared** from both **browser storage** and the **backend** after logout.
+- Implement an automatic **redirect to the homepage** once logout completes.
+- Block all authenticated API calls and protected routes when the session is no longer valid.
+
+**For testers**
+
+- Test **multiple sessions** (for example, different browsers or devices) to ensure that logging out from one session behaves correctly per product expectations on that device.
+- Verify that **logged-out users** cannot access **restricted areas** such as order details or profile without logging in again.
+- Confirm **session invalidation** by attempting to use the browser back button or cached links and checking that the user is not treated as logged in.
+- Confirm **homepage redirection** occurs after logout and that no intermediate error page appears.
+
+---
+
+## Delete account
+
+### What it shows
+
+An option within the profile page that lets the user **permanently delete** their account. The user must confirm their identity with phone number and OTP before the account is deleted and anonymized.
+
+### Step-by-step user flow
+
+<Steps>
+  <Step title="Open profile" icon="user" title-type="p">
+
+  - Go to the **Profile** page from the profile menu or navigation.
+
+  </Step>
+
+  <Step title="Start account deletion" icon="trash" title-type="p">
+
+  - Click **Delete Account** on the profile page to start the deletion flow.
+
+  </Step>
+
+  <Step title="Verify with phone number" icon="phone" title-type="p">
+
+  - Re-enter the **phone number** associated with the account to confirm identity.
+
+  </Step>
+
+  <Step title="Enter OTP" icon="shield" title-type="p">
+
+  - Enter the **OTP** sent to the provided phone number.
+
+  </Step>
+
+  <Step title="Confirm deletion" icon="check-circle" title-type="p">
+
+  - Confirm the deletion after OTP verification.
+  - The system deletes and anonymizes the account and prevents future logins for this user.
+
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+- Account deletion is treated as **permanent** from the user perspective; deleted users must **not** be able to log in again.
+- Require **OTP verification** before confirming deletion; do not proceed with deletion if OTP validation fails.
+- After deletion, **anonymize** user data (for example, phone number obfuscation) and apply a **soft delete** flag so only authorized personnel can access residual data.
+- Removing a customer on the website must also **remove or mark them deleted** in connected systems, including the **customer app** and **login system**.
+
+</Callout>
+
+### System logic
+
+The delete account flow verifies the user via OTP, anonymizes their data, and marks the account as deleted.
+
+- After **OTP verification**, encrypt or anonymize user data by **obfuscating the phone number** and storing it in the database.
+- Flag the user record as **deleted** in the backend (soft delete) so it is excluded from normal application flows.
+- Remove or deactivate the **customer record from the login system** so the user cannot log in again.
+- Ensure that any subsequent login attempts with the deleted phone number or credentials **fail**.
+
+### Connections and data flow
+
+Deleting an account from the website must stay consistent across all related systems.
+
+- When a customer deletes their account on the website, also **remove or mark them deleted** in the **customer app**.
+- Ensure the deleted user is **removed from or blocked** in all relevant systems:
+  - Website front-end and backend
+  - **Customer app**
+  - **Admin** tools or dashboards that surface active customers
+- Keep the anonymized record only for internal or compliance use, and only **authorized personnel** should access it.
+
+### Developer and tester notes
+
+**For developers**
+
+- Implement **OTP verification** and ensure deletion occurs **only after** OTP validation succeeds.
+- After account deletion, **anonymize user data** (for example, obfuscate the phone number) and mark the user as **soft deleted** in the database.
+- Make sure the deleted user is **fully removed** from the **login system** so they cannot authenticate again.
+- Propagate the deletion to **all connected systems** (Website, Customer App, Admin) so no active references to the deleted account remain.
+
+**For testers**
+
+- Test the full **account deletion flow** from the profile page and confirm the account is removed from the **login system**.
+- Verify that **deleted accounts cannot log in again**, even when using:
+  - Previously saved credentials
+  - Browser autofill
+  - Cached sessions
+- Check that user data is **anonymized** (for example, phone number is obfuscated) and **excluded** from normal views in Website, Customer App, and Admin.
+- Validate that deletion from the website reflects in the **customer app** and that no active profile or orders remain accessible under the deleted account.
+
+### Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750934881.png" width="1600" height="773" alt="Cashkr Website profile page showing the Delete Account option and confirmation flow" />
