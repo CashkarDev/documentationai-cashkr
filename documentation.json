@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Sell Device Flow",
+                "path": "sell-device-flow"
+              },
+              {
                 "title": "Partner With Us",
                 "path": "partner-with-us"
               },

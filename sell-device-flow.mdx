@@ -1,0 +1,157 @@
+---
+title: Sell Device Flow
+description: >-
+  Understand the step-by-step Sell Device flow on the Cashkr website, including
+  user journey, system logic, connected modules, and QA focus areas.
+---
+## What the Sell Device page shows
+
+A guided, step-by-step journey where customers select their device, confirm serviceability, describe its condition, see a calculated offer price, and schedule pickup and payment to sell their old device.
+
+<Callout kind="info" collapsed="false">
+  - The journey is step-based: device type, brand, model, and variant selection.
+
+  - Serviceability check by area or pincode blocks progress if the location is not supported.
+
+  - Condition questions (screen, battery, accessories, damage) directly influence pricing.
+
+  - Users can apply a valid coupon at checkout to adjust the final price.
+
+  - Users must provide address and pickup date/time before the order is placed.
+
+  - For payment, users may select an existing method or add bank/UPI details; if none is selected, cash is used by default.
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Entry and device selection" icon="folder" title-type="p">
+    - User reaches the Sell Device flow from the homepage or via search.
+
+    - User selects the device type (for example, phone, tablet, etc.).
+
+    - User then selects **brand → model → variant**.
+  </Step>
+
+  <Step title="Serviceability check" icon="shield" title-type="p">
+    - User enters area or pincode to check if the service is available.
+
+    - If the area or pincode is **serviceable**, the user can continue to the next step.
+
+    - If the area or pincode is **not serviceable**, the flow stops and the user cannot proceed.
+  </Step>
+
+  <Step title="Condition questions" icon="settings" title-type="p">
+    - User answers condition-based questions about the device:
+
+      - Screen condition
+
+      - Battery performance
+
+      - Availability of original accessories
+
+      - Physical or other damage
+
+    - The system uses these answers together with the selected variant to determine the device class and pricing.
+  </Step>
+
+  <Step title="Price calculation and coupon" icon="bar-chart" title-type="p">
+    - System calculates the final price based on the selected device, variant, and condition responses.
+
+    - On the checkout screen, the user can **apply a coupon**.
+
+    - The coupon must be valid according to the coupon rules; only valid coupons affect the final price.
+  </Step>
+
+  <Step title="Pickup details and order placement" icon="home" title-type="p">
+    - User selects or adds a pickup address.
+
+    - User selects a pickup date and time slot.
+
+    - After confirming these details, the order is placed successfully.
+  </Step>
+
+  <Step title="Payment selection" icon="credit-card" title-type="p">
+    - After placing the order, the user selects how they want to receive payment.
+
+    - User can:
+
+      - Use an existing saved payment method, or
+
+      - Add new bank account details or UPI details.
+
+    - If the user does not select any payment method, **cash** is selected as the default payment mode.
+  </Step>
+</Steps>
+
+## System logic
+
+- **Product**\
+  Device list, variants, and specifications are pulled dynamically from the Admin Panel Product section.
+
+- **Class & Pricing**\
+  Pricing logic maps the selected device variant and condition answers to a final offer price.
+
+- **Area**\
+  The Area module verifies serviceability based on the entered area or pincode and blocks progression when unsupported.
+
+- **Coupons**\
+  The Coupon module validates coupon codes at checkout and applies eligible discounts to the calculated price.
+
+- **Orders**\
+  The Orders system creates the final order record and passes it to the Admin Panel after confirmation.
+
+## Connections
+
+- **Admin Panel**
+
+  - **Product**: Manages brand, model, and variant data used in the Sell Device flow.
+
+  - **Class & Pricing**: Stores and maintains pricing rules for different device classes and conditions.
+
+  - **Area**: Manages serviceable areas and pincodes used for availability checks.
+
+  - **Coupons**: Stores coupon definitions and eligibility rules used at checkout.
+
+  - **Orders**: Receives new order entries once the user confirms pickup and payment details.
+
+- **Customer App**
+
+  - Reflects all changes and activity, including device selection, order details, and status updates from the Sell Device flow.
+
+## Developer and tester notes
+
+**For developers**
+
+- Ensure the **device list, variants, and specs** load dynamically from the Admin Panel Product section.
+
+- Validate that the **price calculation logic** uses both the selected variant and all condition answers.
+
+- Enforce **pincode/area verification** so users cannot proceed when the Area module marks a location as not serviceable.
+
+- Integrate **coupon validation** with the Coupon module and apply eligible discounts only.
+
+- Confirm that **order creation** writes to the Admin Panel Orders system with all required fields (device, address, pickup slot, payment mode).
+
+**For testers**
+
+- Verify that **price calculation** matches the expected output for each combination of variant and condition responses.
+
+- Test that entering an **unsupported pincode or area** shows the correct error state and prevents further steps.
+
+- Check that **valid coupons** apply correctly and **invalid/expired coupons** show proper error messages without changing the price.
+
+- Confirm that **order creation** occurs only after address and pickup date/time are provided and that the order appears in the Admin Panel Orders list.
+
+- Validate that **payment selection** behaves as expected:
+
+  - Existing bank/UPI methods are selectable.
+
+  - New bank/UPI details save and can be used for payout.
+
+  - If no payment method is selected, **cash** appears as the default mode.
+
+## Snapshot
+
+<Video uid="c0e96bb4-53fc-470c-9029-d84af43113d4" src="https://vento.so/view/c72ae8c7-cfed-4ca8-b903-a6362392d4ed/embed" render-type="iframe" width="560" height="315" controls="true" allow-full-screen="true" />
+
