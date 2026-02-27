@@ -1,0 +1,76 @@
+---
+title: Articles
+description: Understand how the Articles page lists marketing content from Strapi, how users interact with it, and what developers and testers must verify.
+---
+
+## What the Articles page shows
+
+The Articles page shows a scrollable or paginated list of promotional articles published by the Marketing team via Strapi CMS.
+
+<Callout kind="info">
+
+- The page shows a scrollable or paginated list or grid of articles with thumbnail, title, and short preview.
+- When a user clicks an article card, the full article detail page opens.
+- The website fetches articles dynamically from Strapi CMS; publish or update in Strapi reflects on the site in real time.
+- The page and each article support SEO visibility using meta tags so marketing content can rank in search.
+
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the Articles page" icon="folder" title-type="p">
+
+  - User navigates to the Articles section from the homepage navbar or footer.
+  - The browser loads the Articles list view.
+
+  </Step>
+
+  <Step title="Browse available articles" icon="book-open" title-type="p">
+
+  - User scrolls through the list or paginated view, or scans a grid of article cards.
+  - Each card shows a thumbnail image, article title, and a short preview or summary.
+
+  </Step>
+
+  <Step title="Open an article" icon="arrow-right" title-type="p">
+
+  - User clicks an article card from the list or grid.
+  - The website opens the article detail view with full content.
+
+  </Step>
+</Steps>
+
+## System logic
+
+Articles on this page always come from Strapi CMS and update in real time when marketing changes content.
+
+- Fetch articles dynamically from Strapi CMS, rather than hardcoding content in the website.
+- Reflect newly published or updated articles immediately on the Articles list and detail pages.
+- Apply SEO meta tags to the Articles list and individual article pages to support organic search visibility.
+
+## Connections
+
+The Articles page connects the marketing content workflow in Strapi to the public website.
+
+- Integrates with Strapi CMS where the marketing team uploads and updates article content.
+- Surfaces that content on the website as a scrollable or paginated list or grid view.
+- Uses SEO meta tags per article to help drive organic traffic from search engines.
+
+## Developer and tester notes
+
+**For developers**
+
+- Ensure dynamic fetching of articles from Strapi CMS, including thumbnails, titles, previews, and full content.
+- Implement and verify real-time reflection of newly published or edited articles from Strapi on the website.
+- Add and maintain SEO meta tags for the Articles list and each article detail page (title, description, and any required structured data).
+
+**For testers**
+
+- Verify that newly published articles in Strapi appear on the Articles page without delay.
+- Check article linking and content: each card should open the correct detail page with complete, readable content and no broken links.
+- Confirm that SEO meta tags exist and are correct on the Articles list page and each article detail page.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1751004534.png" width="1600" height="782" alt="Articles page showing a grid of marketing articles with thumbnails, titles, and previews" />
