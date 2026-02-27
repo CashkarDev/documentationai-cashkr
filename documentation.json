@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Refer & Earn",
+                "path": "refer-earn"
+              },
+              {
                 "title": "Lead Creation",
                 "path": "lead-creation"
               },
