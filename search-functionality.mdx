@@ -1,0 +1,73 @@
+---
+title: Search Functionality
+description: Understand how the homepage search bar surfaces active device models from the Admin Panel product database and routes users into model evaluation.
+---
+
+## What the search shows
+
+The homepage includes a universal search bar that lets customers search for any supported device model by brand or model name.
+
+<Callout kind="info">
+
+- Shows a universal search bar on the homepage
+- Supports type-to-search with autosuggestions for matching device models
+- Routes the user into that device's model evaluation flow (Q&A) when they select a result
+- Pulls results from the Admin Panel Product database and only shows active products with valid pricing and class
+
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Start typing in the search bar" icon="search" title-type="p">
+
+  - User clicks the universal search bar on the homepage.
+  - User starts typing a brand name or specific device model.
+
+  </Step>
+
+  <Step title="Review autosuggestions" icon="list-ordered" title-type="p">
+
+  - The search component shows an autosuggestion dropdown of matching device models.
+  - All suggestions come from the active products in the Admin Panel Product database.
+
+  </Step>
+
+  <Step title="Select a device model" icon="arrow-right" title-type="p">
+
+  - User selects a device model from the autosuggestion list.
+  - The website routes the user directly to that device's model evaluation flow (Q&A).
+
+  </Step>
+</Steps>
+
+## System logic
+
+- Fetch device results from the **Admin Panel > Product** database.
+- Include **only active products**.
+- Show results **only when pricing and class are assigned**.
+- Exclude inactive or discontinued devices, or any product missing pricing or class.
+
+## Connections
+
+- **Admin Panel → Product Page**
+  - Device models added as products in the Admin Panel appear in the homepage search, as long as they are active and have valid pricing and class configured.
+
+## Developer and tester notes
+
+**For developers**
+
+- Implement **autosuggestions** that query the active product records as the user types in the search bar.
+- Ensure **search results only include active products** with valid pricing and class/condition configured.
+- Exclude any products that are inactive, discontinued, or missing required pricing or class data.
+
+**For testers**
+
+- Verify **search returns correct device models** for different brands and model names.
+- Confirm that **inactive or discontinued devices never appear** in autosuggestions or results.
+- Check that **products without pricing or class** do not appear in search.
+- Test that the **search bar works across devices** (desktop, tablet, mobile) and responds quickly.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1751008347.png" width="1600" height="785" alt="Cashkr homepage showing the universal search bar and autosuggestion dropdown for device models" />
