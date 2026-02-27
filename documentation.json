@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Track Orders",
+                "path": "track-orders"
+              },
+              {
                 "title": "Logout and Account deletion",
                 "path": "logout-and-account-deletion"
               },

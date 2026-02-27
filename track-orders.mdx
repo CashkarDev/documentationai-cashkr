@@ -1,0 +1,115 @@
+---
+title: Track Orders
+description: View and manage your Cashkr website orders with real-time status tracking, rescheduling options, and Call Agent support.
+---
+
+## What the Track Orders page shows
+
+Track Orders displays all orders placed by the logged-in customer and keeps their statuses updated in real time.
+
+Customers see each order with its current status:
+
+- **Generated**
+- **In Progress**
+- **Completed**
+- **Failed**
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the Orders page" icon="folder" title-type="p">
+
+  - From the **Profile** section, click **Orders** to open your full order list.
+  - Or click **Track Order** from the main navigation bar to go directly to the Orders page.
+
+  </Step>
+
+  <Step title="Review your order list and statuses" icon="list-ordered" title-type="p">
+
+  - View all past and current orders for the logged-in customer.
+  - Check the **status** of each order: **Generated**, **In Progress**, **Completed**, or **Failed**.
+  - Use the list to confirm that statuses update as actions happen in the Vendor App and Admin Panel.
+
+  </Step>
+
+  <Step title="Open order details" icon="folder" title-type="p">
+
+  - Click the **Details** button on any order row to open the order details view.
+  - Review full order information, including pickup, vendor assignment (when available), and action buttons such as **Reschedule** or **Call Agent**.
+
+  </Step>
+
+  <Step title="Reschedule when status is Generated" icon="edit" title-type="p">
+
+  - When an order status is **Generated** and no vendor is assigned, a **Reschedule** button appears in the order details.
+  - Click **Reschedule** to choose a new pickup **date** and **time**, then confirm the change.
+  - After rescheduling, the new schedule appears in the order details and is reflected in connected systems.
+
+  </Step>
+
+  <Step title="Call an agent after vendor assignment" icon="phone" title-type="p">
+
+  - When an order is assigned to a vendor, a **Call Agent** button appears in the order details.
+  - Click **Call Agent** to contact a Cashkr agent for help or questions about the order.
+
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+- Allow **rescheduling only while the status is Generated** and **no vendor is assigned**.
+- Show **Call Agent** **only after** a vendor is assigned to the order.
+- Keep order statuses in sync in real time between the **Website**, **Vendor App**, **Customer App**, and **Admin Panel**.
+
+</Callout>
+
+## System logic
+
+- Track Orders shows **order history per user**; each logged-in customer only sees their own orders.
+- Status values must remain consistent across Website, Vendor App, Customer App, and Admin Panel.
+- Rescheduling updates the pickup date and time for the order everywhere it appears.
+
+<Callout kind="tip">
+
+Use a single source of truth for order status and schedule so that changes from the Admin Panel or Vendor App immediately reflect on the Website and Customer App.
+
+</Callout>
+
+## Connections
+
+- **Vendor App**  
+  Uses the same order data for live status, so changes in the Vendor App update statuses on the Website.
+
+- **Admin Panel**  
+  Admins can contact the customer, reschedule pickups, reassign vendors, and cancel orders. All actions taken in the Admin Panel update the order status and schedule shown on the Website and in the Customer App.
+
+- **Customer App**  
+  Actions and updates on the Website (such as rescheduling) reflect in the Customer App, and vice versa, through the shared backend.
+
+## Developer and tester notes
+
+**For developers**
+
+- Keep **order statuses** (`Generated`, `In Progress`, `Completed`, `Failed`) updated dynamically for the logged-in customer.
+- Implement logic to allow **rescheduling only while the status is Generated and before vendor assignment**.
+- Show the **Call Agent** button only when a **vendor is assigned** to the order.
+- Ensure **real-time status sync** with the **Vendor App**, **Customer App**, and **Admin Panel**.
+- Update the **order schedule** (date and time) consistently across all systems when a reschedule occurs.
+
+**For testers**
+
+- Verify that **order status updates** (for example, `Generated → In Progress → Completed` or `Failed`) stay in sync between the Website and Admin Panel.
+- Confirm that **reschedule functionality** is available **only** when the status is **Generated** and **no vendor is assigned**.
+- Confirm that the **Vendor App** and **Customer App** receive live updates when an order status or schedule changes.
+- Check that the **Call Agent** button is:
+  - **Hidden** when no vendor is assigned.
+  - **Visible** only when a vendor is assigned to the order.
+- Validate that every order activity (status changes, reschedules, cancellations, vendor reassignments) appears correctly in the **activity timeline** for the order in the Admin Panel.
+
+## Screenshots
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip1_1750933649.png" width="1600" height="796" alt="Orders list in Cashkr website showing multiple orders with statuses and action buttons" />
+
+**Order details**
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750933638.png" width="1600" height="801" alt="Order details view in Cashkr website with reschedule and Call Agent options" />
