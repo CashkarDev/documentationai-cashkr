@@ -1,0 +1,72 @@
+---
+title: Corporate Buyback
+description: Lead capture page where corporate users submit bulk device buyback requests that feed into the Admin Panel Buyback workflow.
+---
+
+## What the Corporate Buyback page shows
+
+The Corporate Buyback page displays a lead capture form for corporate users to request bulk device buybacks. It is available from the main website navigation and footer links.
+
+<Callout kind="info">
+
+- The page is a lead capture form for corporate bulk device buybacks.
+- Users do not need to log in to submit the form.
+- Required fields include name, phone, email, state, pincode, city, subject, and query.
+- Each submission creates a lead stored in the Admin Panel under the Buyback section.
+- The operations team manually updates lead status through In Progress, Approved, and Completed.
+
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the Corporate Buyback page" icon="folder" title-type="p">
+
+  - User navigates to the Corporate Buyback page from the website footer or main navigation.
+  - The page loads a single form asking for corporate contact and query details.
+
+  </Step>
+
+  <Step title="Fill in contact and query details" icon="edit" title-type="p">
+
+  - User enters the required details: name, phone, email, state, pincode, city, subject, and query.
+  - The form validates required fields and prevents submission if any required field is empty or invalid.
+
+  </Step>
+
+  <Step title="Submit the buyback request" icon="play-circle" title-type="p">
+
+  - User clicks Submit to send the corporate buyback request.
+  - On successful submission, the system stores a new lead in the Admin Panel Buyback section for follow-up by the operations team.
+
+  </Step>
+</Steps>
+
+## System logic
+
+The system creates a new lead record in the Admin Panel Buyback section whenever a user submits the Corporate Buyback form. The record includes all the submitted details for the corporate contact and their query.
+
+The operations team manages each lead manually in the Admin Panel. They update the lead status as the request progresses through the workflow, typically moving from In Progress to Approved and then to Completed.
+
+## Connections
+
+The Corporate Buyback page connects directly to the Admin Panel Buyback Leads page, where all submitted corporate buyback leads appear. Because the page is a public form, users do not need to log in to submit their corporate buyback requests.
+
+## Developer and tester notes
+
+**For developers**
+
+- Implement backend logic to store all Corporate Buyback form submissions as leads in the Admin Panel Buyback section.
+- Ensure the lead status field exists and supports the workflow values In Progress, Approved, and Completed.
+- Expose lead details in the Admin Panel Buyback Leads page so the operations team can review and update them.
+
+**For testers**
+
+- Validate that all required fields (name, phone, email, state, pincode, city, subject, query) are present and enforced with proper validation.
+- Test that submitting the form creates a new lead in the Admin Panel Buyback section with accurate field values.
+- Verify that the lead status can be moved through the workflow (In Progress → Approved → Completed) and that these updates persist.
+- Confirm that non-logged-in users can access the Corporate Buyback page and submit the form successfully.
+
+## Screenshot
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1772174166055-1lz81zomq0l-corporate-buyback.corporate buyback?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="833" alt="Corporate Buyback page showing the corporate lead capture form for bulk device buybacks" />
