@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Partner With Us",
+                "path": "partner-with-us"
+              },
+              {
                 "title": "Corporate Buyback",
                 "path": "corporate-buyback"
               },
