@@ -1,0 +1,96 @@
+---
+title: Address
+description: View, add, and edit customer pickup addresses on the Cashkr Website, including field requirements, rules, and sync behavior with the Customer App.
+---
+
+## What the Address page shows
+
+The Address page displays the customer’s saved pickup addresses and lets them add new addresses or edit existing ones (subject to system rules).
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the Address page" icon="folder" title-type="p">
+
+  - From the **Profile** section on the Cashkr Website, select the **Address** option.
+  - The page shows all saved pickup addresses for the logged-in customer, if any.
+
+  </Step>
+
+  <Step title="Add a new pickup address" icon="plus" title-type="p">
+
+  - Click the **Add Address** action (button or link) on the Address page.
+  - Choose an **address type**: **Home**, **Office**, or **Other**.
+  - Enter the address details in the following fields:
+    - **Flat No / Building / Colony**
+    - **Street / Sector / Area**
+    - **Landmark**
+    - **Pincode**
+    - **City** (auto-fetched from the entered pincode and displayed as read-only or prefilled)
+
+  - Save the address to create a new pickup address record for the customer.
+
+  </Step>
+
+  <Step title="Edit a saved address" icon="edit" title-type="p">
+
+  - On the Address page, locate the address you want to update.
+  - Click the **Edit** action for that address.
+  - Update the allowed fields and save the changes.
+  - The updated address is stored for future pickups and synced to the Customer App.
+
+  </Step>
+</Steps>
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+- **Maximum 3 addresses**: A customer can maintain **up to 3 pickup addresses** at any time. Block additional address creation once the limit is reached.
+- **Address types**: Each address is tagged as **Home**, **Office**, or **Other** and used in pickup selection and assignment flows.
+- **City auto-fetched from pincode**: When the customer enters a **pincode**, the system fetches and displays the corresponding **city**. Validate that the pincode-city mapping is correct.
+- **Used in pickup assignment**: All saved addresses are **eligible for pickup assignment logic** when orders are created and assigned.
+- **Sync with Customer App**: Address data is **shared with the Customer App**. Changes on the Cashkr Website reflect in the Customer App for the same customer.
+
+</Callout>
+
+## System logic
+
+- Enforce a **maximum of 3 addresses per customer** at the data layer and UI.
+- Use the **pincode** to fetch and validate the **city**, and attach this mapping to the address record.
+- Treat all saved addresses as **valid pickup locations** for order creation and assignment logic.
+- When an order is confirmed, **copy the selected address information to the order record** so later address edits do not retroactively change existing orders.
+
+## Connections and data flow
+
+- On order confirmation, **persist the chosen pickup address with the order** to keep a stable snapshot.
+- Keep the **Address page and Customer App in sync** so that:
+  - Addresses created or updated on the Cashkr Website appear for the customer in the Customer App.
+  - Subsequent edits on the website update the shared address record, without mutating address data that has already been copied into existing orders.
+
+## Developer and tester notes
+
+**For developers**
+
+- Implement logic to **block address modification** when an order is already **assigned** to that address, according to business rules.
+- Add and enforce **pincode-to-city validation**, using a reliable mapping source to return the correct city for each valid pincode.
+- Implement database constraints or checks to **limit address creation to 3 per user**, including validation at both API and UI layers.
+- When copying address details to an order, ensure you **store a snapshot** so that later address edits do not change historical order data.
+
+**For testers**
+
+- Verify the **maximum of 3 addresses** rule:
+  - Add addresses up to the limit and confirm that creating a 4th address is blocked with the expected message or behavior.
+- Validate the **address lock for active orders**:
+  - Create an order using a saved address.
+  - Once the order is assigned, ensure the linked address **cannot be edited** and that the UI reflects the restriction.
+- Confirm that updating **one address** does not change:
+  - Other saved addresses.
+  - Existing orders that already copied that address as part of their record, especially orders assigned to vendors.
+- Test **pincode-city mapping**:
+  - Enter valid pincodes and confirm the correct city is auto-fetched and displayed.
+  - Enter invalid or unsupported pincodes and confirm appropriate error or validation behavior.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750930651.png" width="1600" height="784" alt="Cashkr Website Address page showing a list of saved pickup addresses with add and edit options" />
