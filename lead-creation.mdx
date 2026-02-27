@@ -1,0 +1,88 @@
+---
+title: Lead Creation
+description: Understand when Cashkr creates a lead from the device Q&A flow, what data is stored, and how it appears in the Admin Panel.
+---
+
+## What lead creation shows
+
+Lead creation captures users who reach the final device price but do not confirm an order, so Operations can follow up and convert them.
+
+<Callout kind="info">
+
+- When a customer completes the device Q&A flow, reaches the final step, and sees the final price **but does not confirm or place the order**, the system creates a lead.
+- Each lead stores the selected device, all question answers, the entered pincode, and customer contact information.
+- The system creates leads **only when the customer is logged in**.
+- Leads appear in **Admin Panel → Leads** and are used by the Operations team for manual follow-up and conversion.
+
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Customer completes device Q&A" icon="zap" title-type="p">
+
+  - Customer selects a device on the website.
+  - Customer answers all condition and device-related questions.
+
+  </Step>
+
+  <Step title="Final price is shown" icon="monitor" title-type="p">
+
+  - System calculates and displays the final device price on the last step of the flow.
+  - Customer is logged in while viewing this final price.
+
+  </Step>
+
+  <Step title="Order is not confirmed" icon="x-circle" title-type="p">
+
+  - Customer does **not** click the confirm/place-order action.
+  - Customer leaves the flow, navigates away, or closes the session without confirming.
+
+  </Step>
+
+  <Step title="Lead is created" icon="check-circle" title-type="p">
+
+  - System creates a lead with the device details, Q&A answers, pincode, and customer contact information.
+  - Lead is stored in **Admin Panel → Leads** for the Operations team to follow up.
+
+  </Step>
+</Steps>
+
+## System logic
+
+- Create a lead when **all** of the following are true:
+  - Customer completes the device Q&A and the **final price is shown**.
+  - Customer **does not place or confirm the order**.
+  - Customer is **logged in**.
+- Store the created lead in **Admin Panel → Leads**.
+- Include in the lead:
+  - Selected device details.
+  - All device Q&A answers.
+  - Entered pincode.
+  - Customer contact information.
+- Use created leads for **Operations team follow-up and conversion**.
+
+## Connections
+
+- Lead records appear under **All Leads** in the **Admin Panel**.
+- The Operations team uses these leads as a **trigger for manual follow-up** with customers who dropped off after seeing the final price.
+
+## Developer and tester notes
+
+**For developers**
+
+- Ensure the system creates a lead when the customer reaches the **final price screen** but does **not** confirm or place the order.
+- Create leads **only when the customer is logged in** at the time the final price is shown.
+- Save the lead in **Admin Panel → Leads** with:
+  - Customer name and contact information.
+  - Selected device and condition details.
+  - All Q&A answers and the pincode.
+
+**For testers**
+
+- Verify that a lead is created **only when the user does not place or confirm the order** after seeing the final price.
+- Confirm that **no lead** is created when:
+  - The user does not reach the final price screen, or
+  - The user successfully confirms/places the order.
+- Check that leads **sync correctly** to **Admin Panel → Leads** with complete customer and device data.
+- Validate that created leads are available for the Operations team and can be used for **follow-up and conversion tracking**.

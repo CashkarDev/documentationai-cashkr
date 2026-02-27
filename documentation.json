@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Lead Creation",
+                "path": "lead-creation"
+              },
+              {
                 "title": "Search Functionality",
                 "path": "search-functionality"
               },
