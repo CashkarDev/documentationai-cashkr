@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Device Price Calculator",
+                "path": "device-price-calculator"
+              },
+              {
                 "title": "Sell Device Flow",
                 "path": "sell-device-flow"
               },

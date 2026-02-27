@@ -1,0 +1,106 @@
+---
+title: Device Price Calculator
+description: >-
+  Understand how the Device Price Calculator works, how customers use it, and
+  how it connects to Admin Panel pricing, products, and classes.
+---
+## What the Device Price Calculator shows
+
+The device price calculator is a dedicated section on the website that lets customers estimate the resale value of their devices without creating an order.
+
+<Callout kind="info" collapsed="false">
+  - Customers estimate resale value without placing an order.
+
+  - Customers first pick a calculator type (Mobile, Laptop, Mac, Tablet), then answer condition questions.
+
+  - The calculator uses the same pricing logic as the main order flow.
+
+  - Pricing data comes from Admin Panel: Products, Class, and Pricing.
+
+  - Any price change in Admin Panel flows through to the calculator automatically.
+</Callout>
+
+## Step-by-step user flow
+
+<Steps>
+  <Step title="Open the calculator page" icon="folder" title-type="p">
+    - The customer opens the **Calculator** page from the website homepage.
+
+    - The page loads the list of supported calculator types based on Admin Panel configuration.
+  </Step>
+
+  <Step title="Select device category" icon="folder" title-type="p">
+    - The customer selects a device category calculator, such as **Mobile**, **Laptop**, **Mac**, or **Tablet**.
+
+    - The selection determines which models, classes, and pricing rules to use.
+  </Step>
+
+  <Step title="Answer condition questions" icon="folder" title-type="p">
+    - The customer moves through a series of device condition and configuration questions.
+
+    - Answers map to a specific device class and configuration (for example, storage, age, screen damage).
+  </Step>
+
+  <Step title="View price estimate" icon="folder" title-type="p">
+    - The calculator displays a final **price estimate** based on the selected device, configuration, and condition.
+
+    - The estimate is consistent with what the customer would see in the main order flow for the same inputs.
+  </Step>
+</Steps>
+
+## System logic
+
+- Use the same pricing logic and rules as the Sell Device order flow.
+
+- Pull product and pricing data dynamically from:
+
+  - Admin Panel **Products**
+
+  - Admin Panel **Classes**
+
+  - Admin Panel **Pricing**
+
+- Apply condition and configuration rules (from Classes and Pricing) to compute the estimate.
+
+- Reflect any Admin Panel price changes in the calculator output without additional deployment or configuration.
+
+## Connections
+
+- **Admin Panel → Products**
+
+  - Provides available devices and variants for each calculator type (Mobile, Laptop, Mac, Tablet).
+
+- **Admin Panel → Class Page**
+
+  - Defines condition classes and maps condition answers to specific classes.
+
+- **Admin Panel → Pricing Page**
+
+  - Stores model-, class-, and configuration-based pricing used to generate the estimate.
+
+## Developer and tester notes
+
+**For developers**
+
+- Implement price calculation using the shared pricing logic used in the main order flow.
+
+- Read product, class, and pricing data directly from Admin Panel-backed APIs or data sources.
+
+- Confirm that price updates in Products/Pricing/Variant entities propagate to the calculator output without stale caching.
+
+- Keep condition and configuration mapping consistent with the Sell Device flow to avoid discrepancies.
+
+**For testers**
+
+- Verify that each device condition Q\&A path maps to the correct class and final estimated price.
+
+- Cross-check calculator estimates against the final price shown in the Sell Device order flow for identical inputs.
+
+- Test that updates to Admin Panel Products, Classes, or Pricing (including edge cases like disabled products or changed variants) appear in the calculator.
+
+- Validate the flow for each calculator type (Mobile, Laptop, Mac, Tablet), including unsupported or missing configurations.
+
+## Screenshot
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1772179413709-zciw5zdypcp-calculator-page.calculator page?q=85&fm=auto&auto=compress%2Cformat" width="969" height="822" alt="" />
+
