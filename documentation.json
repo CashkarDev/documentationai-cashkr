@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Overview",
+                "path": "overview"
+              },
+              {
                 "title": "Key Pages / Sections",
                 "path": "key-pages-/-sections"
               },
@@ -52,8 +56,28 @@
                 "path": "core-features"
               },
               {
-                "title": "Refer & Earn",
-                "path": "refer-earn"
+                "title": "Login & Registration",
+                "path": "login-registration"
+              },
+              {
+                "title": "My Profile",
+                "path": "my-profile"
+              },
+              {
+                "title": "Address",
+                "path": "address"
+              },
+              {
+                "title": "Track Orders",
+                "path": "track-orders"
+              },
+              {
+                "title": "Payment",
+                "path": "payment"
+              },
+              {
+                "title": "Sell Device Flow",
+                "path": "sell-device-flow"
               },
               {
                 "title": "Lead Creation",
@@ -68,8 +92,12 @@
                 "path": "device-price-calculator"
               },
               {
-                "title": "Sell Device Flow",
-                "path": "sell-device-flow"
+                "title": "Articles",
+                "path": "articles"
+              },
+              {
+                "title": "Refer & Earn",
+                "path": "refer-earn"
               },
               {
                 "title": "Partner With Us",
@@ -80,36 +108,8 @@
                 "path": "corporate-buyback"
               },
               {
-                "title": "Articles",
-                "path": "articles"
-              },
-              {
-                "title": "Track Orders",
-                "path": "track-orders"
-              },
-              {
                 "title": "Logout and Account deletion",
                 "path": "logout-and-account-deletion"
-              },
-              {
-                "title": "Address",
-                "path": "address"
-              },
-              {
-                "title": "Overview",
-                "path": "overview"
-              },
-              {
-                "title": "Login & Registration",
-                "path": "login-registration"
-              },
-              {
-                "title": "My Profile",
-                "path": "my-profile"
-              },
-              {
-                "title": "Payment",
-                "path": "payment"
               }
             ],
             "icon": "airplay"
