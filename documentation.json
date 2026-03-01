@@ -118,8 +118,8 @@
             "group": "Customer App",
             "pages": [
               {
-                "title": "Customer App My Profile",
-                "path": "customer-app-my-profile"
+                "title": "Lead Creation - Customer App",
+                "path": "lead-creation---customer-app"
               },
               {
                 "title": "Customer App Overview",
@@ -132,6 +132,10 @@
               {
                 "title": "HomeScreen & Device Selection",
                 "path": "homescreen-device-selection"
+              },
+              {
+                "title": "Customer App My Profile",
+                "path": "customer-app-my-profile"
               }
             ],
             "icon": "album"

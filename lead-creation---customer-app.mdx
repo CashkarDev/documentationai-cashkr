@@ -1,0 +1,272 @@
+---
+title: Lead Creation - Customer App
+description: >-
+  Understand when the Customer App creates leads, what data is captured, how
+  they appear in the Admin Panel, and how to verify the behavior.
+---
+## Overview
+
+Lead creation in the Customer App captures customers who reach the final device price in the sell-device flow but do not confirm an order. Leads are then available in the Admin Panel for follow-up and conversion by the Operations team.
+
+## When a lead is created
+
+<Callout kind="info" collapsed="false">
+  The Customer App creates a lead when all of these conditions are true:
+
+  - The customer is **logged in**.
+
+  - The customer completes the **device Q\&A** so that the **final device price** is shown.
+
+  - The customer **does not tap Confirm Order** on the final price confirmation screen.
+
+  When triggered, the system stores the selected device, Q\&A answers, pincode, and customer contact details as a lead in the Admin Panel.
+</Callout>
+
+## Step-by-step customer journey (Customer App)
+
+<Steps>
+  <Step title="Start from HomeScreen or search" icon="home" title-type="p">
+    - Customer opens the Customer App.
+
+    - Customer selects a device from the **HomeScreen** categories or uses **search** to find a specific brand and model.
+  </Step>
+
+  <Step title="Confirm device variant" icon="monitor" title-type="p">
+    - Customer chooses the correct **brand**, **model**, and **variant** for the device they want to sell.
+
+    - The app uses this selection as the base for pricing and condition questions.
+  </Step>
+
+  <Step title="Check serviceability" icon="map" title-type="p">
+    - Customer enters a **pincode** or area.
+
+    - If the pincode is **serviceable**, the app allows the customer to proceed.
+
+    - If the pincode is **not serviceable**, the flow stops and **no lead is created**.
+  </Step>
+
+  <Step title="Answer condition Q&A" icon="help-circle" title-type="p">
+    - Customer answers the device **condition questions** that influence pricing (screen, body, functionality, accessories, etc.).
+
+    - The app calculates the device quote based on these answers.
+  </Step>
+
+  <Step title="Select payment method" icon="credit-card" title-type="p">
+    - Customer selects a **payment method** (for example, UPI or bank transfer) as part of the sell-device flow.
+
+    - The app prepares the final quote summary using this choice.
+  </Step>
+
+  <Step title="View final price confirmation screen" icon="bar-chart" title-type="p">
+    - The app shows the **final device price** and summary of the selected device and condition.
+
+    - The screen includes the **Confirm Order** action to place the order.
+  </Step>
+
+  <Step title="Customer does not confirm order" icon="x-circle" title-type="p">
+    - Customer exits or navigates away **without tapping Confirm Order**.
+
+    - The backend saves this session as a **lead** because the customer reached pricing but did not place an order.
+  </Step>
+</Steps>
+
+## System logic
+
+The system uses the same core rules as lead creation on the website but applies them to the Customer App entry points and journey.
+
+### Conditions for lead creation
+
+- **User authentication**
+
+  - Customer must be **logged in** to the Customer App.
+
+  - If the customer is not logged in, do not create a lead.
+
+- **Quote visibility**
+
+  - Customer has completed the **device Q\&A** and the **final price** is shown on the confirmation screen.
+
+  - If the customer leaves before the final price is calculated, do not create a lead.
+
+- **Order not confirmed**
+
+  - Customer **does not tap Confirm Order**.
+
+  - If the customer confirms the order, treat it as a **normal order**, not a lead.
+
+### Data captured in the lead
+
+The lead snapshot captures enough information for Ops to contact the customer and understand their intent:
+
+- **Selected device details**
+
+  - Brand, model, and variant chosen in the Customer App.
+
+- **Condition inputs (Q\&A)**
+
+  - All answers from the sell-device condition questions that drive pricing.
+
+- **Pincode / serviceability info**
+
+  - The **pincode** entered during the serviceability step that allowed the user to proceed.
+
+- **Customer details**
+
+  - Customer name and contact details from the logged-in profile.
+
+- **Timestamp and context**
+
+  - When the lead was created.
+
+  - Context that this was a **Customer App sell-device flow** where the quote was shown but order not confirmed.
+
+<Callout kind="tip" collapsed="false">
+  Keep the lead schema between Website and Customer App as aligned as possible. This makes reporting, analytics, and Ops workflows consistent across both channels.
+</Callout>
+
+## Connections
+
+Leads created from the Customer App plug into the same operational pipeline as website leads.
+
+- **Admin Panel → Leads**
+
+  - All Customer App leads appear in the **Admin Panel** under the **Leads** section.
+
+  - You can filter or tag leads by **source** (for example, Customer App vs Website) as supported by your implementation.
+
+- **Operations follow-up**
+
+  - Operations teams use these leads to:
+
+    - Call or message the customer.
+
+    - Clarify any questions about pricing or device condition.
+
+    - Encourage the customer to complete the order.
+
+  - Since the quote and device details are already available, Ops can resume the conversation from where the customer dropped off.
+
+## Common scenarios to verify
+
+Use these scenarios to confirm that lead creation is wired correctly for the Customer App.
+
+### Leads should be created
+
+- **Customer reaches final price and backs out**
+
+  - Customer is logged in.
+
+  - Starts from HomeScreen or search, passes serviceability, completes all Q\&A, selects payment method.
+
+  - Sees the final price confirmation screen.
+
+  - Closes the app, navigates away, or goes back **without tapping Confirm Order**.
+
+  - **Expected:** A lead is created and visible in **Admin Panel → Leads** with correct device, Q\&A answers, pincode, and customer details.
+
+- **Customer changes device but still does not confirm**
+
+  - Customer is logged in and changes model or variant mid-flow, then completes Q\&A again.
+
+  - Final price screen shows the updated device and quote.
+
+  - Customer does not confirm the order.
+
+  - **Expected:** The lead reflects the **latest** selected device and Q\&A answers that were visible on the final price screen.
+
+### Leads should not be created
+
+- **Not logged in**
+
+  - Customer browses devices or starts the flow without being logged in and reaches or leaves a partial state.
+
+  - **Expected:** No lead is created because the customer is not authenticated.
+
+- **Pincode not serviceable**
+
+  - Customer selects a device but enters a pincode that is not serviceable.
+
+  - Flow blocks before condition questions or pricing.
+
+  - **Expected:** No lead is created because the final price is never shown.
+
+- **Order confirmed**
+
+  - Customer is logged in and completes the full flow, reaches final price, and **taps Confirm Order**.
+
+  - **Expected:** This becomes a **confirmed order** only, not a lead. Do not create a duplicate lead.
+
+## Developer and tester notes
+
+<Callout kind="tip" collapsed="false">
+  Use consistent logging and test accounts to confirm when leads are created or skipped. This makes it easier to validate all edge cases without polluting production analytics.
+</Callout>
+
+### Developer checklist
+
+- Trigger lead creation in the backend when:
+
+  - `user.isLoggedIn === true`.
+
+  - Final device price has been calculated and displayed.
+
+  - The session ends or user exits **without** a successful order confirmation event.
+
+- Ensure the payload includes:
+
+  - Selected device (brand, model, variant).
+
+  - All condition Q\&A answers used to compute the quote.
+
+  - Pincode and any serviceability flags.
+
+  - Customer identifiers and contact details from the profile.
+
+  - Timestamp and a flag or field indicating **Customer App** as the source.
+
+- Expose leads to:
+
+  - The shared **Admin Panel → Leads** list.
+
+  - Any analytics or CRM integration that uses leads for follow-up.
+
+### Tester checklist
+
+- Verify **positive cases**:
+
+  - Follow the full sell-device journey in the Customer App as a logged-in test user.
+
+  - Reach the final price screen and exit without confirming.
+
+  - Check **Admin Panel → Leads** to ensure:
+
+    - A new lead exists.
+
+    - Device details, Q\&A answers, pincode, and customer profile data are correct.
+
+    - Source is correctly marked as Customer App if configured.
+
+- Verify **negative cases**:
+
+  - Repeat flows where:
+
+    - The user is not logged in.
+
+    - Pincode is not serviceable.
+
+    - The user leaves before finishing Q\&A.
+
+    - The user confirms the order.
+
+  - Confirm **no unexpected leads** appear in the Admin Panel for these scenarios.
+
+- Cross-verify **field mapping**:
+
+  - Compare what is shown on the final price screen with what appears in the lead record.
+
+  - Ensure all answers and device details match exactly.
+
+## Snapshot
+
+<Video uid="82c7d112-5144-4191-b180-3ab438dc592a" src="https://vento.so/view/cd416992-5d60-4b7e-a6e8-55d177279e8f/embed" render-type="iframe" width="560" height="315" controls="true" allow-full-screen="true" />
+
