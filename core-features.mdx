@@ -1,0 +1,25 @@
+---
+title: Core Features
+description: High-level index of core Cashkr website features with concise behavior notes for product, QA, engineering, and operations teams.
+---
+
+## Cashkr website core features
+
+Cashkr website features are organized around key journeys like login, selling devices, and tracking orders, with each feature documented on its own page for deeper detail.
+
+<Callout kind="info">
+Use this page as a directory of core website capabilities. Click any feature name in the table to open its detailed documentation page.
+</Callout>
+
+| Feature | Description | Who Uses It | Notes |
+| --- | --- | --- | --- |
+| [Login & Registration](/login-registration) | Phone number + OTP login with shared authentication across Website and Customer App; new users complete basic profile after OTP. | Customers | Phone is the unique identifier; new users capture first name, last name, email, DOB; existing users skip registration and go straight to login session. |
+| [Profile Management](/my-profile) | View and edit personal details from the customer profile. | Customers | First name, last name, and email are editable; phone number is locked and immutable; profile data stays consistent across Website, Admin Panel, and Customer App. |
+| [Orders](/track-orders) | Track all customer orders with status and basic actions. | Customers, Operations | Supports statuses Generated, In Progress, Completed, Failed; Reschedule only when status is Generated and no vendor is assigned; Call Agent only after vendor assignment; status and schedule sync in real time across Website, Vendor App, Customer App, and Admin Panel. |
+| [Articles](/articles) | Marketing content listing fetched from Strapi CMS. | Customers, Marketing | Shows articles in list or grid with thumbnail, title, and preview; clicking opens article detail; content updates reflect in real time from Strapi; list and detail pages support SEO meta tags. |
+| [Corporate Buyback](/corporate-buyback) | Public lead capture form for bulk or corporate device disposal. | Businesses, Operations | No login required; required fields include name, phone, email, state, pincode, city, subject, and query; submission creates a lead in Admin Panel Buyback; Operations manages lead status through In Progress, Approved, and Completed. |
+| [Partner With Us](/partner-with-us) | Vendor partnership overview and app promotion. | Vendors and leads, Marketing | Static informational page with no forms or dynamic processing; primary CTA is Download Vendor App linking directly to Google Play; focused on vendor awareness and acquisition. |
+| [Sell Device Flow](/sell-device-flow) | Guided, step-based journey for selling a device and placing an order. | Customers, Operations | Covers device type, brand, model, and variant selection; serviceability check by area or pincode blocks progress when unsupported; condition questions drive pricing; coupon can be applied at checkout; collects address and pickup date/time; supports saved or new bank/UPI payment methods, with cash as default if none is selected. |
+| [Device Price Calculator](/device-price-calculator) | Instant resale value estimate without creating an order. | Customers, Operations | User selects category (Mobile, Laptop, Mac, Tablet) and answers condition questions; uses the same pricing logic as the Sell Device flow; pricing data comes from Admin Panel Products, Classes, and Pricing, so changes reflect automatically. |
+| [Search Functionality](/search-functionality) | Homepage universal search with device autosuggestions. | Customers, Operations | Type-to-search bar returns device suggestions; selecting a device routes directly into that model evaluation Q&A flow; results include only active products with valid pricing and class and exclude inactive or misconfigured products from Admin Panel. |
+| [Lead Creation](/lead-creation) | Automatic lead capture when orders are not completed. | Customers, Operations | Creates a lead only when a logged-in customer finishes device Q&A and sees the final price but does not confirm or place the order; lead is stored in Admin Panel Leads with device selection, all Q&A answers, pincode, and customer contact details for Operations follow-up and conversion. |
