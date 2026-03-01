@@ -118,10 +118,6 @@
             "group": "Customer App",
             "pages": [
               {
-                "title": "Sell Device Flow - Customer App",
-                "path": "sell-device-flow---customer-app"
-              },
-              {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"
               },
@@ -134,6 +130,10 @@
                 "path": "homescreen-device-selection"
               },
               {
+                "title": "Sell Device Flow - Customer App",
+                "path": "sell-device-flow---customer-app"
+              },
+              {
                 "title": "Customer App My Profile",
                 "path": "customer-app-my-profile"
               },
@@ -144,6 +144,10 @@
               {
                 "title": "Pickup Address",
                 "path": "pickup-address"
+              },
+              {
+                "title": "Reschedule Pickup",
+                "path": "reschedule-pickup"
               }
             ],
             "icon": "album"

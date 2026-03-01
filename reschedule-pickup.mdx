@@ -1,0 +1,166 @@
+---
+title: Reschedule Pickup
+description: Let customers change their pickup date and time for eligible orders in Generated status, with clear rules, flow, and system behaviors.
+---
+
+## Overview
+
+Reschedule Pickup lets a customer change the pickup date and time for an order that has not yet been assigned to a vendor. The option appears in the order details inside the Customer App and updates the pickup schedule across all connected systems.
+
+## When rescheduling is available
+
+<Callout kind="info">
+
+Allow rescheduling only while the order status is **Generated** and no vendor is assigned. Hide the reschedule option once the order moves to **Assigned** or any later status.
+
+</Callout>
+
+Rescheduling is intended for early-stage orders where pickup logistics are not yet committed. After assignment, pickup timing is coordinated through the Vendor App and operations team, so customers should not see or use reschedule from the app.
+
+## Step-by-step user flow
+
+Customers reschedule from the **Orders** section in the Customer App.
+
+<Steps>
+
+<Step title="Open Orders from bottom navigation" icon="list-ordered">
+
+From the bottom navigation bar, tap **Orders** to view your list of orders.
+
+Success: You see a list of orders with their current status, including orders in **Generated** status.
+
+</Step>
+
+<Step title="Select an eligible Generated order" icon="check-circle">
+
+Tap an order whose status is **Generated**.
+
+Success: The order details screen opens and shows a **Reschedule Appointment** option if no vendor is assigned.
+
+</Step>
+
+<Step title="Tap Reschedule Appointment" icon="calendar">
+
+On the order details screen, tap **Reschedule Appointment**.
+
+Success: A date and time picker appears, showing available pickup slots.
+
+</Step>
+
+<Step title="Choose a new date and time slot" icon="clock">
+
+Use the calendar and time picker to select a new available pickup date and time.
+
+Success: The selected slot is highlighted and ready to confirm.
+
+</Step>
+
+<Step title="Confirm the new pickup schedule" icon="check-circle">
+
+Tap **Confirm** (or equivalent confirmation action) to submit the new pickup schedule.
+
+Success: The order details update to show the new pickup date and time, and the customer receives a confirmation that the pickup was rescheduled successfully.
+
+</Step>
+
+</Steps>
+
+## System logic
+
+The app applies simple gating rules and keeps the schedule consistent across systems.
+
+<Callout kind="info">
+
+When a customer reschedules, update the pickup date and time everywhere: Website, Vendor App, Customer App, and Admin Panel. Keep the order status and schedule in sync.
+
+</Callout>
+
+Key behaviors:
+
+- **Status gating**
+  - Show **Reschedule Appointment** only for orders in **Generated** status.
+  - Once a vendor is assigned (status changes to **Assigned** or later), hide the reschedule option.
+- **Slot availability**
+  - Offer only valid, available pickup slots in the date and time picker.
+  - Reject selections that are no longer available at confirmation time and surface a clear error (see common states and errors).
+- **Order schedule update**
+  - When rescheduling succeeds, update the order’s pickup date and time in the core order record.
+  - Reflect the new schedule immediately in the Customer App order details.
+- **Cross-system sync**
+  - Propagate the updated pickup schedule to the Admin Panel Orders module.
+  - Ensure the same schedule is visible wherever the order is shown, including any website tracking and Vendor App views once assignment happens.
+
+## Connections
+
+Reschedule Pickup ties into existing operational and communication flows.
+
+- **Admin Panel Orders module**
+  - Operations users see the updated pickup date and time in the Orders view.
+  - Use this data to manage capacity and vendor assignment.
+- **Vendor App and assignment**
+  - Reschedule is only possible before vendor assignment.
+  - After assignment, the Vendor App and operations team work with the final pickup schedule that was in place at assignment time.
+- **Notifications and email**
+  - After a successful reschedule, trigger the notification logic.
+  - Send the customer an email confirming that the order pickup has been rescheduled successfully, including the new date and time.
+
+## Common states and errors
+
+This section helps UX, dev, and QA verify the most important edge states.
+
+### Non-Generated or assigned orders
+
+- **Order in Assigned or later status**
+  - Expected behavior: **Reschedule Appointment** is not visible anywhere in the order details.
+  - Customer path: Customer can still view the scheduled pickup but cannot change it from the app.
+- **Order not in Generated status but not yet fully completed**
+  - Expected behavior: Treat the same as Assigned or later for rescheduling; do not show the reschedule option.
+
+### Slot unavailable at confirmation
+
+If the selected slot becomes unavailable between selection and confirmation:
+
+- Do not apply any schedule change.
+- Show an error message that the chosen slot is no longer available.
+- Keep the original pickup date and time unchanged.
+- Prompt the customer to pick a different date or time from the currently available slots.
+
+### Network or backend errors
+
+If the app cannot complete the reschedule due to network or server issues:
+
+- Do not partially update the schedule.
+- Show a generic error that the reschedule could not be completed.
+- Keep the original pickup schedule visible.
+- Allow the customer to retry once connectivity or service is restored.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these checks to validate that rescheduling respects status rules, updates Admin Panel data, and triggers the correct notifications.
+
+</Callout>
+
+**Developer checks**
+
+- Hide the **Reschedule Appointment** button when the order status is **Assigned** or any later status.
+- Enforce the backend rule: allow rescheduling only while status is **Generated** and no vendor is assigned.
+- Implement real-time or near real-time updates to the Admin Panel Orders module when reschedule occurs.
+- Trigger the existing notification pipeline so the customer email confirms the new pickup date and time.
+
+**Tester checks**
+
+- Verify that **Reschedule Appointment** appears only for orders in **Generated** status with no vendor assigned.
+- Confirm that rescheduling changes the pickup date and time in:
+  - Customer App order details
+  - Admin Panel Orders module
+- Validate that notifications are triggered:
+  - Customer receives a reschedule confirmation email with the updated schedule.
+- Test error handling:
+  - Non-Generated or assigned orders never show the reschedule option.
+  - Unavailable slots and network failures do not change the stored pickup schedule.
+
+## Snapshot
+
+<Video src="https://vento.so/view/daa119ac-0fe5-40d4-a2fd-667f060967fa/embed" title="Reschedule Pickup flow in Customer App" uid="cf18797b-fea5-43fa-869d-3bcc8cbfff94" width="560" height="315" render-type="iframe" />
