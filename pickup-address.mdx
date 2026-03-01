@@ -1,0 +1,212 @@
+---
+title: Pickup Address
+description: View, add, edit, and select pickup addresses in the Customer App, including key rules, system logic, and common error states for QA and dev.
+---
+
+## Overview
+
+Pickup Address in the Customer App lets customers manage up to three saved pickup locations for their devices. The selected address is used when the customer confirms a Sell Device order.
+
+## What the Pickup Address screen shows
+
+The Pickup Address screen displays the customer’s saved pickup addresses as cards or list items. Each entry includes:
+
+- Flat or house number and building
+- Street or area
+- Nearby landmark
+- Pincode
+- City, which the system auto-fills from the pincode
+
+From this screen, customers can add new addresses, edit existing ones, and choose which address to use during an order flow.
+
+## Step-by-step user flow
+
+<Steps>
+
+<Step title="Open Pickup Address from profile" icon="folder">
+
+- Open the Customer App and go to the **Profile** tab.
+- Tap the **Pickup Address** (or Address) option to open the list of saved addresses.
+- If there are no saved addresses, the screen shows an empty state with an option to add the first address.
+
+</Step>
+
+<Step title="View existing pickup addresses" icon="eye">
+
+- Review the list of saved pickup addresses with flat/house number, street/area, landmark, pincode, and city.
+- Identify the current default or selected address if the UI indicates one (for example, highlighted or tagged).
+
+</Step>
+
+<Step title="Add a new pickup address" icon="plus">
+
+- Tap **Add New Address**.
+- Fill in:
+
+  - Flat or house number and building
+  - Street or area
+  - Nearby landmark
+  - Pincode
+
+- Wait for the app to auto-fetch the **city** from the entered pincode.
+- Save the address. The new address appears in the list if the user has not exceeded the maximum of three addresses.
+
+</Step>
+
+<Step title="Edit an existing pickup address" icon="edit">
+
+- Tap the **Edit** action on a specific address card.
+- Update fields such as flat/house number, street/area, landmark, or pincode.
+- After changing the pincode, confirm that the **city** updates according to the new pincode mapping.
+- Save the changes so they are reflected in the list and synced to the customer’s profile.
+
+</Step>
+
+<Step title="Select pickup address during Sell Device flow" icon="check-circle">
+
+- During the **Sell Device** flow, when the pickup step appears, review the list of saved pickup addresses.
+- Select an existing address or tap **Add New Address** to create one, using the same fields and validation as on the Pickup Address screen.
+- Proceed to **order confirmation**. The system copies the selected pickup address into the order record as a snapshot.
+
+</Step>
+
+</Steps>
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+- Customers can save **up to three pickup addresses** per profile.
+- The **city is auto-fetched** from the entered pincode based on the Area configuration.
+- The **selected pickup address** in the Sell Device flow is used when confirming the order.
+- On order confirmation, the system **copies a snapshot of the selected address into the order record** so later edits to the saved address do not change existing orders.
+- Pickup addresses and changes **sync between the Customer App and the website**, so both surfaces show the same saved addresses.
+
+</Callout>
+
+## System logic
+
+System behavior for Pickup Address is shared with the website Address page.
+
+- **Maximum of three addresses**
+
+  - Enforce a hard limit of **three saved pickup addresses** per customer.
+  - When the user already has three addresses, block additional creation until they delete or replace one.
+
+- **Pincode-to-city mapping**
+
+  - When the user enters a pincode, the system looks up the pincode in the **Areas** module in the Admin Panel.
+  - If the pincode exists and is valid, auto-fill the **city** field from the mapping.
+  - If the pincode is invalid or not in Areas, prevent saving the address.
+
+- **Area module validation**
+
+  - Treat the Admin Panel **Areas** configuration as the source of truth for serviceable pincodes and cities.
+  - Both the Pickup Address screen and the Sell Device pickup step must use the **same validation logic** to keep behavior consistent.
+
+- **Order snapshot behavior**
+
+  - When the customer confirms an order in the Sell Device flow, copy the **full selected pickup address** (flat/house, street, landmark, pincode, city) into the order record.
+  - Later edits to the saved pickup address **must not mutate** the address stored on existing orders.
+  - According to business rules, you may lock editing of addresses linked to already-assigned orders; see developer notes below for implementation guidance.
+
+## Connections and data flow
+
+Pickup Address is part of a shared address system across the Customer App, website, and order records.
+
+- **Customer profile**
+
+  - Saved pickup addresses belong to the customer profile.
+  - Changes (add, edit, delete) update the profile-level address collection.
+
+- **Website sync**
+
+  - Where the same customer logs in on the website, the **Address** page shows the same saved pickup addresses.
+  - Address changes from the Customer App must be reflected on the website, and vice versa, via the shared backend.
+
+- **Sell Device orders**
+
+  - During the Sell Device flow in the Customer App, the selected pickup address attaches to the **pending order context**.
+  - On confirmation, the system writes an **address snapshot** into the order record.
+  - Later reads of the order (for tracking, operations, or support) use the **order’s stored address**, not the live saved address on the profile.
+
+## Common states and errors
+
+This section helps QA and developers validate behavior for edge cases.
+
+### Address limit reached
+
+- **Condition:** Customer already has three saved pickup addresses.
+- **Expected behavior:**
+
+  - The app prevents adding a fourth address.
+  - Show a clear message that the **maximum of three addresses** is reached.
+  - Allow the user to **edit** or **delete** existing addresses, then add a new one if they go below the limit.
+
+### Invalid or unknown pincode
+
+- **Condition:** User enters a pincode not present in the Admin Panel Areas module, or in an invalid format.
+- **Expected behavior:**
+
+  - Do not auto-fill city.
+  - Block saving the address until the user enters a valid pincode.
+  - Show an error that the pincode is invalid or not recognized.
+
+### Non-serviceable pincode or area
+
+- **Condition:** Pincode exists but is marked non-serviceable in the Areas configuration.
+- **Expected behavior:**
+
+  - In Pickup Address:
+
+    - Block saving addresses with non-serviceable pincodes.
+    - Show an error that the area is currently **not serviceable**.
+
+  - In Sell Device pickup step:
+
+    - Prevent progressing to order confirmation with a non-serviceable pickup address.
+    - Prompt the user to select or add a pickup address in a **serviceable area**.
+
+### Edit locked for addresses used in assigned orders
+
+- **Condition:** Business rules require that addresses linked to already-assigned orders should not be changed in a way that affects assignment.
+- **Expected behavior:**
+
+  - If an address is linked to an order that is already **assigned** or in a sensitive state, block structural edits that would affect pickup (for example, changing pincode to a different area).
+  - Optionally allow the user to create a **new** address instead of modifying the locked one.
+  - Provide a clear message explaining why editing is restricted, so support can diagnose issues easily.
+
+### Network or backend failures
+
+- **Condition:** API request to fetch, add, edit, or validate addresses fails.
+- **Expected behavior:**
+
+  - Show a non-technical error state (for example, generic “Something went wrong” with retry).
+  - Do not lose user-entered data on the form when possible; allow them to retry after the connection recovers.
+  - In Sell Device flow, do not silently fall back to an invalid or partial address; keep the user on the pickup step until a valid address is saved.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+**For developers**
+
+- Reuse the **same address model and validation** as the website **Address** page to keep behavior consistent.
+- Enforce the **three-address limit** at the backend level, not just in the UI.
+- Implement a robust **pincode-to-city lookup** using the Admin Panel Areas configuration and ensure the Sell Device flow uses the same check.
+- When confirming an order, always **copy a full address snapshot** into the order entity rather than referencing the profile address by ID only.
+- If business rules require locking edits on addresses tied to assigned orders, implement a clear **editability check** and return a specific error that the frontend can surface as a user-friendly message.
+
+**For testers**
+
+- Verify that users can **add up to three** pickup addresses and cannot add a fourth without first removing one.
+- Check that **city auto-fills** correctly for valid pincodes and that invalid or non-serviceable pincodes block saving.
+- Confirm that addresses added or edited in the **Customer App** appear correctly on the **website** Address page, and vice versa.
+- During the **Sell Device** flow, ensure selecting a pickup address and confirming the order creates an order record with a **frozen address snapshot**.
+- If edit locking is enabled, test that editing an address linked to an **assigned order** behaves according to the business rules (blocked with clear messaging or restricted to safe fields).
+
+</Callout>
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827120.jpg" width="720" height="1600" alt="Customer App Pickup Address screen showing a list of saved pickup addresses and an option to add a new address" />

@@ -140,6 +140,10 @@
               {
                 "title": "Lead Creation - Customer App",
                 "path": "lead-creation---customer-app"
+              },
+              {
+                "title": "Pickup Address",
+                "path": "pickup-address"
               }
             ],
             "icon": "album"
