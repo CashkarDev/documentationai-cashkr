@@ -116,7 +116,12 @@
           },
           {
             "group": "Customer App",
-            "pages": [],
+            "pages": [
+              {
+                "title": "Customer App Overview",
+                "path": "customer-app-overview"
+              }
+            ],
             "icon": "album"
           },
           {

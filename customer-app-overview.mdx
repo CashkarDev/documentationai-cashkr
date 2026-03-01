@@ -1,0 +1,111 @@
+---
+title: Customer App Overview
+description: Understand how the Cashkr Customer App fits into the ecosystem, who uses it, what it enables, and how it shares data and backend services.
+---
+
+## What the Customer App is
+
+The Cashkr Customer App gives individuals a focused environment to manage the full lifecycle of their device trade-ins after they first engage on the Website or directly in the app. It supports everything from capturing device details to tracking payout, with flows designed for repeat use.
+
+<Callout kind="info">
+
+Customer App uses the same phone-number plus OTP authentication and shared backend services as the Website. Identity, pricing, orders, and payments stay consistent across all Cashkr surfaces.
+
+</Callout>
+
+## Who the app is for
+
+The app focuses on individual customers who want to sell personal devices and stay in control of their orders:
+
+- New customers who want to create a trade-in request for phones, tablets, laptops, or Macs.
+- Returning customers who want to track status, reschedule pickups, or add more devices.
+- Customers who need to confirm or update contact, address, or payout details during the trade-in lifecycle.
+
+## What you can do in the Customer App
+
+Customer App capabilities are centered on managing trade-ins end to end, rather than browsing content or exploring offers.
+
+Key high-level actions include:
+
+- **Authenticate and return to your account** using phone-number plus OTP, without separate passwords.
+- **Create new trade-in orders** by selecting a device, providing condition details, and submitting a request.
+- **Capture device details and condition** through guided questions and photo capture flows.
+- **Track live status for each trade-in** from request through pickup, verification, and payout.
+- **Manage operational details** such as pickup slots, contact information, and bank or payout information.
+- **Update or cancel requests** when plans change, including rescheduling pickups or requesting changes.
+
+## How it connects to other Cashkr surfaces
+
+Cashkr connects customers, vendors, and internal teams through three primary product surfaces:
+
+- **Customer App & Website** for individuals to evaluate devices, submit trade-in requests, and manage their orders.
+- **Vendor App** for field agents and vendors to manage pickups, inspections, and order fulfillment.
+- **Admin Panel** for internal teams to coordinate leads, vendors, orders, and payments.
+
+<Callout kind="info">
+
+All product surfaces share backend services for authentication, device catalog and pricing rules, and order plus payment plus vendor management. Updates made from the Customer App reflect in the Website, Admin Panel, and Vendor App in near real time.
+
+</Callout>
+
+In practice:
+
+- When a customer creates or edits a trade-in order in the app, the same order appears in Admin Panel queues and Vendor App worklists.
+- When pricing rules or device catalog entries change in shared services, the Customer App immediately uses updated prices for new trade-in requests.
+- When vendors or internal teams update order status, pickups, or payouts, the Customer App shows the latest state back to the customer.
+
+## Key data the Customer App reads, creates, and updates
+
+The Customer App participates in a shared data model that spans all Cashkr surfaces. It consumes pricing and order state, and it produces or updates customer- and device-specific records.
+
+**Data the Customer App reads**
+
+- **Device catalog and pricing rules** to calculate trade-in values based on model and condition.
+- **Live order status** for each trade-in request so customers can see where their order is in the process.
+- **Vendor assignment and routing details** that determine who will handle pickup and verification.
+- **Payout status** so customers know when a transfer is pending, completed, or requires action.
+
+**Data the Customer App creates**
+
+- **New trade-in orders** that capture selected devices, estimated price, and initial customer information.
+- **Device condition reports** including structured answers and photos that vendors and internal teams rely on.
+- **Customer preferences** such as communication preferences or saved choices for how they like to get paid.
+
+**Data the Customer App updates**
+
+- **Pickup slots and logistics preferences** such as rescheduling, changing preferred time windows, or confirming availability.
+- **Contact and payout information** including phone number, address, and bank or payment details tied to an order.
+- **Change or cancellation requests** that adjust an existing trade-in before or after pickup is scheduled.
+
+Because all of this data flows through shared backend services, there is a single source of truth for identity, pricing, and order state across Customer App, Website, Vendor App, and Admin Panel.
+
+## Related docs
+
+Use these docs to go deeper into specific flows that also apply to the Customer App, or to understand shared components and concepts.
+
+<Columns cols={2}>
+  <Card title="Cashkr Website overview" href="/overview" icon="monitor">
+    Public entry point for discovering Cashkr, checking prices, and creating online trade-in requests that also appear in the Customer App.
+  </Card>
+  <Card title="Login and registration" href="/login-registration" icon="lock">
+    Shared phone-number plus OTP authentication patterns used across Website and Customer App.
+  </Card>
+</Columns>
+
+<Columns cols={3}>
+  <Card title="Track orders" href="/track-orders" icon="bar-chart">
+    How customers monitor trade-in status, which mirrors order state in Vendor App and Admin Panel.
+  </Card>
+  <Card title="Address management" href="/address" icon="home">
+    Managing customer addresses used for pickups and payouts across Cashkr surfaces.
+  </Card>
+  <Card title="Payments and payouts" href="/payment" icon="database">
+    How payout methods and statuses are handled in the shared orders and payments backend.
+  </Card>
+</Columns>
+
+<Columns cols={2}>
+  <Card title="Components and shared services" href="/components" icon="code">
+    Conceptual overview of shared backend components, including identity, pricing, and orders used by the Customer App.
+  </Card>
+</Columns>
