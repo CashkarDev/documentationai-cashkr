@@ -118,6 +118,10 @@
             "group": "Customer App",
             "pages": [
               {
+                "title": "HomeScreen & Device Selection",
+                "path": "homescreen-device-selection"
+              },
+              {
                 "title": "Customer App Login & Registration",
                 "path": "customer-app-login-registration"
               },

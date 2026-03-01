@@ -1,0 +1,213 @@
+---
+title: HomeScreen & Device Selection
+description: Understand how the Customer App HomeScreen works, including device selection, search, serviceability checks, and Admin Panel dependencies.
+---
+
+## Overview
+
+HomeScreen is the first screen after the customer opens the app and controls how they start the Sell Device journey. It surfaces device categories, banners, search, and serviceability checks that feed into the downstream evaluation and pricing flows.
+
+<Callout kind="info">
+
+HomeScreen does not contain hardcoded devices or areas. Device data, banners, and serviceability rules all come from the Admin Panel and can change without app releases.
+
+</Callout>
+
+## What the HomeScreen shows
+
+HomeScreen presents the key entry points into the selling flow:
+
+- **Device categories**: High-level device types (for example, mobile, laptop, Mac, tablet) as tappable tiles or icons.
+- **Promotional banners**: Swipeable banners highlighting offers, campaigns, or specific device categories.
+- **Search bar**: A free-text search entry that lets customers jump directly to a specific device model.
+- **Serviceability input**: A field (pincode/area) that checks whether the service is available for the customer location before they proceed.
+
+When everything is configured correctly in the Admin Panel, customers always see at least one active category and a working search entry point.
+
+## Step-by-step user flow
+
+This section focuses on the typical path into the Sell Device journey from HomeScreen, including both category selection and search.
+
+<Steps>
+
+<Step title="Open app and land on HomeScreen" icon="home">
+
+- Customer opens the Customer App.
+- App routes the customer to HomeScreen as the first screen in the session.
+
+</Step>
+
+<Step title="Enter pincode for serviceability" icon="map-pin">
+
+- Customer enters a pincode (or equivalent area selector) on HomeScreen when prompted.
+- The app calls the Area module to validate whether the pincode is serviceable.
+- If the pincode is not serviceable, block the selling journey and show an appropriate error state.
+
+</Step>
+
+<Step title="Choose how to start selling" icon="play-circle">
+
+- Customer decides whether to:
+  - Start from a **device category** (for example, mobile).
+  - Use the **search bar** to type the device name (for example, iPhone 13).
+
+</Step>
+
+<Step title="Device selection via categories" icon="folder">
+
+- Customer taps a device category tile.
+- The app shows a **brand list** for that category, populated from Admin Panel Products.
+- After brand selection, the app shows **models** for that brand.
+- After model selection, the app shows **variants** (for example, storage, network).
+- Once the customer selects a variant, the app transitions into the device evaluation flow from Sell Device journey.
+
+</Step>
+
+<Step title="Device selection via search" icon="search">
+
+- Customer types a device name or model in the search bar.
+- Search results show only valid, active products that match the query.
+- Customer taps a search result, and the app routes directly into the model/variant evaluation flow for that device.
+
+</Step>
+
+</Steps>
+
+<Callout kind="info">
+
+Serviceability via pincode or area is a gate on the Sell Device flow. When the Area module reports the location as not supported, do not allow the customer to proceed to brand/model/variant selection.
+
+</Callout>
+
+## System logic
+
+HomeScreen relies heavily on Admin Panel configuration and back-end modules. This section summarizes the key rules.
+
+### Dynamic content from Admin Panel
+
+- **Categories and device list**:
+  - Fetch device types, brands, models, and variants from the Admin Panel **Product** module.
+  - Only show products that are active and have valid pricing and class mappings.
+- **Banners**:
+  - Load banners from the Admin Panel **Banner** configuration.
+  - Banner visibility depends on device type and platform settings defined in Admin Panel (for example, mobile app vs website).
+
+### Search behavior and filtering
+
+Use the same core search rules as the main search feature:
+
+- Source search results from the Admin Panel **Product** database.
+- Include **only active products** that:
+  - Have a valid **Class & Pricing** mapping.
+  - Are not marked as inactive or discontinued.
+- Exclude:
+  - Products with missing pricing or class.
+  - Products that do not match the query (for example, searching `iPhone` must not return Samsung models).
+- When a product is selected from search, route into the device model evaluation flow.
+
+### Serviceability gate
+
+- Serviceability uses the **Area** module with pincode (or equivalent area identifier).
+- If the Area module returns **non-serviceable**:
+  - Block entry into Sell Device flow.
+  - Show a non-serviceable state on HomeScreen (error or informational message).
+- If the Area module returns **serviceable**:
+  - Allow the customer to proceed with category or search-based device selection.
+
+## Connections
+
+HomeScreen and device selection touch several Admin Panel modules and back-end services:
+
+- **Product module**  
+  Drives categories, brands, models, and variants shown on HomeScreen and subsequent selection screens.
+
+- **Banner module**  
+  Controls the banners displayed on HomeScreen, including which device types or platforms they apply to.
+
+- **Area / Serviceability module**  
+  Validates pincode or area and decides if Sell Device flow can continue.
+
+- **Pricing / Class module**  
+  Ensures only products with valid class and pricing configurations appear in category lists and search results.
+
+These connections must stay in sync for HomeScreen to present only sellable devices for serviceable areas.
+
+## Common states and errors
+
+This section lists common runtime states QA should test and developers must handle gracefully.
+
+### Non-serviceable pincode
+
+- **Trigger**: Area module reports the entered pincode as not supported.
+- **Expected behavior**:
+  - Show a clear message that service is unavailable for that pincode.
+  - Do not allow navigation to brand/model/variant screens or Sell Device questions.
+  - Allow the customer to re-enter a different pincode.
+
+### Empty search results
+
+- **Trigger**: Customer enters a query, but no active products match the search or all potential matches are filtered out (inactive / missing pricing/class).
+- **Expected behavior**:
+  - Show an empty state message indicating that no matching devices are available for selling.
+  - Do not fall back to unrelated brands or categories (for example, never show Samsung for an `iPhone` query).
+  - Allow the customer to adjust the search query or return to category selection.
+
+### Product missing pricing or class
+
+- **Trigger**: Product exists in Admin Panel but lacks valid pricing or class configuration.
+- **Expected behavior**:
+  - Exclude such products from:
+    - Category brand/model/variant lists.
+    - Search results.
+  - From the user's perspective, devices without pricing/class should behave as if they do not exist.
+
+### Network or backend errors
+
+- **Trigger**: Failure while fetching categories, banners, search results, or serviceability status.
+- **Expected behavior**:
+  - Show a generic error or retry option on HomeScreen.
+  - Avoid partially loaded states where, for example, banners appear but categories are missing without explanation.
+  - Log enough diagnostic information (e.g., failed endpoint and error code) for debugging.
+
+## Developer and tester notes
+
+Use this section as a checklist when implementing or validating HomeScreen behavior.
+
+### Developer notes
+
+- Fetch **categories and device lists** dynamically from Admin Panel Product, not from static app configuration.
+- Implement **serviceability checks** using the Area module and enforce the block when pincode is unsupported.
+- Ensure **search integration**:
+  - Queries the same Product source as other search surfaces.
+  - Applies the active-only and pricing/class filters.
+- Apply **banner visibility rules** from Admin Panel:
+  - Respect device type targeting.
+  - Respect platform-specific configurations.
+- Handle **error states** explicitly:
+  - Non-serviceable pincode responses.
+  - Empty product lists.
+  - Network failures.
+
+### Tester notes
+
+- Verify HomeScreen appears immediately after opening the Customer App.
+- Confirm that:
+  - All configured **device categories** show correctly.
+  - Selecting a category leads to **brand → model → variant** selection.
+- Validate **serviceability**:
+  - Use known serviceable and non-serviceable pincodes.
+  - Confirm non-serviceable pincodes block Sell Device progression with the correct message.
+- Test **search**:
+  - Queries return only relevant brands/models for the entered terms.
+  - Inactive products or products without pricing/class never appear.
+  - Selecting a search result enters the correct device evaluation flow.
+- Check **banners**:
+  - Active banners display as configured for the current platform and relevant device types.
+  - Inactive banners do not appear.
+- Exercise **error and edge cases**:
+  - Simulate network failures on Product, Banner, and Area calls.
+  - Validate UI messaging and retry behavior for empty search results and missing data.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827139.jpg" width="720" height="1600" alt="Customer App HomeScreen showing device categories, promotional banners, search bar, and serviceability pincode input" />
