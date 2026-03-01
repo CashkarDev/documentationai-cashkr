@@ -118,16 +118,20 @@
             "group": "Customer App",
             "pages": [
               {
-                "title": "HomeScreen & Device Selection",
-                "path": "homescreen-device-selection"
+                "title": "Customer App My Profile",
+                "path": "customer-app-my-profile"
+              },
+              {
+                "title": "Customer App Overview",
+                "path": "customer-app-overview"
               },
               {
                 "title": "Customer App Login & Registration",
                 "path": "customer-app-login-registration"
               },
               {
-                "title": "Customer App Overview",
-                "path": "customer-app-overview"
+                "title": "HomeScreen & Device Selection",
+                "path": "homescreen-device-selection"
               }
             ],
             "icon": "album"

@@ -1,0 +1,214 @@
+---
+title: Customer App My Profile
+description: View and edit customer details in the Customer App My Profile screen, with phone-number lock rules, data sync behavior, and dev/QA expectations.
+---
+
+## Overview
+
+My Profile in the Customer App shows the signed-in customer's core identity details and lets them update allowed fields while keeping the login phone number fixed for account consistency.
+
+<Callout kind="info">
+
+Customer identity is shared across Customer App, Website, Vendor App, and Admin Panel through the same backend services. Changes you allow here must stay consistent across all surfaces.
+
+</Callout>
+
+## What the My Profile screen shows
+
+My Profile displays the customer's current profile data with a clear separation between editable and read-only fields.
+
+- **Editable fields**
+  - **First Name**
+  - **Last Name**
+  - **Email**
+
+- **Read-only field**
+  - **Phone number** (locked, used as the primary login identifier)
+
+<Callout kind="info">
+
+Treat the phone number as immutable in both UI and backend. Use it as the primary login identifier and do not expose any way to change it from My Profile.
+
+</Callout>
+
+## Step-by-step user flow
+
+Use this flow for product behavior, UX implementation, and QA verification.
+
+<Steps>
+
+<Step title="Open My Profile" icon="user">
+
+- From any screen, tap the **profile icon** in the Customer App header or navigation.
+- The app navigates to the **My Profile** screen for the currently logged-in customer.
+- The screen shows First Name, Last Name, Email, and Phone number populated from the customer profile record.
+
+</Step>
+
+<Step title="Edit allowed fields" icon="edit">
+
+- Let the customer tap into **First Name**, **Last Name**, or **Email** to edit their details.
+- Keep the **Phone number** field visually distinct as **read-only** (for example, disabled input or plain text).
+- Do not show any edit or change-phone actions in this screen.
+
+</Step>
+
+<Step title="Validate and enable Save" icon="check-circle">
+
+- When any editable field changes, enable the **Save** action.
+- If all fields match the last saved values, keep **Save** disabled to avoid redundant updates.
+- Before sending updates, validate that **Email** is present (if required) and in a valid format.
+
+</Step>
+
+<Step title="Save changes" icon="arrow-right">
+
+- When the customer taps **Save** with valid inputs, send the updated First Name, Last Name, and Email to the backend.
+- On success, keep the user on the same screen and show a light confirmation (for example, toast or inline message).
+- The updated values should immediately reflect in the UI and stay in sync across Customer App, Website, and Admin Panel.
+
+</Step>
+
+</Steps>
+
+<Callout kind="tip">
+
+Disable **Save** until at least one editable field has changed and all validations pass. Surface inline errors on the Email field when validation fails so customers know what to fix.
+
+</Callout>
+
+## System logic and data flow
+
+Profile edits in the Customer App must follow shared identity rules and a predictable data flow.
+
+- **Persistence**
+
+  - Store First Name, Last Name, and Email in the **customer profile table**.
+  - Use the same profile record that powers the Website and Admin Panel, not an app-specific copy.
+
+- **Phone-number immutability**
+
+  - Treat the **phone number** as the stable key that ties together Customer App, Website, Vendor App, and Admin Panel records.
+  - Lock the phone number both in the UI and backend APIs so it cannot be changed from this screen.
+  - If a change-phone flow is needed, implement it as a separate, controlled process (not in scope of My Profile).
+
+- **Update behavior**
+
+  - A successful update overwrites only First Name, Last Name, and Email in the customer profile table.
+  - Phone number stays unchanged for the life of the record.
+  - Use idempotent update behavior: the same inputs should always result in the same stored profile.
+
+<Callout kind="info">
+
+Use the same backend identity and profile services as the Website My Profile page. This ensures that any update from the Customer App is immediately visible on the Website and in internal tools.
+
+</Callout>
+
+## Connections
+
+Changes made in the Customer App My Profile screen affect other parts of the system.
+
+- **Admin Panel**
+
+  - Updated First Name, Last Name, and Email must reflect in **customer records** in the Admin Panel.
+  - Ensure orders and leads associated with this customer show the latest profile information where relevant (for example, customer summary panels).
+
+- **Website**
+
+  - My Profile in the Customer App and [My Profile on the Website](/my-profile) use the same underlying profile data.
+  - When the customer updates name or email in the Customer App, the Website should show the same values the next time they load their profile.
+
+- **Shared identity**
+
+  - The customer logs in to both Website and Customer App using the same **phone-number plus OTP** flow.
+  - Profile consistency relies on using that shared phone identity; do not create duplicate profiles per platform.
+
+## Common states and errors
+
+Handle these states consistently to avoid confusion and support easier QA.
+
+### Invalid email format
+
+- **Behavior**
+
+  - When the customer enters an email that fails validation and taps **Save**, keep them on the screen and do not send the request.
+  - Show a clear inline error message next to the Email field (for example, "Enter a valid email address").
+
+- **QA checks**
+
+  - Verify that invalid email formats do not trigger any backend calls.
+  - Confirm that fixing the email clears the error and enables **Save** again.
+
+<Callout kind="tip">
+
+Use a standard email validation pattern shared with the Website to avoid inconsistent acceptance rules between channels.
+
+</Callout>
+
+### Session expired
+
+- **Behavior**
+
+  - If the session expires before the customer saves changes, reject the update with an authentication error.
+  - Redirect the customer to the login screen or show a modal that takes them back through the **phone-number plus OTP** login.
+
+- **QA checks**
+
+  - Simulate an expired token and confirm that:
+    - The request fails gracefully.
+    - The user sees a clear message and an actionable path to log in again.
+    - No partial profile data is written.
+
+### Network or backend failure
+
+- **Behavior**
+
+  - When the save request fails due to connectivity or server errors, keep the edited values in the form.
+  - Show a non-blocking error message (for example, toast or inline banner) indicating the save did not complete.
+  - Let the customer retry without retyping their details once connectivity is restored.
+
+- **QA checks**
+
+  - Confirm that profile data does not update in the customer profile table on failed requests.
+  - Verify that a subsequent successful retry writes the correct, latest values.
+
+## Developer and tester notes
+
+Use this section as a checklist during implementation and QA.
+
+### Developer
+
+- Use the **shared customer profile service** used by the Website; do not create an app-only profile store.
+- Implement the update endpoint to accept and persist only **First Name**, **Last Name**, and **Email** from this screen.
+- Enforce **phone-number immutability** at the API layer so clients cannot change it, even via crafted requests.
+- Ensure the Customer App uses the same authentication and identity model as described in [Customer App Overview](/customer-app-overview).
+- Return clear status codes and error messages for:
+  - Validation errors (for example, invalid email).
+  - Authentication issues (for example, expired session).
+  - Server or network failures.
+
+### Tester
+
+- Verify that **First Name**, **Last Name**, and **Email** load correctly and match:
+  - The Website My Profile page.
+  - The Admin Panel customer record for the same phone number.
+- Confirm that the **phone number** is:
+  - Displayed correctly.
+  - Not editable in the UI.
+  - Unchanged after profile updates.
+- Test that updates from the Customer App:
+  - Appear in the Website My Profile page after refresh.
+  - Update customer details shown on Admin Panel orders and leads.
+- Validate error handling:
+  - Invalid email prevents saving and shows an inline error.
+  - Expired sessions route the customer back to login without partial writes.
+  - Network or backend failures keep the form data and allow a successful retry.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754892374.png"
+  width="406"
+  height="829"
+  alt="Customer App My Profile screen showing first name, last name, email as editable fields and phone number as locked read-only"
+/>
