@@ -118,8 +118,8 @@
             "group": "Customer App",
             "pages": [
               {
-                "title": "Lead Creation - Customer App",
-                "path": "lead-creation---customer-app"
+                "title": "Sell Device Flow - Customer App",
+                "path": "sell-device-flow---customer-app"
               },
               {
                 "title": "Customer App Overview",
@@ -136,6 +136,10 @@
               {
                 "title": "Customer App My Profile",
                 "path": "customer-app-my-profile"
+              },
+              {
+                "title": "Lead Creation - Customer App",
+                "path": "lead-creation---customer-app"
               }
             ],
             "icon": "album"
