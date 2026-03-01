@@ -118,6 +118,10 @@
             "group": "Customer App",
             "pages": [
               {
+                "title": "Customer App Login & Registration",
+                "path": "customer-app-login-registration"
+              },
+              {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"
               }

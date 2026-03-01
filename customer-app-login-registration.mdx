@@ -1,0 +1,231 @@
+---
+title: Customer App Login & Registration
+description: Understand how customers log in or register in the Cashkr Customer App using phone and OTP, including flows, validations, and QA/dev expectations.
+---
+
+## Overview
+
+Customer App login and registration let users authenticate with a 10-digit mobile number and a one-time password (OTP). 
+
+The login/registration interface appears:
+
+- When the app launches and needs an authenticated user
+- When the user tries to access restricted areas such as selling, address, payment, or orders
+- When the user opens **Profile** and taps **Login**
+
+Authentication and identity are shared with the Cashkr Website, so users stay consistent across channels.
+
+<Callout kind="info">
+
+The Customer App and Cashkr Website share the same phone plus OTP authentication backend. A user who registers on one surface can log in on the other using the same phone number.
+
+</Callout>
+
+## Prerequisites
+
+<Callout kind="info">
+
+Treat these as functional prerequisites for end-to-end testing, not UI requirements.
+
+</Callout>
+
+- Active OTP delivery channel (SMS or equivalent) configured in backend.
+- Phone number validation logic that accepts and normalizes 10-digit Indian mobile numbers.
+- Shared authentication infrastructure enabled so sessions from Website and Customer App use the same customer records.
+- Session token storage on device (for example, secure storage) so the session persists until logout.
+
+## Step-by-step user flow
+
+<Steps>
+
+  <Step title="Open the Customer App" icon="play-circle">
+
+  - User launches the Customer App.
+  - If the current screen requires authentication, show the login screen immediately.
+  - Otherwise, user can still trigger login from the **Profile** section by tapping **Login**.
+
+  </Step>
+
+  <Step title="Enter mobile number" icon="phone">
+
+  - User enters a **10-digit mobile number** in the phone field.
+  - Validate format on input and enable **Continue** only when the number is valid.
+  - On submit, create or reuse a login attempt and send an OTP to the provided phone.
+
+  </Step>
+
+  <Step title="Enter OTP" icon="lock">
+
+  - Navigate to the OTP screen after sending the code.
+  - User enters the received OTP.
+  - On submit, verify the code, enforce expiry, and handle incorrect or expired codes.
+
+  </Step>
+
+  <Step title="Complete login or registration" icon="check-circle">
+
+  - After successful OTP verification:
+    - If the phone number already belongs to a customer, start an authenticated session.
+    - If this is a new phone number, show the registration form to collect profile details.
+  - On success, redirect the user back to the original target (for example, Sell device, Address, Payment, Orders, or Profile).
+
+  </Step>
+
+</Steps>
+
+<Callout kind="info">
+
+OTP codes expire after a fixed time window. Provide a **Resend OTP** option that issues a fresh code and invalidates older ones.
+
+</Callout>
+
+## New vs existing user behavior
+
+<Tabs>
+
+  <Tab title="New user" icon="plus">
+
+  A new user is someone whose 10-digit mobile number does not yet exist as a customer record in the shared backend.
+
+  After successful OTP verification for a new number:
+
+  - Show a **registration form** that collects:
+    - **First name** (required)
+    - **Last name** (required)
+    - **Email** (required)
+    - **Birthdate** (optional)
+  - Use the phone number as the **primary unique identifier** for the customer.
+  - On submit:
+    - Create a new customer record with the captured details.
+    - Start an authenticated session for that customer.
+    - Redirect back to the flow that triggered login (for example, selling or checkout).
+
+  </Tab>
+
+  <Tab title="Existing user" icon="user">
+
+  An existing user is someone whose phone number already maps to a customer record.
+
+  After successful OTP verification for an existing number:
+
+  - Skip the registration form entirely.
+  - Start an authenticated session using the existing customer record.
+  - Redirect back to the original flow (for example, Profile, Address, Payment, Orders, or Sell device).
+
+  This behavior must match the Cashkr Website login and registration flow so users see consistent outcomes across channels.
+
+  </Tab>
+
+</Tabs>
+
+## System rules and validation
+
+Authentication is phone number plus OTP, backed by shared identity services across Website and Customer App.
+
+### Phone number handling
+
+- Treat the **10-digit mobile number** as the unique customer identifier.
+- Normalize input (strip spaces or formatting) before validation.
+- Reject invalid or incomplete numbers before sending any OTP.
+- Map the normalized phone number to a single customer record in the shared backend.
+
+### OTP lifecycle
+
+- Generate a time-bound OTP per login attempt.
+- Enforce **OTP expiry**; reject codes after the expiry window.
+- Invalidate older codes when a new one is issued via **Resend OTP**.
+- Limit OTP verification attempts to reduce abuse (for example, block after too many incorrect attempts).
+- Return clear error states for:
+  - Incorrect code
+  - Expired code
+  - Too many attempts
+
+### Session handling
+
+- After successful OTP verification (and registration for new users), **create a session token**.
+- Store the session token securely on the device.
+- Keep the session active until the user explicitly logs out or the session is invalidated server-side.
+- Ensure session validation is shared across Website and Customer App so a user’s identity and customer record are consistent.
+
+## Common errors to handle
+
+Handle these cases in both UI and backend responses:
+
+- **Invalid mobile number**
+  - Number is not 10 digits or fails validation.
+  - Do not send OTP; show an inline error and keep the user on the phone input screen.
+
+- **Incorrect OTP**
+  - Code does not match the latest active OTP for that phone.
+  - Show a specific error and allow the user to retry within allowed attempts.
+
+- **Expired OTP**
+  - Code is valid in format but outside the allowed time window.
+  - Prompt the user to request a new code using **Resend OTP**.
+
+- **Too many attempts**
+  - User exceeds maximum OTP verification attempts for a session or timeframe.
+  - Show a throttling message and prevent further attempts until backend allows.
+
+- **Backend or network failure**
+  - OTP send or verification call fails due to network or server issues.
+  - Show a generic error with a retry option; do not block the app permanently.
+
+## Developer and tester notes
+
+Use this section as an implementation and QA checklist.
+
+### Developer
+
+- Implement **phone number normalization and validation** before issuing OTPs.
+- Integrate with the shared **OTP service** used by the Cashkr Website:
+  - Use the same expiry rules.
+  - Use the same attempt-limiting rules.
+- Generate and persist a **session token** on successful OTP verification:
+  - Keep it active until logout or server-side invalidation.
+  - Ensure authenticated APIs for selling, address, payment, and orders require this token.
+- Implement **Resend OTP**:
+  - Issue a fresh OTP.
+  - Invalidate previous OTPs for that phone and attempt.
+- Ensure **registration details** (first name, last name, email, optional birthdate) are saved with the customer record and available across Website and Customer App.
+
+### Tester
+
+- Verify login/registration is triggered:
+  - On app launch when a restricted flow is started without a session.
+  - When accessing selling, address, payment, or order features while logged out.
+  - When tapping **Login** in **Profile**.
+- Test phone and OTP behavior:
+  - Valid and invalid 10-digit numbers.
+  - Correct OTP, incorrect OTP, and expired OTP.
+  - Resend OTP flow and invalidation of old codes.
+  - Limits on OTP verification attempts.
+- Test user type flows:
+  - New user: after OTP, registration form appears; birthdate field is optional.
+  - Existing user: after OTP, user is logged in without seeing the registration form.
+- Confirm **session behavior**:
+  - Session persists across app restarts until the user logs out.
+  - Authenticated areas (selling, address, payment, orders) are accessible only when a session token is valid.
+- Cross-channel checks:
+  - User registered on the Cashkr Website can log in on the Customer App with the same phone.
+  - User registered on the Customer App appears correctly on the Website.
+
+## Screenshots
+
+**Login screen**
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754892429.png"
+  width="409"
+  height="820"
+  alt="Customer App login screen showing mobile number and OTP entry flow"
+/>
+
+**Registration screen**
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754894247.png"
+  width="409"
+  height="820"
+  alt="Customer App registration screen for new users with name, email, and optional birthdate fields"
+/>
