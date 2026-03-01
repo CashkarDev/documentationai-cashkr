@@ -44,6 +44,10 @@
             "group": "Cashkr Website",
             "pages": [
               {
+                "title": "Key Pages / Sections",
+                "path": "key-pages-/-sections"
+              },
+              {
                 "title": "Core Features",
                 "path": "core-features"
               },
