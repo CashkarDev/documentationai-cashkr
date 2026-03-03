@@ -1,0 +1,207 @@
+---
+title: Key Screens/Sections
+description: Map of the main customer app screens, grouped by journey stage, with links to detailed docs for each flow and feature.
+---
+
+## Customer app screen map
+
+Use this page to navigate all major customer app screens by journey stage and jump into detailed documentation for each screen or flow.
+
+<Callout kind="info">
+
+Screen names and layouts may vary slightly between app releases, but the underlying journeys and behaviors described here remain consistent.
+
+</Callout>
+
+## Authentication
+
+Authentication screens handle account access, creation, and exit from the app.
+
+<Columns cols={3}>
+
+<Card title="Login & Registration" href="/customer-app-login-registration" icon="lock" cta="View screen details">
+
+OTP-based login and registration screen that authenticates the user and creates a new account when needed. Supports one-time passwords as the primary sign-in mechanism.
+
+</Card>
+
+<Card title="Logout" href="/logout" icon="x-circle" cta="View logout behavior">
+
+Screen and actions that log the user out and return them to the welcome or login view. Ensures full session invalidation so no further actions are allowed until login.
+
+</Card>
+
+<Card title="Delete Account" href="/delete-account" icon="trash" cta="Review deletion flow">
+
+Account deletion flow that permanently removes the user's account and associated data where applicable. Typically accessed from profile or settings.
+
+</Card>
+
+</Columns>
+
+## Home and discovery
+
+These screens help users start their selling journey and discover relevant content.
+
+<Columns cols={3}>
+
+<Card title="HomeScreen & Device Selection" href="/homescreen-device-selection" icon="home" cta="Explore home experience">
+
+Landing screen showing device categories, banners, and entry points into the selling journey. Includes search functionality so users can quickly find specific devices.
+
+</Card>
+
+<Card title="Refer & Earn" href="/refer-earn---customer-app" icon="users" cta="View referral flow">
+
+Referral program entry point where users generate and share referral links or codes. Tracks successful referrals and rewards.
+
+</Card>
+
+<Card title="Cashkr Wallet" href="/cashkr-wallet" icon="wallet" cta="Open wallet docs">
+
+Wallet view showing available balance, referral earnings, and other credits. Connects to payment or redemption actions within the app.
+
+</Card>
+
+</Columns>
+
+### Support and content
+
+Support and content screens complement the main journeys but do not have dedicated detail pages yet.
+
+- **Support Screen** — Lets customers chat with a chatbot for quick help and send support emails to Cashkr. Helps users contact support directly from the app without leaving the experience.
+- **Articles Screen** — Shows tech-related articles that help users understand devices, pricing, or processes. When a user taps an article, the app may open the full article in an in-app browser or external website.
+
+## Selling flow
+
+Selling flow screens guide the user from initial device selection to quote and confirmation.
+
+<Columns cols={3}>
+
+<Card title="Sell Device Flow" href="/sell-device-flow---customer-app" icon="zap" cta="Follow selling steps">
+
+Step-by-step flow that evaluates the device through structured questions and checks. Generates a quote and leads to final confirmation to create an order.
+
+</Card>
+
+<Card title="Lead Creation" href="/lead-creation---customer-app" icon="bar-chart" cta="Understand lead behavior">
+
+Captures user and device data as a lead when the user receives a price but does not complete the order. Triggers automatically so sales or marketing can follow up later.
+
+</Card>
+
+<Card title="Pickup Address" href="/pickup-address" icon="map-pin" cta="Review address rules">
+
+Screen to view and manage saved pickup addresses used for orders. Limits users to a maximum of three addresses to keep selection fast and manageable.
+
+</Card>
+
+</Columns>
+
+<Columns cols={3}>
+
+<Card title="Reschedule Pickup" href="/reschedule-pickup" icon="calendar" cta="See reschedule flow">
+
+Flow that lets customers change pickup time for eligible orders that are not yet assigned. Shows a calendar with available time slots for quick rescheduling.
+
+</Card>
+
+</Columns>
+
+## Orders and tracking
+
+Order-related screens cover confirmation, list view, detailed status, and real-time updates.
+
+<Columns cols={3}>
+
+<Card title="Order Confirmation & Tracking" href="/order-confirmation-tracking" icon="package" cta="View order journey">
+
+Combines order confirmation, list, and details screens to show full order status. Displays the quoted amount, confirmation actions, and real-time status updates across states such as Generated and Assigned.
+
+</Card>
+
+</Columns>
+
+Key behaviors within this journey:
+
+- **Real-time status** — Order confirmation and tracking views update status in real-time so customers always see the latest state.
+- **Reschedule from Orders** — When an order status is `Generated`, customers can reschedule pickup directly from the orders list or details screen.
+- **Admin and vendor linkage** — Order details are linked with the admin panel and vendor app so updates in one system propagate consistently to the customer app.
+
+## Payments and discounts
+
+Payment-related screens manage payout methods, wallet interactions, and coupon application.
+
+<Columns cols={3}>
+
+<Card title="Payment Method" href="/payment-method" icon="credit-card" cta="Configure payment methods">
+
+Screen where users add and manage payout methods such as UPI IDs and bank accounts. Tightly linked with the order confirmation flow to ensure payments route to the selected method.
+
+</Card>
+
+<Card title="Apply Coupon" href="/apply-coupon" icon="tag" cta="See coupon logic">
+
+Input field or screen to enter and apply discount coupons to eligible orders. Coupon validation and availability are synced with the admin panel to ensure accurate discounts.
+
+</Card>
+
+<Card title="Cashkr Wallet" href="/cashkr-wallet" icon="wallet" cta="Review wallet behavior">
+
+Wallet screen that shows accumulated credits, referral earnings, and other balances. Integrates with payment and order flows when wallet balance is used.
+
+</Card>
+
+</Columns>
+
+## Profile and account
+
+Profile screens control personal information and account-level settings.
+
+<Columns cols={3}>
+
+<Card title="My Profile" href="/customer-app-my-profile" icon="user" cta="Open profile docs">
+
+Shows key user details such as name and email, with options to edit selected fields. Keeps the primary phone number non-editable to maintain account integrity and OTP linkage.
+
+</Card>
+
+<Card title="Logout" href="/logout" icon="x-circle" cta="View logout behavior">
+
+Ends the current session and returns the user to the welcome or login screen. Clears session tokens to prevent further access until the user logs in again.
+
+</Card>
+
+<Card title="Delete Account" href="/delete-account" icon="trash" cta="Review deletion flow">
+
+Lets users permanently delete their account from within the app. Often requires confirmation steps and may explain data retention policies.
+
+</Card>
+
+</Columns>
+
+## Where to go next
+
+Use these pages to dive deeper into individual journeys and behaviors.
+
+<Columns cols={3}>
+
+<Card title="Customer App Overview" href="/customer-app-overview" icon="monitor" cta="See overall app journey">
+
+High-level overview of how all customer app screens fit together across the selling lifecycle.
+
+</Card>
+
+<Card title="Core Features - Customer App" href="/core-features---customer-app" icon="settings" cta="Explore capabilities">
+
+Feature-level breakdown of the customer app, including selling, tracking, and account management.
+
+</Card>
+
+<Card title="Components" href="/components" icon="code" cta="View documentation patterns">
+
+Shared documentation components and patterns used across these pages, useful if you are extending or editing the docs.
+
+</Card>
+
+</Columns>
