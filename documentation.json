@@ -118,10 +118,6 @@
             "group": "Customer App",
             "pages": [
               {
-                "title": "Payment Method",
-                "path": "payment-method"
-              },
-              {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"
               },
@@ -156,6 +152,14 @@
               {
                 "title": "Apply Coupon",
                 "path": "apply-coupon"
+              },
+              {
+                "title": "Payment Method",
+                "path": "payment-method"
+              },
+              {
+                "title": "Order Confirmation & Tracking",
+                "path": "order-confirmation-tracking"
               }
             ],
             "icon": "album"

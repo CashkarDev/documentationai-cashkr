@@ -1,0 +1,262 @@
+---
+title: Order Confirmation & Tracking
+description: Understand how customers confirm orders, track status, use Call Agent and reschedule, and how statuses sync across apps in real time.
+---
+
+## Overview
+
+Order Confirmation and Tracking lets customers finalize a sell-device order and then track its progress from the Customer App. It connects the end of the [Sell Device Flow - Customer App](/sell-device-flow---customer-app) with the Orders tab, vendor operations, and admin oversight.
+
+<Callout kind="info">
+
+- Allow rescheduling only while order status is **Generated** and before any vendor is assigned.
+- Show **Call Agent** only after the order is **Assigned** to a vendor.
+- Keep order statuses in sync between **Customer App**, **Website**, **Vendor App**, and **Admin Panel** in real time.
+
+</Callout>
+
+## What the confirmation screen shows
+
+After the user completes device Q&A, pickup address, payment method, and coupon steps in the sell device flow, the final confirmation screen:
+
+- Shows the **total quoted amount** for the device
+- Summarizes key details (device, address, date/time, payment method)
+- Provides a primary **Confirm Order** button
+
+When the user taps **Confirm Order**:
+
+- The system generates a unique **Order ID**
+- The user sees a confirmation state (success message with Order ID)
+- The order becomes available in the **Orders** tab for tracking and rescheduling (while still in Generated)
+
+## What the Orders and tracking section shows
+
+The **Orders** tab in the bottom navigation is the central place where customers see and manage their orders.
+
+It provides:
+
+- A **list of all orders** for the logged-in user, sorted with the **latest at the top**
+- A quick view of **current status** (for example, Generated, Assigned, In Progress)
+- A **History** section where completed or failed orders appear
+- Tap-through to **Order Details**, which include:
+  - Full **status timeline** and timestamps
+  - **Call Agent** button (after vendor assignment)
+  - **Reschedule** option (only while Generated and before vendor assignment, and subject to [Reschedule Pickup](/reschedule-pickup) rules)
+
+## Step-by-step user flow
+
+<Steps>
+
+<Step title="Complete the sell device flow" icon="check-circle">
+
+The user completes the full [Sell Device Flow - Customer App](/sell-device-flow---customer-app), including device Q&A, pickup address, payment method, and coupons.
+
+**Success signal:** User reaches the final confirmation screen showing the quoted amount and Confirm Order button.
+
+</Step>
+
+<Step title="Confirm the order" icon="check-circle">
+
+The user reviews the summary and taps **Confirm Order**.
+
+**System behavior:**
+
+- Generate a unique **Order ID** for the order.
+- Mark the order status as **Generated**.
+- Send a lead OTP to the customer's WhatsApp number once the order is confirmed.
+
+**Success signal:** Confirmation state appears with visible Order ID.
+
+</Step>
+
+<Step title="Open the Orders tab" icon="folder">
+
+The user navigates to the **Orders** tab from the bottom navigation bar in the Customer App.
+
+**Success signal:** The newly confirmed order appears at the top of the orders list with status **Generated**.
+
+</Step>
+
+<Step title="View the order list" icon="list-ordered">
+
+In the Orders list, the user can:
+
+- See **all active orders**, with the most recent at the top
+- Identify **current status** for each order (for example, Generated, Assigned)
+- See older **Completed** and **Failed** orders under the History view
+
+**Success signal:** The order displays the expected status and basic details.
+
+</Step>
+
+<Step title="Open order details and timeline" icon="info">
+
+The user taps an order from the list to open **Order Details**, which shows:
+
+- The full **status timeline** (event sequence and timestamps)
+- Additional details like pickup address, payment method, and quoted amount
+- **Reschedule** option while the status remains **Generated** and before vendor assignment
+- **Call Agent** button once the order is **Assigned** to a vendor or later
+
+**Success signal:** Timeline entries match what appears in the Vendor App and Admin Panel for the same order.
+
+</Step>
+
+</Steps>
+
+## Order status flow
+
+Order statuses move through two broad phases: **active** and **history**.
+
+### Active statuses
+
+These statuses appear for orders that are still in progress:
+
+- **Generated**: The customer has successfully placed the order; no vendor is assigned yet.
+- **Assigned**: The order is assigned to a vendor for pickup.
+- **Out for Pickup**: The vendor has marked the status as out for pickup in the Vendor App.
+- **In Progress**: The vendor is inspecting the device.
+
+### History statuses
+
+These statuses appear in the History section for completed or closed orders:
+
+- **Completed**: The order was picked up, verified, and successfully closed.
+- **Failed**: The order was marked as failed by the vendor or admin (for example, failed inspection, customer not available).
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+- **Reschedule gating**: Allow rescheduling only while the order status is **Generated** and **no vendor is assigned**. Hide reschedule once the status is **Assigned** or later. Follow the detailed rules in [Reschedule Pickup](/reschedule-pickup).
+- **Call Agent gating**: Show the **Call Agent** button only **after** the order is **Assigned** to a vendor. Hide it while the status is **Generated**.
+- **Status sync**: Keep the order status and timeline in sync in real time between **Customer App**, **Website Track Orders**, **Vendor App**, and **Admin Panel**.
+- **Notifications and emails**: Send an **email** to both vendor and customer for key order status changes (for example, Generated, Assigned, In Progress, Completed, Failed).
+- **WhatsApp OTP**: When an order is confirmed, send the **lead OTP** to the customer's WhatsApp number so they can verify the lead during pickup.
+
+</Callout>
+
+## System logic
+
+Behind the UI, the system applies the following logic:
+
+- Store **orders per user**, keyed by the authenticated customer account, and display only that user's orders in the Orders tab.
+- Update order **statuses from vendor-side actions** (Vendor App) and admin actions (Admin Panel).
+- Sync the **status timeline** based on events logged in the Admin Panel and Vendor App so all channels see the same sequence.
+- Propagate status changes in **real time** where possible, so the Customer App reflects updates as soon as the Vendor App or Admin Panel changes them.
+- Drive **gating logic** (reschedule visibility, Call Agent visibility) directly from the current status and vendor assignment state.
+
+## Connections
+
+The Order Confirmation and Tracking feature connects multiple systems:
+
+- **Admin Panel → Orders module**: Source of truth for order records, manual updates, and overrides.
+- **Vendor App**: Vendors update statuses such as Assigned, Out for Pickup, In Progress, Completed, or Failed; these feed into the Customer App timeline.
+- **Email notifications**:
+  - Send emails to **customers** on key order status changes.
+  - Send emails to **vendors** when new orders are assigned or updated.
+- **WhatsApp OTP**:
+  - When the order is confirmed, send the **lead OTP** to the customer's WhatsApp for verification during pickup.
+  - Store OTP and its verification state with the order so support can audit issues.
+
+## Common states and errors
+
+This section summarizes typical edge cases, what the customer sees, and what should happen.
+
+### Order not visible in Orders tab
+
+- **Symptom:** Customer confirms an order but does not see it in the Orders list.
+- **Expected behavior:** A newly confirmed order in **Generated** status appears at the **top** of the list.
+- **Checks:**
+  - Confirm the order exists for the correct user in the Admin Panel Orders module.
+  - Verify that the Customer App is using the same user account that placed the order.
+  - Check for network errors or API failures when fetching orders.
+
+### Status not updating or timeline out of sync
+
+- **Symptom:** Vendor marks an order as Assigned or In Progress, but the Customer App still shows Generated or an older status.
+- **Expected behavior:** Status and timeline update in real time (or on pull-to-refresh / screen reopen) to match the Vendor App and Admin Panel.
+- **Checks:**
+  - Verify the status in the Admin Panel and Vendor App.
+  - Confirm the Customer App is calling the latest orders/status endpoint and handling responses correctly.
+  - Inspect any caching or offline mode that might delay updates.
+
+### Reschedule button missing
+
+- **Symptom:** Customer cannot see the **Reschedule** option.
+- **Expected behavior:** Show Reschedule only when:
+  - Order status is **Generated**, and
+  - No vendor is assigned yet.
+- **Checks:**
+  - Confirm the order status is actually Generated in Admin Panel.
+  - Check that no vendor is assigned in the Vendor App or Admin Panel.
+  - Ensure the UI correctly reads these conditions from the API.
+
+For detailed reschedule logic, see [Reschedule Pickup](/reschedule-pickup).
+
+### Reschedule button visible when it should not be
+
+- **Symptom:** Reschedule option shows for orders in **Assigned**, **Out for Pickup**, **In Progress**, **Completed**, or **Failed**.
+- **Expected behavior:** Hide Reschedule once the order is **Assigned** or in any later status, and for all historical orders.
+- **Checks:**
+  - Confirm the status and vendor assignment in Admin Panel.
+  - Validate that the Customer App has the correct gating conditions and is not using stale state.
+
+### Call Agent button missing
+
+- **Symptom:** Customer expects to see **Call Agent** but the button is not available in Order Details.
+- **Expected behavior:** Show Call Agent only when the order is **Assigned** to a vendor or in a later active status (Out for Pickup, In Progress).
+- **Checks:**
+  - Verify a vendor is assigned to the order in Admin Panel or Vendor App.
+  - Confirm the Customer App receives vendor assignment data in the order payload.
+  - Ensure the UI gating for Call Agent depends on both status and vendor assignment.
+
+### Call Agent button visible too early
+
+- **Symptom:** Call Agent appears for an order still in **Generated** status or with no vendor assigned.
+- **Expected behavior:** Hide Call Agent while status is **Generated** or when no vendor is assigned.
+- **Checks:**
+  - Validate the logic that derives the Call Agent visibility flag.
+  - Confirm the app checks vendor assignment, not only status.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+**For developers**
+
+- Implement a **real-time or near-real-time** mechanism (for example, polling or push) for status updates from the Vendor App and Admin Panel to Customer App.
+- Ensure the **Orders API**:
+  - Filters orders by authenticated user
+  - Returns statuses: Generated, Assigned, Out for Pickup, In Progress, Completed, Failed
+  - Includes vendor assignment information used to gate Call Agent.
+- Add clear fields to drive **UI gating**:
+  - Reschedule visibility (based on Generated status and no vendor assignment)
+  - Call Agent visibility (based on Assigned or later status with vendor assigned)
+- Trigger appropriate **email events** to customer and vendor per status transition.
+- Trigger **WhatsApp lead OTP** when an order moves into Generated upon confirmation.
+
+**For testers**
+
+- Verify full status flow: **Generated → Assigned → Out for Pickup → In Progress → Completed / Failed**.
+- Confirm **order rescheduling** is:
+  - Available only when status is Generated and no vendor is assigned
+  - Hidden for Assigned and all later or history statuses.
+- Check that **Call Agent**:
+  - Is hidden while status is Generated
+  - Appears after the order is Assigned to a vendor and remains visible for later active statuses.
+- Ensure the **timeline** in Customer App matches Vendor App and Admin Panel events and timestamps.
+- Validate **emails** reach both customer and vendor for each configured status change.
+- Confirm that **WhatsApp lead OTP** is sent after order confirmation and can be used successfully during pickup.
+
+</Callout>
+
+## Screenshots
+
+**Order confirmation**
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827238.jpg" width="720" height="1600" alt="Customer App order confirmation screen showing quoted amount and Confirm Order button" />
+
+**Order tracking**
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip1_1754827247.jpg" width="720" height="1600" alt="Customer App Orders tab showing order list and order tracking timeline in order details" />
