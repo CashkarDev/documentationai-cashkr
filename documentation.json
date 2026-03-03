@@ -194,6 +194,10 @@
               {
                 "title": "Vendor Registration & Login",
                 "path": "vendor-registration-login"
+              },
+              {
+                "title": "Available Orders",
+                "path": "available-orders"
               }
             ],
             "icon": "align-center"

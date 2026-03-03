@@ -1,0 +1,215 @@
+---
+title: Available Orders
+description: Understand how Available Orders works in the Vendor App, including eligibility filters, unlock flow, order states, and common visibility issues.
+---
+
+## Overview
+
+Available Orders shows all orders that a vendor can currently accept, based on the vendor's configuration and limits. Vendors use this screen to find nearby eligible orders, review key details, and unlock orders they want to work on.
+
+<Callout kind="info">
+
+Available Orders only shows orders that match the vendor's device type, pincode or service area, vendor type, and tier. If any of these do not match, the order does not appear.
+
+</Callout>
+
+## How order visibility works
+
+The system applies multiple eligibility rules before showing an order on Available Orders. All rules must pass for an order to be visible to a vendor.
+
+- **Device type match**  
+  The vendor must be assigned to handle the specific device type on the order, such as phones, tablets, or laptops.
+
+- **Pincode or service area match**  
+  The vendor's configured service pincode or service area must match the customer's pickup address pincode.
+
+- **Vendor type match**  
+  The vendor's type (for example, Type 1, Type 2) must match the order's required vendor type.
+
+- **Tier match**  
+  The vendor's tier must meet the minimum tier requirement defined for the order.
+
+<Callout kind="info">
+
+The system evaluates all four filters together: device type, pincode or service area, vendor type, and tier. If the vendor fails any one of these checks, the order stays hidden from their Available Orders list.
+
+</Callout>
+
+## What you can do on Available Orders
+
+On the Available Orders screen, a vendor can:
+
+- **View the list of eligible orders**  
+  See all orders that currently match the vendor's device type, service area, vendor type, and tier.
+
+- **Open order details**  
+  Tap an available order card to view details such as device type, customer information, and pickup address.
+
+- **Unlock and accept an order**  
+  From the order details, unlock the order to accept it. Before confirming, the system verifies the vendor's credits and active order limits.
+
+<Callout kind="info">
+
+When a vendor unlocks an order successfully, the system treats this as accepting the order. The order then moves out of Available Orders and into the vendor's In Progress list.
+
+</Callout>
+
+## Step-by-step: unlock an order
+
+Use this flow when a vendor wants to take up a specific order from the Available Orders list.
+
+<Steps>
+
+  <Step title="Open Available Orders" icon="list-ordered">
+
+  - Log in to the Vendor App.
+  - Navigate to the **Available Orders** section from the home or main menu.
+  - Confirm that the list loads and shows orders relevant to the vendor's device type and service area.
+
+  </Step>
+
+  <Step title="Select an order" icon="cursor-click">
+
+  - Scroll the list and find an order you want to work on.
+  - Tap the order card to open the **Order Details** screen.
+  - Review key information such as device type, customer name, contact details, and pickup address.
+
+  </Step>
+
+  <Step title="Review eligibility context" icon="info">
+
+  - Check that the order matches your **device type** assignment (for example, phones only).
+  - Confirm the pickup address pincode is within your configured **service area**.
+  - Ensure the **vendor type and tier** are consistent with how the vendor is onboarded.
+
+  </Step>
+
+  <Step title="Unlock the order" icon="lock">
+
+  - On the Order Details screen, tap the **Unlock** or **Accept** action.
+  - The system performs two checks before confirming unlock:
+
+    - **Vendor credits**: verifies the vendor has enough credits (if credits are used as a gating rule).
+    - **Order limits**: verifies the vendor has not reached the maximum number of simultaneous or daily active orders.
+
+  - If both checks succeed, the system unlocks the order and assigns it to the vendor.
+
+  </Step>
+
+  <Step title="Verify order state change" icon="check-circle">
+
+  - After a successful unlock, the order disappears from **Available Orders**.
+  - Go to the **In Progress** section or equivalent to confirm that the order now appears there.
+  - The vendor can now proceed with the pickup and further processing for this order.
+
+  </Step>
+
+</Steps>
+
+<Callout kind="info">
+
+The system always checks vendor credits and order limits at the moment of unlock. Even if an order is visible in Available Orders, the unlock step can still fail if the vendor no longer has enough credits or has reached their limit.
+
+</Callout>
+
+## Order states and where orders go after unlock
+
+Orders move between screens based on their state and assignment.
+
+- **Available**  
+  - The order is not yet assigned to any vendor.  
+  - All eligibility rules are satisfied for the current vendor, so the order appears in **Available Orders**.
+
+- **In Progress**  
+  - The order is assigned to a specific vendor after a successful unlock.  
+  - The order no longer appears in **Available Orders** for any vendor and instead appears only under that vendor's **In Progress** or active orders view.
+
+Once a vendor unlocks an order from Available Orders, the state changes from Available to In Progress and the order is bound to that vendor.
+
+## Example scenario
+
+A vendor with **Vendor Type 1**, assigned to the **Phone** device type and the **Pune** pincode, logs into the Vendor App.
+
+- A new **iPhone 12** order is created with a pickup address in Pune.
+- The system checks and confirms:
+
+  - The order's device type is **Phone**, which matches the vendor's device type assignment.
+  - The order's pickup address pincode is in **Pune**, which matches the vendor's configured service area.
+  - The order requires **Vendor Type 1**, which matches the vendor's type.
+  - The vendor's **tier** meets the tier requirement on the order.
+
+- Because all conditions are met, the order appears on the vendor's **Available Orders** screen.
+- The vendor taps the order, views the details, and taps **Unlock**.
+- The system validates vendor credits and order limits, then unlocks the order and moves it to **In Progress** for that vendor.
+
+## Common states and errors
+
+This section summarizes typical issues and how they relate to Available Orders behavior.
+
+### Order not showing in Available Orders
+
+If a vendor reports that a specific order is missing:
+
+- Check **device type assignment**  
+  - Confirm the vendor is configured for the device type on the order (for example, phone vs laptop).  
+  - If not assigned, the order will not appear for that vendor.
+
+- Check **pincode or service area**  
+  - Verify that the vendor covers the pincode of the customer's pickup address.  
+  - If the pincode is outside the vendor's service area, the order remains hidden.
+
+- Check **vendor type and tier**  
+  - Ensure the vendor's type (Type 1, Type 2, etc.) and tier match or exceed the order's requirements.  
+  - If type or tier does not meet the order criteria, the vendor does not see the order.
+
+<Callout kind="info">
+
+If the vendor is not assigned the correct device type, pincode or service area, vendor type, or tier, the order will not appear in their Available Orders list at all.
+
+</Callout>
+
+### Unlock blocked due to insufficient credits
+
+If a vendor taps Unlock but the action fails:
+
+- The system detects that the vendor's **credits are not sufficient** based on the configured unlock rules.
+- The order stays in **Available** state and remains visible to eligible vendors who pass the credit check.
+- The vendor who failed the credit check cannot proceed until their credits are updated as per business rules.
+
+### Unlock blocked due to order limit reached
+
+If a vendor has reached the maximum allowed number of active orders:
+
+- The unlock attempt fails at the **order limits** check.
+- The order does not move to In Progress for that vendor and may remain available for other eligible vendors.
+- The vendor must complete or close existing In Progress orders (or have their limit configuration changed) before they can unlock additional orders.
+
+## Developer and tester notes
+
+Use this section to verify behavior consistently in test environments.
+
+<Callout kind="tip">
+
+When testing Available Orders, configure vendor profiles with clear differences in device type, pincode or service area, vendor type, and tier so you can confirm that visibility responds correctly to each assignment change.
+
+</Callout>
+
+- **Eligibility filters**  
+  - Create test vendors that vary by device type, pincode, vendor type, and tier.  
+  - Create orders with specific requirements and verify that only matching vendors see them in Available Orders.
+
+- **Credits and order limits**  
+  - Set up vendors with:
+
+    - Sufficient credits and below-limit active orders to confirm successful unlock.
+    - Zero or low credits to confirm unlock is blocked due to credits.
+    - Active orders at or above the limit to confirm unlock is blocked due to order limits.
+
+- **State transitions**  
+  - For a successful unlock, assert that:
+
+    - The order disappears from Available Orders for all vendors.
+    - The order appears under **In Progress** for the unlocking vendor only.
+
+- **Negative paths**  
+  - Adjust vendor assignments (for example, remove a device type or change pincode) and confirm that affected orders stop appearing in Available Orders after the next refresh.
