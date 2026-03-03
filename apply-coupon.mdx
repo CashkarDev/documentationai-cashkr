@@ -1,0 +1,183 @@
+---
+title: Apply Coupon
+description: Understand how the Apply Coupon field works in the Customer App sell device flow, including user behavior, rules, system logic, and error states.
+---
+
+## Overview
+
+Apply Coupon lets customers add a valid discount coupon near the end of the sell device flow so the quoted device price increases before they confirm the order.
+
+The app validates the coupon via the coupon module and, when eligible, adjusts the final price on the quote screen before the customer continues to pickup address.
+
+## Where Apply Coupon appears in the Customer App
+
+Apply Coupon appears on the final quote screen in the sell device flow, after:
+
+- Serviceability check
+- Device selection and condition Q and A
+
+From this screen, the customer can:
+
+- Review the base quoted price
+- Optionally apply a coupon
+- Proceed to pickup address and confirmation
+
+For the full journey, see the parent flow in [Sell Device Flow - Customer App](/sell-device-flow---customer-app).
+
+## Step-by-step user flow
+
+<Steps>
+
+<Step title="Reach the quote screen" icon="arrow-right">
+
+- Customer selects a device, completes serviceability, and answers the device Q and A.
+- The app calculates and displays the **quoted price** for the selected device.
+
+</Step>
+
+<Step title="Locate the Apply Coupon field" icon="search">
+
+- On the quote screen, the customer sees an **Apply Coupon** field below or near the quoted price.
+- The field is optional; the customer may continue without a coupon.
+
+</Step>
+
+<Step title="Enter and apply coupon" icon="terminal">
+
+- Customer types a coupon code into the field.
+- Customer taps **Apply** to submit the code for validation.
+
+</Step>
+
+<Step title="View result and final price" icon="check-circle">
+
+- If the coupon is **valid and eligible**, the system adds a flat discount amount to the device value and updates the **final price** on the same screen.
+- If the coupon is **invalid or ineligible**, the system shows an inline error and keeps the original price unchanged.
+
+</Step>
+
+<Step title="Continue with updated quote" icon="arrow-right">
+
+- Customer reviews the final price (with or without coupon).
+- Customer proceeds to the next step (pickup address) with the confirmed price.
+
+</Step>
+
+</Steps>
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+- **Platform targeting:** Each coupon can target **Mobile**, **Web**, or **Both**. Only coupons configured for the Customer App platform validate successfully.
+- **User eligibility:** Coupons can be limited to **first-time users** or available to **all users**. If the user does not meet the configured eligibility, the app shows an error and does not change the price.
+- **Device type compatibility:** Each coupon can be restricted to specific **device types**. Applying a coupon on a non-compatible device shows an error and leaves the price unchanged.
+- **Expiry and usage limits:** Coupons respect configured **expiry dates** and **usage limits**. Expired or overused coupons fail validation.
+- **Discount shape:** The discount is a **flat amount** added to the device value, increasing the final quote; it is not a percentage and does not stack with other coupons.
+- **Application frequency:** Apply each coupon **once per order**. Once a coupon is successfully applied, the final price reflects that coupon for the entire order.
+
+</Callout>
+
+## System logic
+
+The Apply Coupon field uses the central coupon module and Admin Panel configuration to decide whether a coupon can adjust the price.
+
+- When the customer taps **Apply**, the app sends the coupon code, platform, user, and device context to the coupon module.
+- The module validates the code against rules configured in the Admin Panel:
+  - Platform (Mobile, Web, Both)
+  - User accessibility (First-time or All users)
+  - Device type compatibility
+  - Expiry and per-user or global usage limits
+- Only if all checks pass does the module return:
+  - The **flat discount amount** to add to the device value
+  - The **updated final price** to show to the customer
+- If any rule fails, the module returns a failure state and an error reason; the app shows an inline message and keeps the original quote.
+
+When the customer proceeds, the order captures this final price and coupon usage and stores it in the order details and confirmation snapshot.
+
+## Connections
+
+Apply Coupon relies on shared configuration and pricing flows across the platform.
+
+- **Admin Panel Coupon Management**
+  - Admins create and manage coupons (codes, amounts, platform targeting, eligibility rules, device mappings, expiry, usage limits).
+  - The Customer App reads these rules through the coupon module at runtime.
+- **Orders and pricing snapshot**
+  - When a coupon is applied, the final device price (base quote plus coupon amount) is stored in:
+    - The order details
+    - The order confirmation snapshot shown to the user
+  - Later views of the order should show the same final price that appeared on the quote screen after coupon application.
+
+## Common states and errors
+
+This section outlines typical outcomes and the messages or behaviors the Customer App should show.
+
+- **Valid coupon applied**
+  - Coupon passes all checks.
+  - App shows the increased **final price** and may show a short confirmation label near the price.
+  - Apply Coupon field remains visible but should not allow stacking another coupon on the same order.
+
+- **Invalid or non-existent code**
+  - Code does not match any active coupon.
+  - App shows an inline error such as `Coupon code is not valid`.
+  - Original quoted price remains unchanged.
+
+- **Expired coupon**
+  - Code exists but the expiry date is in the past.
+  - App shows an inline error such as `Coupon has expired`.
+  - No price change.
+
+- **Not eligible (first-time user rule)**
+  - Coupon is configured for first-time users only, and the user has already placed an order or otherwise fails the eligibility rule.
+  - App shows an inline error explaining that the coupon is not available for this user.
+  - No price change.
+
+- **Device mismatch**
+  - Coupon is not configured for the current device type.
+  - App shows an inline error indicating the coupon does not apply to this device.
+  - No price change.
+
+- **Usage limit reached**
+  - Coupon has reached its global or per-user usage limit.
+  - App shows an inline error that the coupon can no longer be used.
+  - No price change.
+
+- **Network or service error**
+  - The app cannot reach the coupon service or receives a generic failure.
+  - App shows a non-destructive error such as `Unable to apply coupon right now. Try again later.`
+  - Original price remains visible and the user can still proceed without a coupon.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+**For developers**
+
+- Integrate the **Apply Coupon** action with the central coupon module used across web and app flows.
+- Pass all required context for validation: platform, user identifier, device type, and current quote.
+- Ensure the **flat discount amount** and updated **final price** are returned together and used consistently wherever price is displayed afterward (quote screen, pickup address, confirmation, order detail).
+- Prevent multiple coupons from stacking on a single order; once a coupon is applied, attempts to apply another should either replace the previous coupon according to business rules or return an error, based on the configured behavior.
+
+</Callout>
+
+<Callout kind="tip">
+
+**For testers**
+
+- Verify the Apply Coupon flow within the full [Sell Device Flow - Customer App](/sell-device-flow---customer-app), not in isolation.
+- Test a **valid coupon** scenario:
+  - Platform, user eligibility, device type, expiry, and usage all pass.
+  - Confirm the final price increases by the configured flat amount and remains consistent through address, confirmation, and order details.
+- Test **invalid states**:
+  - Wrong code, expired coupon, not-eligible user, wrong device type, usage limit reached.
+  - Confirm the app shows clear inline errors and does not change the price.
+- Test **edge states**:
+  - Applying the same coupon more than once on a single order.
+  - Network failure or coupon service outage while applying a coupon.
+  - Navigation back and forth between steps to confirm the price and coupon state stay consistent.
+
+</Callout>
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827087.jpg" alt="Apply Coupon field on the Customer App sell device quote screen showing where users enter and apply a coupon code before confirming the order" width="720" height="1600" />

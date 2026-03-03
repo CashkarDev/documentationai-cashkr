@@ -148,6 +148,10 @@
               {
                 "title": "Reschedule Pickup",
                 "path": "reschedule-pickup"
+              },
+              {
+                "title": "Apply Coupon",
+                "path": "apply-coupon"
               }
             ],
             "icon": "album"
