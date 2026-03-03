@@ -1,0 +1,223 @@
+---
+title: Refer & Earn - customer app
+description: Learn how Refer & Earn works in the Cashkr customer app, including referral flow, reward behavior, wallet tracking, rules, and common states.
+---
+
+## Overview
+
+Refer & Earn lets you earn rewards by inviting your friends to use Cashkr from the customer app.  
+When your friend registers using your referral code and completes an order, both of you earn rewards.
+
+You find Refer & Earn in the **Customer App** menu. From there, you generate your referral code, share it, and track your referrals and rewards.
+
+<Callout kind="info">
+
+Key program rules:
+
+- Each customer has one **permanent referral code** generated from the Refer & Earn section.
+- A **new customer can use a referral code only once**, and the code is **locked to their account**.
+- Rewards for both users trigger **only after order completion** and when all program conditions are met.
+- The **referrer reward is pending** after order completion and is credited to the wallet **after admin approval**.
+
+</Callout>
+
+## How Refer & Earn works
+
+Use these steps as the standard referral flow for the customer app.
+
+<Steps>
+
+<Step title="Generate your referral code" icon="plus">
+
+- Open the Cashkr **Customer App**.
+- Go to the **Refer & Earn** section.
+- Tap **Generate code**.
+
+The app generates your **unique referral code** instantly. This code is permanent and works for all active referral programs.
+
+</Step>
+
+<Step title="Share your referral code" icon="share-2">
+
+- From the Refer & Earn screen, share your code using:
+
+  - WhatsApp  
+  - SMS  
+  - Social media  
+  - Copy and share link
+
+Your code is the same across all channels, and every friend you invite should register using this code.
+
+</Step>
+
+<Step title="Friend registers using your code" icon="users">
+
+- Your friend installs or opens the Cashkr customer app.
+- During registration, they **enter your referral code**.
+- After successful registration:
+
+  - The referral code is **locked to their account**.
+  - They cannot change it or apply another referral code later.
+
+A referral code is valid **only once per new customer**. If the friend has already used any referral code in the past, they cannot apply another.
+
+</Step>
+
+<Step title="Order completion and reward creation" icon="check-circle">
+
+- Your friend completes a **sell device** order in the Cashkr app.
+- Once the vendor completes the order at pickup, Cashkr:
+
+  - Applies the referee reward (discount/benefit) **automatically at checkout** based on the active referral offer and the **device generated price**.
+  - Generates your referrer reward based on the **final price on which the order is completed by the vendor**.
+
+From this point:
+
+- The **referee reward** is approved instantly.
+- The **referrer reward** appears as **pending** until admin approval.
+
+</Step>
+
+</Steps>
+
+## Reward behavior
+
+### Referee reward (your friend)
+
+The referee reward is the benefit your friend gets when they use a referral code and complete an eligible order.
+
+- The app applies the reward **automatically at checkout** when the friend places an order using the account that has your referral code.
+- The **discount or benefit depends on the active referral offer** at that time.
+- The reward is **calculated based on the device generated price**.
+- The **vendor pays the final amount**, reflecting any referee discount.
+- The referee reward is **approved instantly** once the order is confirmed with the vendor.
+
+If the order is cancelled or fails, no referee reward is applied.
+
+### Referrer reward (you)
+
+The referrer reward is what you earn when your friend, who registered with your code, completes an eligible order.
+
+- After your friend completes the order:
+
+  - The system **generates your reward**.
+  - The reward appears in the Refer & Earn tracking view as **pending**.
+
+- After **admin approval**:
+
+  - The reward is **credited to your Cashkr Wallet**.
+  - The amount is **calculated based on the final price** on which the vendor completes the order, not just the initial device estimate.
+
+If the order is not completed or does not meet program conditions, your reward does not move to approved or wallet credit.
+
+## Where to see referral earnings
+
+### Refer & Earn section in the customer app
+
+Use the Refer & Earn screen to track referral-level details:
+
+- See your **referral code**.
+- View the list of **referred users**.
+- Check **reward status** for each referral (for example, pending or completed).
+
+### Wallet section in the customer app
+
+Use the Wallet to see your overall balances, including earnings from referrals and other eligible sources.
+
+- **Total balance**: Amount currently available to withdraw.
+- **Total earned**: Lifetime earnings, including all approved referral rewards.
+- **Total withdrawn**: Amount you have already withdrawn from your wallet.
+
+Referral rewards that are still **pending** do not appear in total balance but may be visible in detailed referral tracking.
+
+## Important Refer & Earn rules
+
+These rules are enforced across the customer app experience:
+
+- Each customer has **one permanent referral code**, generated once from the Refer & Earn section.
+- A **new customer can use a referral code only once** when they register.
+- After registration, the code is **locked to that account**; they cannot change or reuse another code.
+- **Deleting and re-registering with the same number or device does not reset referral eligibility**. If the user already used a referral code once, they cannot use another code even after reinstalling or reregistering.
+- Cashkr gives rewards **only after order completion** and when all **program conditions** are satisfied.
+- Referrer rewards **always require admin approval** before they are credited to the wallet.
+
+If any of these rules are not met, the system should not grant new referral benefits.
+
+## Common states and errors
+
+This section describes how common situations should appear in the customer app and what they mean.
+
+### Referral code already used
+
+Symptoms:
+
+- The friend tries to enter a referral code during registration and sees a message that the code cannot be applied.
+
+Behavior:
+
+- The system detects that:
+
+  - The friend has already used a referral code before, or  
+  - The current flow does not allow applying a referral code.
+
+- In both cases, **do not attach a new referral** to this customer, and do not create any new rewards.
+
+### Friend not eligible for referral
+
+Symptoms:
+
+- Friend does not see the referral input field at signup, or the app blocks code entry.
+
+Behavior:
+
+- Treat the friend as **not eligible** for referral benefits, for example:
+
+  - Existing user trying to re-register to gain referral benefits.
+  - User whose number or device is already tagged against a previous referral.
+
+- Do not generate referrer or referee rewards, even if a code is typed somewhere else in the flow.
+
+### Order not completed yet (pending rewards)
+
+Symptoms:
+
+- In Refer & Earn, you see referrals with **pending** status.
+- In the Wallet, the total balance is unchanged.
+
+Behavior:
+
+- The **friend has registered with your code and placed an order**, but the vendor has not completed it yet or admin has not approved the reward.
+- Keep the referrer reward in **pending** state until:
+
+  - The vendor completes the order at the final price, and  
+  - Admin approves the reward.
+
+Once approved, mark the reward as completed and **credit the amount to the wallet**. Only then should the Wallet total balance increase.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use this section to align implementation and QA behavior across website and customer app flows.
+
+</Callout>
+
+- **Referral code generation**: Generate the code only from the **Refer & Earn** section in the customer app and store it as a **permanent identifier** against the customer.
+- **Code locking**: When a new customer registers with a referral code, **lock the code to that customer** and prevent any future changes, even after reinstall or re-registration with the same mobile number.
+- **Single-use rule**: Enforce that **each new customer consumes exactly one referral code at most once**, and block any additional referral attempts.
+- **Reward calculation**:
+
+  - For the referee, calculate the benefit based on the **device generated price** and the **active referral offer** at checkout.
+  - For the referrer, calculate the reward based on the **final order completion price recorded by the vendor**, not on the initial quote.
+
+- **State transitions**:
+
+  - Referee reward: `eligible → applied → approved instantly`.
+  - Referrer reward: `eligible → generated (pending) → approved by admin → credited to wallet`.
+
+- **Wallet aggregates**:
+
+  - Include only **approved and credited** referral rewards in **Total balance** and **Total earned**.
+  - Exclude **pending** rewards from wallet totals but make them visible in referral-level tracking where required.
+
+- **Cross-channel consistency**: Match the underlying rules and calculations used on the Cashkr website Refer & Earn feature so that referral behavior is consistent across web and customer app experiences.

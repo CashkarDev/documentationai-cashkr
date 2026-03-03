@@ -160,6 +160,10 @@
               {
                 "title": "Order Confirmation & Tracking",
                 "path": "order-confirmation-tracking"
+              },
+              {
+                "title": "Refer & Earn - customer app",
+                "path": "refer-earn---customer-app"
               }
             ],
             "icon": "album"
