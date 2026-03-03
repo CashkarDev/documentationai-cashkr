@@ -1,0 +1,110 @@
+---
+title: Core Features - Customer App
+description: Browse the core Customer App features, how they behave, and how they connect to the Website, Admin Panel, Vendor App, and Cashkr Wallet.
+---
+
+## Overview
+
+Explore the key user-facing features of the Customer App and how they work together across Website, Admin Panel, Vendor App, and Cashkr Wallet.
+
+Each card below links to a detailed page that covers flows, edge cases, and how the feature shares data with other Cashkr surfaces.
+
+## Feature map
+
+<Columns cols={3}>
+
+<Card title="Login & Registration" href="/customer-app-login-registration" icon="lock" cta="View login flows">
+
+OTP-based login and registration for customers, shared with the Customer Website so users can move between web and app with the same account.
+
+</Card>
+
+<Card title="HomeScreen & Device Selection" href="/homescreen-device-selection" icon="home" cta="Explore home screen">
+
+Home screen with device categories, banners, and search to quickly find a device. Content and catalog come from the Admin Panel and Vendor App.
+
+</Card>
+
+<Card title="Sell Device Flow" href="/sell-device-flow---customer-app" icon="package" cta="See sell flow">
+
+End-to-end flow for evaluating a device, generating a quote, and placing a sell order. Device conditions and quotes sync with the Admin Panel and Vendor App.
+
+</Card>
+
+<Card title="Order Confirmation & Tracking" href="/order-confirmation-tracking" icon="check-circle" cta="Track orders">
+
+Order confirmation screen and ongoing order status tracking, including rescheduling from the order details. Statuses are powered by the Admin Panel and Vendor App.
+
+</Card>
+
+<Card title="Reschedule Pickup" href="/reschedule-pickup" icon="calendar" cta="Manage pickups">
+
+Ability to reschedule a pickup appointment before a vendor is assigned. Updated pickup slots sync back to the Admin Panel and Vendor App.
+
+</Card>
+
+<Card title="Pickup Address" href="/pickup-address" icon="map" cta="Manage addresses">
+
+Manage and select saved pickup addresses used during order placement. Address changes are visible across the Admin Panel and Vendor App workflows.
+
+</Card>
+
+<Card title="My Profile" href="/customer-app-my-profile" icon="user" cta="Edit profile">
+
+Profile screen where users can edit basic details like name and email, with a non-editable phone number. Profile data is shared with the Admin Panel and Customer Website.
+
+</Card>
+
+<Card title="Payment Method" href="/payment-method" icon="credit-card" cta="Configure payouts">
+
+Add and update payment details used for payouts. Stored payout information is consumed by the Admin Panel and Vendor App settlement flows.
+
+</Card>
+
+<Card title="Apply Coupon" href="/apply-coupon" icon="tag" cta="Use coupons">
+
+Apply discount coupons during order confirmation. Coupon configuration and validation come from the Admin Panel.
+
+</Card>
+
+<Card title="Lead Creation" href="/lead-creation---customer-app" icon="file-text" cta="Review lead logic">
+
+Save incomplete or abandoned order data as a lead for future follow-up, feeding directly into Admin Panel lead management.
+
+</Card>
+
+<Card title="Refer & Earn" href="/refer-earn---customer-app" icon="users" cta="View referral flow">
+
+Generate and share referral codes, and track rewards that trigger after a referred friend completes an order. Referrals connect to the Customer Website, Admin Panel, and Cashkr Wallet.
+
+</Card>
+
+<Card title="💰 Cashkr Wallet" href="/cashkr-wallet" icon="wallet" cta="Open wallet">
+
+Wallet view where users see approved referral rewards and other credited amounts. Wallet balances are maintained in the backend and referenced by Refer & Earn and Admin Panel payouts.
+
+</Card>
+
+<Card title="Logout" href="/logout" icon="x-circle" cta="Logout behavior">
+
+Log out from the Customer App using shared authentication logic with the Customer Website, ensuring the session is cleared across surfaces.
+
+</Card>
+
+<Card title="Delete Account" href="/delete-account" icon="trash" cta="Account deletion">
+
+Permanent account deletion flow that removes user access and related personal data according to policy, impacting Website, Admin Panel, and Vendor App access for that user.
+
+</Card>
+
+</Columns>
+
+## Notes on connections
+
+<Callout kind="info">
+
+Connections describe which other Cashkr surfaces share data or behavior with a given Customer App feature. For example, order status and pickup slots flow from the Admin Panel and Vendor App, while profile and auth details are shared with the Customer Website.
+
+</Callout>
+
+Most Customer App features rely on a common backend, so changes in Admin Panel configuration or Vendor App operations reflect directly in the app experience. When you design or modify flows, always consider how Website, Admin Panel, Vendor App, and Cashkr Wallet consume or update the same data.

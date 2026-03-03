@@ -118,6 +118,10 @@
             "group": "Customer App",
             "pages": [
               {
+                "title": "Core Features - Customer App",
+                "path": "core-features---customer-app"
+              },
+              {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"
               },
