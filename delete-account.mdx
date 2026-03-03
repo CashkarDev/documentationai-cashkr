@@ -1,0 +1,161 @@
+---
+title: Delete Account
+description: Understand how the Customer App hands off account deletion to the website, including user flow, verification, data handling, and system dependencies.
+---
+
+## Overview
+
+Delete account in the Customer App initiates, but does not complete, account deletion. The app provides an instruction link or redirection so the user can request deletion through the website, where verification and permanent deletion happen.
+
+<Callout kind="info">
+
+Account deletion is only available on the website for compliance and identity verification. The Customer App must never delete or anonymize the account directly.
+
+</Callout>
+
+## Where Delete Account appears
+
+Delete account is exposed from the profile area of the Customer App:
+
+- **Profile** section in the app
+- Then **Settings**
+- Then **Delete Account** action
+
+This entry point must always hand off to the canonical website deletion flow, not perform deletion locally.
+
+## Step-by-step user flow
+
+<Steps>
+
+<Step title="Open delete account from profile" icon="settings">
+
+From the Customer App, the user goes to **Profile**, opens **Settings**, and taps **Delete Account**.
+
+The UI should make it clear that the actual deletion happens on the website.
+
+</Step>
+
+<Step title="Trigger email or redirect" icon="mail">
+
+When the user taps **Delete Account**, the app shows a popup where the user selects a mailing app to send an email requesting account deletion **or** follows a configured deep link to the website delete flow.
+
+If the email path is used, prefill the email subject and body with the user identifier needed by support or the automated website flow.
+
+</Step>
+
+<Step title="Handoff to website or support" icon="external-link">
+
+After the user selects the mail app or taps the website link, control leaves the Customer App.
+
+From this point the website deletion flow or support process takes over and drives identity verification and final deletion.
+
+</Step>
+
+</Steps>
+
+## What happens next
+
+Once the Customer App hands off, the canonical website deletion flow is responsible for verification and permanent deletion.
+
+On the website:
+
+- The user verifies identity using their **phone number and a one-time password (OTP)**.
+- After successful verification, the website flags the user as deleted or soft-deleted and anonymizes personal data.
+- The user can no longer log in via the website or Customer App with the deleted account.
+
+<Callout kind="info">
+
+Account deletion is permanent. After the website completes deletion, the user cannot log in again with the same account, and the deletion status must reflect consistently in the Customer App, website, and shared login system.
+
+</Callout>
+
+For end-to-end behavior and website specifics, see the canonical flow in [Logout and account deletion](/logout-and-account-deletion).
+
+## System logic and data handling
+
+The Customer App only initiates deletion; it does not modify account records itself.
+
+- **In the Customer App**
+  - Show the **Delete Account** option.
+  - Trigger the email or website link so the user can complete deletion.
+  - Do not update user records or flags locally beyond UX (for example, optional local sign-out after sending the request).
+
+- **On the website and backend**
+  - Perform identity verification (phone + OTP).
+  - Mark the user as **inactive/soft-deleted**.
+  - Anonymize personal data as required.
+  - Propagate deletion to all dependent systems, including the Customer App session and login service.
+
+<Callout kind="info">
+
+Once deleted on the website, the account is removed or marked inactive in system records. Any active sessions in the Customer App must be treated as invalid, and new logins must fail for the deleted account.
+
+</Callout>
+
+## Connections
+
+Delete account in the Customer App depends on shared backend systems rather than app-local storage.
+
+- **Customer profile database**  
+  Web-based account deletion connects to the main customer profile database that also backs the Customer App profile and website profile pages.
+
+- **Login and session system**  
+  After the website flags the account as deleted:
+  - The central login service must reject new authentication attempts.
+  - The Customer App must treat existing tokens for that user as expired or invalid.
+
+- **Canonical website flow**  
+  The Customer App must always route users to the website or email-based flow documented in [Logout and account deletion](/logout-and-account-deletion). Any changes to that canonical flow may require updates to the app deep link or email template.
+
+## Common states and errors
+
+Handle these states so the delete account path degrades safely and predictably.
+
+- **No mail app configured**
+  - The popup to choose a mailing app may fail if no mail client exists on the device.
+  - Show an error message and surface the website URL or a support contact option inside the app so the user can still request deletion.
+
+- **Deep link or website redirect fails**
+  - If opening the website URL or deep link fails (for example, invalid URL, browser not available), show a fallback message with:
+    - The plain website URL the user can type manually.
+    - An option to copy the URL to clipboard.
+
+- **User not logged in**
+  - Hide or disable **Delete Account** if the user is not logged in or the profile is unavailable.
+  - If the user reaches the action from a stale session, prompt for re-login before allowing them to initiate the deletion email or redirect.
+
+- **Network or backend error (metadata fetch)**
+  - If the app requires configuration from the backend (for example, support email address, website URL) and that request fails:
+    - Show a generic error message.
+    - Avoid sending an email with missing or incorrect identifiers.
+    - Optionally provide static support contact details bundled in the app as a fallback.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these checks to keep the Customer App aligned with the website deletion flow and compliance requirements.
+
+</Callout>
+
+**Developers**
+
+- Ensure **account deletion** is never executed inside the Customer App. The app must only:
+  - Expose the **Profile → Settings → Delete Account** entry point.
+  - Trigger the mail client or website deep link with the correct user identifiers.
+- Keep the email template or deep link URL in sync with backend and website expectations.
+- Confirm that after backend deletion, any API calls from the app using the deleted account fail with the expected error and that you handle those failures by logging the user out.
+
+**Testers**
+
+- Verify the UI path: **Profile → Settings → Delete Account** is visible only for logged-in users.
+- Confirm the **deletion redirection** works:
+  - Tapping **Delete Account** opens the mail app with the correct subject and body, or
+  - Opens the browser to the correct website delete URL.
+- After the website completes deletion:
+  - Attempt to log in again via the Customer App and confirm login fails.
+  - Check that profile data is no longer accessible and that any existing session behaves as logged out.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827041.jpg" width="720" height="1600" alt="Customer App delete account screen showing the Delete Account option within the profile settings menu" />

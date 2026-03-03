@@ -172,6 +172,10 @@
               {
                 "title": "Logout",
                 "path": "logout"
+              },
+              {
+                "title": "Delete Account",
+                "path": "delete-account"
               }
             ],
             "icon": "album"
