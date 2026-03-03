@@ -1,0 +1,182 @@
+---
+title: InProgress Orders
+description: Understand how orders move into In Progress, what actions vendors and agents can take, and key behaviors for managing active pickups.
+---
+
+## Overview
+
+In Progress Orders shows all pickup orders that the vendor has unlocked and are currently in the pickup process. Use this section to track active work until each order is either completed or failed.
+
+In Progress only contains orders that are currently being handled by the vendor or their assigned agents, not new leads or completed history.
+
+## How an order enters In Progress
+
+An order enters In Progress when the vendor unlocks or accepts it from the Available Orders list.
+
+- The order starts in **Available Orders**.
+- When the vendor unlocks the order, the system assigns that order to the vendor.
+- After a successful unlock, the order disappears from **Available Orders** and appears in the vendor’s **In Progress** list.
+
+<Callout kind="info">
+
+Unlocking is the state transition from Available Orders to In Progress. Only orders that the vendor has unlocked appear in **In Progress**.
+
+</Callout>
+
+## What vendors can do in In Progress
+
+In Progress is the working queue for each vendor. For every order in this list, the vendor can:
+
+- **Call the customer and update call disposition**  
+  Contact the customer to coordinate pickup, confirm availability, and record the outcome as a call disposition (for example, connected, not reachable, customer asked to cancel).
+
+- **Mark the order as Completed**  
+  Use **Completed** when the pickup is successful and the vendor has collected the device as expected.
+
+- **Mark the order as Failed**  
+  Use **Failed** when the order cannot be fulfilled. Typical reasons include:
+  - Device condition mismatch when compared to the customer’s declared condition
+  - Customer cancellation or refusal at pickup time
+
+These actions keep the order lifecycle clear for operations, QA, and reporting.
+
+## Agent assignment and visibility
+
+Vendors can delegate active orders from their In Progress list to agents.
+
+- The vendor assigns an In Progress order to a specific agent.
+- After assignment, the order appears in that agent’s **In Progress** list.
+- The vendor still retains visibility and control over the order in their own In Progress view unless the product specifies otherwise elsewhere.
+
+<Callout kind="info">
+
+If the vendor assigns an agent to an In Progress order, that order shows in the assigned agent’s In Progress list. Agents only see In Progress orders that are explicitly assigned to them.
+
+</Callout>
+
+## Step-by-step: manage an In Progress order
+
+Use this workflow for each unlocked order that appears in In Progress.
+
+<Steps>
+
+<Step title="Open the In Progress list" icon="list-ordered">
+
+- Open the Vendor App and go to the **In Progress** section.
+- Confirm that the order you unlocked from **Available Orders** now appears here.
+- If the order is missing, verify that you successfully unlocked it from **Available Orders**.
+
+</Step>
+
+<Step title="Review order details" icon="search">
+
+- Open the specific In Progress order you want to work on.
+- Review the device details, customer information, and requested pickup time.
+- Check anything that can affect pickup, such as location or special notes if available.
+
+</Step>
+
+<Step title="Contact the customer and set call disposition" icon="phone">
+
+- Use the **Call Customer** option from the order.
+- Speak with the customer to confirm the pickup time, address, and availability.
+- After the call, update the **call disposition** so the system records what happened on the call.
+
+</Step>
+
+<Step title="Optionally assign an agent" icon="users">
+
+- If an on-ground agent will handle the pickup, assign the order to that agent.
+- After assignment, confirm that the order now appears in the agent’s **In Progress** list.
+- Keep the assignment updated if you need to re-route the order to a different agent.
+
+</Step>
+
+<Step title="Complete or fail the order" icon="check-circle">
+
+- Once the pickup attempt is finished, decide the final outcome:
+  - Mark the order **Completed** if the pickup is successful and the device meets expectations.
+  - Mark the order **Failed** if you cannot fulfill the order, for example due to device condition mismatch or customer cancellation.
+- Verify that the order no longer appears in active In Progress lists after completion or failure, according to the overall order lifecycle.
+
+</Step>
+
+</Steps>
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+- Only orders **unlocked by the vendor** appear in the vendor’s **In Progress** list.  
+- Unlocking an order from **Available Orders** is required before any In Progress actions (calling, assigning, completing, failing).  
+- Agent In Progress visibility depends on vendor assignment; unassigned orders do not appear in an agent’s list.
+
+</Callout>
+
+These rules are critical for QA and support when validating that the In Progress behavior matches expectations.
+
+## Common states and issues
+
+This section focuses on behaviors that follow directly from the current workflow and can affect vendors, agents, or testers.
+
+### Order not visible in In Progress
+
+**Symptom:** Vendor expects to see an order in In Progress but it does not appear.
+
+**Likely causes:**
+
+- The vendor has not yet unlocked the order from **Available Orders**.
+- Another vendor may have already unlocked the order (it will show in that vendor’s In Progress, not globally).
+
+**What to check:**
+
+- Confirm that the vendor performed the unlock action in **Available Orders**.
+- Verify that the unlock succeeded and the order disappeared from **Available Orders**.
+
+### Agent not seeing an assigned order
+
+**Symptom:** Vendor reports that an agent cannot see an order in their In Progress list.
+
+**Likely causes:**
+
+- The vendor did not assign the order to that agent.
+- The vendor changed or removed the assignment, and the agent is checking an outdated list.
+
+**What to check:**
+
+- Confirm that the order is in the vendor’s In Progress list.
+- Verify that the vendor has assigned the correct agent to that order.
+- Check that the agent is logging in with the correct account that matches the assignment.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use In Progress behavior to validate end-to-end order state transitions: **Available → In Progress → Completed / Failed**, and vendor/agent visibility rules.
+
+</Callout>
+
+When developing or testing:
+
+- **State transitions**
+  - Create an order and confirm it appears in **Available Orders**.
+  - Unlock the order and verify it moves to **In Progress** and disappears from **Available Orders**.
+  - After marking **Completed** or **Failed**, confirm it no longer shows as active in In Progress.
+
+- **Visibility checks**
+  - Confirm that only the unlocking vendor sees the order in their In Progress list.
+  - Assign the order to an agent and verify it appears in that agent’s In Progress list and remains visible to the vendor as designed.
+  - Verify that agents do not see unassigned In Progress orders.
+
+- **Action audit**
+  - Ensure that call disposition changes, assignments, and completion/failure actions are logged as separate events for QA review where applicable.
+
+## Example scenario
+
+A customer places an order to sell an **iPhone 12**. The order first appears in **Available Orders** for all eligible vendors.
+
+- Vendor A unlocks the iPhone 12 order, so the order disappears from **Available Orders** and appears in Vendor A’s **In Progress** list.
+- Vendor A opens the order, calls the customer, and records the call disposition.
+- Vendor A assigns the order to Agent Riya, and the order now appears in Riya’s **In Progress** list.
+- Riya visits the customer. The device condition matches the customer’s declaration, so Vendor A (or Riya, depending on permissions) marks the order as **Completed**.
+- After completion, the order no longer appears as active in In Progress for either the vendor or the agent, and the workflow for that order is finished.

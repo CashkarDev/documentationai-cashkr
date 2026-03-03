@@ -198,6 +198,10 @@
               {
                 "title": "Available Orders",
                 "path": "available-orders"
+              },
+              {
+                "title": "InProgress Orders",
+                "path": "inprogress-orders"
               }
             ],
             "icon": "align-center"
