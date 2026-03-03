@@ -118,6 +118,10 @@
             "group": "Customer App",
             "pages": [
               {
+                "title": "Payment Method",
+                "path": "payment-method"
+              },
+              {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"
               },

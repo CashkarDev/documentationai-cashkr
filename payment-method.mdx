@@ -1,0 +1,189 @@
+---
+title: Payment Method
+description: Understand how customers manage payout details in the Customer App, how payment methods attach to orders, and how data syncs with the website.
+---
+
+## Overview
+
+Payment Method in the Customer App lets customers store payout details (UPI ID or bank account) on their profile so vendors can pay them after a device pickup and order completion.
+
+<Callout kind="info">
+
+Payment details are stored at the **profile level**, used for **payouts after order completion**, and are **shared across Website, Customer App, and Admin Panel**.
+
+</Callout>
+
+## What the Payment Method screen shows
+
+The Payment screen under the customer profile shows the payout information stored for that user.
+
+- Current **UPI ID**, if set.
+- Current **bank account details**, if set (bank name, IFSC code, account number).
+- Actions to **add** a new payment method or **edit** existing details.
+
+If no payment method exists yet, the screen prompts the user to add either a UPI ID or a bank account.
+
+## Step-by-step user flow
+
+Use this flow to add or update payout details in the Customer App.
+
+<Steps>
+
+  <Step title="Open Payment from Profile" icon="user">
+
+  - Open the Customer App.
+  - Go to **My Profile**.
+  - Tap the **Payment** option to open the Payment Method screen.
+
+  </Step>
+
+  <Step title="Choose UPI or Bank Account" icon="settings">
+
+  - On the Payment screen, choose whether to manage **UPI ID** or **Bank Account**.
+  - If both exist, the customer can edit either one as needed.
+
+  </Step>
+
+  <Step title="Enter UPI details" icon="terminal">
+
+  - If the customer selects **UPI**:
+    - Enter the **UPI ID** (for example, `rajiv@abcbank`).
+  - Confirm the UPI ID matches the one registered with the customer's UPI app.
+
+  </Step>
+
+  <Step title="Enter bank account details" icon="database">
+
+  - If the customer selects **Bank Account**:
+    - Enter **Bank Name**.
+    - Enter **IFSC Code**.
+    - Enter **Account Number**.
+  - Verify these fields before saving to avoid payout failures.
+
+  </Step>
+
+  <Step title="Save and confirm changes" icon="check-circle">
+
+  - Tap **Save** to store the new or updated payment method.
+  - The app updates the user's profile and syncs the changes with the website and admin tools.
+  - On success, the Payment screen shows the latest saved details.
+
+  </Step>
+
+</Steps>
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+- Payment methods are stored on the **user profile**, not per order.
+- During the **Sell Device** order flow, each confirmed order stores a snapshot of the **selected payment method**.
+- If the customer does not select UPI or Bank during the order flow, the **default payment mode is set to Cash** so every order has a non-empty payment mode.
+- Changes to payment details affect **future payouts and new orders**, not already completed payouts.
+
+</Callout>
+
+Once an order is confirmed, the payment mode attached to that order stays fixed, even if the customer later edits their profile payment details.
+
+## System logic
+
+System behavior around Payment Method is consistent across channels.
+
+- Store payment details against the **user profile**, not against a single order.
+- Keep payout details **editable in the Customer App until an order is completed**; after that, changes only apply to subsequent orders.
+- Use the saved payment method during **payout processing** once the order is marked completed by the vendor.
+- Use **input validation** to block malformed UPI IDs and incorrect bank details.
+- Store sensitive fields with **backend encryption** and restrict visibility to systems that need them (Customer App display, Admin Panel, payout processing).
+
+## Connections
+
+Payment Method in the Customer App is tightly connected to the website and to order and payout workflows.
+
+- **Website Payment page**  
+  Changes on the Customer App Payment screen sync with the **Payment** page on the website and vice versa, so the user sees the same UPI/bank details on both platforms.
+
+- **Orders and payment mode**  
+  When a customer confirms a **Sell Device** order:
+  - The system attaches the current **payment mode** (UPI, Bank, or Cash by default) to that order.
+  - Both the Customer App and Admin Panel must always show a non-empty payment mode for the order.
+
+- **Payout flow (vendor side)**  
+  Vendors use the **payment method attached to the order** when processing payouts after pickup and order completion:
+  - If the order has UPI or Bank as payment mode, the vendor pays to those details.
+  - If the order defaulted to Cash, the vendor pays out in cash.
+
+## Common states and errors
+
+Handle these states to keep the Payment Method experience predictable.
+
+### Invalid UPI ID
+
+- When the user enters an incorrectly formatted UPI ID (missing handle, invalid characters, or fails backend validation):
+  - Show an inline error on the UPI field.
+  - Block the **Save** action until the customer corrects the value.
+
+### Invalid IFSC or account number
+
+- For bank accounts, validate:
+  - **IFSC Code** format and length.
+  - **Account Number** length and character pattern.
+- If validation fails:
+  - Highlight the problematic field(s).
+  - Display a clear error, for example: "Enter a valid IFSC code" or "Enter a valid account number".
+  - Do not update stored bank details until all fields pass validation.
+
+### Network and backend failures
+
+- If network calls to fetch or save payment details fail:
+  - Show an error message and keep the last known saved values visible where possible.
+  - Ensure the **Save** action does not falsely confirm success when the backend update did not complete.
+  - On retry, re-validate input and reattempt the update.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+**For Developers**
+
+- Encrypt sensitive fields (UPI ID, account number, IFSC) in storage and in transit.
+- Use a shared validation layer with the website so UPI and bank checks are consistent across platforms.
+- Ensure profile payment changes propagate to:
+  
+  - Customer App Payment screen
+  - Website **Payment** page
+  - Admin Panel views used for payout processing
+
+- When creating or updating a Sell Device order:
+  
+  - Attach the **current payment mode** (UPI, Bank, or Cash default) to the order.
+  - Ensure this stored value is used in payout logic, not the mutable profile fields.
+
+</Callout>
+
+<Callout kind="tip">
+
+**For Testers**
+
+- Verify adding and editing both **UPI** and **Bank** details from the Customer App and confirm they appear on the website Payment page.
+- Attempt to save **invalid UPI IDs** and **invalid bank details** and confirm the app blocks saving with clear error messages.
+- Create Sell Device orders in these scenarios:
+  
+  - With UPI selected as payment method.
+  - With Bank selected as payment method.
+  - Without selecting a method, and confirm the order shows **Cash** as payment mode.
+
+- Confirm the order's payment mode is visible and consistent in:
+  
+  - Customer App order details
+  - Admin Panel order details
+
+- After order completion, change profile payment details and confirm:
+  
+  - The completed order still shows the **original** payment mode.
+  - New orders use the updated payment method.
+
+</Callout>
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827105.jpg" width="720" height="1600" alt="Customer App Payment Method screen showing options to add or edit UPI ID and bank account details" />
