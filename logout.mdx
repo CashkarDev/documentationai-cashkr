@@ -1,0 +1,167 @@
+---
+title: Logout
+description: Understand how logout works in the Customer App, including where to find it, session clearing behavior, redirects, restrictions, and test expectations.
+---
+
+## Overview
+
+Logout in the Customer App ends the current user session, clears the authentication token, and returns the user to the Home screen so no restricted actions remain available.
+
+<Callout kind="info">
+
+- Logout must clear the active session token from the device.
+- Logout must also invalidate the corresponding session on the backend.
+- After logout, the app redirects the user to the Home screen.
+- Logged-out users must not access restricted areas or make authenticated API calls.
+
+</Callout>
+
+## Where logout appears
+
+The logout action is available from the **Profile** area in the Customer App.
+
+- The user opens the **Profile** tab from the app navigation.
+- On the Profile screen, the **Logout** button appears toward the bottom of the page, after the main profile details.
+
+## Step-by-step user flow
+
+Use this flow to validate the on-device behavior.
+
+<Steps>
+
+  <Step title="Open the Profile tab" icon="users">
+
+  - From the Home screen, tap the **Profile** icon in the bottom navigation (or equivalent entry point for the profile screen).
+  - Wait for the Profile screen to load completely.
+
+  </Step>
+
+  <Step title="Scroll to find the Logout button" icon="chevron-right">
+
+  - Scroll to the bottom of the Profile screen.
+  - Locate the **Logout** button in the lower section.
+
+  </Step>
+
+  <Step title="Trigger logout" icon="x-circle">
+
+  - Tap **Logout**.
+  - If a confirmation prompt exists, confirm the action.
+
+  </Step>
+
+  <Step title="Return to Home screen" icon="home">
+
+  - After confirmation, the app ends the session.
+  - The user is redirected to the **Home** screen and should see only logged-out state elements.
+
+  </Step>
+
+</Steps>
+
+## What happens after logout
+
+After a successful logout, the user is treated as fully logged out across the app and backend.
+
+<Callout kind="info">
+
+- Redirect the user to the **Home** screen immediately after logout.
+- Block access to restricted sections such as profile details, address, payment, orders, and sell device flows until login.
+- Reject authenticated API calls from the app once the session has ended.
+- Do not show any user-specific data in the UI until the user logs in again.
+
+</Callout>
+
+When the user tries to open a restricted area after logout, route them to the login or registration flow. The app must never rely on UI hiding alone; the backend should also reject calls that require an active session.
+
+## System logic
+
+System behavior for logout in the Customer App mirrors the website logout rules.
+
+- **On device**:
+  - Clear the stored **session token** and any cached authentication state from secure storage on the device.
+  - Ensure the app does not reuse this token for subsequent requests.
+
+- **On backend**:
+  - Invalidate the corresponding **session token** on the server so it cannot be reused from other devices or stale sessions.
+  - Treat any future request with the invalidated token as **unauthenticated**.
+
+- **Navigation and access control**:
+  - Redirect the user to the **Home** screen after logout.
+  - Enforce access control so that any attempt to access protected routes fails without a valid session token.
+
+## Connections
+
+Logout is tightly connected to login and order flows.
+
+- The Customer App stores a session token so the user remains logged in until logout or server invalidation.
+- Areas such as **sell device**, **pickup address**, **payment**, and **orders** require a valid session token.
+- After logout, the user **cannot create an order** or continue any authenticated flow without logging in again.
+
+For details on how sessions are created and maintained, see [Customer App Login and Registration](/customer-app-login-registration).
+
+## Common states and errors
+
+Use these scenarios as a checklist when implementing or testing logout behavior.
+
+### Network issues during logout
+
+If the device is offline or cannot reach the backend:
+
+- Clear the local session token only after confirming the backend logout or session invalidation, if the design requires strict backend confirmation.
+- If you clear the local token first, handle potential mismatches on the next app launch by treating any rejected token as logged out and cleaning it up.
+- Show a non-blocking message if backend logout fails, and ensure the app does not keep the user in a half-logged-out visual state.
+
+<Callout kind="info">
+
+The backend remains the source of truth for session validity. If the server reports the token as invalid or expired, treat the user as logged out even if local storage still holds a token.
+
+</Callout>
+
+### Using the back button after logout
+
+If the user taps the system **back** button or navigation gestures after logout:
+
+- Do not allow navigation back to screens that assume an authenticated session (for example, profile, active order, payment).
+- If the user reaches such a screen via history, force a refresh that checks authentication and routes to login or Home when the session is missing.
+
+### Stale or cached tokens
+
+Stale tokens can appear when:
+
+- The backend has already invalidated the session (for example, logout from another device or session timeout).
+- The app retained the token in memory or cache after a previous failure.
+
+In these cases:
+
+- When an API call fails due to an invalid or expired token, clear the token locally and show the logged-out state.
+- Redirect the user to login before allowing any new restricted action.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+**For developers**
+
+- Clear the **session token** from secure storage and in-memory caches on logout.
+- Call the backend logout or session invalidation endpoint and handle failures gracefully.
+- Implement a global interceptor or middleware that routes invalid-token responses to a logged-out state.
+- Ensure the app always redirects to the **Home** screen after successful logout and prevents navigation to authenticated routes without a token.
+
+</Callout>
+
+<Callout kind="tip">
+
+**For testers**
+
+- Verify that tapping **Logout** from Profile ends the session and returns the user to the **Home** screen.
+- Confirm that profile, address, payment, orders, and sell device flows are inaccessible until login.
+- Test back navigation after logout to ensure no authenticated screens appear without re-login.
+- Check behavior with poor or no network: confirm that once the backend reports the token invalid, the app treats the user as logged out and does not reuse the token.
+- Attempt to create an order after logout and confirm the app forces login first.
+
+</Callout>
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754827068.jpg" width="720" height="1600" alt="Customer App Profile screen showing the Logout button near the bottom of the page" />

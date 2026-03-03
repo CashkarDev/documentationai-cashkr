@@ -168,6 +168,10 @@
               {
                 "title": "💰 Cashkr Wallet",
                 "path": "cashkr-wallet"
+              },
+              {
+                "title": "Logout",
+                "path": "logout"
               }
             ],
             "icon": "album"
