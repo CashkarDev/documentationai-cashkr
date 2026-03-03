@@ -1,0 +1,234 @@
+---
+title: Vendor Registration & Login
+description: >-
+  Understand how vendors register with documents, verify via OTP, and log in,
+  including admin approval, backend validation, and session handling.
+---
+## Overview
+
+Vendor Registration and Login in the Vendor App covers how new vendors onboard with documents and OTP, and how approved vendors access their accounts with OTP-based authentication.
+
+The flow ensures only admin-approved vendors can log in, with all registration data and documents synced to the Admin Panel for review.
+
+## Prerequisites
+
+Vendors must have specific information and access ready before completing registration or login.
+
+<Callout kind="info" collapsed="false">
+  Registration and login both rely on OTP sent to the vendor's phone number. The phone number must be reachable during the flow.
+</Callout>
+
+- **For registration**
+
+  - Valid mobile number that the vendor can access during OTP verification
+
+  - Required business or identity documents in supported formats (for upload)
+
+  - Basic business details (name, address, vendor category, etc.)
+
+- **For login**
+
+  - Phone number that is already registered and admin-approved in the Vendor App
+
+  - Access to that phone to receive and read the OTP
+
+## Registration vs login flow
+
+Use these tabs to see how new vendors register versus how existing vendors log in.
+
+<Tabs>
+  <Tab title="Registration (New vendor)" icon="plus">
+    <Steps>
+      <Step title="Open app and choose Register" icon="play-circle" title-type="p">
+        - Vendor opens the Vendor App.
+
+        - Vendor selects the **Register** option from the entry screen.
+      </Step>
+
+      <Step title="Enter details and upload documents" icon="upload" title-type="p">
+        - Vendor enters phone number and required business details.
+
+        - Vendor uploads all required documents for verification (for example, business proofs, IDs).
+
+        <Callout kind="info" collapsed="false">
+          Vendor type is not selected by the vendor. Admin sets the vendor type later from the Admin Panel based on submitted details and documents.
+        </Callout>
+      </Step>
+
+      <Step title="Verify phone number with OTP" icon="lock" title-type="p">
+        - System sends an OTP to the provided phone number.
+
+        - Vendor enters the OTP in the app to verify the phone number.
+
+        - Backend authentication service validates the OTP.
+
+        <Callout kind="info" collapsed="false">
+          OTP validation happens via the backend authentication service. If OTP validation fails, registration remains incomplete and the request does not move to admin approval.
+        </Callout>
+      </Step>
+
+      <Step title="Submit registration for admin approval" icon="arrow-right" title-type="p">
+        - After successful OTP verification, the app submits the registration request along with all documents.
+
+        - The system syncs the registration and documents to the **Vendor Approval** section in the Admin Panel.
+
+        - Vendor sees a state such as **Pending approval** and cannot log in yet.
+      </Step>
+
+      <Step title="Admin approval and activation" icon="check-circle" title-type="p">
+        - Admin reviews vendor details, documents, and sets the appropriate vendor type in the Admin Panel.
+
+        - Admin approves or rejects the vendor.
+
+        - Only after approval does the vendor account become **active** and eligible for login.
+
+        <Callout kind="info" collapsed="false">
+          Only admin-approved vendors can log in. OTP-verified but not-yet-approved vendors remain blocked from login.
+        </Callout>
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Login (Existing vendor)" icon="log-in">
+    <Steps>
+      <Step title="Enter registered phone number" icon="terminal" title-type="p">
+        - Vendor opens the Vendor App and chooses **Login**.
+
+        - Vendor enters the phone number that was used during registration.
+      </Step>
+
+      <Step title="Receive and enter OTP" icon="lock" title-type="p">
+        - System sends an OTP to the registered phone number.
+
+        - Vendor enters the received OTP in the login screen.
+
+        - Backend authentication service validates the OTP against the stored record.
+      </Step>
+
+      <Step title="Create session on successful login" icon="check-circle" title-type="p">
+        - If OTP is valid and the vendor is admin-approved, the system creates a login session.
+
+        - The app stores a session token to keep the vendor logged in until logout or token expiry.
+
+        <Callout kind="info" collapsed="false">
+          Vendors who are not admin-approved cannot complete login even if the OTP is correct. The app should show a clear **pending approval** or **inactive** message.
+        </Callout>
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## What happens after registration
+
+After OTP verification, registration is not immediately active. The system creates a registration record and sends vendor details and documents to the Admin Panel.
+
+Admin reviews the registration, sets the correct vendor type, and either approves or rejects the vendor. Until the admin approves, the vendor remains in a **pending** state and cannot log in.
+
+When the admin approves the vendor, the account status changes to **active**, and the vendor can log in using the OTP-based login flow.
+
+## System logic
+
+This section summarizes the backend behavior that controls vendor access and security.
+
+- **OTP validation**
+
+  - Backend authentication service generates and validates OTPs for both registration and login.
+
+  - The app must treat OTP verification as mandatory before sending any registration for approval or creating any login session.
+
+- **Admin approval gating**
+
+  - System marks vendors as **pending**, **approved**, or **rejected/inactive** based on admin decisions.
+
+  - Only vendors with an **approved** status can successfully log in, even if OTP verification passes.
+
+- **Session token storage**
+
+  - After successful login, the backend issues a session token.
+
+  - The Vendor App stores this token and sends it with subsequent requests until the vendor logs out or the token expires.
+
+## Connections with Admin Panel
+
+Vendor registration and login tightly integrate with the Admin Panel workflow.
+
+- Registration requests and uploaded documents sync to the Admin Panel **Vendor Approval** section.
+
+- Admin uses that section to:
+
+  - Review vendor documents and details
+
+  - Set or update the **vendor type**
+
+  - Approve, reject, or deactivate vendors
+
+- Login behavior in the Vendor App checks the vendor status that is managed in the Admin Panel before completing authentication.
+
+## Common states and errors
+
+These are the most common user-visible states and error conditions in the vendor registration and login journey.
+
+- **Invalid phone number**
+
+  - Triggered when the phone number format is wrong or fails basic validation.
+
+  - Show a clear message to re-enter a valid phone number before sending OTP.
+
+- **Incorrect OTP**
+
+  - Happens when the entered OTP does not match the one generated by the backend.
+
+  - Keep the vendor on the same screen and allow limited retries with an appropriate error message.
+
+- **Expired OTP**
+
+  - Occurs when an OTP is entered after its validity window has passed.
+
+  - Prompt the vendor to request a new OTP and inform them that the previous OTP has expired.
+
+- **Pending approval**
+
+  - Vendor has completed registration and OTP verification, but admin has not yet approved the account.
+
+  - During login, show a **pending approval** message instead of allowing access.
+
+- **Rejected or inactive vendor**
+
+  - Admin may reject the registration or later mark the vendor as inactive.
+
+  - Login attempts should fail with a message indicating that the account is not active and contact support or admin.
+
+<Callout kind="info" collapsed="false">
+  Back-end logic must always apply the admin status check on every login, not only on first login, so deactivated vendors lose access immediately.
+</Callout>
+
+## Developer and tester notes
+
+<Callout kind="tip" collapsed="false">
+  Use fixed test phone numbers and OTP bypass hooks only in non-production environments. Verify that admin approval status always controls login, even when OTP is forced as valid in tests.
+</Callout>
+
+- Verify that:
+
+  - Registration cannot proceed to admin approval without successful OTP verification.
+
+  - Login fails for vendors whose status is not **approved**, even when OTP is correct.
+
+  - Vendor type is only set from the Admin Panel and never editable from the Vendor App.
+
+- Test flows:
+
+  - New registration end-to-end, from OTP verification to admin approval and first login.
+
+  - Re-login with an approved vendor after token expiry or logout.
+
+  - Login attempts for **pending**, **rejected**, and **inactive** vendors.
+
+  - Session token invalidation on logout and on manual deactivation from the Admin Panel.
+
+## Screenshot
+
+### Login Screen
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1772534593288-m10u12o9qwc-Login-screen.Login-screen?q=85&fm=auto&auto=compress%2Cformat" width="307" height="567" alt="" />
+

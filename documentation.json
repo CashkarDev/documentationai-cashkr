@@ -190,7 +190,12 @@
           },
           {
             "group": "Vendor App",
-            "pages": [],
+            "pages": [
+              {
+                "title": "Vendor Registration & Login",
+                "path": "vendor-registration-login"
+              }
+            ],
             "icon": "align-center"
           },
           {
