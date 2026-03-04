@@ -1,0 +1,187 @@
+---
+title: Same Customer Order
+description: Understand how same customer orders auto-assign to a vendor once one lead is in progress, including limits, credits, and reserved behavior.
+---
+
+## Overview
+
+Same Customer Order groups multiple leads from the same customer and pickup address so a single vendor handles all of them when possible.
+
+<Callout kind="info">
+
+Once a vendor has one lead for a customer in **In Progress**, additional leads for the **same customer and pickup address** can auto-assign to the **same vendor**, bypassing the normal max lead limit. If the vendor does not have enough credits, extra leads move to **Reserved** instead of assigning.
+
+</Callout>
+
+## When it triggers
+
+Same Customer Order logic runs whenever a lead is assigned or unlocked, through either the Vendor App or the Admin Panel.
+
+It triggers only when **all** of these conditions are true:
+
+- **Same customer**: Multiple leads belong to the same customer account.
+- **Same pickup address**: Leads share the same pickup address.
+- **Eligible vendor**:
+  - Vendor covers that pickup address in their service area.
+  - Vendor has the relevant **device types** assigned for those leads.
+
+If these conditions do not match, each lead follows the standard assignment rules instead of the Same Customer Order flow.
+
+## What the vendor sees
+
+When Same Customer Order triggers, the vendor sees grouped behavior across these sections:
+
+- **In Progress**:  
+  - The first accepted or assigned lead appears in the vendor’s [InProgress Orders](/inprogress-orders).  
+  - Additional eligible leads for the same customer and address can also appear directly in **In Progress**, even if they exceed the vendor’s normal max lead limit.
+
+- **Reserved**:  
+  - If the vendor does not have enough **credits** for all related leads, extra leads move to the **Reserved** section instead of assigning immediately.  
+  - Reserved same-customer leads stay linked to the same vendor and can move to **In Progress** once credits are available and the vendor unlocks them.
+
+Vendors also receive **order assignment emails** when leads auto-assign to them under this logic.
+
+## Step-by-step flow
+
+<Steps>
+
+  <Step title="Unlock the first lead" icon="play-circle">
+
+  - From **Available Orders**, the vendor selects and unlocks a lead for a customer.  
+  - This is the same initial action described in [Available Orders](/available-orders).  
+  - Once unlocked, the lead moves to the vendor’s **InProgress Orders** as usual.
+
+  </Step>
+
+  <Step title="Auto-assignment and reserved handling" icon="settings">
+
+  - When the system detects other leads for the **same customer and pickup address**, and the vendor is eligible (service area and device types match), it evaluates those related leads.  
+  - If the vendor has enough **credits**, additional same-customer leads auto-assign to the **same vendor**:
+    - Some or all may go directly to **In Progress**, even if this exceeds the vendor’s normal max lead limit.
+  - If the vendor does **not** have enough credits for all related leads:
+    - The system still assigns what it can based on credits.
+    - Extra same-customer leads move to the **Reserved** section linked to that vendor.
+
+  </Step>
+
+  <Step title="Review orders in In Progress and Reserved" icon="monitor">
+
+  - The vendor reviews active same-customer leads in [InProgress Orders](/inprogress-orders).  
+  - Any related leads that could not be fully assigned due to credits appear in the **Reserved** section for that vendor.  
+  - The vendor continues normal workflow (call, pickup, complete, or fail) for each lead as per standard Vendor App behavior.
+
+  </Step>
+
+</Steps>
+
+## Key rules and edge cases
+
+The following rules define how Same Customer Order behaves in edge cases.
+
+- **Max lead limit bypass for same customer**  
+  - When multiple leads are from the **same customer and address**, the system can assign them to the same vendor **even if this exceeds** the vendor’s configured max lead limit.  
+  - Example:  
+    - Vendor max lead limit is **2**.  
+    - Vendor already has **2 In Progress** orders for the same customer.  
+    - The same customer creates another order with the same pickup address and matching device type.  
+    - The new order can still **auto-assign** to the same vendor and show in **In Progress**, ignoring the max lead limit.
+
+- **Credits still apply**  
+  - Despite the limit bypass, the vendor still needs enough **credits** for the lead.  
+  - If credits are insufficient, extra same-customer leads move to **Reserved** instead of In Progress.
+
+- **Device type and address mismatch**  
+  - If a related lead uses a device type not assigned to the vendor, or the pickup address is outside the vendor’s coverage:
+    - Same Customer Order will **not** auto-assign that lead to the vendor.
+    - That lead follows the normal assignment logic outside this feature.
+
+- **Status flow**  
+  - Once assigned, same-customer leads behave like any other order:
+    - They can move through **Out for Pickup**, **Complete**, or **Fail** states using the standard Vendor App flows.
+
+## System logic
+
+This section describes how the backend groups and assigns same-customer leads.
+
+- When a vendor **picks or unlocks** a lead:
+  - The system checks for **other leads** belonging to the same customer **with the same pickup address**.
+  - It then checks whether the same vendor:
+    - Covers that pickup address in their service area.
+    - Has the required **device types** assigned for those leads.
+
+- If the vendor is eligible:
+  - The system **auto-assigns** those related leads to the same vendor, subject to credits.
+  - It temporarily **bypasses the max lead limit** for these same-customer, same-address leads.
+  - If credits are not enough to fully assign all related leads:
+    - Some leads assign to the vendor and move to **In Progress**.
+    - Remaining related leads move to **Reserved** for that vendor.
+
+- Notifications:
+  - The vendor receives **order assignment emails** for leads that auto-assign through this logic.
+
+## Connections
+
+Same Customer Order interacts with other systems and apps as follows.
+
+- **Admin Panel orders**  
+  - When an admin assigns **one lead** of a customer to a vendor from the Admin Panel:
+    - The system checks for other leads for the **same customer and pickup address**.
+    - If pickup address and assigned **device type** match the vendor’s configuration, those other leads also **auto-assign** to the same vendor under the same rules (credits, Reserved, limit bypass).
+
+- **Customer App and website status**  
+  - When the vendor updates order status in the Vendor App (for example, marking an order as **Out for Pickup**):
+    - The updated status immediately syncs to the **Customer App** and **website**.
+    - The customer sees all same-customer orders progress independently, even though they are grouped by the Same Customer Order logic on the vendor side.
+
+## Common states and errors
+
+This section helps vendors and support teams interpret common visible states related to Same Customer Order.
+
+- **Multiple new orders in In Progress**  
+  - Cause: Same customer created several orders with the same pickup address and device type, and the vendor is eligible with enough credits.  
+  - Behavior: Several newly created orders for the same customer appear directly in **InProgress Orders** for the same vendor.
+
+- **Some same-customer orders in Reserved**  
+  - Cause: Vendor does not have enough credits to fully assign all related same-customer leads.  
+  - Behavior:  
+    - One or more orders for the same customer are **In Progress**.  
+    - Remaining same-customer orders appear in **Reserved** for the same vendor.
+
+- **Expected same-customer auto-assignment did not happen**  
+  - Possible causes:
+    - Pickup address does not exactly match between leads.
+    - Device type for one of the leads is **not assigned** to the vendor.
+    - The lead was already taken or manually re-assigned before the logic ran.
+  - Behavior: Affected lead follows standard assignment rules instead of grouping with the vendor’s existing same-customer orders.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use Same Customer Order scenarios in test environments to validate grouping, limit bypass, and credit behavior. Keep device types, pickup addresses, and credits tightly controlled when testing.
+
+</Callout>
+
+- **Test data setup**
+  - Create at least **3 leads** for the same customer with **identical pickup addresses** and the **same device type**.  
+  - Configure a vendor with:
+    - That pickup address in the service area.
+    - That device type assigned.
+    - A **max lead limit** lower than the number of test leads (for example, limit 2 with 3 or more leads).
+
+- **Test limit bypass**  
+  - Ensure that once the vendor unlocks or is assigned the first lead:
+    - Additional same-customer leads auto-assign to the same vendor.
+    - The vendor’s **In Progress** count can exceed the configured max lead limit for these grouped orders.
+
+- **Test credit behavior**  
+  - Reduce the vendor’s credits so they cannot cover all same-customer leads.  
+  - Verify:
+    - Leads up to the credit capacity auto-assign and move to **In Progress**.  
+    - Remaining same-customer leads move to **Reserved** for that vendor.
+
+- **Admin-triggered grouping**  
+  - From the Admin Panel, manually assign one lead of the customer to the vendor.  
+  - Confirm that other same-customer, same-address leads with matching device types:
+    - Auto-assign to the same vendor, respecting credits and Reserved behavior.  
+    - Generate order assignment emails for the vendor.

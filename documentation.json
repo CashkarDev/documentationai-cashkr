@@ -226,6 +226,10 @@
               {
                 "title": "Complete",
                 "path": "complete"
+              },
+              {
+                "title": "Same Customer Order",
+                "path": "same-customer-order"
               }
             ],
             "icon": "align-center"
