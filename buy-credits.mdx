@@ -1,0 +1,142 @@
+---
+title: Buy Credits
+description: Let vendors add prepaid credits by paying via QR, uploading payment proof, and waiting for admin approval before unlocking leads.
+---
+
+## Overview
+
+Buy Credits lets vendors add prepaid credits to their account by paying via QR code and uploading a payment screenshot for admin review. Credits are only added after an admin approves the payment, and vendors must have enough credits to unlock leads.
+
+<Callout kind="info">
+
+- Vendors must have sufficient credits to unlock leads or orders.
+- Every credit purchase stays in a pending state until an admin reviews it.
+- Admins add credits only after verifying the payment screenshot and details.
+- Vendors must upload a clear payment screenshot as evidence.
+
+</Callout>
+
+## Where to find it
+
+Open the Vendor App and go to the **Buy Credits** section from the main navigation or wallet/credits area. The screen lists available credit amounts and shows your current credit balance.
+
+## Step-by-step: buy credits
+
+Use this flow whenever a vendor wants to add credits.
+
+<Steps>
+
+<Step title="Open Buy Credits" icon="play-circle">
+
+Open the Vendor App, log in as a vendor, and navigate to the **Buy Credits** section. Confirm your current credit balance before proceeding.
+
+</Step>
+
+<Step title="Select credit amount" icon="plus">
+
+Choose the preferred credit amount from the available options. The selected amount should match the amount you intend to pay.
+
+</Step>
+
+<Step title="Pay by scanning the QR code" icon="upload">
+
+Scan the displayed QR code with your payment app and complete the payment for the selected amount. Wait until the payment app confirms that the transaction is successful.
+
+</Step>
+
+<Step title="Upload payment screenshot and details" icon="upload">
+
+Upload a clear screenshot of the successful payment. If the screen supports it, also fill in any required payment details such as transaction ID or reference number.
+
+</Step>
+
+<Step title="Submit for admin review" icon="arrow-right">
+
+Submit the payment proof for admin review. The request moves into a **Pending** state, and your visible credit balance does not change yet.
+
+</Step>
+
+<Step title="Admin approval and credit addition" icon="check-circle">
+
+An admin reviews the payment in the Admin Panel credit approval queue. After the admin approves and confirms the amount, the system adds the corresponding credits to the vendor account, and the updated credit balance appears in the Vendor App.
+
+</Step>
+
+</Steps>
+
+## Approval and crediting behavior
+
+The Buy Credits flow uses a pending-approval model so that credits are only added after manual verification.
+
+- **Pending:** When a vendor submits payment proof, the request enters a pending queue. The vendor sees the status as pending, and credits are not yet usable.
+- **Approved:** After an admin verifies the payment and amount, they approve it in the Admin Panel. The system immediately increases the vendor credit balance by the approved amount.
+- **Rejected:** If the admin cannot verify the payment (for example, missing or invalid screenshot, amount mismatch), they reject the request. No credits are added, and the request status shows as rejected in the Vendor App.
+
+<Callout kind="info">
+
+Credits are never auto-added based only on the QR payment. Admin approval is always required before any balance change.
+
+</Callout>
+
+## How credits are used
+
+Credits are tightly integrated with lead unlock logic:
+
+- Vendors spend credits to **unlock leads** or related vendor-side actions.
+- The system checks the vendor credit balance **before** allowing an unlock.
+- If the vendor does not have enough credits for the unlock cost, the app blocks the action and prompts them to buy more credits.
+
+This ensures that every unlocked lead has a corresponding credit deduction from the vendor account.
+
+## Connections
+
+Buy Credits connects to the Admin and lead management flows:
+
+- **Admin Panel:** All new credit purchase requests appear in the **Credit Approval Queue**, where admins verify payment proofs and update statuses (approved/rejected).
+- **Lead unlock logic:** The vendor credit balance is referenced by the lead/unlock logic to decide whether a vendor can unlock a lead or order.
+
+## Common states and errors
+
+Use this section to understand typical issues vendors might see and how to handle them.
+
+- **Pending for too long:**  
+  The request stays in pending if an admin has not yet reviewed it. Vendors should wait or contact support/admin if the delay is unusual.
+
+- **Screenshot missing or unclear:**  
+  If the uploaded screenshot is missing, blurred, or does not show a successful payment, admins may reject the request. Vendors should re-upload a clear screenshot and resubmit.
+
+- **Amount mismatch:**  
+  When the paid amount does not match the selected credit amount, admins may reject or partially approve according to internal rules. Vendors should always ensure the on-screen amount and payment amount match.
+
+- **Rejected request:**  
+  A rejected request does not add any credits. Vendors may need to submit a new request with correct payment proof or contact support if they believe the rejection is incorrect.
+
+- **Network or upload failure:**  
+  If the network fails during submission or screenshot upload, the request may not be created. Vendors should retry uploading and submitting once the connection is stable.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these notes when validating the Buy Credits feature in staging or QA environments.
+
+</Callout>
+
+- Ensure the **Buy Credits** screen:
+  - Shows the correct current credit balance.
+  - Prevents submission without an attached payment screenshot (if mandatory).
+  - Stores all relevant payment metadata (amount, time, transaction reference) with the request.
+
+- Verify approval pipeline:
+  - New submissions appear in the Admin Panel **Credit Approval Queue** with `pending` status.
+  - Approving a request increases the vendor credit balance by the correct amount.
+  - Rejecting a request leaves the balance unchanged and updates status to `rejected` in the Vendor App.
+
+- Check lead unlock integration:
+  - Lead unlock calls always check the latest credit balance.
+  - Unlock actions fail with a clear message when credits are insufficient.
+  - After a successful unlock, the system deducts the correct number of credits.
+
+## Screenshot
+
+A representative screenshot of the **Buy Credits** screen is not yet added. Add it here once the final UI is available and stable.

@@ -214,6 +214,10 @@
               {
                 "title": "Fail After Requote",
                 "path": "fail-after-requote"
+              },
+              {
+                "title": "Buy Credits",
+                "path": "buy-credits"
               }
             ],
             "icon": "align-center"
