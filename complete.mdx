@@ -1,0 +1,228 @@
+---
+title: Complete
+description: Complete a vendor order after OTP verification, capture required closing details, and understand how completion updates payouts, credits, and status.
+---
+
+## Overview
+
+Complete marks the successful end of the vendor In Progress workflow and moves the order into the payout queue.
+
+When you complete an order, the app captures final inspection details and updates the order status across the Vendor App, Customer App/Website, and Admin Panel.
+
+## When you can complete an order
+
+Completion is only available after you move the order into the final inspection state.
+
+<Callout kind="info">
+
+To see the **Complete Order** action in the Vendor App, you must:
+
+- Mark the order as **Out for Pickup**.
+- Reach the customer and start inspection.
+- Enter and verify the **lead OTP** shared with the customer.
+
+If inspection does not match the initial offer or the customer disagrees, use **Requote** or the **Fail After Requote** path instead of completion. For details on these flows, see [Out for Pickup or Fail](/out-for-pickup-or-fail) and [Fail After Requote](/fail-after-requote).
+
+</Callout>
+
+After OTP verification, the app unlocks both **Complete Order** and **Requote**. Use **Complete Order** only when you and the customer agree on the final price and you are closing the deal.
+
+## Step-by-step: complete an order
+
+Use this flow when you have finished inspection, agreed on the price, and are ready to close the order.
+
+<Steps>
+
+<Step title="Open the order and tap Complete Order" icon="check-circle">
+
+- Go to **InProgress Orders** in the Vendor App.
+- Open the target order that is already marked as **Out for Pickup** with OTP verified.
+- Tap **Complete Order** to start the completion form.
+
+</Step>
+
+<Step title="Capture customer signature" icon="edit">
+
+- Ask the customer to sign on the app screen.
+- Capture and save the **signature** as required by the app.
+
+</Step>
+
+<Step title="Upload ID card photos (front and back)" icon="upload">
+
+- Take a clear photo of the **front** side of the customer ID card.
+- Take a clear photo of the **back** side of the same ID card.
+- Upload both photos in the respective front and back fields.
+
+</Step>
+
+<Step title="Enter closing amount" icon="terminal">
+
+- Enter the **closing amount** agreed with the customer.
+- Confirm that this amount matches what you will pay out.
+
+</Step>
+
+<Step title="Confirm device IMEI" icon="info">
+
+- Review the **IMEI** displayed in the app.
+- Confirm that the IMEI matches the device you are buying.
+
+</Step>
+
+<Step title="Upload bill photo or blank document" icon="upload">
+
+- If the customer has a purchase bill, take and upload a **bill photo**.
+- If no bill is available, upload a **blank photo** or placeholder image as per the app guidance, so the field is not left empty.
+
+</Step>
+
+<Step title="Review and confirm completion" icon="check">
+
+- Review all captured details: signature, ID photos, closing amount, IMEI, and bill/blank photo.
+- Tap **Confirm** to submit and complete the order.
+- Wait for the confirmation message and ensure the order moves out of **InProgress Orders**.
+
+</Step>
+
+</Steps>
+
+When completion succeeds, the order no longer appears in In Progress and moves into the Completed lifecycle state.
+
+## Inputs captured
+
+Completion captures a fixed set of data used for compliance, verification, and payouts.
+
+- **Customer signature**: Digital proof that the customer agreed to sell the device.
+- **ID card front photo**: Front side of the government ID for KYC and verification.
+- **ID card back photo**: Back side of the same ID, completing the KYC record.
+- **Closing amount**: Final price you will pay the customer for the device.
+- **IMEI confirmation**: Final device identifier confirmation to prevent mismatches.
+- **Bill photo or blank photo**:
+  - If a purchase bill exists, the app stores a photo of the bill.
+  - If no bill exists, the app stores a blank or placeholder image to keep the record complete.
+
+These inputs are stored with the order and are visible in the Admin Panel for audit and support.
+
+## System logic and state updates
+
+Completion does more than close the screen; it updates system-level states and triggers payouts.
+
+<Callout kind="info">
+
+Key business rules on completion:
+
+- Completion **triggers the payout queue** for the order.
+- The order status changes to **Completed** in:
+  - Vendor App
+  - Customer App and website
+  - Admin Panel
+- The In Progress workflow for this order ends at completion.
+
+</Callout>
+
+When the vendor submits the completion form:
+
+- The system validates that all required inputs are present.
+- The order leaves the **In Progress** list and enters the **Completed** state.
+- Internal payout processing services pick up the order from the payout queue.
+- Downstream systems reference the completed order for reconciliation and reporting.
+
+## Connections
+
+Completion is connected to multiple surfaces so all parties see a consistent final state.
+
+- **Admin Activity Log**
+  - The system creates an **activity log entry** capturing that the vendor completed the order.
+  - Admin users can review who completed the order and when.
+
+- **Admin Orders section**
+  - The order is marked as **Completed** in the Admin Panel orders section.
+  - All completion inputs (signature, ID, IMEI, bill/blank photo, closing amount) are available to admins.
+
+- **Vendor credits deduction**
+  - On completion, the system records a **credit deduction event** in the vendor section.
+  - The vendor credit balance reflects any deductions linked to the completed order.
+
+- **Customer App and website**
+  - The customer sees the order as **Completed** in the Customer App and website.
+  - Any subsequent payout or tracking flows reference this completed state.
+
+- **Vendor App**
+  - The completed order is no longer listed under **InProgress Orders**.
+  - The order appears under the relevant **Completed** or history view, depending on app design.
+
+## Common states and errors
+
+This section helps you understand what you will see or need to fix when something blocks completion.
+
+### Typical states
+
+- **Out for Pickup, OTP not verified**
+  - **Complete Order** is not available.
+  - You must verify the lead OTP before you can proceed.
+
+- **Out for Pickup, OTP verified**
+  - **Complete Order** and **Requote** actions are available.
+  - Use Complete to close at the agreed price; use Requote if the price changes.
+
+### Common issues
+
+- **Missing required input**
+  - The app blocks submission if:
+    - Signature is not captured.
+    - Either ID front or back photo is missing.
+    - Closing amount is empty or invalid.
+    - IMEI is not confirmed.
+    - Bill/blank photo is missing.
+  - Fix: Add the missing input and retry.
+
+- **Upload failures**
+  - Network issues can cause image uploads (ID, bill/blank photo) to fail.
+  - Fix: Check connectivity, retry the upload, and confirm that the image shows as attached before submitting.
+
+- **OTP-related blocking**
+  - If OTP verification fails or times out, the app does not allow completion.
+  - Fix: Reattempt OTP verification as per the [Out for Pickup or Fail](/out-for-pickup-or-fail) guidelines.
+
+If errors persist, do not attempt partial workarounds; keep the order In Progress and escalate with full context to support or admin.
+
+## Developer and tester notes
+
+Use this section when you are integrating, testing, or debugging the completion behavior.
+
+<Callout kind="tip">
+
+Treat completion as the **single source of truth** for closing a vendor order. All downstream payout and status flows depend on this event and its captured inputs.
+
+</Callout>
+
+- **Prerequisite enforcement**
+  - Ensure APIs and app logic enforce the condition: completion available only when:
+    - Order is **Out for Pickup**, and
+    - Lead OTP is successfully **verified**.
+  - Automated tests should cover that Complete and Requote are hidden or disabled before OTP verification.
+
+- **Data integrity**
+  - Verify that all completion inputs are stored and linked to the correct order:
+    - Signature file or data.
+    - ID front and back images.
+    - Closing amount value.
+    - IMEI used for final confirmation.
+    - Bill or blank image.
+  - Check that Admin views and logs surface this data correctly.
+
+- **State propagation**
+  - Confirm that when an order is completed:
+    - Vendor App removes the order from In Progress.
+    - Customer App and website show the order as Completed.
+    - Admin Panel orders reflect Completed status.
+    - Admin Activity Log includes a completion entry.
+    - Vendor credit balance registers a **credit deduction event** related to the order.
+    - The order appears in the payout queue for further processing.
+
+- **Negative coverage**
+  - Test failure paths:
+    - Attempt completion without one or more required fields.
+    - Try to complete an order that skipped the Out for Pickup + OTP steps.
+    - Validate that **Fail After Requote** and other fail flows do not trigger the payout queue or credit deduction meant for successful completion.

@@ -222,6 +222,10 @@
               {
                 "title": "Out for Pickup or Fail",
                 "path": "out-for-pickup-or-fail"
+              },
+              {
+                "title": "Complete",
+                "path": "complete"
               }
             ],
             "icon": "align-center"
