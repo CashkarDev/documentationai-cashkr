@@ -1,0 +1,168 @@
+---
+title: Requote Order
+description: Change the offered price after on-site inspection when device condition differs from the original answers, and sync the revised quote across all views.
+---
+
+## Overview
+
+Requote lets you change the offered price after inspecting the device if the actual condition does not match the original answers given during lead creation.
+
+Use Requote when the customer still wants to sell, but the inspection shows a different physical, screen, or accessory condition that affects the final price.
+
+<Callout kind="info">
+
+Requote becomes available after you move the order to Out for Pickup, start inspection with the customer, and successfully verify the OTP. When the original price still matches the inspected condition and both parties agree, use [Complete](/complete) instead of Requote.
+
+</Callout>
+
+## When you can requote (prerequisites)
+
+You see the **Requote** button only after you reach the inspection stage.
+
+- The lead is marked **Out for Pickup** from the Vendor App  
+  (see [Out for Pickup or Fail](/out-for-pickup-or-fail)).
+- You have started physically inspecting the device in front of the customer.
+- You have verified the customer's OTP for the lead.
+- The app now shows both **Complete Order** and **Requote** actions.
+
+If the final agreed price is the same as the original quote, skip Requote and go directly to [Complete](/complete).
+
+## Step-by-step: submit a requote
+
+Use Requote when you need to change the final price based on your inspection.
+
+<Steps>
+
+<Step title="Open the order and tap Requote" icon="play-circle">
+
+- Open the **InProgress** order that is already **Out for Pickup**.
+- Confirm that OTP is verified and that you see both **Complete Order** and **Requote** buttons.
+- Tap **Requote** to start revising the quote.
+
+</Step>
+
+<Step title="Re-answer condition questions" icon="edit">
+
+- Go through the condition questions again based on the actual inspection.
+- Update answers for:
+  - **Screen condition** (scratches, cracks, display issues)
+  - **Body condition** (dents, bends, frame damage)
+  - **Accessories** (original charger, box, headphones, other items)
+- Make sure your answers match what you see in front of you.
+
+</Step>
+
+<Step title="Upload revised inspection photos" icon="upload">
+
+- Capture and upload clear photos showing:
+  - Full device front and back
+  - Close-ups of any damage or defects
+  - Accessories you are taking with the device
+- Check that photos are not blurry and cover key areas the customer might ask about.
+
+</Step>
+
+<Step title="Update the price and save the requote" icon="check-circle">
+
+- Review the updated condition answers.
+- Update the **final offered price** based on the new responses.
+- Confirm the new price with the customer.
+- Tap the appropriate action to **save** the updated quote.
+
+If the customer agrees with the revised price, proceed with [Complete](/complete). If the customer rejects the revised price, move to [Fail After Requote](/fail-after-requote).
+
+</Step>
+
+</Steps>
+
+## What data is updated in a requote
+
+When you submit a requote, the Vendor App updates all inspection-related data for the order.
+
+- **Condition answers**  
+  Your new answers replace the previous responses for screen, body, accessories, and any other condition questions.
+
+- **Inspection photos**  
+  The new set of images you upload replaces or supplements the earlier photos and becomes the current visual proof for the order.
+
+- **Revised price**  
+  The updated offer amount becomes the new final price for this order and is treated as the active quote going forward.
+
+These updates are stored against the same lead and are visible in the Admin Panel and the customer views.
+
+## What happens after requote
+
+After you save the requote:
+
+- The **customer-facing order details** on the website and Customer App show the **revised final price**.
+- The order remains in the pickup/completion flow; you must either:
+  - **Complete the order** if the customer accepts the new price, or
+  - **Fail After Requote** if the customer rejects the revised price or the device is not sellable.
+
+Use the following paths:
+
+- If the customer accepts the updated price → move to [Complete](/complete) and finish the order.
+- If the customer does not accept the updated price, or the device fails quality checks → use [Fail After Requote](/fail-after-requote) to close the lead with the correct failure reason and financial details.
+
+## System logic and state updates
+
+Requote changes how the system stores and displays order data.
+
+- The system **overwrites the original condition Q&A values** with your new answers from the Requote flow.
+- The **revised price** becomes the current final price for the lead and is used in all downstream calculations and reports.
+- New photos and condition data are stored in the order history and can be reviewed for audits or disputes.
+- The order status and activity log record that a **Requote** action occurred, including who performed it and when.
+- Admin users can see the latest requoted details along with other order events.
+
+## Connections (Admin Panel; Customer App / Website)
+
+Requote is visible across all main surfaces to keep customer, vendor, and admin views aligned.
+
+- **Admin Panel**
+  - The order record shows updated pricing and condition details.
+  - Revised photos are available under the order's media or inspection section.
+  - Activity logs include an entry that the order was requoted.
+
+- **Customer App / Website**
+  - The customer sees the **requited final price** in their order details.
+  - Any next steps or messages the platform supports are based on this final requoted amount.
+
+## Common states and errors
+
+This section helps you understand and resolve typical issues around Requote.
+
+- **Requote button not visible**
+  - Check that the lead is set to **Out for Pickup**.
+  - Confirm that you have completed OTP verification for the order.
+  - If OTP is not verified, finish that step first; Requote appears only afterward.
+
+- **Unable to save requote**
+  - Make sure you have answered all required condition questions.
+  - Confirm that the revised price field is filled with a valid amount.
+  - Check that at least the minimum required photos are uploaded and not failing any validation.
+
+- **Customer disputes the revised price**
+  - Reconfirm the inspected issues and show the related photos.
+  - If the customer still disagrees, use [Fail After Requote](/fail-after-requote) to record the rejection and close the lead properly.
+
+## Developer and tester notes
+
+Use this section when validating Requote behavior in staging or test environments.
+
+<Callout kind="tip">
+
+For QA and developer testing, confirm these behaviors:
+
+- Requote is available **only** after Out for Pickup and successful OTP verification.
+- Submitting a requote:
+  - Replaces original condition answers in the order payload.
+  - Updates all attached inspection photos.
+  - Persists the new price and marks it as the final offer on the order.
+- Admin Panel:
+  - Shows the updated condition, photos, and price.
+  - Logs the Requote event in the order activity history.
+- Customer App / Website:
+  - Reflects the requoted final price in order details.
+  - Uses this price for any further steps, including completion or Fail After Requote.
+
+</Callout>

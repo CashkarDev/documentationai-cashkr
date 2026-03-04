@@ -230,6 +230,10 @@
               {
                 "title": "Same Customer Order",
                 "path": "same-customer-order"
+              },
+              {
+                "title": "Requote Order",
+                "path": "requote-order"
               }
             ],
             "icon": "align-center"
