@@ -210,6 +210,10 @@
               {
                 "title": "Add Agents",
                 "path": "add-agents"
+              },
+              {
+                "title": "Fail After Requote",
+                "path": "fail-after-requote"
               }
             ],
             "icon": "align-center"

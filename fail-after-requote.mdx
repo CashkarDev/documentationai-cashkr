@@ -1,0 +1,157 @@
+---
+title: Fail After Requote
+description: >-
+  Record a failed order after requote when the customer rejects the revised
+  price or the device is not sellable, including fields, states, and system
+  updates.
+---
+## Overview
+
+Fail After Requote lets the vendor close an order as failed after sharing a revised quote with the customer. Use it when the customer does not accept the updated offer or the device cannot be purchased in its current condition.
+
+<Callout kind="info" collapsed="false">
+  Use Fail After Requote only when the revised quote is shared and either the customer rejects the new price or the device is found not sellable after inspection.
+</Callout>
+
+## When to use Fail After Requote
+
+Use this action in these scenarios:
+
+- The customer disagrees with the revised quote amount.
+
+- The customer changes their mind after hearing the revised price.
+
+- The device is found to be in a non-sellable condition after physical inspection.
+
+- Any other case where the requote is completed but the order cannot proceed to payment.
+
+If the order has not yet reached the requote stage, use the standard fail or cancellation paths instead of Fail After Requote.
+
+## Step-by-step vendor flow
+
+<Steps>
+  <Step title="Open the order after requote" icon="monitor" title-type="p">
+    - Complete the inspection and submit the revised quote as per the normal requote flow.
+
+    - Return to the order details screen where the requote is visible.
+
+    - Confirm with the customer that they are not proceeding with the revised amount or that the device is not sellable.
+  </Step>
+
+  <Step title="Tap Fail" icon="x-circle" title-type="p">
+    - On the order details screen, tap **Fail** to start the Fail After Requote flow.
+
+    - Verify you selected Fail only after the requote is finalized.
+  </Step>
+
+  <Step title="Select failure reason" icon="list-ordered" title-type="p">
+    - Choose the most accurate failure reason from the list.
+
+    - Use reasons such as **Requote price not accepted** or **Device not in sellable condition** where available.
+  </Step>
+
+  <Step title="Enter amounts" icon="edit" title-type="p">
+    - Enter the **final amount** (the revised quote that was offered to the customer).
+
+    - Enter the **amount expected** (what the customer expected or initial indicative offer).
+
+    - Ensure both amounts are numeric and non-negative.
+  </Step>
+
+  <Step title="Add remarks (optional)" icon="edit" title-type="p">
+    - Add short remarks describing why the order failed after requote.
+
+    - Include context such as customer feedback, condition issues, or price gap.
+  </Step>
+
+  <Step title="Capture customer signature and submit" icon="check-circle" title-type="p">
+    - Ask the customer to provide a signature on the device screen to acknowledge the failed order.
+
+    - Upload or capture the signature as required by the app.
+
+    - Tap **Submit** to complete the Fail After Requote action.
+
+    - Confirm the order status now shows as failed with a requote context.
+  </Step>
+</Steps>
+
+## Inputs captured
+
+The Fail After Requote action captures a fixed set of fields to maintain audit and pricing history.
+
+- **Failure reason**\
+  High-level reason why the order failed after requote, such as revised price not accepted or device not sellable.
+
+- **Final amount**\
+  The revised quote value that the vendor actually offered to the customer during the requote step.
+
+- **Amount expected**\
+  The amount the customer expected or the earlier indicative price before requote, used to understand the price gap.
+
+- **Remarks**\
+  Optional free-text comments from the vendor explaining additional details or specific issues.
+
+- **Customer signature**\
+  Digital signature from the customer confirming they did not proceed with the order at the revised price or due to device condition.
+
+## System logic and state updates
+
+Fail After Requote changes the order and lead state to reflect a failed outcome with requote context.
+
+- The system marks the lead as **Failed** with a **Requote** status.
+
+- The order no longer appears in active or in-progress queues for the vendor.
+
+- Pricing fields and remarks are stored for reporting and audit.
+
+- Customer-facing status updates show the order as failed or not completed after inspection.
+
+These updates ensure teams can distinguish standard failures from failures that occurred specifically after a requote.
+
+## Connections
+
+Fail After Requote ties into other parts of the Cashkr system.
+
+- **Admin Panel**\
+  The order appears under failed orders with a clear **Requote** context, including the final amount, expected amount, and reason.
+
+- **Customer app and website**\
+  The customer sees the order as failed or not completed, with status aligned to the Fail After Requote outcome.
+
+- **InProgress Orders context**\
+  From the vendor app, the order typically moves from the **InProgress Orders** list to a failed state once Fail After Requote completes, and it should no longer be actionable.
+
+## Common states and errors
+
+Watch for these common issues when working with Fail After Requote.
+
+- **Missing signature**\
+  If the customer signature is required and not captured, the app may block submission or show a validation error. Capture the signature before tapping Submit.
+
+- **Invalid or mismatched amounts**\
+  Non-numeric values, negative amounts, or empty fields for final amount and amount expected can cause validation errors. Enter both values clearly and check for typos.
+
+- **Offline submit**\
+  If the device is offline when you submit Fail After Requote, the app may queue the update and sync later. Confirm that the order status eventually updates to failed with requote when connectivity returns.
+
+- **Customer disputes after failure**\
+  If a customer later disputes that they rejected the quote or claims the status is incorrect, refer to the stored failure reason, amounts, remarks, and signature in the Admin Panel for resolution.
+
+## Developer and tester notes
+
+<Callout kind="tip" collapsed="false">
+  Use this section to align implementation and QA for the Fail After Requote flow.
+
+  - Verify that selecting Fail after requote always sets the lead to Failed with Requote status, and that it does not use the generic fail status.
+
+  - Confirm all inputs (reason, final amount, amount expected, remarks, signature) are persisted and visible in the Admin Panel view for failed orders.
+
+  - Check that the order disappears from vendor active or in-progress lists and appears in the correct failed listing.
+
+  - Ensure customer app and website status updates match the failed state and do not continue to show the order as pending or in progress.
+
+  - Test error handling for missing signature, invalid amounts, and offline submissions, including retry and sync behavior.
+
+  ##
+</Callout>
+
