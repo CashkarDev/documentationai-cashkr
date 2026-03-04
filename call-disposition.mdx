@@ -1,0 +1,164 @@
+---
+title: Call Disposition
+description: Understand how call disposition works in the Vendor App, where it appears, required steps, system behavior, and how it feeds Admin reporting.
+---
+
+## Overview
+
+Call disposition records what happened when the vendor contacted the customer about an in-progress lead or order.
+
+It exists so operations and Admin teams can see, for each lead, whether the customer was connected, not reachable, or requested a reschedule or other outcome.
+
+## Where call disposition appears
+
+Call disposition appears inside an **In Progress** lead or order in the Vendor App.
+
+When a vendor opens an in-progress lead, the app shows the call disposition action as the first thing to complete before moving ahead in the flow.
+
+<Callout kind="info">
+
+Call disposition is part of the In Progress orders workflow. When the vendor calls the customer, they update the call disposition to record what happened on the call.
+
+</Callout>
+
+## Step-by-step: submit call disposition
+
+<Steps>
+
+<Step title="Open an in-progress lead" icon="play-circle">
+
+- Open the Vendor App.
+- Go to your **In Progress** orders.
+- Select the specific lead or order you are working on.
+
+Your screen shows the lead or order details with call-related actions.
+
+</Step>
+
+<Step title="Call the customer" icon="phone">
+
+- Use the call option from the in-progress lead to contact the customer.
+- Complete the call attempt.
+
+You should now be ready to record what happened on this call.
+
+</Step>
+
+<Step title="Submit call disposition" icon="check-circle">
+
+- Look for the **Call Disposition** section on the in-progress lead.
+- Select the appropriate outcome, for example **Connected**, **Not Reachable**, or **Reschedule Requested**.
+- Submit the disposition.
+
+Once you submit, the system saves the disposition and unlocks the next actions for this lead.
+
+</Step>
+
+</Steps>
+
+<Callout kind="info">
+
+Vendor opens an in-progress lead. The first mandatory step is **Submit Call Disposition** (for example, Connected, Not Reachable, Reschedule Requested). Only after disposition is updated, next steps become available.
+
+</Callout>
+
+## Common disposition outcomes
+
+Use call disposition to capture the main outcome of the call. Typical examples include:
+
+- **Connected** — Vendor spoke to the customer and progressed the discussion.
+- **Not Reachable** — Vendor could not reach the customer after the call attempt.
+- **Reschedule Requested** — Customer asked to reschedule the pickup or call.
+- **Customer asked to cancel** — Customer indicated they do not want to continue with the order.
+
+These examples are not an exhaustive list; the exact options depend on the configured Vendor App UI.
+
+## Key rules and behaviors
+
+<Callout kind="info">
+
+Call disposition is required once per lead before any other action. The app blocks further actions on that lead until you submit a disposition.
+
+</Callout>
+
+After you submit a valid call disposition:
+
+- The app unlocks next steps for the lead or order.
+- The system saves the disposition to the Admin Panel for tracking and reporting.
+- The disposition appears in the Admin activity logs so teams can see what happened on the call.
+
+The system expects one required disposition per lead; if you call the customer multiple times, any additional logic should be defined at product level before adding to this flow.
+
+## System logic
+
+When the vendor submits a call disposition, the system must store at least the following data:
+
+- **Disposition value** — For example, `Connected`, `Not Reachable`, `Reschedule Requested`, or another configured label.
+- **Timestamp** — Exact date and time when the vendor submitted the disposition.
+- **Lead or order ID** — The identifier of the in-progress lead or order the disposition belongs to.
+- **Vendor or agent identity** — The vendor or agent who submitted the disposition.
+
+The system then syncs this record into the Admin Panel:
+
+- Add an **activity log entry** under the corresponding lead or order.
+- Make the disposition value and timestamp available for **tracking and reporting** in Admin views.
+
+<Callout kind="tip">
+
+For development, ensure the same disposition payload is used for both the Vendor App request and the Admin Panel activity log, so reporting and per-lead history always align.
+
+</Callout>
+
+## Connections
+
+Call disposition is closely tied to other parts of the Vendor App and Admin flows:
+
+- **In Progress orders workflow** — Vendors open an in-progress lead, call the customer, and then update the call disposition to record what happened before continuing.
+- **Operations monitoring** — The operations team uses Admin activity logs to monitor orders, check if customers were reachable, and see if reschedules or cancellations were requested.
+- **Reporting and analytics** — Saved dispositions feed Admin Panel reports for reachability rates, reschedule trends, and cancellation patterns per vendor or region.
+
+These connections rely on call disposition being consistently captured once per lead.
+
+## Common states and errors
+
+In the Vendor App and API, handle these common states and error scenarios:
+
+- **Missing required field**  
+  The vendor tries to submit disposition without selecting a value. Show a clear validation message and keep the lead locked until a value is selected.
+
+- **User tries to proceed without disposition**  
+  The vendor attempts another action on the lead (for example, progressing the order) before submitting disposition. Block the action and prompt them to submit call disposition first.
+
+- **Network or sync failure**  
+  The vendor selects a disposition but the network request fails. Keep the lead in a state where disposition is still required, show an error message, and prompt the vendor to retry when connectivity is restored.
+
+<Callout kind="info">
+
+Never mark the lead as having a completed disposition if the submission to the backend or Admin activity log fails. The lead must remain blocked until the system confirms a successful save.
+
+</Callout>
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these notes to align Vendor App, API, and Admin Panel behavior during implementation and QA.
+
+</Callout>
+
+- **Single required disposition per lead**  
+  Enforce the rule "required once per lead before any other action" at the backend level, not only in the UI. Attempts to progress a lead without a saved disposition should return a clear error.
+
+- **Consistent data model**  
+  Ensure the disposition record always includes disposition value, timestamp, lead or order ID, and vendor or agent identity, and that the same identifiers are used in Admin activity logs.
+
+- **Activity log verification**  
+  In tests, after submitting a disposition from the Vendor App, verify that:
+  - The corresponding Admin Panel lead or order shows a new activity log entry.
+  - The value, timestamp, and vendor match the Vendor App submission.
+
+- **Retry and idempotency**  
+  For flaky networks, treat repeated submissions of the same disposition for the same lead as idempotent where possible, so vendors do not accidentally create conflicting records.
+
+- **Alignment with In Progress orders docs**  
+  When updating the In Progress orders flow, keep the call disposition behavior and wording consistent with this page so vendors see the same concepts across screens and documentation.

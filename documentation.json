@@ -202,6 +202,10 @@
               {
                 "title": "InProgress Orders",
                 "path": "inprogress-orders"
+              },
+              {
+                "title": "Call Disposition",
+                "path": "call-disposition"
               }
             ],
             "icon": "align-center"
