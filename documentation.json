@@ -234,6 +234,10 @@
               {
                 "title": "Requote Order",
                 "path": "requote-order"
+              },
+              {
+                "title": "Reserved Order",
+                "path": "reserved-order"
               }
             ],
             "icon": "align-center"

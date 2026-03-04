@@ -1,0 +1,204 @@
+---
+title: Reserved Order
+description: Understand when orders move to Reserved in the Vendor App, what vendors see, how to unlock them with credits, and how admin assignment affects them.
+---
+
+## Overview
+
+Reserved Order shows leads that the system sets aside when a vendor does not have enough credits to unlock all related orders for the same customer and address.
+
+<Callout kind="info">
+
+Reserved orders appear when:
+
+- The vendor unlocked one order for a customer.
+- The same customer has multiple orders with the same address.
+- The vendor does not have enough credits to unlock the remaining orders.
+- The system reserves the remaining related orders for that same vendor to unlock later.
+
+</Callout>
+
+Reserved behavior is closely tied to [Same Customer Order](/same-customer-order) rules and the vendor credit model.
+
+## When an order becomes Reserved
+
+An order moves into Reserved only in a very specific scenario:
+
+- **Vendor unlocks one order** for a customer from Available or Same Customer Order.
+- **Customer has multiple orders** in the system.
+- **All those orders share the same address**.
+- **Vendor has insufficient credits** to unlock the remaining orders at that moment.
+
+When this happens, the system:
+
+- Unlocks the single order the vendor selected.
+- Marks the other related orders as **Reserved** for that same vendor.
+- Prevents other vendors from unlocking those reserved orders while they remain reserved.
+
+If any of these conditions are not met (for example, different addresses or sufficient credits), the order does not move into Reserved because of this flow.
+
+## What the vendor sees
+
+From the Vendor App, the vendor sees:
+
+- **Reserved Order section**  
+  - Shows all orders that match the conditions above and are set aside for that vendor.  
+  - Orders remain here until the vendor has enough credits and chooses to unlock them.
+
+- **InProgress Orders section**  
+  - After the vendor successfully unlocks a reserved order, it moves out of Reserved and into [InProgress Orders](/inprogress-orders) with the same behavior as any other unlocked lead.
+
+This separation helps vendors see which leads they have already committed credits to and which related leads are waiting for additional credits.
+
+## Step-by-step: unlock a reserved order
+
+Use this flow when a vendor wants to work on a reserved order.
+
+<Steps>
+
+<Step title="Open Reserved Order section" icon="folder">
+
+- Log in to the Vendor App.
+- Navigate to the **Reserved Order** section in the orders list.
+
+You should see all orders currently reserved for the vendor, grouped by customer and address where applicable.
+
+</Step>
+
+<Step title="Check credits balance" icon="bar-chart">
+
+- Check the vendor credit balance shown in the header or wallet area.
+- If the balance is not enough to unlock another lead, go to [Buy Credits](/buy-credits) and purchase additional credits.
+
+The system blocks unlock actions when the vendor has insufficient credits, even for reserved orders.
+
+</Step>
+
+<Step title="Unlock the reserved order" icon="play-circle">
+
+- Select the reserved order you want to work on.
+- Tap **Unlock** or the equivalent action button.
+- Confirm the unlock if a confirmation dialog appears.
+
+On success, the system deducts the required credits and moves the order into [InProgress Orders](/inprogress-orders).
+
+</Step>
+
+<Step title="Verify order status" icon="check-circle">
+
+- Go to the **InProgress Orders** section.
+- Confirm that the unlocked order appears there with the correct customer, address, and device details.
+
+If the order still appears as Reserved and no error is shown, see **Common states and errors** below.
+
+</Step>
+
+</Steps>
+
+<Callout kind="info">
+
+Reserved orders **still require credits** to unlock. The system does not grant any free unlocks because an order is reserved.
+
+</Callout>
+
+## System logic
+
+This section captures how the system treats reserved orders behind the scenes.
+
+- **Reserved ownership**
+
+  - The system reserves an order **to a single vendor only** when:
+    - The vendor unlocked one related order.
+    - The remaining orders are from the same customer and share the same address.
+    - The vendor had insufficient credits to unlock all related orders at once.
+  - While an order is reserved, no other vendor can unlock it from Available.
+
+- **Reassignment from Admin Panel**
+
+  - Admin users can assign a reserved order to another vendor from the Admin Panel.
+  - When an admin assigns a reserved order to another vendor:
+    - The order is removed from the original vendor’s **Reserved Order** section.
+    - The new vendor sees the order according to their own state (for example, in Available or In Progress, based on admin action).
+
+- **Credits requirement**
+
+  - Every unlock of a reserved order consumes the same type of credits as a normal unlock.
+  - If the vendor has insufficient credits, the unlock fails and the system prompts them to buy more credits.
+
+## Connections
+
+Reserved Order interacts with other features and logs.
+
+- **Same Customer Order behavior**
+
+  - The Reserved state is triggered by [Same Customer Order](/same-customer-order) logic when multiple orders share the same address.
+  - Reserved ensures that related orders for one customer stay with the same vendor once at least one lead is unlocked.
+
+- **Admin Panel activity logs**
+
+  - In the Admin Panel order section, activity logs record:
+    - When an order moves into Reserved.
+    - When a vendor unlocks a reserved order.
+    - When an admin reassigns a reserved order to another vendor.
+  - Use these logs to trace why an order is reserved and which vendor currently owns it.
+
+## Common states and errors
+
+This section helps diagnose what vendors and support agents might see around Reserved Order.
+
+- **Order stuck in Reserved**
+
+  - **Symptom:** Vendor tries to unlock but nothing happens; status remains Reserved.
+  - **Likely cause:** Vendor credits are below the required amount.
+  - **Fix:** Ask vendor to buy more credits via [Buy Credits](/buy-credits), wait for admin approval of the credit purchase, then retry unlock.
+
+- **Order no longer visible in Reserved**
+
+  - **Symptom:** Vendor previously saw an order in Reserved, but it has disappeared.
+  - **Likely causes:**
+    - Admin reassigned the order to a different vendor.
+    - Vendor successfully unlocked the order and it moved to [InProgress Orders](/inprogress-orders).
+  - **Fix:** Check In Progress first; if not there, review Admin Panel activity logs for reassignment.
+
+- **Order available to other vendors instead of Reserved**
+
+  - **Symptom:** Multiple orders exist for the same customer, but other vendors can see and unlock them in Available instead of Reserved.
+  - **Likely causes:**
+    - Orders do not share the exact same address.
+    - The original vendor had sufficient credits when unlocking, so no auto-reservation was needed.
+  - **Fix:** Verify address values and credit events; confirm expected behavior against [Same Customer Order](/same-customer-order) rules.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these checks when implementing or testing Reserved Order behavior:
+
+- **Trigger conditions**
+
+  - Create multiple orders for the same customer with the same address.
+  - Set vendor credits so they can unlock only one order.
+  - Unlock one order and confirm:
+    - Selected order becomes In Progress.
+    - Remaining related orders appear in Reserved for that vendor only.
+
+- **Credit enforcement**
+
+  - Attempt to unlock a reserved order with insufficient credits.
+  - Expect the unlock to fail and an error or prompt to direct the vendor to [Buy Credits](/buy-credits).
+
+- **Reassignment behavior**
+
+  - From the Admin Panel, reassign a reserved order to another vendor.
+  - Confirm:
+    - The order is removed from the original vendor’s Reserved list.
+    - Activity logs capture the reassignment event.
+
+- **State transitions**
+
+  - Verify consistent transitions:
+    - Available → In Progress (first unlock).
+    - Related orders → Reserved when credits are insufficient.
+    - Reserved → In Progress when the vendor later unlocks with sufficient credits.
+
+</Callout>
