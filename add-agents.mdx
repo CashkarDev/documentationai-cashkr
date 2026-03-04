@@ -1,0 +1,174 @@
+---
+title: Add Agents
+description: Manage vendor pickup agents by adding their name, phone number, and Gmail, with validation, duplicate checks, and admin visibility for auditing.
+---
+
+## Overview
+
+Use the Add Agents screen in the Vendor App to register agents who handle pickups on behalf of a vendor. Each agent is stored with a name, phone number, and Gmail address under the vendor's account.
+
+<Callout kind="info">
+
+Each agent belongs to a specific vendor account. The system validates entries, prevents duplicate agents based on phone or email, and exposes vendor–agent relationships to admins for review.
+
+</Callout>
+
+## What the screen shows
+
+The Add Agents screen focuses on the vendor's agent list and the action to create new agents.
+
+- **Agent list**: Shows existing agents for the logged-in vendor, typically including agent name and contact details.
+- **Add new agent action**: A button such as Add new agent that opens the agent creation form.
+- **Required fields in the form**:
+  - **Agent name**: The display name for the agent.
+  - **Phone number**: The agent's primary contact number.
+  - **Gmail / email**: The agent's Gmail address used for communication and identification.
+
+## Step-by-step: add a new agent
+
+<Steps>
+
+<Step title="Open the Add Agents screen" icon="users">
+
+- Log in to the Vendor App with a valid vendor account.
+- Navigate to the section where vendor agents are managed.
+- Open the **Add Agents** screen to view existing agents and the add action.
+
+</Step>
+
+<Step title="Tap Add new agent" icon="plus">
+
+- On the Add Agents screen, tap the **Add new agent** button.
+- The app opens a form with fields for agent name, phone number, and Gmail.
+
+</Step>
+
+<Step title="Fill in agent details" icon="edit">
+
+- Enter the **agent name** as it should appear to admins and in reports.
+- Enter a valid **phone number** for the agent.
+- Enter the agent's **Gmail / email** address.
+- Confirm that all details are correct before saving.
+
+</Step>
+
+<Step title="Save the agent" icon="check-circle">
+
+- Tap the **Add** or **Save** button to submit the form.
+- If all validations pass, the system creates the agent record under the current vendor.
+- The new agent appears in the agent list for that vendor.
+
+</Step>
+
+</Steps>
+
+## Field rules and validation
+
+Field-level validation ensures that only usable and consistent agent data is stored.
+
+<ParamField body="agentName" param-type="string" required="true" show-location="false">
+
+Agent's full name. Must not be empty and should contain readable characters (no only-symbol entries). Use the name that the vendor and admin teams recognize.
+
+</ParamField>
+
+<ParamField body="phoneNumber" param-type="string" required="true" show-location="false">
+
+Agent's contact phone number. Required and must be in a valid phone format with the correct number of digits for the supported region. Reject clearly invalid patterns such as alphabetic characters or too few digits.
+
+</ParamField>
+
+<ParamField body="email" param-type="string" required="true" show-location="false">
+
+Agent's Gmail or email address. Required and must follow a standard email format. Reject entries that do not contain a valid local part, `@` symbol, and domain.
+
+</ParamField>
+
+<Callout kind="info">
+
+The form should block submission until all required fields are present and valid. Show inline error messages next to invalid fields and keep the Add or Save action disabled or failing with clear feedback.
+
+</Callout>
+
+## System logic
+
+The system applies consistent backend rules when a vendor adds an agent.
+
+- **Scoped to vendor**: The app creates each agent record under the currently logged-in vendor's ID so agents do not leak across vendors.
+- **Duplicate checks**: Before saving, the system checks for existing agents for the same vendor with the same phone number or email and rejects duplicates.
+- **Invalid entry prevention**: The backend revalidates phone and email formats and rejects invalid submissions even if the client-side validation is bypassed.
+- **Auditability**: Vendor–agent relationships are stored so admins can review which agents belong to which vendor and when they were created or updated.
+
+<Callout kind="info">
+
+Admins can see the list of agents linked to a vendor in the vendor details section of the Admin Panel. This supports monitoring, troubleshooting, and compliance reviews.
+
+</Callout>
+
+## Connections
+
+The Add Agents feature links vendor-side operations with admin oversight and pickup handling.
+
+- **Admin Panel**: In the Admin Panel, vendor details include a section that displays all agents associated with that vendor, using the same data entered in the Vendor App.
+- **Pickups and orders**: When a vendor uses agents to manage pickups or handle orders, the stored agent information can be used to attribute actions or communication to specific agents, improving traceability and support.
+- **Reporting**: Because each agent is tied to a vendor ID, reporting and analytics can group activity by both vendor and agent where needed.
+
+## Common states and errors
+
+The Add Agents flow should clearly communicate both success and failure states.
+
+**Successful save**
+
+- The app closes the agent form or resets it.
+- A confirmation message appears, and the new agent shows in the agent list for that vendor.
+
+**Typical validation and error cases**
+
+- **Duplicate phone number**:
+  - Error when the phone number already exists for an agent under the same vendor.
+  - Show a message such as: `An agent with this phone number already exists for this vendor.`
+
+- **Duplicate email / Gmail**:
+  - Error when the email already exists for an agent under the same vendor.
+  - Show a message such as: `An agent with this email already exists for this vendor.`
+
+- **Invalid phone format**:
+  - Error when the phone field contains non-numeric characters (beyond allowed symbols) or an incorrect length.
+  - Show a targeted message and keep focus on the phone field.
+
+- **Invalid email format**:
+  - Error when the email does not match a valid email pattern.
+  - Show a targeted message and keep focus on the email field.
+
+- **Save failure (network or server)**:
+  - Error when the backend cannot create the agent record.
+  - Show a non-technical message and allow retry, for example: `Something went wrong while saving the agent. Try again.`
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these checks to validate that the Add Agents implementation behaves consistently across client and backend.
+
+</Callout>
+
+- **Vendor scoping**:
+  - Confirm that agents created while logged in as Vendor A do not appear for Vendor B.
+  - Inspect stored data to ensure the vendor ID is correctly linked to each agent.
+
+- **Duplicate prevention**:
+  - Attempt to create two agents for the same vendor with the same phone number.
+  - Attempt to create two agents for the same vendor with the same email.
+  - Verify that the backend blocks duplicates even if the client-side check is bypassed.
+
+- **Validation coverage**:
+  - Test empty, partially filled, and invalid combinations of name, phone, and email.
+  - Ensure the app shows clear, field-specific error messages and does not create records with invalid data.
+
+- **Admin visibility**:
+  - After creating agents in the Vendor App, open the corresponding vendor in the Admin Panel.
+  - Verify that the vendor details section correctly lists the new agents and their contact information.
+
+- **Resilience**:
+  - Simulate network failures or server errors during save.
+  - Confirm that the app handles failures gracefully, does not create duplicate agents on retry, and surfaces a clear message to the user.

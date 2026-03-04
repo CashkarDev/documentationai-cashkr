@@ -206,6 +206,10 @@
               {
                 "title": "Call Disposition",
                 "path": "call-disposition"
+              },
+              {
+                "title": "Add Agents",
+                "path": "add-agents"
               }
             ],
             "icon": "align-center"
