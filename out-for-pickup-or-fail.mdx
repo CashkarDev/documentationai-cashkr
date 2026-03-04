@@ -1,0 +1,240 @@
+---
+title: Out for Pickup or Fail
+description: Decide whether to move an In Progress order to pickup or fail it, including OTP verification, captured inputs, and system state updates.
+---
+
+## Overview
+
+Use **Out for Pickup** to move a qualified lead into pickup and inspection, or **Fail** to close a lead that cannot continue. This choice controls whether the order proceeds to on-site inspection or is permanently closed as a failed lead.
+
+<Callout kind="info">
+
+- **Out for Pickup**: Proceed with pickup and inspection. Customer receives an out-for-pickup email and the vendor will complete OTP-based verification on-site.
+- **Fail**: Stop the order. The lead flow ends and the system records the failure reason and timestamp.
+
+</Callout>
+
+## Where this step happens
+
+This decision happens **after you record the call outcome** on the Call Disposition screen.
+
+- Complete [Call Disposition](/call-disposition) for an **In Progress** order.
+- Return to the order under [InProgress Orders](/inprogress-orders).
+- On the order detail, choose **Out for Pickup** or **Fail** based on the outcome of your call.
+
+## Out for Pickup flow
+
+Use Out for Pickup when the customer agrees to sell and you will proceed with pickup and inspection.
+
+<Steps>
+
+  <Step title="Mark order as Out for Pickup" icon="arrow-right">
+
+  - On the In Progress order detail, tap **Out for Pickup**.
+  - Confirm that you are proceeding with pickup.
+
+  After this, the system updates the order to out-for-pickup state.
+
+  </Step>
+
+  <Step title="Customer receives Out for Pickup email" icon="mail">
+
+  - The customer receives an **Out for Pickup** email with pickup details.
+  - The website and Customer App reflect the updated status so the customer can track progress.
+
+  Use this as confirmation that the order has moved from call stage to pickup stage.
+
+  </Step>
+
+  <Step title="Start inspection and enter lead OTP" icon="terminal">
+
+  - On the vendor app, the order now shows an **Inspection Started** option.
+  - Visit the customer, start inspection, and tap **Inspection Started**.
+  - Ask the customer for the **lead OTP** they received.
+  - Enter the lead OTP into the app to verify the customer and the lead.
+
+  After successful OTP verification, the app unlocks final order actions.
+
+  </Step>
+
+  <Step title="Complete order or requote after OTP verification" icon="check-circle">
+
+  - Once the OTP is verified, the app shows **Complete Order** and **Requote** buttons.
+  - Tap **Complete Order** when you finish inspection and agree on the initial price.
+  - Tap **Requote** if the final price must change based on actual device condition. For failing after a changed quote, follow the dedicated [Fail After Requote](/fail-after-requote) flow.
+
+  These actions move the order from pickup/inspection into final resolution.
+
+  </Step>
+
+</Steps>
+
+## Fail flow
+
+Use Fail when the order **cannot be continued** after speaking with the customer.
+
+<Steps>
+
+  <Step title="Choose Fail from the order" icon="x-circle">
+
+  - Open the In Progress order detail.
+  - Tap **Fail** when the lead will not proceed (for example, customer no longer wants to sell).
+
+  This opens the failure reason screen.
+
+  </Step>
+
+  <Step title="Select a failure reason" icon="settings">
+
+  - Pick the most accurate **failure reason** from the list, such as:
+    - **Not interested in selling**
+    - **Was just checking**
+  - Add any additional notes if your build supports it.
+
+  Make sure the selected reason clearly reflects why the lead is not continuing.
+
+  </Step>
+
+  <Step title="Submit and close the lead" icon="check">
+
+  - Tap **Submit** to confirm the failure.
+  - The system ends the lead flow and marks the order as **Failed**.
+
+  The order moves out of your active In Progress list and appears in Admin as a failed order.
+
+  </Step>
+
+</Steps>
+
+<Callout kind="info">
+
+Failing an order is **final for this lead flow**. To re-open or re-create a lead after failure, follow your internal lead creation or reassignment process.
+
+</Callout>
+
+## Inputs captured
+
+The system records specific inputs at this step for tracking and audit.
+
+- **Fail action**
+  - **Failure reason** selected from the predefined list (for example, Not interested in selling, Was just checking).
+  - **Failure timestamp** when you submit the fail action.
+- **Out for Pickup and inspection**
+  - **Out for Pickup timestamp** when you mark the order as Out for Pickup.
+  - **Inspection Started timestamp** when you start inspection.
+  - **Lead OTP value** entered by the vendor.
+  - **OTP verification outcome** (success or failure) including time of verification.
+
+These inputs feed into reporting, Admin views, and customer-visible status.
+
+## System logic and state updates
+
+The app drives different system behavior depending on the action you choose.
+
+- **Fail**
+  - Ends the **lead flow** for that order.
+  - Saves the **failure reason** and **timestamp**.
+  - Moves the order into **Failed Orders** in the Admin Panel.
+  - Updates the order status on the **Customer App** and **website** so the customer sees that the order is no longer active.
+
+- **Out for Pickup**
+  - Updates the order status to **Out for Pickup**.
+  - Triggers the **Out for Pickup email** to the customer.
+  - Makes **Inspection Started** available in the vendor app.
+  - After OTP verification, unlocks **Complete Order** and **Requote** actions.
+  - Syncs status updates to the **Customer App** and **website** for tracking.
+
+## Connections
+
+Out for Pickup and Fail are connected to multiple systems and views.
+
+- **Admin Panel**
+  - Failed orders appear under **Failed Orders** with reason and timestamp.
+  - Out-for-pickup and inspection events are available for support and analytics.
+
+- **Customer App and Website**
+  - Order status updates in real time for:
+    - Out for Pickup
+    - Inspection in progress (if surfaced)
+    - Failed
+  - Customers can track their order from the **Order Confirmation & Tracking** and **Track Orders** views.
+
+- **Email notifications**
+  - Out for Pickup triggers a **vendor out-for-pickup email** to the customer.
+  - OTP and other messages follow your existing notification configuration.
+
+## Common states and errors
+
+Use this section to resolve typical issues around this step.
+
+### Wrong or expired OTP
+
+- **Symptom**: OTP entry fails or shows an invalid/expired message.
+- **What to check**
+  - Confirm the customer is reading the **latest OTP** they received.
+  - Verify that you are entering the OTP for the **correct lead**.
+  - Retry once, then escalate if OTP continues to fail.
+- **Impact**
+  - Inspection cannot proceed to **Complete Order** or **Requote** until OTP verification succeeds.
+
+### Status not syncing to Customer App or website
+
+- **Symptom**: Vendor app shows Out for Pickup or Failed, but the customer still sees an older status.
+- **What to check**
+  - Confirm you submitted the **Fail** or **Out for Pickup** action (no pending confirmation modals).
+  - Wait a short period for sync and then refresh the Customer App or website view.
+- **Next step**
+  - If the status still does not update, capture:
+    - Order ID
+    - Current vendor app status
+    - Screenshot of the customer view
+  - Share with support or engineering for API sync investigation.
+
+### Out-for-pickup email not received
+
+- **Symptom**: Customer reports they did not receive the Out for Pickup email.
+- **What to check**
+  - Verify the order is marked **Out for Pickup** in the vendor app.
+  - Confirm the customer email in the order details is correct.
+  - Ask customer to check spam/junk folders.
+- **Next step**
+  - If still missing, raise a ticket with the order ID for email service and event-log review.
+
+### Missing failure reason
+
+- **Symptom**: System allows Fail without a clear reason, or Admin cannot see the reason.
+- **What to check**
+  - Ensure the **failure reason dropdown** is mandatory in the latest build.
+  - Confirm that the selected reason appears in **Admin → Failed Orders**.
+- **Next step**
+  - For any failed orders missing a reason, log examples for data-migration or validation fixes.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+- **State transitions**
+  - Verify the transition from **In Progress → Out for Pickup → Inspection Started → Complete/Requote** and **In Progress → Failed**.
+  - Confirm that failing an order **removes it from active In Progress lists** and surfaces it in Admin **Failed Orders** with reason and timestamp.
+
+- **Audit fields**
+  - Ensure API payloads capture:
+    - Failure reason and failure timestamp.
+    - Out-for-pickup timestamp.
+    - Inspection started timestamp.
+    - Lead OTP value (if stored) and verification result.
+  - Validate that these fields are available for reporting.
+
+- **Cross-system sync**
+  - Test that status and timestamps match across:
+    - Vendor App
+    - Customer App
+    - Website
+    - Admin Panel
+  - Inspect event logs when OTP fails to confirm proper error codes and messages.
+
+- **Requote integration**
+  - After OTP verification, confirm that **Requote** routes into the [Fail After Requote](/fail-after-requote) logic when the requoted offer is rejected.
+  - Make sure requote-related failures do not overwrite the original **Fail** reasons for non-requote cases.
+
+</Callout>

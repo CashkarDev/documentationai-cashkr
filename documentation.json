@@ -218,6 +218,10 @@
               {
                 "title": "Buy Credits",
                 "path": "buy-credits"
+              },
+              {
+                "title": "Out for Pickup or Fail",
+                "path": "out-for-pickup-or-fail"
               }
             ],
             "icon": "align-center"
