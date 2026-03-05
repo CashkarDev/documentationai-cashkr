@@ -250,6 +250,10 @@
               {
                 "title": "Max Lead",
                 "path": "max-lead"
+              },
+              {
+                "title": "Logout - Vendor App",
+                "path": "logout---vendor-app"
               }
             ],
             "icon": "align-center"

@@ -1,0 +1,126 @@
+---
+title: Logout - Vendor App
+description: Log out of the Vendor App from the hamburger menu, understand what happens to the session, and how logout affects access and testing.
+---
+
+## Overview
+
+Logout in the Vendor App allows vendors to securely end their session and return to the login screen. Use it when switching users, changing devices, or finishing work for the day.
+
+## Step-by-step: log out
+
+<Steps>
+
+  <Step title="Open the menu" icon="menu">
+
+  - On any main screen, tap the **hamburger menu** in the top corner.
+
+  </Step>
+
+  <Step title="Choose Logout" icon="log-out">
+
+  - In the menu, tap **Logout**.
+  - Confirm any prompt if it appears.
+
+  </Step>
+
+  <Step title="Return to login screen" icon="arrow-right">
+
+  - The app ends the current session.
+  - The screen navigates to the **Vendor login** screen.
+
+  </Step>
+
+</Steps>
+
+After these steps, the vendor must log in again with valid credentials to access any vendor features.
+
+## What happens after logout
+
+<Callout kind="info">
+
+Logout clears the active vendor session on the device and requires a fresh login before accessing any vendor data again.
+
+</Callout>
+
+When a vendor logs out:
+
+- The app clears the saved token or session data from the device storage.
+- The app navigates to the **login** screen.
+- The current vendor is no longer treated as authenticated on that device.
+
+If the vendor closes and reopens the app after logout, they should still see the login screen until they sign in again.
+
+## Key rules and behaviors
+
+These rules define how the app should behave once logout is complete:
+
+- **Protected screens blocked**  
+  After logout, vendors must not access any protected screens (for example, Available Orders, InProgress Orders, Buy Credits) without logging in again.
+
+- **Back button behavior**  
+  If the vendor taps the device back button from the login screen after logout, the app should not reopen previously protected screens with old data. At most, it should close the app or stay on login.
+
+- **Session is device-specific**  
+  Logout affects only the session on that specific device. It does not log out the vendor from the customer app, website, or other systems.
+
+- **Actions stop immediately**  
+  Any in-progress actions that require an authenticated session (like viewing orders) must stop working until the vendor logs in again.
+
+## Common states and errors
+
+Use this section to verify behavior or debug common issues.
+
+### Logout button missing
+
+If the vendor does not see the **Logout** option:
+
+- Check that they are on a screen where the **hamburger menu** is visible.
+- Confirm they are using a supported app version.
+- For testers, verify that the logout menu item is not hidden behind feature flags or role-based access.
+
+### Stuck on loading during logout
+
+If tapping **Logout** shows a loader and does not return to the login screen:
+
+- Try closing and reopening the app to see if the session cleared.
+- Check network connectivity if the app sends a server request on logout.
+- For developers, log any errors around the logout action to confirm both token clearing and navigation run successfully.
+
+### Immediately logged back in after logout
+
+If the vendor sees themselves logged in again right after logout:
+
+- Confirm the token or session data is actually removed from device storage.
+- Ensure the app does not auto-login using stale cached credentials.
+- Test by fully closing the app and reopening it; the first screen should be the login screen, not a protected screen.
+
+## Connections
+
+Logout in the Vendor App affects **only the vendor session in this app**:
+
+- It is **not connected** to the customer app, website, or other systems.
+- Logging out here does **not** log out the same user on the customer app or website.
+- Similarly, logging out on other platforms does not automatically log out the Vendor App session on a device.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use logout tests to verify that session data is fully cleared and that no protected data is visible without a fresh login.
+
+</Callout>
+
+For developers and QA:
+
+- **Validate storage clearing**  
+  Ensure the auth token or session object is removed from secure storage on logout. No sensitive data should remain that could re-authenticate the vendor automatically.
+
+- **Check protected routes**  
+  After logout, try to navigate to protected screens (e.g., using deep links or back navigation). The app should always redirect to the login screen.
+
+- **Test across app restarts**  
+  After logging out, fully kill and reopen the app. Confirm it opens on the login screen and does not silently restore the old session.
+
+- **Log and monitor**  
+  Add logs around logout events to track token clearing, navigation, and any errors. This helps debug issues where vendors report still seeing data after logout.
