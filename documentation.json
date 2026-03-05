@@ -264,6 +264,15 @@
             "icon": "airplay-icon"
           },
           {
+            "group": "Core Features",
+            "pages": [
+              {
+                "title": "In Depth Device Price Evaluation Logic",
+                "path": "in-depth-device-price-evaluation-logic"
+              }
+            ]
+          },
+          {
             "group": "Components",
             "icon": "layers",
             "pages": [
