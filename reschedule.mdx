@@ -1,0 +1,132 @@
+---
+title: Reschedule
+description: Reschedule a customer pickup from the Vendor App, including where to start, what changes in the system, and how updates reach the customer.
+---
+
+## Overview
+
+Reschedule changes the pickup date and time for an existing customer order from the Vendor App while keeping the order active.
+
+<Callout kind="info">
+
+- Vendors reschedule only from orders that are **In Progress**.  
+- The new pickup date and time update across **Admin Panel**, **Vendor App**, and **Customer App/Website**.  
+- The **Admin order activity log** records the reschedule event.  
+- The **customer receives an email** with the updated pickup details.
+
+</Callout>
+
+## Where to reschedule
+
+Rescheduling is available from the **In Progress Orders** list in the Vendor App.
+
+- Open the **In Progress Orders** screen.  
+- Tap an order to open the **order details** view.  
+- Use the **Reschedule** action within that order.
+
+For details on how an order reaches this state, see [InProgress Orders](/inprogress-orders).
+
+## Step-by-step: reschedule a pickup
+
+<Steps>
+
+<Step title="Open the In Progress order" icon="list-ordered">
+
+- Go to the **In Progress Orders** section in the Vendor App.
+- Tap the specific order that needs a new pickup date and time.
+
+</Step>
+
+<Step title="Choose Reschedule" icon="edit">
+
+- In the order details view, tap **Reschedule**.
+- Confirm that you are changing only the pickup schedule, not cancelling the order.
+
+</Step>
+
+<Step title="Select new date and time" icon="calendar">
+
+- Pick the **new pickup date** from the date selector.
+- Pick the **new pickup time** or time slot.
+- Review that the new slot is feasible based on your route and agent availability.
+
+</Step>
+
+<Step title="Submit the reschedule" icon="check-circle">
+
+- Tap **Submit** or the equivalent confirmation button.
+- Wait for the success confirmation in the Vendor App before leaving the screen.
+
+</Step>
+
+</Steps>
+
+When rescheduling succeeds, the order remains **In Progress** but shows the updated pickup schedule.
+
+## System logic and updates
+
+After a vendor submits a reschedule:
+
+- The system updates the **pickup date and time** for the order.  
+- The same updated date and time appear in:
+  - **Admin Panel** order details
+  - **Vendor App** order details
+  - **Customer App/Website** order tracking or order details
+
+These updates keep all parties aligned on the same pickup schedule.
+
+## Connections
+
+Rescheduling ties into other parts of the Cashkr platform.
+
+- **Admin order activity log**  
+  The Admin Panel logs a new activity entry showing that the pickup was rescheduled, including the old and new schedule.
+
+- **Customer notification**  
+  The customer receives an **email** with the rescheduled pickup date and time. This email confirms the change and reduces missed pickups.
+
+- **Customer-facing views**  
+  The new pickup date and time appear in:
+  - **Customer App** order tracking
+  - **Website** order tracking or order details
+  - Any other place where the customer can see their upcoming pickup
+
+## Common states and errors
+
+Use this section to quickly validate behavior when testing reschedules.
+
+- **Reschedule option not visible**
+  - Order is not in **In Progress** state.
+  - Vendor is viewing the order from another list (for example, Available or Completed).
+
+- **Reschedule fails or does not save**
+  - Network issue during submission.
+  - Backend validation rejects the selected date or time slot.
+  - The app shows an error message and keeps the previous schedule.
+
+- **Customer or Admin still seeing old time**
+  - Reschedule did not complete successfully.
+  - Frontend cache not refreshed yet; confirm by reloading the screen or re-opening the order.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+- Verify that **reschedule is only allowed for In Progress orders** and hidden or disabled for other states.  
+- After a successful reschedule:
+  
+  - Confirm **pickup date/time** match across:
+    - Vendor App order details
+    - Admin Panel order details
+    - Customer App/Website tracking views
+  
+  - Check that the **Admin order activity log** adds a clear reschedule entry with timestamp.  
+  - Confirm the **customer email** is sent with the correct new date/time and no conflicting old schedule.
+
+- Test edge cases:
+  
+  - Multiple reschedules on the same order and how they appear in the activity log.  
+  - Rescheduling close to the current time (for example, within the same day).  
+  - Behavior when the network drops mid-reschedule (order should keep the previous confirmed schedule).
+
+</Callout>

@@ -238,6 +238,10 @@
               {
                 "title": "Reserved Order",
                 "path": "reserved-order"
+              },
+              {
+                "title": "Reschedule",
+                "path": "reschedule"
               }
             ],
             "icon": "align-center"
