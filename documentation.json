@@ -200,6 +200,10 @@
                 "path": "available-orders"
               },
               {
+                "title": "Unlock Lead",
+                "path": "unlock-lead"
+              },
+              {
                 "title": "InProgress Orders",
                 "path": "inprogress-orders"
               },

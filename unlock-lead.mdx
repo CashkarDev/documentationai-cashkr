@@ -1,0 +1,182 @@
+---
+title: Unlock Lead
+description: >-
+  See how vendors unlock leads from Available Orders, including credit checks,
+  max lead limits, state transitions, and common outcomes.
+---
+## Overview
+
+Unlock Lead lets you take ownership of a customer lead in your service area so you can move it into your pickup workflow.
+
+The screen shows a list of **available leads** within your configured service area, each with an option to **Unlock** the lead for pickup. Leads shown here come from the [Available Orders](/available-orders) list.
+
+<Callout kind="info" collapsed="false">
+  - The system checks your **available credits** and **max lead cap** before every unlock.
+
+  - On successful unlock, the order moves from **Available Orders** to your **InProgress Orders** list.
+
+  - The system **deducts credits per lead** only when the unlock succeeds.
+</Callout>
+
+## Unlock flow for vendors
+
+Use this flow whenever you want to take a new customer lead.
+
+<Steps>
+  <Step title="Open Available Leads" icon="list-ordered" title-type="p">
+    Open the **Available Leads** tab in the Vendor App. This shows all leads in your service area that are not yet assigned to any vendor.
+  </Step>
+
+  <Step title="Review lead details" icon="eye" title-type="p">
+    Tap a lead to review key information such as customer location, device details, offered price, and preferred pickup slot. Confirm that the lead fits your service area and capacity.
+  </Step>
+
+  <Step title="Attempt to unlock" icon="lock" title-type="p">
+    Tap **Unlock** on the selected lead. The system records your unlock attempt and starts the gating checks.
+  </Step>
+
+  <Step title="System runs gating checks" icon="settings" title-type="p">
+    Behind the scenes, the system validates:
+
+    - **Available credits**: Your credit balance must cover the configured **per lead** cost.
+
+    - **Max lead cap**: You must be below your configured **Max Lead** limit for active orders.
+
+    If both checks pass, the unlock continues. If any check fails, the unlock is blocked and you see an error message.
+  </Step>
+
+  <Step title="Lead moves to In Progress on success" icon="arrow-right" title-type="p">
+    When the unlock succeeds:
+
+    - The order disappears from **Available Orders** and is no longer visible to other vendors.
+
+    - The order appears in your **InProgress Orders** list as an active pickup.
+
+    - The system deducts the relevant **credits per lead** from your balance.
+
+    You can now manage the order through [InProgress Orders](/inprogress-orders) and continue with call disposition, reschedule, or pickup actions.
+  </Step>
+</Steps>
+
+## System behavior and logic
+
+This section explains what the system does when you unlock a lead.
+
+### Credit deduction
+
+The platform charges you only for successful unlocks.
+
+- The system **deducts credits per lead** immediately after a successful unlock.
+
+- If the unlock fails for any reason, the system **does not deduct credits**.
+
+- You can review and purchase more credits from the [Buy Credits](/buy-credits) section. Credits become usable only after admin approval, then they are available for unlocks.
+
+### Max lead and reservation rules
+
+The Max Lead limit controls how many active leads you can handle at the same time.
+
+- If unlocking this lead would **exceed your Max Lead cap**, the system blocks the unlock and may treat the order as **reserved** based on configuration.
+
+- Reserved behavior is explained in more detail in [Reserved Order](/reserved-order).
+
+- When you complete or fail existing orders and drop below the Max Lead cap, you become eligible to unlock new leads again.
+
+### Same customer auto-assignment
+
+When you unlock a lead for a customer, the system tries to keep all that customer's related orders with you.
+
+- If the same customer creates **additional orders**, the system can **auto-assign** those orders to you instead of exposing them to all vendors.
+
+- This reduces duplicate visits and improves coordination with the customer.
+
+- For the full rules on how related orders are linked and assigned, see [Same Customer Order](/same-customer-order).
+
+## Where the order goes after unlock
+
+After a successful unlock:
+
+- The order leaves the shared [Available Orders](/available-orders) pool.
+
+- The order appears under **In Progress** on the **InProgress Orders** screen.
+
+- Only **unlocked orders** appear in InProgress; you will not see locked/available orders there.
+
+Refer to [InProgress Orders](/inprogress-orders) for how to manage orders after unlock.
+
+## Common outcomes and error states
+
+### Unlock success
+
+The unlock succeeds when:
+
+- You have **enough approved credits** for at least one lead.
+
+- You are **below the Max Lead cap**.
+
+- The lead is still **available** and not taken by another vendor.
+
+You see the lead move into **In Progress**, and your credit balance decreases by the configured per-lead cost.
+
+### Insufficient credits
+
+If your **credit balance is too low**, the system blocks the unlock:
+
+- The unlock button action fails with an error related to **insufficient credits**.
+
+- The order remains in **Available Leads** for other eligible vendors.
+
+- You do not lose any credits in this case.
+
+To fix this, go to [Buy Credits](/buy-credits), add credits, wait for admin approval, then try unlocking again.
+
+### Max lead reached
+
+If you have already reached your **Max Lead** limit:
+
+- The system prevents the unlock and shows an error related to **Max Lead reached** or capacity limits.
+
+- In some configurations, the order may be **reserved** and kept from other vendors until your capacity frees up.
+
+- You must complete, fail, or close existing In Progress orders before unlocking more leads.
+
+See [Max Lead](/max-lead) and [Reserved Order](/reserved-order) for detailed rules.
+
+### Lead already taken
+
+Because multiple vendors can see the same available lead, another vendor might unlock it first:
+
+- If another vendor unlocks the lead before your attempt is processed, your unlock fails with a **lead already taken** message.
+
+- The lead disappears from your **Available Leads** list.
+
+- No credits are deducted from your account for a failed unlock of this type.
+
+In this case, select another available lead and try again.
+
+## Admin connections
+
+Unlock behavior depends on admin-side configuration and monitoring.
+
+- **Vendor credits**: Admins manage your credit purchases, approvals, and adjustments from the **Vendor Credits** section. Only approved credits count toward unlock eligibility.
+
+- **Max Lead config**: Admins configure your **Max Lead** limit, which controls how many active leads you can hold in In Progress at once.
+
+- **Order status in Admin Panel**: In the **Orders** section of the Admin Panel, admins see when an order is **locked by a vendor**, which vendor owns it, and how it progresses through the lifecycle.
+
+These admin settings explain why an unlock may be allowed or blocked for your account.
+
+## Developer and tester notes
+
+<Callout kind="tip" collapsed="false">
+  - When testing unlocks, vary **credit balance** and **Max Lead** values to verify all outcomes: success, insufficient credits, max lead reached, and lead taken by another vendor.
+
+  - Confirm that **credits are only deducted** on successful unlocks, not on failed attempts.
+
+  - Validate **state transitions** in both Vendor App and Admin Panel: Available Orders → Unlock Lead → InProgress Orders, and verify the locked-by-vendor flag in the Admin order view.
+
+  - For regression testing of related-order logic, include scenarios where the same customer creates multiple orders and confirm **auto-assignment** rules match [Same Customer Order](/same-customer-order).
+
+  ##
+</Callout>
+
