@@ -1,0 +1,83 @@
+---
+title: Body Condition Selection Logic
+description: Reference logic for setting selectedBodyCondition from warranty condition and body issue flag, including handled cases and known gaps.
+---
+
+## Overview
+
+Body condition selection logic derives `selectedBodyCondition` from the device's warranty condition and body issue flag for downstream pricing and evaluation flows.
+
+<Callout kind="info">
+
+This logic assigns `selectedBodyCondition` only when `isDeviceBodyIssue` is `"No"`.  
+If `isDeviceBodyIssue` is `"Yes"`, this logic does not run and separate rules must determine `selectedBodyCondition`.
+
+</Callout>
+
+## Inputs and outputs
+
+This logic uses two inputs and produces a single output.
+
+- **Input: `selectedWarrantyCondition`**
+  - Allowed values: `W1`, `W2`, `W3`, `W4`.
+
+- **Input: `isDeviceBodyIssue`**
+  - Allowed values: `"Yes"`, `"No"`.
+
+- **Output: `selectedBodyCondition`**
+  - Allowed values in this logic: `B1`, `B2`.
+
+If the input values are outside these sets, the behavior depends on the caller; this page only defines the mapping when the values are valid.
+
+## Selection rules
+
+### Rule 1: Warranty `W1` or `W2` with no body issue
+
+- **If**:
+  - `selectedWarrantyCondition` is `W1` **or** `W2`, **and**
+  - `isDeviceBodyIssue` is `"No"`
+- **Then**:
+  - Set `selectedBodyCondition` to `B1`.
+
+### Rule 2: Warranty `W3` or `W4` with no body issue
+
+- **If**:
+  - `selectedWarrantyCondition` is `W3` **or** `W4`, **and**
+  - `isDeviceBodyIssue` is `"No"`
+- **Then**:
+  - Set `selectedBodyCondition` to `B2`.
+
+## Pseudocode
+
+<CodeGroup tabs="TypeScript">
+
+```typescript
+// Inputs:
+// - selectedWarrantyCondition: "W1" | "W2" | "W3" | "W4"
+// - isDeviceBodyIssue: "Yes" | "No"
+// Output:
+// - selectedBodyCondition: "B1" | "B2" | undefined
+
+if (
+  (selectedWarrantyCondition === "W1" || selectedWarrantyCondition === "W2") &&
+  isDeviceBodyIssue === "No"
+) {
+  selectedBodyCondition = "B1"
+} else if (
+  (selectedWarrantyCondition === "W3" || selectedWarrantyCondition === "W4") &&
+  isDeviceBodyIssue === "No"
+) {
+  selectedBodyCondition = "B2"
+} else {
+  // isDeviceBodyIssue === "Yes" or other cases:
+  // handled by separate body condition rules
+}
+
+```
+
+</CodeGroup>
+
+## Edge cases and notes
+
+- When `isDeviceBodyIssue` is `"Yes"`, this logic does not set `selectedBodyCondition`. A separate rule set must process all `"Yes"` cases.
+- The rules assume `selectedWarrantyCondition` has already been validated as one of `W1`, `W2`, `W3`, or `W4`.

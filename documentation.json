@@ -269,6 +269,10 @@
               {
                 "title": "In Depth Device Price Evaluation Logic",
                 "path": "in-depth-device-price-evaluation-logic"
+              },
+              {
+                "title": "Body Condition Selection Logic",
+                "path": "body-condition-selection-logic"
               }
             ]
           },
