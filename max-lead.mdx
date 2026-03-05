@@ -1,0 +1,191 @@
+---
+title: Max Lead
+description: Understand the Max Lead cap for vendors, how it limits in-progress leads, the same-customer exception, related credit checks, and common error states.
+---
+
+## Overview
+
+Max Lead limits how many leads you can have in **InProgress** at the same time. It prevents overloading your team and helps distribute work fairly between vendors.
+
+<Callout kind="info">
+
+Max Lead is a **per-vendor cap** on how many leads can be in the InProgress state. When you hit this cap, you cannot unlock more new leads until you complete or fail some of your existing ones.
+
+</Callout>
+
+## What Max Lead means
+
+Max Lead is a number configured for your vendor account in the Admin Panel. It counts all orders that appear under your [`InProgress Orders`](/inprogress-orders) list.
+
+- Every unlocked order that moves into InProgress consumes **1 Max Lead slot**.
+- When your current in-progress count reaches the Max Lead value, your Max Lead is considered **full**.
+- While Max Lead is full, the system blocks you from taking on additional new leads, except in the same-customer exception case.
+
+## Where Max Lead applies
+
+Max Lead applies in two main places:
+
+- **Vendor unlocking from Available Orders**
+
+  - When you try to unlock a new lead from [`Available Orders`](/available-orders), the system checks your current in-progress count against your Max Lead cap.
+  - If you are at or above your cap, the unlock fails with a Max Lead error (unless it qualifies for the same-customer bypass).
+
+- **Admin assigning orders to you**
+
+  - When an admin assigns an order to your vendor from the Admin Panel, the system performs the same Max Lead check.
+  - If you are already at Max Lead, the assignment **does not go through**, unless the order qualifies as a same-customer order for you.
+
+## Step-by-step: what happens when you unlock
+
+This is the standard flow when you try to unlock an order from the Available Orders screen.
+
+<Steps>
+
+<Step title="You try to unlock a lead" icon="play-circle">
+
+You choose an order from [`Available Orders`](/available-orders) and tap **Unlock**. The system identifies which vendor is unlocking and which customer/order this is for.
+
+</Step>
+
+<Step title="System checks your Max Lead usage" icon="settings">
+
+The system counts how many leads you currently have in [`InProgress Orders`](/inprogress-orders) and compares it to your Max Lead limit set in the Admin Panel.
+
+</Step>
+
+<Step title="If under cap, unlock succeeds" icon="check-circle">
+
+If your current in-progress count is **below** your Max Lead:
+
+- The unlock succeeds.
+- The order moves to your **InProgress Orders** list.
+- Your in-progress count increases by 1.
+
+You should immediately see the unlocked order under InProgress.
+
+</Step>
+
+<Step title="If at cap, system evaluates same-customer exception" icon="help-circle">
+
+If your current in-progress count is **already at or above** your Max Lead, the system checks whether this order qualifies as a **Same Customer Order** for you (see the exception section below).
+
+</Step>
+
+<Step title="Outcome: block or bypass" icon="alert-triangle">
+
+- If the order **does not** meet the Same Customer Order conditions, the system blocks the unlock and shows a Max Lead error message.
+- If the order **does** meet the Same Customer Order conditions, the system allows the order to be auto-assigned to you and adds it to InProgress, even though you are at Max Lead.
+
+</Step>
+
+</Steps>
+
+## Exception: Same Customer Order bypass
+
+Some orders from the **same customer** are allowed to bypass the Max Lead cap so you can continue handling all orders for that customer smoothly.
+
+<Callout kind="info">
+
+When an order qualifies as a **Same Customer Order** for your vendor, the system **ignores the Max Lead cap** for that order only and moves it into your InProgress list, even if you are already at Max Lead.
+
+</Callout>
+
+- **Vendor unlocks**
+
+  - If you try to unlock a Same Customer Order, the system auto-assigns it to you and places it under InProgress, regardless of your current Max Lead usage.
+
+- **Admin assignment**
+
+  - If an admin assigns a Same Customer Order to your vendor while you are at Max Lead, the assignment still succeeds and the order moves to your InProgress list.
+
+Read the full Same Customer Order rules and matching logic in [`Same Customer Order`](/same-customer-order).
+
+## Connections
+
+Max Lead interacts with other parts of the Vendor App and Admin Panel.
+
+- **Admin Panel vendor settings**
+
+  - An admin sets and updates your vendor’s Max Lead from the vendor section of the Admin Panel.
+  - Admins can **increase or decrease** this value at any time, which immediately changes how many in-progress leads you are allowed to hold.
+
+- **Available Orders and InProgress Orders**
+
+  - The unlock button on [`Available Orders`](/available-orders) uses your current Max Lead usage plus the Same Customer Order rules to decide whether to allow the unlock.
+  - [`InProgress Orders`](/inprogress-orders) is the main list that counts toward your Max Lead usage.
+
+- **Credits and other gates**
+
+  - Max Lead is **separate** from your credit balance.
+  - Even if your Max Lead is not full, you may still be blocked from unlocking because of **insufficient credits**; see [`Buy Credits`](/buy-credits) and [`Reserved Order`](/reserved-order) for how credit-based limits work.
+  - In the same way, even if you have enough credits, Max Lead can still block you when your in-progress cap is full.
+
+## Common states and errors
+
+This section covers what you are likely to see when Max Lead affects your workflow and how to interpret it.
+
+### Max Lead reached when unlocking
+
+When you try to unlock an order and your in-progress count is already at your Max Lead:
+
+- The system blocks the unlock.
+- You see an error message indicating that you have reached your **maximum allowed leads** or similar wording.
+- The order stays in **Available Orders** and does not appear in **InProgress Orders**.
+
+To continue unlocking new orders:
+
+- Complete or fail some existing InProgress orders so your in-progress count drops below the cap, or
+- Ask an admin to **increase your Max Lead** in the Admin Panel.
+
+### Same-customer unlock behaves differently
+
+If the order is a Same Customer Order for you:
+
+- You may **not see a Max Lead error**, even if you are already at cap.
+- The order moves into **InProgress** and increases your visible in-progress count beyond the numerical Max Lead value.
+- This is expected behavior and matches the Same Customer Order bypass rules.
+
+### Confusion with credit failures
+
+Credit issues can look similar to Max Lead failures but come from a different rule:
+
+- If you have **insufficient credits**, the unlock may fail **even when you are under Max Lead**.
+- These failures are tied to credit balance and reserved orders, not to the Max Lead cap.
+- For credit-related behavior and messages, refer to [`Buy Credits`](/buy-credits) and [`Reserved Order`](/reserved-order).
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+Use these checks when you debug or test Max Lead behavior across the Vendor App and Admin Panel.
+
+</Callout>
+
+- **Admin Panel configuration**
+
+  - Confirm the Max Lead value for the vendor in the Admin Panel vendor details.
+  - Adjust the value up/down to test behavior at low and high caps.
+
+- **Counting in-progress leads**
+
+  - Treat every order visible in [`InProgress Orders`](/inprogress-orders) as consuming 1 Max Lead slot.
+  - Same Customer Orders that bypass the cap should still appear in this list and count in the visible total, even when the total exceeds the configured Max Lead.
+
+- **Unlock flow tests**
+
+  - Test unlocking when:
+    - Current in-progress count is **below** Max Lead.
+    - Current in-progress count is **exactly equal** to Max Lead:
+      - With a regular (non-same-customer) order: expect **block** with Max Lead error.
+      - With a Same Customer Order: expect **bypass** and successful assignment.
+  - Confirm that unlock behavior is the same whether the action starts from the vendor app (unlock) or the Admin Panel (assign to vendor).
+
+- **Separation from credits**
+
+  - Verify that:
+    - When Max Lead is full but credits are sufficient, unlock is blocked due to Max Lead.
+    - When Max Lead has room but credits are insufficient, unlock is blocked due to credits, potentially creating reserved orders as described in [`Reserved Order`](/reserved-order).
+
+- **Edge conditions**
+
+  - If an admin reduces Max Lead **below** the current in-progress count, existing InProgress orders should remain assigned, but new unlocks should be blocked until the in-progress count falls back under the new cap, except for Same Customer Orders which still bypass the cap.

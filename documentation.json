@@ -242,6 +242,10 @@
               {
                 "title": "Reschedule",
                 "path": "reschedule"
+              },
+              {
+                "title": "Max Lead",
+                "path": "max-lead"
               }
             ],
             "icon": "align-center"
