@@ -273,6 +273,10 @@
               {
                 "title": "Body Condition Selection Logic",
                 "path": "body-condition-selection-logic"
+              },
+              {
+                "title": "Reserved Order Feature",
+                "path": "reserved-order-feature"
               }
             ]
           },

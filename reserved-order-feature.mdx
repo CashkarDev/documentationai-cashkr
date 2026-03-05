@@ -1,0 +1,196 @@
+---
+title: Reserved Order Feature
+description: Reserve multiple orders from the same customer and address for a single vendor, based on credits and Same Customer Order logic.
+---
+
+## Overview
+
+Reserved Order Feature keeps multiple related orders from the same customer with the same vendor, even when the vendor cannot unlock all of them immediately because of credit limits.
+
+<Callout kind="info">
+
+**Reserved Order** reserves additional orders from the same customer and pickup address for the vendor who already unlocked or has an in-progress order for that customer. While reserved, only that vendor can later unlock these orders; other vendors cannot see or unlock them.
+
+</Callout>
+
+This feature sits at the platform level and works together with:
+
+- Same Customer Order grouping and auto-assignment
+- Vendor App Reserved Order screen
+- Credit-based gating and Buy Credits flow
+- Admin Panel manual reassignment
+
+## When orders become reserved
+
+Orders only move into reserved state when a specific set of conditions is true.
+
+<Callout kind="info">
+
+Reserved Order triggers when a vendor unlocks one order for a customer, there are other related orders from the same customer and pickup address, and the vendor does not have enough credits to unlock all of them. The system then reserves the remaining related orders for that vendor and blocks other vendors from unlocking them.
+
+</Callout>
+
+Orders become reserved when all of these apply:
+
+- **Same customer and same pickup address**  
+  - Orders share the same customer identity and the same pickup address.  
+  - This follows the Same Customer Order grouping logic.
+
+- **Vendor has already unlocked or is in progress on one order**  
+  - The vendor has:
+    - Just unlocked one order from Available Orders for this customer, or  
+    - An existing order for this customer in InProgress Orders.
+
+- **Insufficient credits to unlock remaining related orders**  
+  - The system checks how many Same Customer Orders exist for that customer and address.  
+  - If the vendor does not have enough credits to unlock all of them right now:
+    - The first unlocked order moves to InProgress.  
+    - Remaining related orders move to **Reserved** instead of staying in Available Orders.
+
+- **Vendor eligibility filters still apply**  
+  - Only orders that already match the vendor’s:
+    - Service area / coverage  
+    - Supported device types or categories  
+  - are considered for reservation. If an order is not eligible for that vendor by configuration, it does not become reserved for them.
+
+## What reservation does
+
+Once the system marks orders as reserved for a vendor, their behavior changes for both that vendor and others.
+
+- **Locks orders to the same vendor**  
+  - Each reserved order is tagged internally with the vendor that triggered the reservation.  
+  - Only that vendor (or an admin) can act on that order while it remains reserved.
+
+- **Hides orders from other vendors**  
+  - Reserved orders do not appear in the Available Orders list for other vendors.  
+  - Other vendors cannot unlock or spend credits on those orders while they are in reserved state.
+
+- **Shows orders under Reserved in Vendor App**  
+  - On the Vendor App, these orders appear in the **Reserved Order** section.  
+  - From there, the vendor can:
+    - View that they have reserved leads from the same customer and address.  
+    - Unlock them later after adding enough credits.
+
+## End-to-end flow
+
+The following flow ties together customer behavior, vendor actions, credit checks, and reservation.
+
+<Steps>
+
+<Step title="Customer creates multiple orders" icon="users">
+
+- The same customer creates two or more leads using the same pickup address.
+- The system links these as Same Customer Orders and makes them available to eligible vendors based on service area and device type.
+
+</Step>
+
+<Step title="Vendor unlocks one order" icon="unlock">
+
+- A vendor sees one of these orders in Available Orders and unlocks it using credits.
+- The unlocked order moves to InProgress Orders for that vendor.
+
+</Step>
+
+<Step title="System checks remaining related orders and credits" icon="settings">
+
+- The system detects other orders from the same customer and pickup address that match the vendor’s eligibility.
+- It checks the vendor’s remaining credit balance against the cost to unlock all related orders.
+
+</Step>
+
+<Step title="Insufficient credits triggers reservation" icon="alert-triangle">
+
+- If the vendor has insufficient credits to unlock all remaining related orders:
+  - The system **reserves** those related orders for the same vendor.  
+  - These orders move to the **Reserved Order** section in the Vendor App.  
+  - Other vendors no longer see or can unlock these orders.
+
+</Step>
+
+<Step title="Customer creates more orders while one is in progress" icon="refresh-cw">
+
+- While the vendor still has an in-progress order for this customer and address, the customer may create additional orders.
+- For each new Same Customer Order:
+  - If the vendor remains eligible and credits are insufficient to unlock it immediately, the system reserves the new order for the same vendor.
+  - If credits are sufficient and auto-assignment rules allow, the new order may directly unlock or auto-assign to the same vendor instead of going to Reserved.
+
+</Step>
+
+<Step title="Vendor buys credits and unlocks reserved orders" icon="credit-card">
+
+- The vendor navigates to **Buy Credits** and adds enough credits.
+- After purchase, the vendor goes to the **Reserved Order** screen.
+- The vendor unlocks one or more reserved orders:
+  - Credits are deducted per unlock.
+  - Each unlocked order moves into InProgress Orders for that vendor.
+
+</Step>
+
+<Step title="Admin override when needed" icon="shield">
+
+- From the Admin Panel, an admin can reassign reserved orders:
+  - Change the assigned vendor if operationally required.
+  - Move an order out of reserved for exception handling.
+- After reassignment, new reservation and Same Customer Order logic applies based on the new vendor and configuration.
+
+</Step>
+
+</Steps>
+
+## Key rules and edge cases
+
+The rules below are important for product behavior, engineering logic, and QA expectations.
+
+- **Credits are still required**  
+  - Reservation never unlocks orders for free.  
+  - Vendors must pay credits to unlock each reserved order, same as a normal unlock.
+
+- **Admin reassignment overrides reservation**  
+  - Admins can manually assign or reassign a reserved order to another vendor from the Admin Panel.  
+  - Once reassigned, previous reservation locks no longer apply, and the new vendor’s credits and Same Customer Order rules take over.
+
+- **Different pickup address means no reservation**  
+  - Even if the same customer creates multiple orders:
+    - If pickup addresses differ, orders do **not** form a Same Customer Order group.  
+    - The system does not reserve these for a single vendor automatically.
+
+- **Vendor eligibility still applies to reserved orders**  
+  - The system only reserves orders the vendor is eligible to handle by:
+    - Service area  
+    - Device types / categories  
+  - Ineligible orders remain available for other vendors or for admin routing.
+
+- **Reservation duration and cleanup**  
+  - Reserved status persists until:
+    - The vendor unlocks the order, or  
+    - An admin manually intervenes.  
+  - If product introduces expiry behavior later, document duration and automatic release rules here.
+
+<Callout kind="tip">
+
+For QA, verify that:  
+- The same customer and pickup address condition is required.  
+- Orders disappear from other vendors’ Available Orders once reserved.  
+- Credits are still deducted when unlocking from Reserved, identical to a regular unlock.
+
+</Callout>
+
+## Connections to other features
+
+Reserved Order Feature interacts closely with several other parts of the system.
+
+- **Same Customer Order**  
+  - Reservation uses the Same Customer Order grouping to identify which orders from the same customer and address should stay with one vendor.  
+  - See [Same Customer Order](/same-customer-order) for grouping and auto-assignment logic.
+
+- **Reserved Order screen (Vendor App)**  
+  - Vendors manage reserved leads from the **Reserved Order** screen.  
+  - See [Reserved Order](/reserved-order) for Vendor App UI and actions.
+
+- **Buy Credits**  
+  - Vendors must maintain enough credits to unlock reserved orders.  
+  - See [Buy Credits](/buy-credits) for purchase flow and credit balance behavior.
+
+- **Admin Panel assignment**  
+  - Admins can override reservation and reassign leads when business rules require it.  
+  - Document exact Admin Panel flows in the Admin Panel section when available.
