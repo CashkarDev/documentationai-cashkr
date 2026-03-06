@@ -295,6 +295,10 @@
                 "path": "customer-order-flow-blocking-system"
               },
               {
+                "title": "Credit System",
+                "path": "credit-system"
+              },
+              {
                 "title": "Classes",
                 "path": "classes"
               }

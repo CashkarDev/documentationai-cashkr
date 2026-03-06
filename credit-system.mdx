@@ -1,0 +1,145 @@
+---
+title: Credit System
+description: Understand how vendor credits work, where they are enforced, and how they interact with Max Lead and other unlock checks during lead and order handling.
+---
+
+## What credits are
+
+<Callout kind="info">
+
+Credits act as a prepaid wallet balance for vendors. Vendors must maintain enough credits to unlock leads and process orders. `1` credit is equal to `₹10`.
+
+</Callout>
+
+Credits sit in the vendor wallet and the system deducts credits whenever a vendor successfully processes an order or unlocks a lead. If the unlock or order action fails, the system does not deduct any credits.
+
+## Where credits are used
+
+Credits are enforced at the moment of unlock or processing, not when an order first appears on any list.
+
+- **Available Orders:** The system checks credits when the vendor taps unlock from [Available Orders](/available-orders), not when the order first appears there.
+- **Unlock Lead:** Every unlock attempt on [Unlock Lead](/unlock-lead) runs a credit check and only deducts credits if the unlock succeeds.
+- **Reserved orders:** [Reserved Order](/reserved-order) entries still require credits to unlock. The system does not provide free unlocks for reserved items.
+- **Buying credits:** Vendors add balance through [Buy Credits](/buy-credits), and the system uses that balance for unlocks and order processing after admin approval.
+
+Even if an order is visible in Available Orders or marked as reserved, the system can still block the unlock later if the vendor no longer has enough credits or fails other checks.
+
+## Funding and approval flow
+
+<Callout kind="info">
+
+Vendors buy credits via QR payments under Buy Credits. Credits become available only after an admin approves the payment. The system never adds credits automatically based only on the QR payment.
+
+</Callout>
+
+After admin approval, the new credits appear in the vendor wallet balance and are available for lead unlocks and order processing.
+
+- To see how vendors initiate purchases, refer to [Buy Credits](/buy-credits).
+- For runtime unlock behavior, refer to [Unlock Lead](/unlock-lead).
+
+## How required credits are calculated
+
+Use the device type to decide which credit calculation logic applies for a given order or lead.
+
+<Tabs>
+<Tab title="Laptops" icon="monitor">
+
+For laptop orders, the system calculates the required credits based on the laptop price range. Higher-priced laptops map to higher credit requirements according to your configured ranges.
+
+When a vendor attempts to unlock a laptop order:
+
+- The system resolves the laptop price range for that lead.
+- It looks up the base credits configured for that price range.
+- It then applies the vendor type override rule if defined (see below).
+
+</Tab>
+<Tab title="Other devices" icon="smartphone">
+
+For phones, tablets, and Mac devices, each device belongs to a class, and you manually configure credits per class.
+
+- Class configuration lives in the shared classes configuration.
+- Each class has a fixed credit value, for example:
+  - Class A might require `50` credits.
+  - Class B might require `30` credits.
+
+When a vendor unlocks a non-laptop device, the system uses the credit value assigned to that device class.
+
+For more detail on class assignment and definitions, see [Classes](/classes).
+
+</Tab>
+</Tabs>
+
+## Vendor type credit override (laptops)
+
+Vendor type credits can override the base credits for laptop price ranges.
+
+- Base credits are configured per laptop price range.
+- Each vendor type can have its own override credit value.
+
+During a laptop credit transaction:
+
+- The system determines the base credits from the price range.
+- If the vendor type has a specific credit value defined, the system overrides the base credits with the vendor type value.
+
+**Example:**  
+If the base credit for the `₹1–₹10,000` laptop price range is `30` credits and vendor type `1` has `45` credits configured, the system uses `45` credits instead of `30` for that vendor type.
+
+## Credits vs other unlock checks
+
+<Callout kind="info">
+
+Credits, Max Lead, and order limits are independent checks. Any one of them can block an unlock or order action, even when the others pass.
+
+</Callout>
+
+Max Lead is separate from credits. A vendor can be blocked from unlocking a lead because:
+
+- Their wallet balance does not cover the required credits.
+- Their Max Lead cap is already full.
+- Other order-limit checks on Available Orders and related flows do not pass.
+
+The system evaluates these gates at unlock time. An order can appear in Available Orders or as a reserved order but still fail to unlock later if credits run out, Max Lead is full, or order limits block the action.
+
+## Runtime credit flow for lead unlock
+
+This is the high-level flow the system follows whenever a vendor tries to unlock a lead or process an order that requires credits, including unlocks that start from Available Orders or a reserved order.
+
+<Steps>
+<Step title="Check current wallet balance" icon="database">
+
+The system reads the vendor wallet balance and verifies that available credits are greater than or equal to the required credits for the target lead or order.
+
+If the vendor does not have enough credits, the unlock or action is blocked and no credits are deducted, even if the order is visible in Available Orders or reserved.
+
+</Step>
+<Step title="Compute required credits" icon="settings">
+
+The system computes required credits based on the device and context:
+
+- For laptops, it uses the configured price range credits and applies vendor type override if configured.
+- For other devices, it uses the credit value associated with the device class.
+
+This computation happens before any deduction or unlock.
+
+</Step>
+<Step title="Gate the unlock or action" icon="lock">
+
+If available credits are less than the computed requirement, the system prevents the unlock or order action. The vendor keeps their current balance unchanged.
+
+If there are sufficient credits, the system proceeds to attempt the unlock or order action, in parallel with other gates such as Max Lead and order limits.
+
+</Step>
+<Step title="Deduct credits on success only" icon="check-circle">
+
+When the unlock or order processing succeeds, the system deducts the required credits from the vendor wallet.
+
+If the unlock or order processing fails for any reason, including Max Lead or other order-limit failures, the system does not deduct any credits, and the vendor balance remains the same.
+
+</Step>
+</Steps>
+
+## Configuration reference screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1757060725.png" alt="Admin configuration screen for laptop price range and credit mapping" width="414" height="635" />
+
+Admin UI showing how laptop price ranges map to credits for the credit system.
