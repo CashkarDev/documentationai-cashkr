@@ -1,0 +1,242 @@
+---
+title: Device Assessment Workflow
+description: Understand how SBWPTA device assessments are captured and mapped into pricing evaluation requests, including dead-device handling.
+---
+
+## Overview
+
+Device assessment standardizes how Cashkr captures a device's condition before pricing. The SBWPTA fields (Screen, Body, Warranty, Physical, Technical, Accessories) feed directly into the pricing engine and must be consistent across website, apps, and vendor tools.
+
+<Callout kind="info">
+
+Accurate SBWPTA inputs keep the website quote, vendor inspection, and final payout aligned. The same answers drive both the on-site calculator and the backend order pricing.
+
+</Callout>
+
+The pricing system starts from a class base price and then applies deductions or additions based on these condition inputs. If the device is dead or the computed price drops to zero or below, the system falls back to a dead-device price (or zero), as described in the pricing model.
+
+## Workflow (high level)
+
+Use this workflow as the logical order in which the UI and backend should collect and apply SBWPTA data.
+
+<Steps>
+
+<Step title="Check if the device is turned on" icon="check-circle">
+
+- Ask whether the device powers on and reaches the home screen.
+- Set `isDeviceTurnedOn` to `true` or `false` in the evaluation request.
+- If `isDeviceTurnedOn` is `false`, the pricing engine stops early and uses the dead-device price.
+
+</Step>
+
+<Step title="Capture screen condition or size (S)" icon="monitor">
+
+- For phones and tablets, select a screen-condition code: `S1`–`S5` (for example, scratches, cracked, faulty, not usable).
+- For laptops, capture screen size (for example, 10–12 inch, 13–14 inch, 15–16 inch, above 16 inch) while still mapping to an `S` code when applicable.
+- Store the answer as a single `screenCondition` code and, for laptops, as a `screenSize` value in the evaluation request.
+
+</Step>
+
+<Step title="Capture body condition (B)" icon="smartphone">
+
+- Record the overall external body condition (for example, good, average, below average).
+- Map this choice to one of `B1`–`B4`.
+- Store the answer as a single `bodyCondition` code.
+
+</Step>
+
+<Step title="Capture warranty status (W)" icon="shield">
+
+- Ask for remaining manufacturer warranty based on device type.
+- For mobiles and tablets: map ranges like 0–3 months, 3–6 months, 6–11 months, above 11 months to `W1`–`W4`.
+- For MacBooks and laptops: map ranges like 0–3 months, 3–11 months, above 11 months to the same `W` code set.
+- Store the answer as a single `warrantyStatus` code.
+
+</Step>
+
+<Step title="Capture physical issues (P)" icon="alert-triangle">
+
+- Ask about additional physical issues such as display changed, bent device, back glass broken, or physical button issues.
+- Map each selected issue to a `P` code within `P1`–`P4`.
+- Store all selected codes as a `physicalCondition` array.
+
+</Step>
+
+<Step title="Capture technical issues (T)" icon="terminal">
+
+- Ask about technical or functional issues, such as restart problem, sensors problem, front or back camera, microphone, speaker, Face ID, fingerprint, Bluetooth, Wi‑Fi, network, vibration, charging, battery/service, or motherboard problems.
+- Map each selected issue to a `T` code within `T1`–`T15`.
+- Store all selected codes as a `technicalCondition` array.
+
+</Step>
+
+<Step title="Capture accessories (A)" icon="package">
+
+- Ask which original accessories are available (for example, bill, box, charger).
+- Map each accessory to an `A` code within `A1`–`A4`.
+- Store all selected codes as an `accessories` array.
+
+</Step>
+
+<Step title="Run price evaluation" icon="bar-chart">
+
+- Combine class/variant details with SBWPTA and `isDeviceTurnedOn` into a single evaluation payload.
+- The evaluation service applies warranty, body, screen, physical, technical, and accessory logic in a fixed order.
+- If calculated price is less than or equal to zero, or if the device is dead, the service returns the dead-device price (or zero).
+
+</Step>
+
+</Steps>
+
+## Assessment dimensions (SBWPTA)
+
+Each SBWPTA dimension has a fixed code range that maps directly to fields on the evaluation request object. These fields must stay in sync with the pricing logic.
+
+### Screen condition or size (S1–S5)
+
+Screen assessment captures either condition (phones/tablets) or size (laptops) and maps to `screenCondition` or `screenSize`.
+
+- **Mobiles / tablets:** Use `S1`–`S5` to represent states like:
+  - Scratches on screen
+  - Cracked screen
+  - Faulty screen
+  - Screen not usable
+- **Laptops:** Represent screen size as `S1`–`S5` buckets (for example, 10–12 inch, 13–14 inch, 15–16 inch, above 16 inch) and store the actual size bucket in `screenSize`.
+
+This is typically a **single-select** choice and becomes a single `screenCondition` code (and, for laptops, a `screenSize` value) in the evaluation request. The pricing engine applies screen-related deductions after body and warranty logic.
+
+### Body condition (B1–B4)
+
+Body condition captures the overall exterior quality and maps to `bodyCondition`.
+
+Typical options include:
+
+- Good
+- Average
+- Below average
+- Heavily used / worse than below average (still mapped within `B1`–`B4`)
+
+This is a **single-select** choice and becomes a single `bodyCondition` code. The engine uses it early in the strategy chain to adjust the base price.
+
+### Warranty status (W1–W4)
+
+Warranty status captures remaining manufacturer warranty and maps to `warrantyStatus`.
+
+- **Mobiles / tablets:** Ranges map to `W1`–`W4`:
+  - 0–3 months
+  - 3–6 months
+  - 6–11 months
+  - Above 11 months
+- **MacBooks / laptops:** Ranges map to `W` codes:
+  - 0–3 months
+  - 3–11 months
+  - Above 11 months
+
+This is also a **single-select** choice and becomes a single `warrantyStatus` code. The pricing engine applies warranty adjustments alongside body and screen logic.
+
+### Physical condition issues (P1–P4)
+
+Physical condition captures additional structural or cosmetic problems beyond the main body grade and maps to `physicalCondition`.
+
+Common issues to map to `P1`–`P4` include:
+
+- Display changed
+- Bent device
+- Back glass broken
+- Physical button issues
+
+This is a **multi-select** dimension. Each chosen issue becomes one entry in the `physicalCondition` **array**. The pricing engine iterates this array and applies deductions for each relevant `P` code.
+
+### Technical condition issues (T1–T15)
+
+Technical condition captures functional hardware/software problems and maps to `technicalCondition`.
+
+Typical issues (mapped within `T1`–`T15`) include:
+
+- Restart problem
+- Sensors problem
+- Front camera problem
+- Back camera problem
+- Microphone problem
+- Speaker problem
+- Face ID problem
+- Fingerprint problem
+- Bluetooth problem
+- Wi‑Fi problem
+- Network problem
+- Vibration problem
+- Charging problem
+- Battery / service problem
+- Motherboard problem
+
+This is also a **multi-select** dimension. Each chosen issue becomes one entry in the `technicalCondition` **array**. The pricing engine applies technical deductions after body, screen, and physical strategies.
+
+### Accessories (A1–A4)
+
+Accessories capture the presence of original items and map to `accessories`.
+
+Typical accessory codes within `A1`–`A4` represent:
+
+- Bill
+- Box
+- Charger
+- Other approved accessories (earphones, etc.) if supported by the model
+
+This is a **multi-select** dimension. Each accessory present becomes one entry in the `accessories` **array**. Missing accessories can trigger deductions, while available accessories can reduce deductions or keep the price closer to the base.
+
+## How assessment maps to price evaluation
+
+The evaluation service receives a structured payload, applies a fixed strategy order, and returns a final price or dead-device price. At a high level:
+
+- Start from the class base price.
+- Apply warranty, body, and screen-related logic.
+- Apply deductions based on `physicalCondition` and `technicalCondition` arrays.
+- Adjust for missing accessories.
+- If the device is dead (`isDeviceTurnedOn` is `false`) or the computed price is less than or equal to zero, return the configured dead-device price (or zero).
+
+<Callout kind="info">
+
+The same evaluation logic runs for the website calculator and within the Sell Device flow. Keeping SBWPTA mappings consistent avoids quote vs. inspection mismatches.
+
+</Callout>
+
+<CodeGroup tabs="Evaluation payload">
+
+```json
+{
+  "classId": "device-class-identifier",
+  "variantId": "device-variant-identifier",
+  "isDeviceTurnedOn": true,
+  "bodyCondition": "B2",
+  "screenCondition": "S3",
+  "screenSize": "13-14-inch",
+  "warrantyStatus": "W2",
+  "physicalCondition": [
+    "P1",
+    "P3"
+  ],
+  "technicalCondition": [
+    "T4",
+    "T13"
+  ],
+  "accessories": [
+    "A1",
+    "A3"
+  ]
+}
+```
+
+</CodeGroup>
+
+This example shows the **shape** of the evaluation request, not real identifiers or amounts. The `screenSize` field is relevant for laptops, while `bodyCondition`, `screenCondition`, `warrantyStatus`, `physicalCondition`, `technicalCondition`, `accessories`, and `isDeviceTurnedOn` align directly with the SBWPTA workflow.
+
+If `isDeviceTurnedOn` is `false`, the pricing engine skips the detailed deduction chain and returns the dead-device price immediately.
+
+## Related pages
+
+- [Pricing system](/pricing-system)
+- [In depth device price evaluation logic](/in-depth-device-price-evaluation-logic)
+- [Body condition selection logic](/body-condition-selection-logic)
+- [Sell Device flow](/sell-device-flow)
+- [Device price calculator](/device-price-calculator)
+- [Core features](/core-features)
