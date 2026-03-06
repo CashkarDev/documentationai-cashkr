@@ -267,6 +267,10 @@
             "group": "Core Features",
             "pages": [
               {
+                "title": "Vendor Tier Access Control System(phone,mac,tablet)",
+                "path": "vendor-tier-access-control-systemphonemactablet"
+              },
+              {
                 "title": "In Depth Device Price Evaluation Logic",
                 "path": "in-depth-device-price-evaluation-logic"
               },

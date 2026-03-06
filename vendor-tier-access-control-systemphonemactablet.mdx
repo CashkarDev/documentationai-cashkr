@@ -1,0 +1,321 @@
+---
+title: 'Vendor Tier Access Control System(phone,mac,tablet)'
+description: Tier-based access control and credit calculation rules that govern which vendor types can see and unlock phone, Mac, and tablet orders.
+---
+
+## Overview
+
+The vendor tier access control system defines which tiers each vendor type can access and how many credits are deducted when they unlock a lead for phones, Macs, and tablets.
+
+<Callout kind="info">
+
+Tiers classify device models and control which vendors can access which devices and orders. Available Orders visibility includes a tier match check, and Unlock then checks credits and Max Lead.
+
+</Callout>
+
+The rules on this page:
+
+- Restrict which tiers each vendor type can access.
+- Set base credit values for each tier.
+- Add extra credits for specific vendor-type and tier combinations.
+- Ensure unauthorized access attempts fail with a clear error.
+
+## Vendor access matrix
+
+Use the vendor type to determine which tiers a vendor can see and unlock in Available Orders.
+
+<Tabs>
+
+<Tab title="Vendor Type 1" icon="users">
+
+- **Accessible tiers**: Tier 1 only  
+- **Access level**: Most restrictive  
+- **Notes**: Cannot access Tier 2 or Tier 3 under any condition.
+
+</Tab>
+
+<Tab title="Vendor Type 2" icon="users">
+
+- **Accessible tiers**: Tier 2 only  
+- **Access level**: Moderate  
+- **Notes**: No visibility or unlock rights for Tier 1 or Tier 3.
+
+</Tab>
+
+<Tab title="Vendor Type 3" icon="users">
+
+- **Accessible tiers**: Tier 1 and Tier 2  
+- **Access level**: Enhanced  
+- **Notes**: Cannot access Tier 3.
+
+</Tab>
+
+<Tab title="Vendor Type 4" icon="users">
+
+- **Accessible tiers**: Tier 2 and Tier 3  
+- **Access level**: Advanced  
+- **Notes**: Cannot access Tier 1.
+
+</Tab>
+
+<Tab title="Vendor Type 5" icon="users">
+
+- **Accessible tiers**: Tier 1, Tier 2, and Tier 3  
+- **Access level**: Full access  
+- **Notes**: Can access all tiers without extra bonus credits.
+
+</Tab>
+
+</Tabs>
+
+Access control always runs before credit checks or unlock logic. If a vendor requests a tier they do not have access to, the system rejects the request immediately.
+
+## Tier base credits
+
+Each tier has a fixed base credit value. These values apply across vendor types before extra bonuses are added.
+
+- **Tier 1**: 100 credits (premium tier, highest value)
+- **Tier 2**: 70 credits (standard tier, moderate value)
+- **Tier 3**: 30 credits (basic tier, lowest value)
+
+Base credits are always part of the deduction when the lead is successfully unlocked.
+
+## Extra credit rules
+
+The system applies additional credits based on specific vendor type and tier combinations.
+
+- **Rule 1: Vendor Types 2 and 3 bonuses**
+  - Accessing Tier 2: **+15** extra credits.
+  - Accessing Tier 1: **+20** extra credits.
+- **Rule 2: Vendor Type 1 premium bonus**
+  - Accessing Tier 1: **+70** extra credits.
+- **Rule 3: Default case**
+  - All other vendor-type and tier combinations: **0** extra credits.
+
+Total credits deducted on successful unlock:
+
+- **Total credits** = base credits for the tier + extra credits by rule.
+
+## Runtime decision flow
+
+The following steps show how the system decides whether a vendor can access a tier and how many credits to deduct on unlock.
+
+<Steps>
+
+<Step title="Resolve device tier" icon="terminal">
+
+Determine the tier (Tier 1, Tier 2, or Tier 3) for the order based on the device model (phone, Mac, or tablet) and configured tier mappings.
+
+- Use the tiers system to map the device to a tier.
+- Pass the resolved tier to Available Orders and Unlock logic.
+
+</Step>
+
+<Step title="Check vendor-tier access" icon="shield">
+
+Run an access check for the vendor type and the resolved tier.
+
+- If `canAccessTier(vendorType, tier)` returns `false`, deny access.
+- Return an error such as `"Vendor type 1 cannot access tier 2"` and stop processing.
+- If access is allowed, continue to credit calculation.
+
+</Step>
+
+<Step title="Compute credits for unlock" icon="database">
+
+Combine base credits and extra credits for the given vendor type and tier.
+
+- Look up base credits for the tier.
+- Apply extra credits based on the special pricing rules.
+- Compute `totalCredits = baseCredits + extraCredits`.
+
+</Step>
+
+<Step title="Validate credits and Max Lead" icon="settings">
+
+Before unlocking, use the Unlock logic:
+
+- Check that available credits are greater than or equal to `totalCredits`.
+- Check that the unlock does not exceed the vendor Max Lead cap.
+- If either check fails, do not unlock and do not deduct credits.
+
+</Step>
+
+<Step title="Unlock lead and deduct credits" icon="check-circle">
+
+If access and credit checks pass:
+
+- Unlock the lead for the vendor.
+- Deduct `totalCredits` from the vendor credit balance.
+- Confirm unlock success back to the Vendor App.
+
+</Step>
+
+</Steps>
+
+## Pseudocode implementation
+
+Use this TypeScript-style pseudocode as a reference for implementing the access control and credit calculation logic.
+
+<CodeGroup tabs="TypeScript">
+
+```ts
+type VendorType = 1 | 2 | 3 | 4 | 5
+type Tier = 1 | 2 | 3
+
+function canAccessTier(vendorType: VendorType, tier: Tier): boolean {
+  if (vendorType === 1) {
+    return tier === 1
+  }
+
+  if (vendorType === 2) {
+    return tier === 2
+  }
+
+  if (vendorType === 3) {
+    return tier === 1 || tier === 2
+  }
+
+  if (vendorType === 4) {
+    return tier === 2 || tier === 3
+  }
+
+  if (vendorType === 5) {
+    return tier === 1 || tier === 2 || tier === 3
+  }
+
+  return false
+}
+
+function getBaseCredits(tier: Tier): number {
+  if (tier === 1) return 100
+  if (tier === 2) return 70
+  return 30 // tier 3
+}
+
+function calculateExtraCredits(vendorType: VendorType, tier: Tier): number {
+  // Rule 1: Vendor Types 2 & 3 bonuses
+  if ((vendorType === 2 || vendorType === 3) && tier === 2) {
+    return 15
+  }
+  if ((vendorType === 2 || vendorType === 3) && tier === 1) {
+    return 20
+  }
+
+  // Rule 2: Vendor Type 1 premium bonus
+  if (vendorType === 1 && tier === 1) {
+    return 70
+  }
+
+  // Rule 3: Default case
+  return 0
+}
+
+function getTotalCredits(vendorType: VendorType, tier: Tier): number {
+  const base = getBaseCredits(tier)
+  const extra = calculateExtraCredits(vendorType, tier)
+  return base + extra
+}
+
+function unlockLead(vendorType: VendorType, tier: Tier, availableCredits: number, maxLeadOk: boolean): void {
+  if (!canAccessTier(vendorType, tier)) {
+    throw new Error(`Vendor type ${vendorType} cannot access tier ${tier}`)
+  }
+
+  const totalCredits = getTotalCredits(vendorType, tier)
+
+  if (!maxLeadOk) {
+    throw new Error("Max Lead limit reached")
+  }
+
+  if (availableCredits < totalCredits) {
+    throw new Error("Insufficient credits to unlock lead")
+  }
+
+  // Proceed with unlock...
+  // Deduct totalCredits from vendor balance only on successful unlock
+}
+```
+
+</CodeGroup>
+
+## Security and error handling
+
+The system enforces strict access control and clear error messages.
+
+- **Access validation**: Always call `canAccessTier(vendorType, tier)` before any unlock or pricing logic.
+- **Unauthorized access**: If access is not allowed, return a descriptive error and do not compute or deduct credits.
+- **Example error**: `"Vendor type 1 cannot access tier 2"`.
+- **Unlock safety**: Deduct credits only after a successful unlock, in line with the Unlock behavior.
+
+## Worked examples
+
+These examples show the exact totals for each vendor type and tier combination, preserving all existing business rules.
+
+### Example 1: Vendor Type 1
+
+- **Access**: Tier 1 only
+- **Calculation**: 100 (base) + 70 (extra) = **170 total credits**
+- **Note**: Receives the highest bonus despite limited access.
+
+### Example 2: Vendor Type 2
+
+- **Access**: Tier 2 only
+- **Calculation**: 70 (base) + 15 (extra) = **85 total credits**
+
+### Example 3: Vendor Type 3
+
+- **Access**: Tiers 1 and 2
+- **Tier 1**: 100 (base) + 20 (extra) = **120 total credits**
+- **Tier 2**: 70 (base) + 15 (extra) = **85 total credits**
+
+### Example 4: Vendor Type 4
+
+- **Access**: Tiers 2 and 3
+- **Tier 2**: 70 (base) + 0 (extra) = **70 total credits**
+- **Tier 3**: 30 (base) + 0 (extra) = **30 total credits**
+
+### Example 5: Vendor Type 5
+
+- **Access**: All tiers (1, 2, 3)
+- **Tier 1**: 100 (base) + 0 (extra) = **100 total credits**
+- **Tier 2**: 70 (base) + 0 (extra) = **70 total credits**
+- **Tier 3**: 30 (base) + 0 (extra) = **30 total credits**
+
+## Testing checklist
+
+Use this checklist to validate the implementation end-to-end.
+
+### Valid access tests
+
+- Confirm Vendor Type 1 can access Tier 1 and **cannot** access Tier 2 or Tier 3.
+- Confirm Vendor Type 2 can access Tier 2 and **cannot** access Tier 1 or Tier 3.
+- Confirm Vendor Type 3 can access Tiers 1 and 2 only.
+- Confirm Vendor Type 4 can access Tiers 2 and 3 only.
+- Confirm Vendor Type 5 can access Tiers 1, 2, and 3.
+
+### Credit calculation tests
+
+- Verify base credits for Tier 1, Tier 2, and Tier 3 are 100, 70, and 30 respectively.
+- For each worked example above, assert that `getTotalCredits` returns the documented totals.
+- Confirm that vendor types 4 and 5 never receive extra credits on any tier.
+
+### Invalid access tests
+
+- Attempt to access a tier that the vendor type cannot access and assert that the access check fails.
+- Validate that the error message includes both the vendor type and the requested tier.
+- Confirm that no credits are deducted when access is denied.
+
+### Edge and failure cases
+
+- Test behavior when vendor type is invalid or missing.
+- Test unlock when available credits are below the required total credits.
+- Test unlock when Max Lead is already reached.
+- Confirm that credits are deducted only when unlock succeeds and not on any failure path.
+
+## Related pages
+
+- [Tiers System](/tiers-system)
+- [Available Orders](/available-orders)
+- [Unlock Lead](/unlock-lead)
+- [Max Lead](/max-lead)
