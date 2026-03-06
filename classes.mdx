@@ -1,0 +1,196 @@
+---
+title: Classes
+description: Group devices into pricing classes (A, B, C, etc.) that define base price, credit rules, and downstream price calculations across Cashkr.
+---
+
+## What a class is
+
+<Callout kind="info">
+
+A class groups similar devices within a device type (phone, Mac, tablet, etc.) so the pricing engine can apply consistent credit and payout rules.
+
+Classes define the pricing profile for a segment, including base price and how adjustments (condition, coupons, vendor access, etc.) affect the final payout and vendor credit usage.
+
+</Callout>
+
+Classes:
+
+- Group devices into categories (A, B, C…) for easier credit and price assignment.
+- Live per device type (for example, phones have their own classes, Macs their own).
+- Feed both customer payout and vendor credit deduction logic.
+
+Classes do not store per-order pricing; they provide shared pricing inputs that other flows reuse.
+
+## Example class mapping
+
+Use classes to roughly separate premium, mid-range, and entry-level devices. The exact models inside each class can change over time; the pattern stays the same.
+
+<Tabs>
+  <Tab title="Class A" icon="zap">
+
+Premium / flagship devices for a given type.
+
+- **Device type example:** Phones
+- **Typical models:**
+  - Apple iPhone series (recent flagships)
+  - Samsung S series
+
+Common usage: highest base price and tighter discount rules for minor issues.
+
+  </Tab>
+  <Tab title="Class B" icon="bar-chart">
+
+Mid-range devices for a given type.
+
+- **Device type example:** Phones
+- **Typical models:**
+  - OnePlus (mid-range lines)
+  - Vivo V series
+
+Common usage: medium base price with moderate adjustments for condition and coupons.
+
+  </Tab>
+  <Tab title="Class C" icon="minus">
+
+Entry-level or budget devices for a given type.
+
+- **Device type example:** Phones
+- **Typical models:**
+  - Infinix (budget lines)
+  - Redmi basic models
+
+Common usage: lower base price with simpler discount logic, since margins are smaller.
+
+  </Tab>
+</Tabs>
+
+## How classes drive pricing
+
+Classes provide the base price and lookup keys that the pricing system uses when evaluating a specific device.
+
+<Steps>
+  <Step title="Resolve device type and class" icon="search">
+
+When a user selects a device (via website or app), the system first resolves:
+
+- Device type (phone, Mac, tablet, etc.)
+- The **class** for that specific model (A, B, C…)
+
+Success signal: you have a concrete `(deviceType, class)` pair, for example `("phone", "A")`.
+
+  </Step>
+
+  <Step title="Fetch class-level base price" icon="database">
+
+Use the resolved class to fetch pricing inputs:
+
+- **Base price** for a healthy, working device in that class.
+- Any class-level values that pricing strategies need (for example, dead price, condition adjustment table).
+
+Success signal: you have a numeric **base price** for the device context, not tied to a single order.
+
+  </Step>
+
+  <Step title="Apply condition and configuration adjustments" icon="settings">
+
+Starting from base price, apply additive or multiplicative adjustments driven by:
+
+- Device condition (body, screen, functionality)
+- Configuration (storage, variant)
+- Coupons and promotions
+- Vendor access or tier rules
+
+Conceptually:
+
+```text
+final price = base price ± adjustments
+  (condition, configuration, coupons, vendor access, etc.)
+```
+
+Success signal: the pricing engine returns a **final price** visible in both the Device Price Calculator and Sell Device flow.
+
+  </Step>
+
+  <Step title="Derive credit and payout from final price" icon="credit-card">
+
+Use the **final price** and class to determine:
+
+- Customer payout amount shown in flows.
+- Vendor credits charged or adjusted during order handling.
+
+The class ensures similar devices follow the same credit and price behavior, even as individual orders differ in condition or coupons.
+
+Success signal: for the same class and similar conditions, pricing and credit usage behave consistently across orders.
+
+  </Step>
+</Steps>
+
+## Where classes are configured
+
+Configure and maintain classes in the **Admin Panel** under the pricing configuration area.
+
+- Classes exist under the Products and Pricing section.
+- Each class stores:
+  - Base price for a healthy, working device.
+  - Dead / non-working device price and any other lookup data used by pricing strategies.
+- Changes to base price on a class flow through to:
+  - The **Device Price Calculator** on the website.
+  - The **Sell Device / order flow**.
+
+Coordinate class changes with any active campaigns or coupon setups so downstream prices stay aligned with expectations.
+
+## Testing checklist
+
+Use this checklist when adding or updating classes to confirm pricing and credits behave as expected.
+
+- **Class resolution**
+
+  - Verify each test device resolves to the expected class (A, B, C…) for its type.
+  - Confirm that no supported device falls back to an unintended default class.
+
+- **Base price propagation**
+
+  - Change base price for one test class and confirm:
+    - Device Price Calculator shows the updated starting price.
+    - Sell Device flow shows the same updated starting price for matching devices.
+
+- **Condition and adjustment behavior**
+
+  - For a device in each class (A, B, C), run through:
+    - Best condition vs poor condition
+    - With and without coupon
+    - With different vendor access levels
+  - Confirm final prices always follow `base price ± adjustments` in a predictable way.
+
+- **Credit and payout alignment**
+
+  - For the same device and class, compare:
+    - Customer payout amount.
+    - Vendor credits consumed or adjusted.
+  - Ensure both are consistent with the defined class behavior and do not drift after class updates.
+
+- **Regression checks**
+
+  - After changing one class, verify that:
+    - Other classes for the same device type are unaffected unless intended.
+    - Historical orders still display their stored prices correctly (no retroactive change if not designed).
+
+## Implementation notes (confirm)
+
+Use this section to track open questions and implementation clarifications around classes. Treat these as TODOs to resolve with product and engineering.
+
+- **Credit deduction logic**
+  - Does credit usage depend only on the **final price**, or does the **class label** (A/B/C) directly influence credit caps or discounts?
+  - Are there any class-specific credit multipliers or exceptions that differ from the raw final price?
+
+- **Dead price behavior**
+  - When a device does not turn on, do we always use the **dead price** from the class, or can coupons and vendor tiers still adjust it?
+  - Should dead price always be less than or equal to base price for the same class?
+
+- **Cross-surface consistency**
+  - Are there any flows (for example, vendor app requote, corporate buyback) that bypass the standard class-based pricing path?
+  - If yes, should those flows still pull base price and adjustments from the class, or maintain separate overrides?
+
+- **Versioning and audits**
+  - When you update base price on a class, do we store any version marker so orders can reference the price version used at quote time?
+  - Do admin logs capture who changed a class and when, for later debugging of pricing differences?

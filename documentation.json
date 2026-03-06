@@ -293,6 +293,10 @@
               {
                 "title": "Customer order flow Blocking system",
                 "path": "customer-order-flow-blocking-system"
+              },
+              {
+                "title": "Classes",
+                "path": "classes"
               }
             ]
           },
