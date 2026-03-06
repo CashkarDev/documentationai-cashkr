@@ -1,0 +1,168 @@
+---
+title: Tiers System
+description: Classify devices into three tiers by market demand and brand level to control which vendors can access which devices and see which orders.
+---
+
+## Overview
+
+Tiers classify device models by **market demand and brand level** and control which vendors can access which devices and orders.
+
+<Callout kind="info">
+
+Use tiers to group devices into premium, mid-range, and budget segments so you can align vendor access, pricing, and [Available Orders](/available-orders) visibility with business priorities.
+
+</Callout>
+
+## Tier definitions
+
+Use tiers at the device-model level. Each device belongs to exactly one tier.
+
+<Tabs>
+
+<Tab title="Tier 1 – Premium" icon="zap">
+
+Tier 1 covers high-demand, flagship, and premium brand devices.
+
+- **Tier 1 = Premium devices**
+- Typical examples:
+  - iPhone 16 Pro Max
+  - Samsung Z Fold series
+
+Use Tier 1 when the device is top-of-line in its brand, has strong resale demand, or requires experienced vendors.
+
+</Tab>
+
+<Tab title="Tier 2 – Mid-range" icon="bar-chart">
+
+Tier 2 covers mass-market, popular mid-range devices.
+
+- **Tier 2 = Mid-range popular devices**
+- Typical examples:
+  - Poco X3 Pro
+  - OnePlus Nord series
+
+Assign Tier 2 when the device is common, has consistent demand, and does not need the stricter controls of Tier 1.
+
+</Tab>
+
+<Tab title="Tier 3 – Budget" icon="minus">
+
+Tier 3 covers entry-level, low-demand, or budget devices.
+
+- **Tier 3 = Budget / low-demand devices**
+- Typical examples:
+  - Redmi Note 12
+  - Infinix budget models
+
+Use Tier 3 when the device has low resale value or limited demand but you still want it available to vendors.
+
+</Tab>
+
+</Tabs>
+
+## What tiers affect
+
+Tiers drive two main behaviors in the Vendor App and ops workflows.
+
+### Vendor access to devices
+
+Tiers help control **which vendors can access which devices** based on internal rules and configurations. Typical uses:
+
+- Allow only higher-tier vendors to work with premium (Tier 1) devices.
+- Broaden access to Tier 2 and Tier 3 devices to more vendors.
+- Align incentives and training by matching device complexity to vendor capability.
+
+The exact vendor-to-tier mapping is defined outside this page but always relies on the tier assigned to each device model.
+
+### Available Orders visibility
+
+The [Available Orders](/available-orders) list shows only orders that pass a set of filters, including a **tier match** check.
+
+- Each order has a **minimum tier requirement** attached to the device.
+- Each vendor has an assigned **vendor tier**.
+- **Tier match rule:** the vendor tier must meet the minimum tier requirement defined for the order.
+- If the vendor fails this tier check (or any other Available Orders filter such as device type, pincode/service area, or vendor type), the order stays hidden from their Available Orders list.
+
+## Example scenarios
+
+These scenarios illustrate how tiers change vendor visibility without introducing any extra rules.
+
+### Scenario 1: Premium device hidden from lower-tier vendor
+
+- Device: iPhone 16 Pro Max → **Tier 1**
+- Order: requires minimum tier = **Tier 1**
+- Vendor A: vendor tier = **Tier 1**
+- Vendor B: vendor tier = **Tier 3**
+
+Outcome:
+
+- Vendor A sees the order in [Available Orders](/available-orders) (tier check passes).
+- Vendor B does not see the order (tier check fails, so the order is hidden).
+
+### Scenario 2: Budget device visible to multiple vendors
+
+- Device: Infinix budget model → **Tier 3**
+- Order: requires minimum tier = **Tier 3**
+- Vendor C: vendor tier = **Tier 2**
+- Vendor D: vendor tier = **Tier 3**
+
+Outcome:
+
+- Both Vendor C and Vendor D can see the order in [Available Orders](/available-orders), as they both meet or exceed the minimum tier requirement.
+
+## Common states and errors
+
+Tiers are simple, but two issues show up frequently in operations and testing.
+
+### Tier mismatch between vendor and order
+
+Symptom:
+
+- A vendor reports that an order is **missing** from [Available Orders](/available-orders).
+
+Possible cause:
+
+- The order requires a higher tier than the vendor has assigned.
+- The tier check fails, so the order remains hidden.
+
+How to debug:
+
+- Check the **device tier** for the order.
+- Check the **minimum tier requirement** stored on the order.
+- Check the **vendor tier**.
+- If the vendor tier is below the requirement, the behavior is correct and you do not need to change logic.
+
+### Device mis-tiered
+
+Symptom:
+
+- Premium devices show up for too many vendors.
+- Budget devices are restricted more than expected.
+
+Possible cause:
+
+- The device model is assigned to the wrong tier (for example, a flagship device accidentally set to Tier 3).
+
+How to debug and fix:
+
+- Review the device model and confirm its correct tier based on demand and brand level.
+- Update the device's tier classification.
+- After correction, new or recalculated orders will inherit the intended tier behavior.
+
+## Developer and tester notes
+
+<Callout kind="tip">
+
+When you integrate or test tier behavior, focus on three data points: **device tier**, **order minimum tier**, and **vendor tier**. All tier-based visibility outcomes follow from these values.
+
+</Callout>
+
+For backend and QA flows:
+
+- **Keep tiers data-driven.** Store tier values on the device model and ensure any order-level minimum tier is derived or explicitly set from that.
+- **Log tier decisions.** When filtering [Available Orders](/available-orders), include device tier, order minimum tier, and vendor tier in logs to make investigation straightforward.
+- **Create boundary test cases.**
+  - Vendor tier equal to order minimum tier.
+  - Vendor tier above order minimum tier.
+  - Vendor tier below order minimum tier (order must be hidden).
+- **Avoid encoding extra business rules** into tier checks. Use tiers only for demand/brand-level access control and visibility as described here; keep any unrelated constraints in their own fields and checks.

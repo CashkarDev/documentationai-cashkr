@@ -277,6 +277,10 @@
               {
                 "title": "Reserved Order Feature",
                 "path": "reserved-order-feature"
+              },
+              {
+                "title": "Tiers System",
+                "path": "tiers-system"
               }
             ]
           },
