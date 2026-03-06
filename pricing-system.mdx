@@ -1,0 +1,228 @@
+---
+title: Pricing system
+description: Understand how Cashkr derives the customer payout price from class base price, condition adjustments, and Admin Panel configuration.
+---
+
+## Overview
+
+Pricing system defines how Cashkr converts a device selection and condition into the **payout price shown to the customer** and vendors.
+
+Every price starts from a **class base price** and then applies deductions or additions based on condition, device configuration, coupons, and vendor access rules.
+
+<Callout kind="info">
+
+This page describes the **high-level pricing model**. For detailed condition mappings and strategy implementation, see:
+
+- [In Depth Device Price Evaluation Logic](/in-depth-device-price-evaluation-logic)
+- [Body Condition Selection Logic](/body-condition-selection-logic)
+
+</Callout>
+
+## Core concepts
+
+### Device model and variant
+
+A **device model/variant** represents a specific configuration that a customer can select on the website or apps.
+
+Typical dimensions:
+
+- Brand and model (for example, iPhone 13)
+- Storage or RAM variant
+- Network or other hardware variants
+
+Admin Panel Product configuration defines which models and variants exist and which pricing class they use.
+
+### Class
+
+A **class** groups similar devices that share a pricing profile.
+
+Each class defines:
+
+- **Base price** for a healthy, working device
+- **Dead price** for devices that do not turn on
+- Lookup data used by pricing strategies for condition and configuration adjustments
+
+Classes live in Admin Panel under Products and Pricing and act as the main input to the pricing engine.
+
+### Base price
+
+The **base price** is the starting payout amount for a device in a given class when it is in expected working condition and without major issues.
+
+Key points:
+
+- Base price is **stored on the class**, not per individual order.
+- Any change to base price in Admin Panel flows to both:
+  - Website **Device Price Calculator**
+  - Main **Sell Device / order flow**
+
+You rarely use the base price directly in UI; the system always passes it through the evaluation logic first.
+
+### Deductions and additions
+
+The evaluation logic converts device condition and configuration into numeric adjustments on top of the class base price.
+
+- **Deductions** decrease the payout:
+  - Body and screen issues (scratches, dents, cracks)
+  - Missing accessories or bill
+  - Functional issues
+  - Bad battery or other hardware problems
+
+- **Additions** increase the payout (when configured):
+  - Laptop or desktop hardware upgrades (for example higher RAM or SSD)
+  - Specific configuration bonuses
+
+The net adjustment can be positive, negative, or zero.
+
+### Dead price fallback
+
+If the device is **dead** (does not turn on), the evaluation strategies skip the usual adjustment flow and return the **dead price** configured on the class.
+
+If a computed price would drop to `0` or below (for example, severe issues on a low base price), the system also falls back to `dead price` (or `0` if no better option exists). This prevents negative or meaningless payouts.
+
+## High-level price calculation flow
+
+The pricing engine follows the same core flow for both the website calculator and the order journey.
+
+<Steps>
+  <Step title="Resolve device, class, and base price" icon="search">
+
+Identify the selected device model/variant and look up its **class** from Admin Panel configuration. Fetch the **base price** and **dead price** from that class.
+
+  </Step>
+
+  <Step title="Derive effective condition" icon="settings">
+
+Map customer answers (warranty status, body issues, functional questions) into a **body condition code** and related evaluation inputs. Body condition selection logic produces a `selectedBodyCondition` that downstream pricing uses.
+
+  </Step>
+
+  <Step title="Apply deductions and additions" icon="minus">
+
+Use class lookup tables and strategy rules to compute **total deductions** and **total additions** based on the effective condition and configuration. Subtract deductions and add additions to the base price.
+
+  </Step>
+
+  <Step title="Apply dead price and safety checks" icon="alert-triangle">
+
+If the device is marked **dead**, or if the computed price is less than or equal to `0`, return the class `deadPrice` instead (or `0` when no dead price is configured).
+
+  </Step>
+
+  <Step title="Enforce tier and vendor access rules" icon="shield">
+
+Tier settings control which device classes and orders specific vendors can see or act on. Tiers can also be used to align vendor-facing prices with business priorities, without changing the customer-visible payout logic.
+
+  </Step>
+
+  <Step title="Expose price to UI flows" icon="monitor">
+
+Surface the final payout price to:
+- The **Device Price Calculator** for quick estimates
+- The **Sell Device / order flow** for quotes and payouts
+
+Both use the **same underlying pricing logic**, so prices stay consistent.
+
+  </Step>
+</Steps>
+
+## Formula view
+
+The conceptual formula for non-dead devices is:
+
+<CodeGroup tabs="Formula">
+
+```txt
+If isDead:
+  Final Price = Dead Price
+Else:
+  Final Price = Base Price - Total Deductions + Total Additions
+  If Final Price <= 0:
+    Final Price = Dead Price (or 0)
+```
+
+</CodeGroup>
+
+Use this as a mental model. The actual implementation uses strategy objects and class-specific lookup tables as described in [In Depth Device Price Evaluation Logic](/in-depth-device-price-evaluation-logic).
+
+## Where pricing is configured and used
+
+### Admin Panel configuration
+
+All pricing inputs live in the Admin Panel:
+
+- **Products** define device models and variants.
+- **Classes** attach models to pricing profiles and store base and dead prices.
+- **Pricing** data on classes defines how condition, configuration, and other answers translate into numeric adjustments.
+
+When you change any of these values, the new prices propagate automatically to all customer-facing and vendor-facing flows that use the pricing engine.
+
+### Website and app touchpoints
+
+The pricing system powers:
+
+- **Device Price Calculator**  
+  Lets customers quickly estimate resale value before starting an order. It calls the same evaluation logic as the main flow.
+
+- **Sell Device / order flow (website and apps)**  
+  Uses the pricing engine to turn customer answers into a payout quote. Later requotes, vendor adjustments, or post-inspection changes still respect the same class and condition rules.
+
+- **Vendor app order pricing**  
+  Vendors see payout information that respects tier-based access and any vendor-specific constraints, derived from the same core class pricing.
+
+## Worked example
+
+This example illustrates how base price and adjustments combine into the final payout.
+
+- Device: Smartphone Model X, 128 GB
+- Class: **Class A**
+- Base price (Class A): `₹50,000`
+- Dead price (Class A): `₹8,000`
+
+Customer answers:
+
+- Device turns on and functions normally.
+- Screen has **visible scratches** (minor body issue).
+- Original bill is **missing**.
+- No hardware upgrades or positive adjustments apply.
+
+Evaluation result:
+
+- Total deductions:
+  - Screen scratches: `-₹2,000`
+  - Missing bill: `-₹1,500`
+- Total additions:
+  - None: `₹0`
+
+Computation:
+
+```txt
+Final Price = ₹50,000 - (₹2,000 + ₹1,500) + ₹0
+            = ₹50,000 - ₹3,500
+            = ₹46,500
+```
+
+The customer sees a payout quote of **₹46,500** in both the calculator and the order flow for these exact answers.
+
+If the same device were **dead**, the strategies would immediately return the **dead price** (`₹8,000`) instead of running this deduction flow.
+
+## Relationship to tiers
+
+Tiers do **not** change how the base price and condition adjustments are calculated. The pricing engine still computes the same final payout for a given class and condition.
+
+Tiers primarily affect:
+
+- **Which devices and orders vendors can access** in Available Orders and related views.
+- **How business priorities align** with which classes and models are visible to which vendors.
+
+You configure tiers to control access and visibility; you configure classes and pricing data to control **how much** a device is worth.
+
+For more details on how tiers interact with pricing and order visibility, see [Tiers System](/tiers-system).
+
+## Related pages
+
+Use these pages to dive deeper into specific parts of the pricing system.
+
+- [In Depth Device Price Evaluation Logic](/in-depth-device-price-evaluation-logic)
+- [Device Price Calculator](/device-price-calculator)
+- [Body Condition Selection Logic](/body-condition-selection-logic)
+- [Tiers System](/tiers-system)

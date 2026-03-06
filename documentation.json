@@ -281,6 +281,10 @@
               {
                 "title": "Tiers System",
                 "path": "tiers-system"
+              },
+              {
+                "title": "Pricing system",
+                "path": "pricing-system"
               }
             ]
           },
