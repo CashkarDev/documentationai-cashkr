@@ -1,0 +1,96 @@
+---
+title: Customer order flow Blocking system
+description: Daily order limit rules that block excessive orders from the same customer to reduce fraud and spam.
+---
+
+## Purpose
+
+<Callout kind="info">
+
+The customer order flow blocking system limits how many orders a single customer can create in one day to reduce fraud and spam.
+
+- A customer can place **a maximum of 5 orders per day**.
+- After the 5th order, the system **blocks further order creation for that day**.
+- This prevents misuse such as one customer spamming 20 fake orders.
+
+</Callout>
+
+## Behavior on order creation
+
+Use this section to reason about expected behavior whenever any part of the system attempts to create a new customer order.
+
+<Steps>
+  <Step title="Receive order creation request" icon="terminal">
+
+  An order creation request arrives for a given customer (for example, via website, app, or internal tooling). The system identifies which customer is attempting to place the order.
+
+  </Step>
+
+  <Step title="Check today's order count for customer" icon="database">
+
+  The system looks up how many orders this customer has already created **today**. Count includes all orders created earlier that same day, regardless of their later status.
+
+  </Step>
+
+  <Step title="Compare against daily limit (5 orders)" icon="settings">
+
+  The system compares the customer's current count to the fixed limit:
+
+  - If the customer has created **fewer than 5 orders today**, allow order creation to continue.
+  - If the customer has already created **5 or more orders today**, treat the limit as crossed and block the new order.
+
+  </Step>
+
+  <Step title="Allow order when under limit" icon="check-circle">
+
+  When the current count is below 5, the system proceeds with normal order creation. The new order is persisted and the customer's daily order count increases by 1.
+
+  </Step>
+
+  <Step title="Block order when limit is crossed" icon="x-circle">
+
+  When the current count is 5 or more, the system **blocks further order creation for that day** for this customer. No new order is created, and the customer's stored order count for the day does not change.
+
+  </Step>
+
+  <Step title="Reset behavior on next day" icon="refresh-ccw">
+
+  On the next day, the system treats the customer as starting from 0 orders for the new day. The customer can again create up to **5 orders** that day before being blocked.
+
+  </Step>
+</Steps>
+
+## Example: 6th order blocked
+
+This scenario illustrates how the limit behaves across multiple order attempts from the same customer on the same day.
+
+- The customer creates **Order 1–5** during the day.
+  - Each of the first 5 order creation requests succeeds.
+  - After Order 5 is created, the customer's daily count for that day is **5**.
+- The customer attempts to create **Order 6** later in the same day.
+  - The system checks the count (5 orders already created that day).
+  - Because the limit of **5 orders per day** is already reached, the system **blocks this 6th order**.
+  - Result: no new order record is created for Order 6; the count remains at 5 for that day.
+
+On the following day, the same customer can again create up to 5 orders before hitting the block.
+
+## Testing checklist
+
+Use this checklist when writing tests or performing QA for the blocking behavior.
+
+- [ ] Verify a customer with **0–4 orders today** can successfully create a new order.
+- [ ] Verify a customer can successfully create their **5th order** of the day.
+- [ ] Verify a customer **cannot create a 6th order** on the same day.
+- [ ] Verify that when the 6th order is blocked, **no new order record** is created.
+- [ ] Verify that on the **next day**, the same customer can again create up to 5 orders.
+- [ ] Verify the blocking is applied **per customer**, not globally across all customers.
+
+## Implementation notes (confirm)
+
+Treat the following as open questions or decisions that must be defined in implementation and test plans. Do not assume answers without product confirmation.
+
+- What definition of **day boundary** do we use for counting (for example, calendar day in a specific timezone, UTC, or customer-local time)?
+- How do we uniquely identify a **customer** for counting (for example, user account ID, phone number, email, or another identifier)?
+- Do we **include or exclude** any specific order statuses from the daily count (for example, cancelled orders, failed payments), or do we count all created orders?
+- Where should we **surface the block result** (API response code, error message, UI notification) when an order is blocked?
+- How do we **log and monitor** blocked orders to help detect potential fraud or misconfiguration?
