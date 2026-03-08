@@ -1,0 +1,63 @@
+---
+title: Vendor Types (1 → 3)
+description: Understand how Cashkr vendor types 1–3 control tier access and extra credit charges through the calculateExtraCredits logic.
+---
+
+## Overview
+
+Vendor types control which device tiers a vendor can access and how many extra credits they pay for premium leads.
+
+<Callout kind="info">
+
+Cashkr currently supports vendor types 1–3 only.
+
+</Callout>
+
+Each vendor is assigned a numeric type (1, 2, or 3). The platform uses this type to:
+
+- Allow or block access to specific tiers.
+- Apply extra credit charges for high-value tiers using the `calculateExtraCredits` logic.
+
+## Access matrix
+
+The access matrix defines which vendor types can see and unlock leads for each tier.
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip1_1757067661.png" width="899" height="291" alt="Vendor type to tier access matrix" />
+
+Use the matrix as the single source of truth for which tier combinations are valid for vendor types 1–3.
+
+## Extra credit logic (calculateExtraCredits)
+
+`calculateExtraCredits` adds an extra credit cost on top of the base lead price, depending on the vendor type and the tier of the lead.
+
+### Rule set
+
+- **Access check (blocked combinations)**  
+  If a vendor type is **not allowed** to access a tier according to the access matrix, `calculateExtraCredits` must throw an error. These combinations are not valid and the vendor must not be able to unlock the lead.
+
+- **Vendor type 2 or 3 — tier-based extra credits**  
+  For vendor types **2** and **3**, apply extra credits based on the tier:
+
+  - **Tier 2 leads** → **+15 credits**
+  - **Tier 1 leads** → **+20 credits**
+
+- **Vendor type 1 — Tier 1 premium charge**  
+  For vendor type **1** unlocking **Tier 1** leads, apply **+70 credits** extra.
+
+- **Default case**  
+  If none of the above rules match, `calculateExtraCredits` returns **0 extra credits**.
+
+### Example calculation
+
+A vendor of **type 2** has a **Tier 1** lead available for **70 credits**.
+
+- Vendor type: 2
+- Tier: 1
+- Base lead price: 70 credits
+- Extra credits for type 2 + Tier 1: **+20 credits**
+
+Total credits deducted from the vendor wallet:
+
+- `70 + 20 = 90` credits
+
+The system deducts **90 credits** from the vendor wallet when they unlock this lead. This keeps premium device access more expensive in credits, so only serious vendors pick these leads.

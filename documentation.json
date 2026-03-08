@@ -272,6 +272,10 @@
             "group": "Core Features",
             "pages": [
               {
+                "title": "Vendor Types (1 \u2192 3)",
+                "path": "vendor-types-1-5"
+              },
+              {
                 "title": "In Depth Device Price Evaluation Logic",
                 "path": "in-depth-device-price-evaluation-logic"
               },
