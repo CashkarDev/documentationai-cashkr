@@ -1,32 +1,33 @@
 ---
 title: Customer Notifications
-description: Reference for all customer-facing notifications across channels, with message templates, placeholders, and activation status.
+description: >-
+  Reference for all customer-facing notifications across channels, with message
+  templates, placeholders, and activation status.
 ---
-
 ## Overview
 
 Customer notifications keep users informed at every stage of the Cashkr journey, from order creation to payout and account updates. Use this page as the single reference for message content across WhatsApp, push, SMS, and email.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
+  Each notification section below includes tabs for each delivery channel:
 
-Each notification section below includes tabs for each delivery channel:
+  - **WhatsApp**: Message copy sent via WhatsApp.
 
-- **WhatsApp**: Message copy sent via WhatsApp.
-- **Push**: Title, body, and CTA used for in-app push notifications.
-- **SMS**: Text message content, including OTPs and critical alerts.
-- **Email**: Subject/body where applicable or a link to the full template.
+  - **Push**: Title, body, and CTA used for in-app push notifications.
 
-Dynamic placeholders such as `\{name}`, `\{device_name}`, and `\{otp_code}` must be substituted by your notification service at send time. Keep the placeholder formats exactly as shown so they match your implementation.
+  - **SMS**: Text message content, including OTPs and critical alerts.
 
+  - **Email**: Subject/body where applicable or a link to the full template.
+
+  Dynamic placeholders such as `\{name}`, `\{device_name}`, and `\{otp_code}` must be substituted by your notification service at send time. Keep the placeholder formats exactly as shown so they match your implementation.
 </Callout>
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
+  The **Status** label on each notification indicates rollout state:
 
-The **Status** label on each notification indicates rollout state:
+  - **live**: Currently active in production and wired to the corresponding event.
 
-- **live**: Currently active in production and wired to the corresponding event.
-- **Not live**: Draft or planned template that is not yet triggered automatically. Use these only for testing or after coordinating activation.
-
+  - **Not live**: Draft or planned template that is not yet triggered automatically. Use these only for testing or after coordinating activation.
 </Callout>
 
 ## Notifications
@@ -34,529 +35,618 @@ The **Status** label on each notification indicates rollout state:
 ### Order Rescheduled
 
 - **Description**: Pickup time/date changed. Confirm reschedule and reassure tracking transparency. This Was Done On Customer's Request <a href="http://Only.Show" target="_blank" rel="noopener noreferrer">Only.Show</a> Reschedule Button On Vendor App Only When Call Status is Updated As Told To Reschedule
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-🔄 Hi \{name},Your pickup for \{device_name} has been rescheduled as per your request ✅🗓 New Pickup Date: \{pickup_date}⏰ New Pickup Time: \{pickup_time}Everything’s set for your new pickup time.— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    🔄 Hi \{name},Your pickup for \{device_name} has been rescheduled as per your request ✅🗓 New Pickup Date: \{pickup_date}⏰ New Pickup Time: \{pickup_time}Everything’s set for your new pickup time.— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Pickup Rescheduled!Your pickup for \{device_name} is now on:🗓 \{pickup_date}⏰ \{pickup_time}Everything’s set for the new time!— Team Cashkr
-```
-
+    ```text
+    Pickup Rescheduled!Your pickup for \{device_name} is now on:🗓 \{pickup_date}⏰ \{pickup_time}Everything’s set for the new time!— Team Cashkr
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/order rescheduled.mdx>)
-
+    See template: [Template](<Email Templates/order rescheduled.mdx>)
   </Tab>
 </Tabs>
 
 ### Order Completed
 
 - **Description**: Triggered when payout is successfully verified and completed. Confirms payment, builds trust, and requests a factual review to strengthen credibility.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-🎉 Hi \{name},Your order for \{device_name} has been successfully completed ✅💰 Payout Amount: ₹\{payout_amount}⚠️ Please hand over your device only after you have received the payment.📄 Your invoice has been sent to your email.— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    🎉 Hi \{name},Your order for \{device_name} has been successfully completed ✅💰 Payout Amount: ₹\{payout_amount}⚠️ Please hand over your device only after you have received the payment.📄 Your invoice has been sent to your email.— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Order Completed Successfully 🎉Body:Your payment has been processed and verified. Please hand over your device only after you’ve received the payment.CTA: Share Feedback - Take Review Popup (APP)
-```
-
+    ```text
+    Title:Order Completed Successfully 🎉Body:Your payment has been processed and verified. Please hand over your device only after you’ve received the payment.CTA: Share Feedback - Take Review Popup (APP)
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/order completed.mdx>)
-
+    See template: [Template](<Email Templates/order completed.mdx>)
   </Tab>
 </Tabs>
 
 ### Order Placed
 
 - **Description**: User successfully created an order. Confirm placement and build confidence about next steps.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-📦 Hi \{name},Your order for \{device_name} is confirmed ✅💰 Price: ₹\{quoted_price}A verified pickup partner will be assigned shortly.— Team Cashkr🔍 Track Order : [https://ck.cashkr.com/UDY1i](https://ck.cashkr.com/UDY1i)
-```
-
+    ```text
+    📦 Hi \{name},Your order for \{device_name} is confirmed ✅💰 Price: ₹\{quoted_price}A verified pickup partner will be assigned shortly.— Team Cashkr🔍 Track Order : [https://ck.cashkr.com/UDY1i](https://ck.cashkr.com/UDY1i)
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Order Confirmed ✅Body:Your order for \{device_name} is confirmed. Price ₹\{quoted_price} locked. A pickup partner will be assigned soon.CTA:Track Order
-```
-
+    ```text
+    Title:Order Confirmed ✅Body:Your order for \{device_name} is confirmed. Price ₹\{quoted_price} locked. A pickup partner will be assigned soon.CTA:Track Order
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/order placed.mdx>)
-
+    See template: [Template](<Email Templates/order placed.mdx>)
   </Tab>
 </Tabs>
 
 ### Order Failed
 
 - **Description**: Order didn’t complete. Maintain clarity, acknowledge the issue professionally, and invite the user to share structured feedback via your internal form (not public review platforms).
+
 - **Status**: Not live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Order Couldn’t Be Completed ⚠️Body:Your order for \{device_name} couldn’t be completed. Share quick feedback to help us improveCTA:Share Feedback
-```
-
+    ```text
+    Title:Order Couldn’t Be Completed ⚠️Body:Your order for \{device_name} couldn’t be completed. Share quick feedback to help us improveCTA:Share Feedback
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-```text
-Cashkr: We’re sorry, but your order for \{device_name} didn’t go through.Please share feedback to help us improve: Feedback Link￼— Team Cashkr
-```
-
+    ```text
+    Cashkr: We’re sorry, but your order for \{device_name} didn’t go through.Please share feedback to help us improve: Feedback Link￼— Team Cashkr
+    ```
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/order failed.mdx>)
-
+    See template: [Template](<Email Templates/order failed.mdx>)
   </Tab>
 </Tabs>
 
 ### Unable To Reach
 
 - **Description**: Vendor tried calling user but call didn’t connect. Keep tone factual and solution-focused.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-📞 Hi \{name},Our Cashkr Agent tried to reach you for your order \{order_id}, but the call didn’t connect.Please call back your assigned Cashkr Agent to confirm your pickup.👤 Pickup Specialist: \{vendor_name}☎️ Contact Number: \{vendor_number}Your order is still active and awaiting confirmation.— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    📞 Hi \{name},Our Cashkr Agent tried to reach you for your order \{order_id}, but the call didn’t connect.Please call back your assigned Cashkr Agent to confirm your pickup.👤 Pickup Specialist: \{vendor_name}☎️ Contact Number: \{vendor_number}Your order is still active and awaiting confirmation.— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Pickup Call Missed 📞Body:Our Cashkr Agent tried to reach you for your order \{order_id}, but the call didn’t connect. Please call back your assigned Cashkr Agent to confirm pickup.CTA:Call Agent
-```
-
+    ```text
+    Title:Pickup Call Missed 📞Body:Our Cashkr Agent tried to reach you for your order \{order_id}, but the call didn’t connect. Please call back your assigned Cashkr Agent to confirm pickup.CTA:Call Agent
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/unable to reach.mdx>)
-
+    See template: [Template](<Email Templates/unable to reach.mdx>)
   </Tab>
 </Tabs>
 
 ### Vendor Assigned
 
 - **Description**: A vendor (pickup partner) has been assigned to the order. Reassure user of security and reliability.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-👷‍♂️ Hi \{name},A verified pickup partner has been assigned for your order \{order_id}.Device : \{device_name}You’ll receive a call shortly for pickup.If you miss the call, you can reach the vendor directly by going to My Orders → Call.— Team CashkrButton : Track status: [https://ck.cashkr.com/UDY1i](https://ck.cashkr.com/UDY1i)
-```
-
+    ```text
+    👷‍♂️ Hi \{name},A verified pickup partner has been assigned for your order \{order_id}.Device : \{device_name}You’ll receive a call shortly for pickup.If you miss the call, you can reach the vendor directly by going to My Orders → Call.— Team CashkrButton : Track status: [https://ck.cashkr.com/UDY1i](https://ck.cashkr.com/UDY1i)
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Pickup Partner Assigned ✅Body:Your verified partner \{vendor_name} is assigned for your Cashkr order. Pickup scheduled on \{pickup_date} at \{pickup_time}.CTA:Track Order
-```
-
+    ```text
+    Title:Pickup Partner Assigned ✅Body:Your verified partner \{vendor_name} is assigned for your Cashkr order. Pickup scheduled on \{pickup_date} at \{pickup_time}.CTA:Track Order
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
+    ## Vendor assigned email template
 
-See template: [Template](<Email Templates/vendor assigned.mdx>)
+    Notify customers that a verified pickup partner has been assigned and share key pickup details and next steps.
 
+    <Callout kind="info" collapsed="false">
+      This template uses the following placeholders:
+
+      - `order_id`
+
+      - `first_name`
+
+      - `device_name`
+
+      - `vendor_name`
+
+      - `pickup_date`
+
+      - `pickup_time`
+    </Callout>
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <meta name="x-apple-disable-message-reformatting" />
+      <title>Cashkr — Pickup Partner Assigned</title>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+        table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+        img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none;}
+        body{margin:0;padding:0;width:100%!important;background:#f6f6f6;font-family:'Inter',sans-serif;color:#111;}
+        p{margin:0;} a{text-decoration:none;} .button:hover{opacity:0.9;}
+        @media screen and (max-width:600px){.container{width:100%!important;padding:0 16px!important;}}
+      </style>
+    </head>
+
+    <body style="margin:0;padding:0;background:#f6f6f6;">
+      <!-- Preheader -->
+      <div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#fefefe;">
+        A verified pickup partner has been assigned for your Cashkr order. You’ll receive a call shortly. In case you miss it, instructions on how to contact your vendor directly are included.
+      </div>
+
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#f6f6f6">
+        <tr>
+          <td align="center" style="padding:32px 16px;">
+            <table width="600" class="container" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e5e5;border-radius:12px;overflow:hidden;">
+
+              <!-- Header -->
+              <tr>
+                <td style="background:#232323;padding:24px 28px;border-bottom:2px solid #3AE89A;">
+                  <table width="100%">
+                    <tr>
+                      <td align="left">
+                        <a href="https://cashkr.com" target="_blank">
+                          <img src="https://ckstorage.in-maa-1.linodeobjects.com/Logos%2Fcashkr_full_zoom_720.png" width="120" alt="Cashkr Logo" style="display:block;">
+                        </a>
+                      </td>
+                      <td align="right" style="color:#9ca3af;font-size:14px;font-weight:500;">Order ID: {order_id}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Title -->
+              <tr>
+                <td align="center" style="background:#232323;padding:28px 24px 22px;">
+                  <h1 style="margin:0;font-size:22px;font-weight:800;color:#3AE89A;text-transform:uppercase;">Vendor Assigned ✅</h1>
+                  <p style="margin-top:8px;color:#f5f5f5;font-size:20px;font-weight:700;">Your pickup partner is verified & ready</p>
+                </td>
+              </tr>
+
+              <!-- Body -->
+              <tr>
+                <td style="padding:40px 32px;">
+                  <p style="font-size:16px;line-height:1.6;color:#333;">Hi {first_name},</p>
+                  <p style="margin-top:12px;font-size:15px;line-height:1.7;color:#555;">
+                    A verified pickup partner has been assigned to collect your <strong>{device_name}</strong> order.  
+                    You’ll receive a call shortly to confirm the pickup.
+                  </p>
+
+                  <!-- Vendor Info Card -->
+                  <div style="margin:24px 0;background:#f9fafb;border:1px solid #e5e7eb;border-left:3px solid #3AE89A;padding:18px;border-radius:6px;">
+                    <p style="font-size:14px;color:#111;margin:0;">
+                      👤 <strong>Pickup Partner:</strong> {vendor_name}<br>
+                      🗓️ <strong>Scheduled Date:</strong> {pickup_date}<br>
+                      ⏰ <strong>Time Slot:</strong> {pickup_time}
+                    </p>
+                  </div>
+
+                  <!-- Missing Call Instructions -->
+                  <div style="margin:24px 0;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:14px 18px;">
+                    <p style="font-size:14px;color:#111;margin:0;">
+                      📞 <strong>Missed the call?</strong><br>
+                      You can reach your vendor directly by going to <strong>My Orders → Select Your Order → Tap “Call”</strong>.
+                    </p>
+                  </div>
+
+                  <p style="font-size:15px;line-height:1.7;color:#555;">
+                    Please ensure your device is charged, data wiped, and ready for inspection.  
+                    For safety, hand over your device only after you have received the payment.  
+                  </p>
+
+                  <!-- CTA -->
+                  <div style="text-align:center;margin-top:32px;">
+                    <a href="https://cashkr.com/track-order/{order_id}" target="_blank" class="button" style="background:#3AE89A;color:#111;font-weight:800;font-size:15px;padding:14px 32px;border-radius:6px;display:inline-block;letter-spacing:0.5px;text-transform:uppercase;">
+                      Track My Order
+                    </a>
+                  </div>
+
+                  <p style="margin-top:28px;font-size:14px;color:#555;text-align:center;">
+                    Cashkr — Fast. Fair. Transparent.  
+                    Your order is fully secure within our verified system.
+                  </p>
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td style="background:#232323;padding:30px 24px;border-top:1px solid #2a2a2a;text-align:center;">
+                  <table width="100%">
+                    <tr>
+                      <td width="33%" align="center" style="color:#3AE89A;font-size:13px;font-weight:700;">
+                        <div style="margin-bottom:6px;">
+                          <img src="https://uxwing.com/wp-content/themes/uxwing/download/e-commerce-currency-shopping/four-half-star-rating-icon.svg" width="90" alt="5 Star Rating">
+                        </div>
+                        <span style="color:#e5e5e5;font-weight:500;">4.7 / 5 Google Rating</span>
+                      </td>
+                      <td width="33%" align="center" style="border-left:1px solid #2a2a2a;border-right:1px solid #2a2a2a;color:#3AE89A;font-size:13px;font-weight:700;">
+                        <span style="display:block;font-size:17px;color:#3AE89A;">50,000+</span>
+                        <span style="color:#e5e5e5;font-weight:500;">Orders Completed</span>
+                      </td>
+                      <td width="33%" align="center" style="color:#3AE89A;font-size:13px;font-weight:700;">
+                        <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.svg" width="20" alt="India"><br>
+                        <span style="color:#e5e5e5;font-weight:500;">India’s Trusted Resale Infrastructure</span>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <p style="margin-top:14px;font-size:12px;color:#9ca3af;">
+                    Need help? Contact  
+                    <a href="mailto:support@cashkr.com" style="color:#3AE89A;">support@cashkr.com</a>  
+                    or visit <a href="https://cashkr.com" style="color:#3AE89A;">cashkr.com</a>.
+                  </p>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+    ```
   </Tab>
 </Tabs>
 
 ### Pickup Reminder
 
 - **Description**: Triggered early morning on the day of scheduled pickup. The goal is to prepare the customer for a smooth handover — ensure the device is charged, data wiped, and all accessories are ready.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-📦 Hi \{name},Your pickup for \{device_name} is scheduled for today.Please make sure your device is:🔋 Charged to at least 30%☁️ Backed up & data wiped📦 Box, charger, and accessories ready⚠️ Hand over your device only after you have received the payment.— Team CashkrResale. Standardized.
-```
-
+    ```text
+    📦 Hi \{name},Your pickup for \{device_name} is scheduled for today.Please make sure your device is:🔋 Charged to at least 30%☁️ Backed up & data wiped📦 Box, charger, and accessories ready⚠️ Hand over your device only after you have received the payment.— Team CashkrResale. Standardized.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Your Pickup Is Scheduled for Today 📦Body:Get ready for a smooth handover. Keep your device charged, data wiped & accessories ready.Hand over only after you’ve received the payment.CTA Button (if applicable):🔍 Track My Order
-```
-
+    ```text
+    Title:Your Pickup Is Scheduled for Today 📦Body:Get ready for a smooth handover. Keep your device charged, data wiped & accessories ready.Hand over only after you’ve received the payment.CTA Button (if applicable):🔍 Track My Order
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/pickup reminder.mdx>)
-
+    See template: [Template](<Email Templates/pickup reminder.mdx>)
   </Tab>
 </Tabs>
 
 ### Abandoned Cart 2
 
 - **Description**: Follow-up reminder if the user still hasn’t completed the order after initial notification.
+
 - **Status**: Not live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-📦 Hi \{name},You started the process to sell your \{device_name}, but the order isn’t complete yet.Your quoted price is locked, and we’ve added a ₹350 bonus to help you get even more!🏃‍♂️ Use code: EXTRA350 at checkout — valid for 24 hours.🛒 Complete your sale now and get ₹350 off: Complete Order￼— Team CashkrFast. Fair. Transparent.Don’t miss out — finalize your sale today and claim your bonus!
-```
-
+    ```text
+    📦 Hi \{name},You started the process to sell your \{device_name}, but the order isn’t complete yet.Your quoted price is locked, and we’ve added a ₹350 bonus to help you get even more!🏃‍♂️ Use code: EXTRA350 at checkout — valid for 24 hours.🛒 Complete your sale now and get ₹350 off: Complete Order￼— Team CashkrFast. Fair. Transparent.Don’t miss out — finalize your sale today and claim your bonus!
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title:Your ₹350 Bonus Is ActiveBody:Your best quote is still waiting. Use code EXTRA350 and complete your order now.Offer valid for 24 hours only.
-```
-
+    ```text
+    Title:Your ₹350 Bonus Is ActiveBody:Your best quote is still waiting. Use code EXTRA350 and complete your order now.Offer valid for 24 hours only.
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/abandoned cart 2.mdx>)
-
+    See template: [Template](<Email Templates/abandoned cart 2.mdx>)
   </Tab>
 </Tabs>
 
 ### Abandoned Cart 1
 
 - **Description**: User started an order but didn’t complete checkout. Goal: encourage completion confidently and safely.
+
 - **Status**: Not live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-📦 Hi \{name},You’re just a few steps away from selling your \{device_name}!Your quoted price is still active, and we’ve added ₹200 bonus to help you lock in the value.🏃‍♂️ Use code: EXTRA200 — valid for 24 hours.✅ Complete your order now and grab the deal: Complete Order￼— Team CashkrFast. Fair. Transparent.Hurry, your order’s waiting for you!
-```
-
+    ```text
+    📦 Hi \{name},You’re just a few steps away from selling your \{device_name}!Your quoted price is still active, and we’ve added ₹200 bonus to help you lock in the value.🏃‍♂️ Use code: EXTRA200 — valid for 24 hours.✅ Complete your order now and grab the deal: Complete Order￼— Team CashkrFast. Fair. Transparent.Hurry, your order’s waiting for you!
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-Title: Get ₹200 EXTRA — finish your Cashkr orderBody: Use code EXTRA200 to lock your Best Price. Secure pickup, instant UPI payout. Complete now.
-```
-
+    ```text
+    Title: Get ₹200 EXTRA — finish your Cashkr orderBody: Use code EXTRA200 to lock your Best Price. Secure pickup, instant UPI payout. Complete now.
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/abandoned cart 1.mdx>)
-
+    See template: [Template](<Email Templates/abandoned cart 1.mdx>)
   </Tab>
 </Tabs>
 
 ### Sign Up/Login
 
 - **Description**: OTP Based Login For SignUp Or Login
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Push">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="SMS">
-
-```text
-Cashkr: Your OTP is \{otp_code}.Enter this code to complete your <a href="http://action.Do" target="_blank" rel="noopener noreferrer">action.Do</a> not share this OTP with anyone.— Team Cashkr
-```
-
+    ```text
+    Cashkr: Your OTP is \{otp_code}.Enter this code to complete your <a href="http://action.Do" target="_blank" rel="noopener noreferrer">action.Do</a> not share this OTP with anyone.— Team Cashkr
+    ```
   </Tab>
+
   <Tab title="Email">
-
-No Email
-
+    No Email
   </Tab>
 </Tabs>
 
 ### Requote Done
 
 - **Description**: Device re-evaluated and new quote available. Build trust and transparency in the process.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-📱 Hi \{\{1}},Your \{\{2}} has been re-evaluated after inspection.We’ve updated your quote based on the verified condition:🔋 Body: \{\{3}} → \{\{4}}💥 Screen: \{\{5}} → \{\{6}}⚙️ Functionality: \{\{7}} → \{\{8}}📦 Accessories : \{\{9}} → \{\{10}}💰 New Quote: ₹\{\{11}}(Previous: ₹\{\{12}}Transparency first — all changes are based on verified inspection.— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    📱 Hi \{\{1}},Your \{\{2}} has been re-evaluated after inspection.We’ve updated your quote based on the verified condition:🔋 Body: \{\{3}} → \{\{4}}💥 Screen: \{\{5}} → \{\{6}}⚙️ Functionality: \{\{7}} → \{\{8}}📦 Accessories : \{\{9}} → \{\{10}}💰 New Quote: ₹\{\{11}}(Previous: ₹\{\{12}}Transparency first — all changes are based on verified inspection.— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/requote done.mdx>)
-
+    See template: [Template](<Email Templates/requote done.mdx>)
   </Tab>
 </Tabs>
 
 ### Payment OTP
 
 - **Description**: The OTP is used by the customer to verify a payout or transaction. It’s sent only via SMS for security reasons.
+
 - **Status**: Not live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Push">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="SMS">
-
-```text
-Cashkr: Your OTP to authorize payment for your order is \{otp_code}.Share this code only with the pickup associate in front of you to receive your <a href="http://payment.It" target="_blank" rel="noopener noreferrer">payment.It</a> will expire in 5 <a href="http://minutes.Do" target="_blank" rel="noopener noreferrer">minutes.Do</a> not share it on call or message.
-```
-
+    ```text
+    Cashkr: Your OTP to authorize payment for your order is \{otp_code}.Share this code only with the pickup associate in front of you to receive your <a href="http://payment.It" target="_blank" rel="noopener noreferrer">payment.It</a> will expire in 5 <a href="http://minutes.Do" target="_blank" rel="noopener noreferrer">minutes.Do</a> not share it on call or message.
+    ```
   </Tab>
+
   <Tab title="Email">
-
-No email
-
+    No email
   </Tab>
 </Tabs>
 
 ### Delete Account
 
 - **Description**: Triggered when a user requests account deletion. Reinforce data safety and system integrity.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Push">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/delete account.mdx>)
-
+    See template: [Template](<Email Templates/delete account.mdx>)
   </Tab>
 </Tabs>
 
 ### Inspection Started
 
 - **Description**: This Is Used To Send Inspection Code On Whatsapp And Email To Start Inspection
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-Hello \{\{1}},Our associate is ready to begin device inspection for your order.📦 Order ID: \{\{2}}📱 Device: \{\{3} 🔐 Inspection Code: \{\{4}}Please share this code with the associate to start the inspection process.Only share this with the official Cashkr partner present at your doorstep. — Team Cashkr
-```
-
+    ```text
+    Hello \{\{1}},Our associate is ready to begin device inspection for your order.📦 Order ID: \{\{2}}📱 Device: \{\{3} 🔐 Inspection Code: \{\{4}}Please share this code with the associate to start the inspection process.Only share this with the official Cashkr partner present at your doorstep. — Team Cashkr
+    ```
   </Tab>
+
   <Tab title="Push">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/inspection started.mdx>)
-
+    See template: [Template](<Email Templates/inspection started.mdx>)
   </Tab>
 </Tabs>
 
 ### Vendor Out For Pickup
 
 - **Description**: Pickup partner is now on the way. Reinforce professionalism and readiness.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-🚗 Your Pickup Partner is on the Way!Your \{device_name} pickup by \{vendor_name} is on the way.Before Pickup:	•	Device charged	•	Data wiped	•	Box, bill & charger (if available)⚠️ Hand over your device only after payment is received.— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    🚗 Your Pickup Partner is on the Way!Your \{device_name} pickup by \{vendor_name} is on the way.Before Pickup:	•	Device charged	•	Data wiped	•	Box, bill & charger (if available)⚠️ Hand over your device only after payment is received.— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-🚗 Your Pickup is on the Way!Your \{device_name} is about to be picked up by \{vendor_name}.Make sure your device is ready for pickup!
-```
-
+    ```text
+    🚗 Your Pickup is on the Way!Your \{device_name} is about to be picked up by \{vendor_name}.Make sure your device is ready for pickup!
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/vendor out for pickup.mdx>)
-
+    See template: [Template](<Email Templates/vendor out for pickup.mdx>)
   </Tab>
 </Tabs>
 
 ### Pickup Delayed
 
 - **Description**: Pickup delayed slightly due to operational reasons. Maintain professionalism and assure tracking.Need to make automation where if pickup time is crossed and if the vendor is not out for pickup this is triggered.
+
 - **Status**: live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-🕒 Hi \{name},Your pickup for \{device_name} is slightly delayed due to high load in your area.Our verified partner will reach you soon for the collection.Thank you for your patience — you’re fully covered under Cashkr’s secure system 🔒🔍 Track live status here: Track Order— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    🕒 Hi \{name},Your pickup for \{device_name} is slightly delayed due to high load in your area.Our verified partner will reach you soon for the collection.Thank you for your patience — you’re fully covered under Cashkr’s secure system 🔒🔍 Track live status here: Track Order— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-```text
-🚨 Your Pickup Has Been Delayed!We apologize for the delay in picking up your \{device_name}. The new pickup time is \{new_pickup_time}.Please ensure your device is ready!
-```
-
+    ```text
+    🚨 Your Pickup Has Been Delayed!We apologize for the delay in picking up your \{device_name}. The new pickup time is \{new_pickup_time}.Please ensure your device is ready!
+    ```
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/pickup delayed.mdx>)
-
+    See template: [Template](<Email Templates/pickup delayed.mdx>)
   </Tab>
 </Tabs>
 
 ### Payment Confirmation
 
 - **Description**: Payment verified and processed. Reinforce trust and transparency.
+
 - **Status**: Not live
 
 <Tabs>
   <Tab title="WhatsApp">
-
-```text
-💰 Hi \{name},The payment for your \{device_name} has been verified and processed ✅Amount: ₹\{payout_amount}Mode: UPI / Bank Transfer⚠️ Please hand over your device only after you have received the payment.🔗 View your orders: View Orders— Team CashkrFast. Fair. Transparent.
-```
-
+    ```text
+    💰 Hi \{name},The payment for your \{device_name} has been verified and processed ✅Amount: ₹\{payout_amount}Mode: UPI / Bank Transfer⚠️ Please hand over your device only after you have received the payment.🔗 View your orders: View Orders— Team CashkrFast. Fair. Transparent.
+    ```
   </Tab>
+
   <Tab title="Push">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="SMS">
-
-Not used.
-
+    Not used.
   </Tab>
+
   <Tab title="Email">
-
-See template: [Template](<Email Templates/payment confirmation.mdx>)
-
+    See template: [Template](<Email Templates/payment confirmation.mdx>)
   </Tab>
 </Tabs>
+
