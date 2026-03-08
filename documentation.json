@@ -34,6 +34,11 @@
                 "icon": "lock"
               },
               {
+                "title": "Emails of cashkr",
+                "path": "emails-of-cashkr",
+                "icon": "airplay"
+              },
+              {
                 "title": "Components",
                 "path": "components",
                 "icon": "code"

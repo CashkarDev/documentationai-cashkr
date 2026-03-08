@@ -1,0 +1,48 @@
+---
+title: Emails of Cashkr
+description: Central inventory of official Cashkr email addresses with purposes, tools, and quick guidance on which address to use for common scenarios.
+---
+
+## All email addresses Cashkr uses
+
+Use this inventory to choose the correct Cashkr email address for campaigns, automations, and customer replies.
+
+<Callout kind="info">
+
+Use only the addresses below in customer-facing flows. Keep one purpose per address to avoid deliverability issues and confusion.
+
+</Callout>
+
+<Columns cols={3}>
+
+<Card title="noreply@cashkr.com" icon="mail" href="#">
+  Transactional emails only (order confirmations, status updates, password resets). Sending tool: Engine Mailer ✅ Already exists.
+</Card>
+
+<Card title="hello@mail.cashkr.com" icon="mail" href="#">
+  Welcome series, nurture flows, and general newsletters. Sending tool: Pabbly SMTP.
+</Card>
+
+<Card title="offers@promo.cashkr.com" icon="mail" href="#">
+  Marketing campaigns, limited-time offers, and re-engagement sequences. Sending tool: Pabbly SMTP.
+</Card>
+
+<Card title="support@cashkr.com" icon="mail" href="#">
+  Customer support replies and manual conversations. Use as the reply-to address for support-driven emails. Status: TBD (confirm mailbox and routing).
+</Card>
+
+<Card title="dmarc@cashkr.com" icon="mail" href="#">
+  Technical DMARC aggregate and forensic reports only. No customer-facing sends. Status: Just needs to exist and receive reports.
+</Card>
+
+</Columns>
+
+## Quick chooser
+
+Pick the right address for the scenario you are working on:
+
+- **Order updates, OTPs, or password resets** → `noreply@cashkr.com`
+- **New user onboarding or product education series** → `hello@mail.cashkr.com`
+- **Discount campaigns, festive promotions, or win-back flows** → `offers@promo.cashkr.com`
+- **Customer replies from ticketing tools or direct support emails** → `support@cashkr.com` (TBD: confirm final setup)
+- **DNS, SPF, DKIM, and DMARC policy monitoring** → `dmarc@cashkr.com` (reports only, never visible to customers)
