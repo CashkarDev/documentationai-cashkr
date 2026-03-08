@@ -309,6 +309,15 @@
             ]
           },
           {
+            "group": "Cashkr Notifications",
+            "pages": [
+              {
+                "title": "customer notifications",
+                "path": "customer-notification"
+              }
+            ]
+          },
+          {
             "group": "Components",
             "icon": "layers",
             "pages": [
