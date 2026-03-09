@@ -188,31 +188,31 @@ The key rule is that referrer rewards always use the vendor completion price (fi
 This flow describes how a referral moves from code sharing to wallet credit.
 
 <Steps>
-  <Step title="Referrer shares code or link" icon="users">
+<Step title="Referrer shares code or link" icon="users">
 
 - Existing customer (referrer) shares their permanent referral code or referral link.
 - The same code works across all active referral programs; there is no separate code per program.
 - No admin action is required at this step; it is fully customer-driven.
 
-  </Step>
+</Step>
 
-  <Step title="New user registration with referral code" icon="arrow-right">
+<Step title="New user registration with referral code" icon="arrow-right">
 
 - New customer (referee) registers on Cashkr using the referral code.
 - The system locks the referral code to that customer’s account forever, linked to their phone number.
 - The same customer cannot apply any referral code again, even if they delete and re-create their account.
 
-  </Step>
+</Step>
 
-  <Step title="Referee reward at checkout (automatic)" icon="check-circle">
+<Step title="Referee reward at checkout (automatic)" icon="check-circle">
 
 - Referee places an order that meets the minimum order value requirement.
 - At checkout, the system automatically calculates and applies the referee reward based on the device-generated price and configured caps.
 - Vendor is paid according to the order flow, and the referral transaction for the referee is created with status **Approved** (no admin approval step).
 
-  </Step>
+</Step>
 
-  <Step title="Referrer reward after order completion (admin-approved)" icon="settings">
+<Step title="Referrer reward after order completion (admin-approved)" icon="settings">
 
 - After the referee’s order is completed by the vendor, the system calculates the referrer reward based on the final completed order value.
 - A new referral transaction is created for the referrer with status **Pending**.
@@ -220,7 +220,7 @@ This flow describes how a referral moves from code sharing to wallet credit.
   - The transaction status is updated to **Approved**.
   - The reward amount is credited to the referrer’s Cashkr Wallet.
 
-  </Step>
+</Step>
 </Steps>
 
 ---
