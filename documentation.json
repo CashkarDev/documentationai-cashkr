@@ -272,8 +272,8 @@
             "group": "Core Features",
             "pages": [
               {
-                "title": "Cashkr Referral System",
-                "path": "cashkr-referral-system"
+                "title": "Device Pricing Fields Overview",
+                "path": "device-pricing-fields-overview"
               },
               {
                 "title": "In Depth Device Price Evaluation Logic",
@@ -326,6 +326,10 @@
               {
                 "title": "Order Status",
                 "path": "order-status"
+              },
+              {
+                "title": "Cashkr Referral System",
+                "path": "cashkr-referral-system"
               }
             ]
           },
