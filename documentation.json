@@ -368,6 +368,43 @@
             ]
           },
           {
+            "group": "Cashkr Web Article Strapi",
+            "pages": [
+              {
+                "title": "Homepage",
+                "path": "homepage"
+              },
+              {
+                "title": "Articles - CK Web",
+                "path": "articles---ck-web"
+              },
+              {
+                "title": "Media Library",
+                "path": "media-library"
+              },
+              {
+                "title": "User",
+                "path": "user"
+              },
+              {
+                "title": "LogIn and Forgot Password",
+                "path": "login-and-forgot-password"
+              },
+              {
+                "title": "Comments",
+                "path": "comments"
+              },
+              {
+                "title": "Content Type Builder",
+                "path": "content-type-builder"
+              },
+              {
+                "title": "LogOut and Profile Management",
+                "path": "logout-and-profile-management"
+              }
+            ]
+          },
+          {
             "group": "Components",
             "icon": "layers",
             "pages": [

@@ -1,0 +1,90 @@
+---
+title: Comments
+description: Manage article comments in Strapi, including reviewing, approving, rejecting, and editing feedback linked to Cashkr web articles.
+---
+
+## Overview
+
+Manage all article comments submitted on the Cashkr website from a single place in Strapi. Use the Comments collection type to review, approve, reject, edit, or delete feedback linked to specific articles.
+
+<Callout kind="info">
+
+Comments require approval before they appear publicly on the website.
+
+</Callout>
+
+<Callout kind="alert">
+
+Rejected comments are archived and do not appear on the website.
+
+</Callout>
+
+## What it shows
+
+The Comments collection type shows a list of comments linked to articles, including their statuses:
+
+- Pending
+- Approved
+- Rejected
+
+## Common tasks
+
+Use these steps to handle the full moderation flow for article comments.
+
+<Steps>
+<Step title="Open the Content Manager">
+
+Open Strapi, then go to the Content Manager section in the left sidebar.
+
+</Step>
+<Step title="Select the Comments collection type">
+
+In Content Manager, select the Comments collection type to view the list of article comments.
+
+</Step>
+<Step title="Search or filter comments by article or status">
+
+Use search and filters to narrow comments by related article or by status (pending, approved, rejected).
+
+</Step>
+<Step title="Add a new comment manually">
+
+From the Comments list, add a new entry to create a comment manually and link it to the relevant article.
+
+</Step>
+<Step title="Approve or reject pending comments in the list view">
+
+From the list view, change the status of pending comments to approved or rejected as needed.
+
+</Step>
+<Step title="Update or delete existing comments">
+
+Open an existing comment to update it, or delete it if it should be removed.
+
+</Step>
+</Steps>
+
+## Statuses
+
+Comments use three main statuses:
+
+- **Pending** – New comments waiting for approval.
+- **Approved** – Comments that can display publicly on the website.
+- **Rejected** – Comments that are archived and not shown publicly.
+
+## System logic
+
+Strapi only shows approved comments on the website. After you update a comment and save and publish it, the change is reflected on the live site based on its status.
+
+## Connections
+
+The Comments collection is linked to the article comment section on the Cashkr website. Each comment entry is associated with a specific article so that updates in Strapi reflect on the correct article page.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754811452.png"
+  alt="Strapi Content Manager showing the Comments collection type with article-linked comments and statuses"
+  width="1600"
+  height="690"
+/>

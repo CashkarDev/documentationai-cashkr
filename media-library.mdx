@@ -1,0 +1,87 @@
+---
+title: Media Library
+description: Manage photos, videos, and folders used in Cashkr website content through the shared Strapi media library.
+---
+
+## Overview
+
+Use the Media Library in Strapi to store and manage photos, videos, and folders that are shared across Cashkr website content.
+
+## What it shows
+
+- Repository of photos and videos used across content
+- Folder structure for organizing media
+
+## Common tasks
+
+<Steps>
+
+<Step title="Open the Media Library from the sidebar">
+
+- Go to the Strapi admin panel.
+- Click **Media Library** in the left sidebar.
+
+</Step>
+
+<Step title="Upload new photos or videos">
+
+- Click the upload button.
+- Select files from your device to add them to the repository.
+
+</Step>
+
+<Step title="Search or filter by name">
+
+- Use the search bar to search/filter by name.
+
+</Step>
+
+<Step title="Delete media items">
+
+- Select the media item you want to delete.
+- Use the delete action to remove it from the library.
+
+</Step>
+
+<Step title="Create or delete folders">
+
+- Create folders to organize related media.
+- Delete folders you no longer need.
+
+</Step>
+
+</Steps>
+
+## Deleting media
+
+Deleted media is removed from all associated content after confirmation.
+
+<Callout kind="alert">
+
+Deleting a media item removes it from all content where it is used after you confirm the deletion. Review usage before confirming.
+
+</Callout>
+
+## Folders
+
+Create folders to organize related media and delete folders that are no longer required.
+
+## System logic
+
+- Media items are stored with unique IDs.
+- Each media item is linked to content entries that use it.
+- When you delete a media item and confirm, the system removes it from all associated content.
+
+## Connections
+
+- Integrated with the website media API.
+- Connected to the Content Manager for content–media relations.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754645649.png"
+  alt="Strapi Media Library interface showing media items and folders for Cashkr content"
+  width="1600"
+  height="692"
+/>

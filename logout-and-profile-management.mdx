@@ -1,0 +1,100 @@
+---
+title: LogOut and Profile Management
+description: Manage your Strapi session by updating your profile details or logging out securely from the Cashkr Web Article admin.
+---
+
+## Overview
+
+Manage your own Strapi account for the Cashkr Web Article instance by updating profile details or logging out securely from the admin interface.
+
+<Callout kind="info">
+
+Logging out clears the current session token so that no one can continue using your Strapi access on that device.
+
+</Callout>
+
+## What it shows
+
+- Logout option for ending the current Strapi session.
+- Profile settings for team members to update their own details.
+
+## Common tasks
+
+Use the profile menu at the bottom of the Strapi sidebar for both profile updates and logout.
+
+<Tabs>
+
+<Tab title="Profile">
+
+<Steps>
+
+<Step title="Open the profile menu">
+
+Click the profile icon at the bottom of the Strapi sidebar to open the profile menu.
+
+</Step>
+
+<Step title="Select Profile">
+
+Choose **Profile** from the menu to open your profile details.
+
+</Step>
+
+<Step title="Edit profile details">
+
+Update your profile information, such as your name and email address, as needed.
+
+</Step>
+
+<Step title="Save changes">
+
+Save the updated details to apply the changes to your profile.
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab title="Logout">
+
+<Steps>
+
+<Step title="Open the profile menu">
+
+Click the profile icon at the bottom of the Strapi sidebar to open the profile menu.
+
+</Step>
+
+<Step title="Select Logout">
+
+Choose **Logout** from the menu to exit the current Strapi session.
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## System logic
+
+- Logout clears the current session token.
+- Profile updates apply only to the data for the currently logged-in user account.
+
+## Connections
+
+- Connected to Strapi authentication for session and token management.
+- Linked to the Strapi user database for reading and updating profile details.
+
+## Screenshot
+
+Profile view in the Strapi admin showing the profile details for a Cashkr Web Article team member.
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754652494.png"
+  alt="Profile page for a Cashkr Web Article team member in the Strapi admin"
+  width="1600"
+  height="696"
+/>

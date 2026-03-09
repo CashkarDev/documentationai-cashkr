@@ -1,0 +1,100 @@
+---
+title: Articles
+description: Manage Cashkr website articles in Strapi, including searching, filtering, creating, updating, publishing drafts, and deleting entries.
+---
+
+## Overview
+
+Manage all Cashkr website articles in the Strapi admin panel. From here you search, filter, create, edit, publish, and delete articles that appear on the website.
+
+## What it shows
+
+The Articles collection in Strapi displays:
+
+- A **list of all articles**, including drafts and published content.
+- Article **metadata**, such as titles and categories.
+- A **search and filter** section to find specific articles.
+- An **Add new article** button to create new entries.
+
+## Common tasks
+
+Use these steps for the typical flow of managing articles in Strapi.
+
+<Steps>
+
+<Step title="Open the Articles collection" icon="folder">
+
+- Log in to the Strapi admin panel.
+- Navigate to the **Content Manager**.
+- Select the **Articles** collection type from the sidebar.
+
+</Step>
+
+<Step title="Search and filter articles" icon="search">
+
+- Use the **search bar** to find articles by title or other visible fields.
+- Apply **filters** to narrow the list by status (draft/published), category, or other available fields.
+
+</Step>
+
+<Step title="Create a new article" icon="plus">
+
+- Click the **Create new entry** or **Add new article** button.
+- Fill in the article fields, such as title, content, and category.
+- Save the entry as a **draft** or **publish** it based on your needs.
+
+</Step>
+
+<Step title="Edit an existing article" icon="edit">
+
+- Click an article in the list to open it.
+- Update the required fields.
+- Save or publish the changes so they reflect on the website.
+
+</Step>
+
+<Step title="Delete an article" icon="trash">
+
+- Select the article you want to remove.
+- Confirm the deletion when prompted.
+- After confirmation, the article is removed from both Strapi and the website.
+
+</Step>
+
+</Steps>
+
+## Drafts vs published
+
+<Callout kind="info">
+
+Articles remain in **draft** until you publish them. Once you save and publish an article, updates are live on the website after saving.
+
+</Callout>
+
+- Use **draft** status while creating or reviewing content.
+- Switch to **published** when the article is ready for the website.
+
+## Deleting articles
+
+<Callout kind="alert">
+
+When you delete an article and confirm the action, Strapi removes it and it no longer appears on the website. Deletion requires confirmation to avoid accidental removal.
+
+</Callout>
+
+- Delete only when you are sure the article is no longer needed.
+- If you want to temporarily hide content, keep the article and switch it back to **draft** instead of deleting.
+
+## Connections
+
+- The Articles collection is **integrated with the website article API**, so changes made to any article are directly reflected in the website article section.
+- Articles are **linked to the Media Library** for embedded media such as images and other assets.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754810814.png"
+  alt="Strapi admin panel showing the Articles collection list with filters, search, and add new article button"
+  width="1600"
+  height="693"
+/>
