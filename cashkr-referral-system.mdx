@@ -1,0 +1,318 @@
+---
+title: Cashkr Referral System
+description: Core business rules, admin configuration, reward calculations, and flows for the Cashkr referral system across web and customer app.
+---
+
+## Overview
+
+Cashkr Referral System defines how referral codes, rewards, wallets, and payouts work across the website and Customer App, for both customers and admins.
+
+Use this page as the source of truth for business rules and admin configuration. For customer-facing journeys, see [Refer & Earn](/refer-earn) and [Refer & Earn - customer app](/refer-earn---customer-app).
+
+<Callout kind="info">
+
+- Refer & Earn lets existing customers earn rewards by inviting new customers to use Cashkr.
+- The new customer registers once using a referral code; the code is then locked to their account.
+- Rewards trigger only after order completion:
+  - Referee reward is applied automatically at checkout.
+  - Referrer reward becomes pending and is credited to the Cashkr Wallet after admin approval.
+
+</Callout>
+
+---
+
+## Core rules
+
+Referral codes and their usage are globally enforced across all referral programs.
+
+### Single permanent referral code per referrer
+
+- Each existing customer (referrer) has one permanent referral code.
+- This referral code:
+  - Works across all active referral programs.
+  - Never changes, even when new referral programs are created.
+
+### One-time referral usage per referee
+
+Once a customer uses any referral code, the following rules apply permanently:
+
+- A customer can use a referral code only once in their lifetime.
+- This is true even if they:
+  - Delete their account and register again.
+  - Try to register using a different referral code.
+- A customer who has ever registered using a referral code cannot use any referral code again.
+
+<Callout kind="alert">
+
+Referral eligibility is enforced using the customer phone number. Deleting an account or reinstalling the app does not reset eligibility or allow another referral code to be used.
+
+</Callout>
+
+---
+
+## Admin referral program configuration
+
+Admins configure referral programs in the Admin Panel. The referrer keeps the same code, but each program can define its own reward logic.
+
+### Basic details
+
+Configure the high-level information for each referral program:
+
+- **Title**
+- **Description**
+
+These fields describe the program to internal stakeholders and, when surfaced, to customers.
+
+### Minimum order value
+
+Define the minimum order value required for rewards to apply:
+
+- Minimum order value applies to both referrer and referee.
+- Rewards generate only if the completed order value meets or exceeds this amount.
+
+### Referee reward settings (new customer)
+
+Referee rewards are applied during checkout when the referee uses a valid referral code for an eligible order.
+
+Configure the following fields:
+
+- **Discount type**: Percentage or flat amount.
+- **Discount value**: Percentage value or flat amount, depending on discount type.
+- **Maximum discount (optional)**: Cap on the reward amount.
+
+Key behaviors:
+
+- Referee reward is calculated based on the device-generated price.
+- The discount is applied automatically at checkout when:
+  - The referee is eligible (has not used a referral code before).
+  - The order meets the minimum order value condition.
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/1767692184_695cd798173b0.png"
+  width="1600"
+  height="682"
+  alt="Admin panel referral program configuration screen showing basic details and referee reward settings"
+/>
+
+### Referrer reward settings (existing customer)
+
+Referrer rewards are calculated only after the referee completes the order and the vendor marks it as completed.
+
+Configure the following fields:
+
+- **Discount type**
+- **Discount value**
+- **Maximum discount (optional)**
+
+Key behaviors:
+
+- Referrer reward is calculated based on the referee’s final completed order value, i.e., the price on which the vendor completes the order.
+- The system creates a pending reward transaction for the referrer after the referee’s order is completed.
+- Admin must approve this reward before it is credited to the referrer’s wallet.
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/1767692222_695cd7be8e21f.png"
+  width="1600"
+  height="692"
+  alt="Admin panel referral program configuration screen showing referrer reward settings and calculations"
+/>
+
+---
+
+## Reward calculation examples
+
+Use these examples to validate referral program configuration and engineering implementations.
+
+<Tabs>
+  <Tab title="Referee reward" icon="users">
+
+For the referee (new customer), the reward is calculated on the device-generated price at checkout.
+
+**Configuration**
+
+- Discount type: Percentage
+- Discount value: 10%
+- Maximum discount: ₹300
+- Device-generated price: ₹5,000
+
+**Calculation**
+
+- 10% of ₹5,000 = ₹500 calculated reward.
+- Maximum discount cap is ₹300.
+- Applied reward = min(₹500, ₹300) = **₹300**.
+
+**Outcome**
+
+- Device-generated price: ₹5,000
+- Referee reward applied at checkout: ₹300 (discount or additional benefit, as per program design)
+- Effective value to the referee: **₹5,300 total benefit** (₹5,000 device value + ₹300 reward)
+
+The key rule is that referee rewards always use the device-generated price as the base for percentage calculations, subject to the maximum discount cap.
+
+  </Tab>
+
+  <Tab title="Referrer reward" icon="zap">
+
+For the referrer (existing customer), the reward is calculated on the final order value on which the vendor completes the order.
+
+**Configuration**
+
+- Discount type: Percentage
+- Discount value: 10%
+- Maximum discount: ₹300
+- Device-generated price before referee reward: ₹5,000
+- Referee reward applied at checkout: ₹300
+- Order final value on which vendor completes the order: ₹5,500
+
+**Calculation**
+
+- 10% of ₹5,500 = ₹550 calculated reward.
+- Maximum discount cap is ₹300.
+- Applied reward = min(₹550, ₹300) = **₹300**.
+
+**Outcome**
+
+- Referrer reward amount: **₹300**
+- Reward status: Created as **Pending** transaction.
+- After admin approval, the system credits ₹300 to the referrer’s Cashkr Wallet.
+
+The key rule is that referrer rewards always use the vendor completion price (final completed order value) as the base for percentage calculations, subject to the maximum discount cap.
+
+  </Tab>
+</Tabs>
+
+---
+
+## End-to-end referral flow
+
+This flow describes how a referral moves from code sharing to wallet credit.
+
+<Steps>
+  <Step title="Referrer shares code or link" icon="users">
+
+- Existing customer (referrer) shares their permanent referral code or referral link.
+- The same code works across all active referral programs; there is no separate code per program.
+- No admin action is required at this step; it is fully customer-driven.
+
+  </Step>
+
+  <Step title="New user registration with referral code" icon="arrow-right">
+
+- New customer (referee) registers on Cashkr using the referral code.
+- The system locks the referral code to that customer’s account forever, linked to their phone number.
+- The same customer cannot apply any referral code again, even if they delete and re-create their account.
+
+  </Step>
+
+  <Step title="Referee reward at checkout (automatic)" icon="check-circle">
+
+- Referee places an order that meets the minimum order value requirement.
+- At checkout, the system automatically calculates and applies the referee reward based on the device-generated price and configured caps.
+- Vendor is paid according to the order flow, and the referral transaction for the referee is created with status **Approved** (no admin approval step).
+
+  </Step>
+
+  <Step title="Referrer reward after order completion (admin-approved)" icon="settings">
+
+- After the referee’s order is completed by the vendor, the system calculates the referrer reward based on the final completed order value.
+- A new referral transaction is created for the referrer with status **Pending**.
+- Admin reviews and approves the reward. On approval:
+  - The transaction status is updated to **Approved**.
+  - The reward amount is credited to the referrer’s Cashkr Wallet.
+
+  </Step>
+</Steps>
+
+---
+
+## Transactions and statuses
+
+The Transactions page separates behavior for referee and referrer rewards.
+
+### Referee transactions
+
+Referee-side transactions are fully automatic:
+
+- The system approves the referee reward automatically once the order completes and conditions are met.
+- Vendor is paid as part of the normal order flow.
+- Referee transactions:
+  - Have status **Approved**.
+  - Cannot be reversed from the referral system.
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/1767692307_695cd8132b6d9.png"
+  width="1600"
+  height="688"
+  alt="Transactions page showing separate entries and statuses for referee and referrer referral rewards"
+/>
+
+### Referrer transactions
+
+Referrer-side transactions require manual review:
+
+- The system creates a transaction in **Pending** status after the referee’s order completes.
+- Admin reviews the transaction and approves it.
+- When admin approves:
+  - Transaction status changes from **Pending** to **Approved**.
+  - The approved amount is added to the referrer’s Cashkr Wallet balance.
+
+Only the **Approved** referrer transactions affect wallet balances.
+
+---
+
+## Wallet and payouts
+
+Referral rewards for referrers are ultimately managed through the Cashkr Wallet in the Customer App. See full wallet behavior in [Cashkr Wallet](/cashkr-wallet).
+
+### Wallet summary fields
+
+The Wallet page in the customer app shows three summary values for the referrer:
+
+- **Total Balance**: Current available amount to withdraw (sum of approved and credited rewards not yet withdrawn).
+- **Total Earned**: Lifetime value of all rewards ever credited to the wallet.
+- **Total Withdrawn**: Lifetime total of all withdrawals successfully processed from the wallet.
+
+Only approved and credited referral rewards contribute to these totals.
+
+### Payouts flow
+
+Payouts are initiated from the referrer’s perspective but completed by the admin.
+
+- Referrer submits a withdrawal request from the Cashkr Wallet.
+- The request appears in the Payouts section for Admin.
+- Admin pays the requested amount manually (outside the system) and then marks the payout as approved.
+- Once admin approves the payout:
+  - The wallet **Total Withdrawn** increases by the paid amount.
+  - The wallet **Total Balance** decreases accordingly.
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/1767692322_695cd82235bd2.png"
+  width="1600"
+  height="697"
+  alt="Payouts page showing pending withdrawal requests and approval actions that update the customer wallet"
+/>
+
+---
+
+## Fraud and abuse prevention
+
+The referral system is designed to prevent common abuse patterns while keeping tracking simple and transparent.
+
+- One permanent referral code per referrer across all programs.
+- Each customer can use a referral code only once in their lifetime.
+- Deleting an account does not reset referral eligibility or allow another code.
+- Phone number-based enforcement prevents multiple registrations for extra rewards.
+- Referral usage and rewards are fully auditable through the Transactions, Wallet, and Payouts views.
+
+---
+
+## Quick summary
+
+<Callout kind="info">
+
+- Each customer has one fixed referral code that works across all active referral programs.
+- A new user can use a referral code only once in their lifetime; deletion or re-registration does not change this.
+- Referee rewards apply automatically at checkout; referrer rewards are created as pending and credited only after order completion and admin approval.
+- Referrer earnings flow into the Cashkr Wallet and can be withdrawn through the manual payout process.
+
+</Callout>

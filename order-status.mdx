@@ -1,0 +1,307 @@
+---
+title: Order Status
+description: Understand Cashkr primary and secondary order statuses, lifecycle transitions, and cross-app behavior across Customer App, Website, Vendor App, and Admin Panel.
+---
+
+## Overview
+
+Cashkr uses two related status fields to track each order across the Customer App, Website, Vendor App, and Admin Panel:
+
+- **Primary Status**: the coarse lifecycle state of the order.
+- **Secondary Status**: a more granular event or timeline marker within that lifecycle.
+
+Both status fields appear in reports, APIs, and UI lists. Use this page to interpret what an order is doing at any point and which actions are allowed.
+
+<Callout kind="info">
+
+- Primary and secondary statuses stay in sync across Customer App, Website, Vendor App, and Admin Panel.
+- Changes in one system (for example, Vendor App completing an order) update the shared record and reflect everywhere.
+- Treat primary status as the lifecycle source of truth; secondary status refines it for operations and analytics.
+
+</Callout>
+
+## Primary vs secondary status
+
+Primary status tells you **where the order is in the overall journey** (from creation to completion or failure). It uses a small, stable set of values that are easy to filter on.
+
+Secondary status tells you **what has most recently happened** to the order inside that lifecycle. Secondary values are more detailed and map to specific user actions (such as assigning a vendor or starting inspection).
+
+Typical pairing examples:
+
+- Primary `Generated` with secondary `OrderGenerated`
+- Primary `InProgress` with secondary `Assigned`, `OutForPickup`, or `InspectionStarted`
+- Primary `Completed` with secondary `Completed`
+- Primary `Failed` with secondary `Failed`
+- Primary `Reserved` with secondary `Reserved`
+
+## Primary status reference
+
+### New
+
+Early lifecycle state before the order is fully generated and visible in normal customer or vendor flows.
+
+- **Meaning**: Represents a pre-confirmation or early creation state while the system is still setting up the order.
+- **Typical trigger**: Internal lead creation or early steps in the sell-device flow before the system marks the order as `Generated`.
+- **Where it appears**: Primarily in internal tools and logs; customers and vendors usually start seeing the order from `Generated` onward.
+
+### Generated
+
+Confirmed, fully created order that is ready for operational handling.
+
+- **Meaning**: The order is confirmed by the customer and fully created in the system with a stable Order ID.
+- **Typical trigger**: The customer taps Confirm Order on the Customer App or Website. Cashkr generates an Order ID, marks primary status as `Generated`, and sends the lead OTP to the customer's WhatsApp.
+- **Where it appears**: Shown on customer Order Confirmation & Tracking and Track Orders screens, and available to the assignment logic that feeds the Vendor App.
+
+### InProgress
+
+Active order currently being handled by a vendor.
+
+- **Meaning**: A vendor is working on the order, from initial contact through pickup and inspection.
+- **Typical trigger**: A vendor unlocks or accepts the order from the Available Orders list in the Vendor App, moving it out of the pool of unclaimed leads.
+- **Where it appears**: Vendor App In Progress Orders list, customer Track Orders as an active order, and operational dashboards tracking open workload.
+
+### Completed
+
+Successfully finished order that has reached a good outcome.
+
+- **Meaning**: The vendor has completed OTP-based verification on-site, finished inspection, and confirmed the transaction.
+- **Typical trigger**: The vendor taps Complete Order in the Vendor App after OTP verification and inspection.
+- **Where it appears**: Customer history in Track Orders, Vendor App completed lists, and Admin Panel and reporting as `Completed` for payout and performance metrics.
+
+### Failed
+
+Order that cannot be fulfilled or has ended unsuccessfully.
+
+- **Meaning**: The order did not complete, usually due to customer decline, condition mismatch, or other operational reasons.
+- **Typical trigger**: A vendor action such as Fail Order or Fail After Requote from states like Out for Pickup or after a requote decision.
+- **Where it appears**: Customer history as a failed order, Vendor App completed/failed sections, and Admin / reporting with a captured failure reason and timestamp.
+
+### Reserved
+
+Order held for a specific vendor but not actively in progress because of credits or similar constraints.
+
+- **Meaning**: The system has logically linked the order to a vendor but is holding it instead of fully activating it.
+- **Typical trigger**: The vendor already has an `InProgress` lead for the same customer and pickup address, additional leads auto-link to that vendor, and the vendor does not have enough credits. Those extra leads move to `Reserved` instead of fully assigning.
+- **Where it appears**: Vendor App Reserved or Same Customer Order views, Admin tools and reports that analyze pending work and credit-related holds.
+
+## Secondary status reference
+
+### Initiated
+
+Very early timeline marker that the order flow has started but is not yet fully generated.
+
+- **Meaning**: Indicates that the user has entered the flow and some data exists, but a full order record is not yet created.
+- **Typical trigger**: Early stages of the sell-device or lead capture flow before the system sets `OrderGenerated` and moves primary status to `Generated`.
+
+### OrderGenerated
+
+Point in time when the system has created the order after customer confirmation.
+
+- **Meaning**: Confirms that the order record now exists with an Order ID and is ready for assignment and tracking.
+- **Typical trigger**: The user taps Confirm Order. Cashkr generates an Order ID, sends a lead OTP to the customer's WhatsApp, sets primary status to `Generated`, and secondary status to `OrderGenerated`.
+
+### Assigned
+
+Vendor responsibility has been set for the order.
+
+- **Meaning**: A specific vendor is now responsible for handling the order under the `InProgress` lifecycle.
+- **Typical trigger**: The order moves from Available Orders to a vendor, typically when the vendor successfully unlocks the lead.
+- **Where it fits**: Usually pairs with primary `InProgress`, and is the point after which vendor actions like calling the customer and planning pickup become available.
+
+### OutForPickup
+
+Vendor has committed to going to the customer's address.
+
+- **Meaning**: The order is on its way to physical pickup at the customer's location.
+- **Typical trigger**: From the In Progress Orders list, the vendor sets the order to Out for Pickup in the Vendor App. This sets secondary status to `OutForPickup`.
+- **Where it fits**: Sits between `Assigned` and `InspectionStarted` under primary `InProgress`, and signals to the customer that pickup is underway.
+
+### InspectionStarted
+
+On-site inspection has begun.
+
+- **Meaning**: The vendor is performing inspection and has usually completed OTP verification with the customer.
+- **Typical trigger**: On-site, the vendor taps Inspection Started in the Vendor App after marking the order Out for Pickup and verifying the customer's OTP.
+- **Where it fits**: Still under primary `InProgress`, and unlocks subsequent options such as Complete Order and Requote.
+
+### Completed
+
+Timeline marker that the order flow ended successfully.
+
+- **Meaning**: Confirms the final success state, mirroring the primary `Completed` lifecycle.
+- **Typical trigger**: After inspection and OTP verification, the vendor taps Complete Order in the Vendor App. The system sets both primary and secondary statuses to `Completed`, and the payout process starts.
+
+### Failed
+
+Timeline marker that the order flow ended unsuccessfully.
+
+- **Meaning**: Captures that the order did not complete, along with failure context.
+- **Typical trigger**: Vendor actions such as Fail Order or Fail After Requote set secondary status to `Failed` together with primary `Failed`. The system logs the failure reason and who performed the action.
+
+### Reserved
+
+Timeline marker that the order is on hold for a vendor because of insufficient credits.
+
+- **Meaning**: Confirms that the order is reserved for a vendor but not fully assigned into active work.
+- **Typical trigger**: For same-customer, same-address leads that auto-link to an existing vendor, if credits are not enough to fully assign, the order uses secondary status `Reserved` while the primary status is `Reserved`. Once the vendor adds credits and unlocks the lead, the order leaves `Reserved` and moves into `InProgress` with a secondary status like `Assigned`.
+
+## Typical lifecycle and transitions
+
+### Customer and vendor journey
+
+The most common successful lifecycle from a product perspective is:
+
+<Steps>
+
+  <Step title="Customer confirms the order" icon="arrow-right">
+
+  The customer completes the sell-device flow and taps Confirm Order on the Customer App or Website. Cashkr generates the Order ID, sends the lead OTP to the customer's WhatsApp, sets primary status to `Generated`, and secondary status to `OrderGenerated`. The order appears in customer tracking views such as Order Confirmation & Tracking and Track Orders.
+
+  </Step>
+
+  <Step title="System assigns a vendor" icon="arrow-right">
+
+  The order becomes eligible for vendor assignment. When a vendor unlocks the order from the Available Orders list, the system treats this as accepting the order. The order moves out of Available Orders, appears in the vendor's In Progress Orders list, and secondary status changes to `Assigned` under primary `InProgress`.
+
+  </Step>
+
+  <Step title="Vendor marks Out for Pickup" icon="arrow-right">
+
+  From the In Progress Orders list, the vendor sets the order to Out for Pickup. This updates secondary status to `OutForPickup`. The customer receives an Out for Pickup email, and both customer and vendor can track that the pickup is underway.
+
+  </Step>
+
+  <Step title="Vendor starts inspection and verifies OTP" icon="arrow-right">
+
+  On-site, the vendor taps Inspection Started in the Vendor App and verifies the customer's OTP. Secondary status becomes `InspectionStarted`. After OTP verification and inspection, the app shows options like Complete Order and Requote.
+
+  </Step>
+
+  <Step title="Vendor completes or fails the order" icon="arrow-right">
+
+  If the offer is accepted and inspection passes, the vendor taps Complete Order. This sets primary and secondary status to `Completed` and triggers the payout queue. If the vendor cannot fulfill the order (for example, condition mismatch after requote), the vendor uses Fail or Fail After Requote, which sets primary and secondary status to `Failed` with an associated failure reason.
+
+  </Step>
+
+</Steps>
+
+### Reserved and same-customer scenarios
+
+Some orders follow a Reserved path before becoming In Progress:
+
+- A vendor already has one lead for a customer and pickup address in `InProgress`.
+- Additional leads for the same customer and address can auto-link to the same vendor.
+- If the vendor lacks enough credits, those additional leads are not fully assigned and instead move into primary `Reserved` and secondary `Reserved`.
+
+Once the vendor adds credits and unlocks the reserved lead, the order transitions out of `Reserved` into `InProgress` with a secondary status such as `Assigned`, then follows the usual Out for Pickup and inspection flow.
+
+## Where statuses appear and what they gate
+
+### Customer App and Website
+
+Customers mainly experience statuses through confirmation and tracking screens.
+
+- **Order Confirmation & Tracking** shows the order as `Generated` after confirmation and sends the lead OTP.
+- **Track Orders** presents active statuses like `Generated`, `Assigned`, `OutForPickup`, and `InProgress`, and moves orders with `Completed` and `Failed` into history.
+
+<Callout kind="info">
+
+- Allow customers to reschedule pickup only while primary status is `Generated` and **before** any vendor is assigned.
+- Once a vendor is assigned (secondary `Assigned`, primary `InProgress`), block reschedule from the customer side and route changes through the vendor or support.
+
+</Callout>
+
+### Vendor App
+
+Vendors see and control status transitions related to assignment, pickup, inspection, and outcome.
+
+- **Available Orders**: shows orders that are not yet assigned to any vendor. Unlocking a lead moves it into the vendor's **In Progress Orders** and sets a secondary status like `Assigned`.
+- **InProgress Orders**: lists all orders currently being handled by the vendor under primary `InProgress`. From here vendors move orders to `OutForPickup`, start inspection, requote, complete, or fail.
+- **Reserved Order** and **Same Customer Order** flows explain when Reserved applies and how orders move back to `InProgress` once credits and unlock conditions are met.
+
+<Callout kind="info">
+
+- Show Call Agent options for the customer only after the order is `Assigned` to a vendor.
+- Before `Assigned`, vendor calls and coordination are not available because no vendor is responsible for the order yet.
+
+</Callout>
+
+### Admin Panel and reporting
+
+Admin tools consume the same primary and secondary statuses for:
+
+- Operational dashboards and SLAs (for example, count of `InProgress` vs `Completed` vs `Failed`).
+- Vendor performance metrics (pickup times from `Assigned` to `OutForPickup`, inspection and completion times).
+- Audit trails, matching status changes like `OutForPickup` and `InspectionStarted` to timestamps and user actions.
+
+Use primary status for lifecycle-level KPIs and secondary status to understand detailed timing and process adherence.
+
+## Related feature flows
+
+Use these pages for deep dives into specific behaviors related to order status:
+
+<Columns cols={3}>
+
+  <Card title="Available Orders" href="/available-orders" icon="list-ordered" cta="View vendor intake">
+
+  How orders appear before assignment and how unlock moves them into In Progress.
+
+  </Card>
+
+  <Card title="InProgress Orders" href="/inprogress-orders" icon="play-circle" cta="Track active pickups">
+
+  Vendor view of active orders, including Complete and Fail actions.
+
+  </Card>
+
+  <Card title="Out for Pickup or Fail" href="/out-for-pickup-or-fail" icon="truck" cta="See pickup options">
+
+  Detailed Out for Pickup and immediate fail flows, including notifications.
+
+  </Card>
+
+</Columns>
+
+<Columns cols={3}>
+
+  <Card title="Complete" href="/complete" icon="check-circle" cta="When orders complete">
+
+  Preconditions for completion, OTP verification, and payout triggering.
+
+  </Card>
+
+  <Card title="Requote Order & Fail After Requote" href="/requote-order" icon="edit" cta="Handle price changes">
+
+  Requote flow that can lead to completion or failure after requote. See also [Fail After Requote](/fail-after-requote).
+
+  </Card>
+
+  <Card title="Reserved Order & Same Customer Order" href="/reserved-order" icon="pause" cta="Understand Reserved">
+
+  How Reserved works with same-customer leads and vendor credits. See Same Customer Order for linking behavior.
+
+  </Card>
+
+</Columns>
+
+<Columns cols={3}>
+
+  <Card title="Order Confirmation & Tracking" href="/order-confirmation-tracking" icon="info" cta="Customer status view">
+
+  Customer confirmation, OTP sending, and status visibility right after order generation.
+
+  </Card>
+
+  <Card title="Track Orders" href="/track-orders" icon="bar-chart" cta="Customer order history">
+
+  How active vs history statuses (Completed, Failed) appear to customers.
+
+  </Card>
+
+  <Card title="Reserved Order Feature" href="/reserved-order-feature" icon="settings" cta="Core feature design">
+
+  Core logic behind the Reserved lifecycle and its impact on vendor workflows.
+
+  </Card>
+
+</Columns>

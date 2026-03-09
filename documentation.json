@@ -272,8 +272,8 @@
             "group": "Core Features",
             "pages": [
               {
-                "title": "Vendor Types (1 \u2192 3)",
-                "path": "vendor-types-1-5"
+                "title": "Cashkr Referral System",
+                "path": "cashkr-referral-system"
               },
               {
                 "title": "In Depth Device Price Evaluation Logic",
@@ -314,6 +314,18 @@
               {
                 "title": "Device Assessment Workflow",
                 "path": "device-assessment-workflow"
+              },
+              {
+                "title": "Vendor Types (1 → 3)",
+                "path": "vendor-types-1-5"
+              },
+              {
+                "title": "Customer Account Blocking Feature",
+                "path": "customer-account-blocking-feature"
+              },
+              {
+                "title": "Order Status",
+                "path": "order-status"
               }
             ]
           },

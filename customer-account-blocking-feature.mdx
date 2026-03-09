@@ -1,0 +1,138 @@
+---
+title: Customer Account Blocking Feature
+description: Control whether registered customers can access the Cashkr website and app by marking their account as Active or Blocked from the admin panel.
+---
+
+## Overview
+
+Customer account blocking lets admins mark a registered user as **Active** or **Blocked**, which directly controls their access to the Cashkr website and customer app.
+
+When a user is **blocked**:
+
+- Cannot log in
+- Cannot place orders
+- Cannot use referral
+- Cannot access their account area
+
+<Callout kind="info">
+
+Blocking is account-wide. A blocked user cannot log in or perform any authenticated actions until you unblock their account.
+
+</Callout>
+
+---
+
+## Where to manage it
+
+Manage customer account blocking from the admin panel:
+
+- Open **Admin Panel**
+- Go to **Users**
+- Open **User List**
+- Click into a specific **User Details** view
+
+The block toggle is available inside the **User Details** screen for each registered user.
+
+---
+
+## User list indicators
+
+The **User List** page shows all registered users with key fields to help you decide whether to block or unblock:
+
+- Name
+- Phone
+- City
+- Status (Active / Blocked)
+- Orders
+- Rating
+
+Use the **Status** column to quickly see whether a user is currently Active or Blocked before opening their details.
+
+---
+
+## Block/Unblock workflow
+
+Use the toggle inside **User Details** to change a customer's access state.
+
+<Steps>
+
+<Step title="Open the user profile" icon="users">
+
+- From **Admin Panel**, go to **Users** → **User List**.
+- Search for or locate the customer you want to manage.
+- Click the row to open the **User Details** page.
+
+</Step>
+
+<Step title="Block a customer" icon="x-circle">
+
+- Find the **Block** toggle in the User Details screen.
+- Turn the toggle **ON** to block the customer.
+- The user's status changes to **Blocked** and the system prevents future logins.
+
+</Step>
+
+<Step title="Unblock a customer" icon="check-circle">
+
+- In the same **Block** toggle area, turn the toggle **OFF**.
+- The user's status changes to **Active**.
+- The customer can log in and use their account again.
+
+</Step>
+
+</Steps>
+
+<Callout kind="alert">
+
+When you turn the block toggle ON, the customer immediately loses access across both the Cashkr website and customer app. Confirm you are blocking the correct account before saving changes.
+
+</Callout>
+
+---
+
+## Business logic
+
+The block toggle controls a simple status flag on the user:
+
+- Toggle **ON**:
+  - User status updates to **Blocked**.
+  - The login API checks the status and denies login when the user is blocked.
+  - The customer sees this error message on login:  
+    `Your account has been restricted. Please contact support.`
+
+- Toggle **OFF**:
+  - User status updates to **Active**.
+  - The login API allows login when the user is active.
+
+<Callout kind="info">
+
+The login error message for blocked users is fixed as: `Your account has been restricted. Please contact support.` Support and QA teams can use this exact text to identify block-related login issues.
+
+</Callout>
+
+---
+
+## System impact
+
+When a user is **blocked**, the system prevents:
+
+- Website login
+- App login
+- Order creation
+- Referral usage
+- Wallet usage
+
+When you **unblock** the user, these actions become available again, subject to normal business rules.
+
+---
+
+## Troubleshooting and support notes
+
+If a customer reports that they cannot log in:
+
+- Check the **User List** and confirm their **Status** (Active or Blocked).
+- If the status is **Blocked**, confirm whether the block is intentional.
+  - If the block is **not** intentional, open **User Details** and turn the block toggle **OFF** to set the status to **Active**.
+- Ask the customer for the exact error message shown on login:
+  - If the message is `Your account has been restricted. Please contact support.`, the login failure is due to the **Blocked** status.
+- After unblocking, ask the customer to try logging in again on both the website and app to confirm that access is restored.
