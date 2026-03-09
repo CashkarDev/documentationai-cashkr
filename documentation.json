@@ -399,6 +399,14 @@
                 "path": "content-type-builder"
               },
               {
+                "title": "Categories",
+                "path": "categories"
+              },
+              {
+                "title": "Authors",
+                "path": "authors"
+              },
+              {
                 "title": "LogOut and Profile Management",
                 "path": "logout-and-profile-management"
               }

@@ -1,0 +1,90 @@
+---
+title: Authors
+description: Manage article authors in Strapi, including searching, filtering, creating, updating, and removing authors that power Cashkr web articles.
+---
+
+## Overview
+
+Manage the list of article authors for Cashkr Web Articles in the Strapi Content Manager. Changes you make here control which authors appear in the website article section.
+
+## What it shows
+
+- A list of all authors stored in Strapi with their details.
+- A search and filter bar so you can quickly find specific authors.
+- A **Create new entry** button to add new authors.
+- Edit and delete actions for each existing author.
+- A settings icon that lets you configure how the authors list is displayed.
+
+## Common tasks
+
+Use these steps for the most common actions in the Authors collection type.
+
+<Steps>
+
+<Step title="Open Authors in Content Manager">
+
+- Open the Strapi Content Manager.
+- Select the **Authors** collection type to view the list of authors.
+
+</Step>
+
+<Step title="Search and filter authors">
+
+- Use the search bar to look up authors by name.
+- Apply filters to narrow down the list to specific author subsets.
+
+</Step>
+
+<Step title="Create a new author entry">
+
+- Click **Create new entry** in the Authors view.
+- Fill in the author details and save to add the author to the list.
+
+</Step>
+
+<Step title="Edit an existing author">
+
+- Click an author in the list to open the edit view.
+- Update the author details and save your changes.
+
+</Step>
+
+<Step title="Delete an author">
+
+- Select the author you want to remove.
+- Use the delete action and confirm the removal to delete the author.
+
+</Step>
+
+<Step title="Configure the authors view">
+
+- Click the settings icon in the Authors list.
+- Adjust the view configuration to control which fields and columns are shown.
+
+</Step>
+
+</Steps>
+
+## System logic
+
+<Callout kind="info">
+
+Author changes update article relations instantly, and deleted authors are dissociated from articles.
+
+</Callout>
+
+## Connections
+
+The Authors collection type connects directly to how authors appear on the website and in related content:
+
+- It links authors to articles through the article-author relations in the Content Manager.
+- Any changes you make to authors here are reflected directly in the website article section.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754811152.png"
+  alt="Authors collection type in Strapi Content Manager showing list of authors, search and filter controls, and create new entry button."
+  width="1600"
+  height="688"
+/>
