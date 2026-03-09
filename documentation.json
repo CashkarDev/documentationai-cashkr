@@ -272,10 +272,6 @@
             "group": "Core Features",
             "pages": [
               {
-                "title": "Device Pricing Fields Overview",
-                "path": "device-pricing-fields-overview"
-              },
-              {
                 "title": "In Depth Device Price Evaluation Logic",
                 "path": "in-depth-device-price-evaluation-logic"
               },
@@ -330,6 +326,10 @@
               {
                 "title": "Cashkr Referral System",
                 "path": "cashkr-referral-system"
+              },
+              {
+                "title": "Device Pricing Fields Overview",
+                "path": "device-pricing-fields-overview"
               }
             ]
           },
@@ -339,6 +339,31 @@
               {
                 "title": "customer notifications",
                 "path": "customer-notification"
+              }
+            ]
+          },
+          {
+            "group": "BigboldTech Website",
+            "pages": [
+              {
+                "title": "Browse Articles",
+                "path": "browse-articles"
+              },
+              {
+                "title": "Commenting on Articles",
+                "path": "commenting-on-articles"
+              },
+              {
+                "title": "Special offers and deals",
+                "path": "special-offers-and-deals"
+              },
+              {
+                "title": "Search Functionality - BBT",
+                "path": "search-functionality---bbt"
+              },
+              {
+                "title": "Subscribe to Newsletter",
+                "path": "subscribe-to-newsletter"
               }
             ]
           },
