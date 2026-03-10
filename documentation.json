@@ -413,6 +413,55 @@
             ]
           },
           {
+            "group": "BigboldTech Strapi",
+            "pages": [
+              {
+                "title": "HomePage - BBT",
+                "path": "homepage---bbt"
+              },
+              {
+                "title": "LogIn and Forgot Password - BBT",
+                "path": "login-and-forgot-password---bbt"
+              },
+              {
+                "title": "Categories - BBT",
+                "path": "categories---bbt"
+              },
+              {
+                "title": "Content Type Builder - BBT",
+                "path": "content-type-builder---bbt"
+              },
+              {
+                "title": "Offers and Deals",
+                "path": "offers-and-deals"
+              },
+              {
+                "title": "User - BBT",
+                "path": "user---bbt"
+              },
+              {
+                "title": "Media Library - BBT",
+                "path": "media-library---bbt"
+              },
+              {
+                "title": "Comments - BBT",
+                "path": "comments---bbt"
+              },
+              {
+                "title": "Author",
+                "path": "author"
+              },
+              {
+                "title": "Articles - BBT",
+                "path": "articles---bbt"
+              },
+              {
+                "title": "Logout and Profile Management - BBT",
+                "path": "logout-and-profile-management---bbt"
+              }
+            ]
+          },
+          {
             "group": "Components",
             "icon": "layers",
             "pages": [

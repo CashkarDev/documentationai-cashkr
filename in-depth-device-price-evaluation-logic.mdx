@@ -1,17 +1,19 @@
 ---
 title: In Depth Device Price Evaluation Logic
-description: Internal reference for how backend strategies evaluate device prices using class data, request contracts, and device table mappings.
+description: Internal reference for how backend strategies evaluate device prices using class data, request contracts, device table mappings, and the shared resolveDeduction helper.
 ---
 
 ## Overview
 
 The price evaluation module computes a final device price based on physical, technical, and warranty conditions, using device-type-specific strategies and class data lookup tables.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
 
-- All strategies start from a base price and apply **deductions** for issues and **additions** for laptop hardware upgrades.  
-- If a device is marked as **dead** (does not turn on), strategies immediately return the configured **deadPrice** from class data.  
-- If the computed price is less than or equal to `0`, the strategy falls back to **deadPrice** (or `0` if deadPrice is not available).
+- All strategies start from a **base price** and apply **deductions** for issues and **additions** for laptop hardware upgrades. Deductions may be flat or percentage values and always resolve from `basePrice`.
+
+- If a device is marked as **dead** (does not turn on), strategies immediately return the configured **deadPrice** from class data.
+
+- After applying all deductions and additions, strategies perform a **floor check**. If the computed price is less than or equal to `0`, the strategy falls back to **deadPrice** (or `0` if deadPrice is not available).
 
 </Callout>
 
@@ -23,159 +25,236 @@ Use this page as the backend reference for engineering and QA when validating ev
 
 `EvaluationRequest` is the payload structure received from the app or admin panel when triggering a price evaluation.
 
-<ParamField body="deviceId" param-type="string" required="true" show-location="false">
-Unique identifier of the selected device record in the device table.
+<ParamField body="deviceId" param-type="string" required="true" deprecated="false">
+  Unique identifier of the selected device record in the device table.
 </ParamField>
 
-<ParamField body="price" param-type="number" required="true" show-location="false">
-Base price of the device before applying any deductions or additions. Often comes from the device table.
+<ParamField body="price" param-type="number" required="true" deprecated="false">
+  Base price of the device before applying any deductions or additions. Often comes from the device table and is passed into `basePrice`.
 </ParamField>
 
-<ParamField body="bodyCondition" param-type="string" required="false" show-location="false">
-Body condition code, such as `B1` or `B2`. Used to look up a deduction amount in class data.
+<ParamField body="bodyCondition" param-type="string" required="false" deprecated="false">
+  Body condition code, such as `B1` or `B2`. Used to look up a deduction amount in class data and passed through `resolveDeduction(classData[bodyCondition], basePrice)`.
 </ParamField>
 
-<ParamField body="screenCondition" param-type="string" required="false" show-location="false">
-Screen condition code, such as `S1` or `S2`. Used to look up a deduction amount in class data.
+<ParamField body="screenCondition" param-type="string" required="false" deprecated="false">
+  Screen condition code for mobile-style devices, typically `S1` to `S5` (for example, `S1` flawless, `S5` heavily damaged). Mobile-style strategies look up `classData[screenCondition]` and call `resolveDeduction(classData[screenCondition], basePrice)` to compute the deduction. The laptop strategy ignores this field and relies on `screenSize` instead.
 </ParamField>
 
-<ParamField body="screenSize" param-type="string" required="false" show-location="false">
-Screen size descriptor for laptops, such as `14-inch` or `15-inch`. Used for size-based deductions.
+<ParamField body="screenSize" param-type="string" required="false" deprecated="false">
+  Laptop screen size **code**, expected to be `S1` to `S4` per the laptop-size bands in the diagram (not a free-form inches label). The laptop strategy treats this as a size-based deduction by reading `classData[screenSize]` and calling `resolveDeduction(classData[screenSize], basePrice)`. Mobile-style strategies ignore this field.
 </ParamField>
 
-<ParamField body="isDeviceTurnedOn" param-type="boolean" required="true" show-location="false">
-Indicates whether the device powers on. If `false`, strategies return the dead price without further checks.
+<ParamField body="isDeviceTurnedOn" param-type="boolean" required="true" deprecated="false">
+  Indicates whether the device powers on. If `false`, strategies return the dead price without further checks or deductions.
 </ParamField>
 
-<ParamField body="physicalCondition" param-type="string[]" required="false" show-location="false">
-Array of physical damage codes (for example, `P1`, `P3`). Each code maps to a deduction in class data.
+<ParamField body="physicalCondition" param-type="string[]" required="false" deprecated="false">
+  Array of physical damage codes (for example, `P1`, `P3`). Each code maps to a deduction in class data and is applied using `resolveDeduction(classData[code], basePrice)`.
 </ParamField>
 
-<ParamField body="processorId" param-type="string" required="false" show-location="false">
-Identifier of the selected laptop processor, used to fetch an additive value from the processor table.
+<ParamField body="processorId" param-type="string" required="false" deprecated="false">
+  Identifier of the selected laptop processor, used to fetch an additive value from the processor table and add it directly to `finalPrice`.
 </ParamField>
 
-<ParamField body="ramId" param-type="string" required="false" show-location="false">
-Identifier of the selected laptop RAM configuration, used to fetch an additive value from the RAM table.
+<ParamField body="ramId" param-type="string" required="false" deprecated="false">
+  Identifier of the selected laptop RAM configuration, used to fetch an additive value from the RAM table and add it directly to `finalPrice`.
 </ParamField>
 
-<ParamField body="storageId" param-type="string" required="false" show-location="false">
-Identifier of the selected laptop storage configuration, used to fetch an additive value from the storage table.
+<ParamField body="storageId" param-type="string" required="false" deprecated="false">
+  Identifier of the selected laptop storage configuration, used to fetch an additive value from the storage table and add it directly to `finalPrice`.
 </ParamField>
 
-<ParamField body="technicalCondition" param-type="string[]" required="false" show-location="false">
-Array of technical fault codes (for example, battery, Wi-Fi, mic issues such as `T1`). Each code maps to a deduction in class data.
+<ParamField body="technicalCondition" param-type="string[]" required="false" deprecated="false">
+  Array of technical fault codes (for example, battery, Wi-Fi, mic issues such as `T1`). Each code maps to a deduction in class data and is applied using `resolveDeduction(classData[code], basePrice)`.
 </ParamField>
 
-<ParamField body="warrantyStatus" param-type="string" required="true" show-location="false">
-Warranty status code, such as `W1`, `W2`, `W3`, or `W4`. Each code maps to a deduction in class data.
+<ParamField body="warrantyStatus" param-type="string" required="true" deprecated="false">
+  Warranty status code, such as `W1`, `W2`, `W3`, or `W4`. Each code maps to a deduction in class data and is applied using `resolveDeduction(classData[warrantyStatus], basePrice)`.
 </ParamField>
 
-<ParamField body="accessories" param-type="string[]" required="true" show-location="false">
-Array of accessory codes provided with the device (for example, `A1` to `A4` for charger, box, cable, etc.). Missing accessories are inferred by comparing against the full set and applying deductions.
+<ParamField body="accessories" param-type="string[]" required="true" deprecated="false">
+  Array of accessory codes provided with the device (for example, `A1` to `A4` for bill, box, charger, other). Missing accessories are inferred by comparing against the full set; each missing accessory applies a deduction using `resolveDeduction(classData[code], basePrice)`.
 </ParamField>
 
-<ParamField body="deviceType" param-type="string" required="true" show-location="false">
-Logical device type, such as `Mobile`, `Laptop`, `Tablet`, `Camera`, `Headphone`, `Console`, `Drone`, `TV`, `AC`, `Desktop`, `Mac`, or `Watch`. Used to select table mappings and strategy.
+<ParamField body="deviceType" param-type="string" required="true" deprecated="false">
+  Logical device type, such as `Mobile`, `Laptop`, `Tablet`, `Camera`, `Headphone`, `Console`, `Drone`, `TV`, `AC`, `Desktop`, `Mac`, or `Watch`. Used to select table mappings and strategy.
 </ParamField>
 
 ### EvaluationParams
 
 `EvaluationParams` is the internal structure passed into each evaluation strategy.
 
-<ParamField body="classData" param-type="any" required="true" show-location="false">
-Row from the class table that contains all deduction and dead price fields for the device class (for example, `deadPrice`, `W1`, `B1`, `S1`, `P1`, `T1`, `A1`).
+<ParamField body="classData" param-type="any" required="true" deprecated="false">
+  Row from the class table that contains all deduction and dead price fields for the device class (for example, `deadPrice`, `W1`, `B1`, `S1`, `P1`, `T1`, `A1`). Individual values may be flat numbers, numeric strings, or percentage strings; strategies always pass them to `resolveDeduction(value, basePrice)` before subtracting.
 </ParamField>
 
-<ParamField body="basePrice" param-type="number" required="true" show-location="false">
-Starting price before deductions or additions, usually taken from `request.price` or directly from the device table.
+<ParamField body="basePrice" param-type="number" required="true" deprecated="false">
+  Starting price and the reference for all percentage calculations, usually taken from `request.price` or directly from the device table.
 </ParamField>
 
-<ParamField body="request" param-type="EvaluationRequest" required="true" show-location="false">
-The full incoming `EvaluationRequest`. Strategies read fields such as `warrantyStatus`, `bodyCondition`, `technicalCondition`, and `accessories` from this object.
+<ParamField body="request" param-type="EvaluationRequest" required="true" deprecated="false">
+  The full incoming `EvaluationRequest`. Strategies read fields such as `warrantyStatus`, `bodyCondition`, `screenCondition`, `screenSize`, `technicalCondition`, `physicalCondition`, `accessories`, and hardware IDs from this object.
 </ParamField>
 
 ### DeviceTableMap
 
 `DeviceTableMap` describes how each logical device type maps to database tables and a specific evaluation strategy.
 
-<ParamField body="tableName" param-type="string" required="true" show-location="false">
-Prisma model name of the base device table (for example, `deviceMobiles`, `deviceLaptops`).
+<ParamField body="tableName" param-type="string" required="true" deprecated="false">
+  Prisma model name of the base device table (for example, `deviceMobiles`, `deviceLaptops`).
 </ParamField>
 
-<ParamField body="classTableName" param-type="string" required="true" show-location="false">
-Prisma model name of the corresponding class table that stores deduction and dead price fields (for example, `classMobile`, `classLaptop`).
+<ParamField body="classTableName" param-type="string" required="true" deprecated="false">
+  Prisma model name of the corresponding class table that stores deduction and dead price fields (for example, `classMobile`, `classLaptop`).
 </ParamField>
 
-<ParamField body="evaluationStrategy" param-type="(params) =&gt; Promise&lt;number&gt;" required="true" show-location="false">
-Function reference for the strategy that computes the final price for this device type (for example, `mobilePriceEvaluation`, `laptopPriceEvaluation`).
+<ParamField body="evaluationStrategy" param-type="(params) => Promise<number>" required="true" deprecated="false">
+  Function reference for the strategy that computes the final price for this device type (for example, `mobilePriceEvaluation`, `laptopPriceEvaluation`).
 </ParamField>
 
 ## Device table mapping
 
 The mapping object links each `deviceType` to its base table, class table, and strategy.
 
-- **Mobile**  
-  - Table: `deviceMobiles`  
-  - Class table: `classMobile`  
+- **Mobile**
+
+  - Table: `deviceMobiles`
+
+  - Class table: `classMobile`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Laptop**  
-  - Table: `deviceLaptops`  
-  - Class table: `classLaptop`  
+- **Laptop**
+
+  - Table: `deviceLaptops`
+
+  - Class table: `classLaptop`
+
   - Strategy: `laptopPriceEvaluation`
 
-- **Tablet**  
-  - Table: `deviceTablets`  
-  - Class table: `classTablet`  
+- **Tablet**
+
+  - Table: `deviceTablets`
+
+  - Class table: `classTablet`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Camera**  
-  - Table: `deviceCameras`  
-  - Class table: `classCamera`  
+- **Camera**
+
+  - Table: `deviceCameras`
+
+  - Class table: `classCamera`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Headphone**  
-  - Table: `deviceHeadphones`  
-  - Class table: `classHeadphone`  
+- **Headphone**
+
+  - Table: `deviceHeadphones`
+
+  - Class table: `classHeadphone`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Console**  
-  - Table: `deviceConsoles`  
-  - Class table: `classConsole`  
+- **Console**
+
+  - Table: `deviceConsoles`
+
+  - Class table: `classConsole`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Drone**  
-  - Table: `deviceDrones`  
-  - Class table: `classDrone`  
+- **Drone**
+
+  - Table: `deviceDrones`
+
+  - Class table: `classDrone`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **TV**  
-  - Table: `deviceTVs`  
-  - Class table: `classTV`  
+- **TV**
+
+  - Table: `deviceTVs`
+
+  - Class table: `classTV`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **AC**  
-  - Table: `deviceACs`  
-  - Class table: `classAC`  
+- **AC**
+
+  - Table: `deviceACs`
+
+  - Class table: `classAC`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Desktop**  
-  - Table: `deviceDesktops`  
-  - Class table: `classDesktop`  
+- **Desktop**
+
+  - Table: `deviceDesktops`
+
+  - Class table: `classDesktop`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Mac**  
-  - Table: `deviceMacs`  
-  - Class table: `classMac`  
+- **Mac**
+
+  - Table: `deviceMacs`
+
+  - Class table: `classMac`
+
   - Strategy: `mobilePriceEvaluation`
 
-- **Watch**  
-  - Table: `deviceWatches`  
-  - Class table: `classWatch`  
+- **Watch**
+
+  - Table: `deviceWatches`
+
+  - Class table: `classWatch`
+
   - Strategy: `mobilePriceEvaluation`
 
 If a `deviceType` is not present in this mapping, the controller returns an unsupported device type error.
+
+## Deduction value resolution
+
+Use a single helper rule, `resolveDeduction(value, basePrice)`, everywhere you apply class-data-based deductions.
+
+- Deductions in `classData` can be:
+
+  - a **flat number** like `500`, or
+
+  - a **numeric string** like `"500"` that should behave the same as a flat number, or
+
+  - a **percentage string** like `"10%"`, always resolved against `basePrice`.
+
+- When the value is a flat number or a numeric string, `resolveDeduction` returns that number directly.
+- When the value is a percentage string, `resolveDeduction` computes the deduction as a percentage of `basePrice`, not of the running `finalPrice`.
+
+In pseudo-code:
+
+```ts
+function resolveDeduction(value, basePrice) {
+  if (typeof value === "number") {
+    return value; // flat numeric deduction
+  }
+
+  if (typeof value === "string") {
+    if (value.endsWith("%")) {
+      const pct = Number(value.slice(0, -1));
+      return (basePrice * pct) / 100; // percent of basePrice
+    }
+
+    const asNumber = Number(value);
+    if (!Number.isNaN(asNumber)) {
+      return asNumber; // numeric string treated as flat deduction
+    }
+  }
+
+  return 0;
+}
+```
+
+All deduction steps in both strategies conceptually call `resolveDeduction(classData[code], basePrice)`, so every percentage-based value always uses `basePrice` as the reference.
 
 ## Evaluation strategies
 
@@ -184,61 +263,46 @@ If a `deviceType` is not present in this mapping, the controller returns an unsu
 Used for `Mobile`, `Tablet`, `Camera`, `Headphone`, `Console`, `Drone`, `TV`, `AC`, `Desktop`, `Mac`, and `Watch`.
 
 <Steps>
+  <Step title="Dead device check" icon="alert-triangle" title-type="p">
+    If `request.isDeviceTurnedOn` is `false`, return `classData.deadPrice` immediately (or `0` if deadPrice is not present) and skip all further logic.
+  </Step>
 
-<Step title="Dead device check" icon="alert-triangle">
+  <Step title="Start from base price" icon="play-circle" title-type="p">
+    Initialize `finalPrice` from `basePrice` in `EvaluationParams`. This is typically the frontend base price or device table price.
+  </Step>
 
-If `request.isDeviceTurnedOn` is `false`, return `classData.deadPrice` immediately (or `0` if deadPrice is not present) and skip all further logic.
+  <Step title="Apply warranty deduction" icon="settings" title-type="p">
+    If `request.warrantyStatus` is present, read the matching value from `classData` using the warranty code key (for example, `classData["W3"]`), resolve it with `resolveDeduction(classData[request.warrantyStatus], basePrice)`, and subtract the result from `finalPrice`:
 
-</Step>
+    ```ts
+    const warrantyValue = classData[request.warrantyStatus];
+    finalPrice -= resolveDeduction(warrantyValue, basePrice);
+    ```
+  </Step>
 
-<Step title="Start from base price" icon="play-circle">
+  <Step title="Apply body condition deduction" icon="settings" title-type="p">
+    If `request.bodyCondition` is provided (for example, `B2`), read `classData[request.bodyCondition]`, resolve it with `resolveDeduction(classData[request.bodyCondition], basePrice)`, and subtract that resolved amount from `finalPrice`.
+  </Step>
 
-Initialize `finalPrice` from `basePrice` in `EvaluationParams`. This is typically the frontend base price or device table price.
+  <Step title="Apply screen condition deduction" icon="settings" title-type="p">
+    If `request.screenCondition` is provided (for example, `S1` to `S5`), read `classData[request.screenCondition]`, resolve it with `resolveDeduction(classData[request.screenCondition], basePrice)`, and subtract the resolved amount from `finalPrice`.
+  </Step>
 
-</Step>
+  <Step title="Apply physical damage deductions" icon="settings" title-type="p">
+    If `request.physicalCondition` contains one or more codes (for example, `["P1", "P3"]`), iterate through the array, resolve each `classData[code]` via `resolveDeduction(classData[code], basePrice)`, and subtract the resolved amount from `finalPrice` for every code.
+  </Step>
 
-<Step title="Apply warranty deduction" icon="settings">
+  <Step title="Apply technical fault deductions" icon="settings" title-type="p">
+    If `request.technicalCondition` contains one or more codes (for example, `["T1"]`), iterate through the array, resolve each `classData[code]` via `resolveDeduction(classData[code], basePrice)`, and subtract the resolved amount from `finalPrice` for every code.
+  </Step>
 
-If `request.warrantyStatus` is present, subtract the matching deduction from `classData` using the warranty code key (for example, `classData["W3"]`).
+  <Step title="Apply missing accessory deductions" icon="settings" title-type="p">
+    Derive the full accessory set for the class (for example, codes `A1`, `A2`, `A3`, `A4`). For each code that is **not** in `request.accessories`, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
+  </Step>
 
-</Step>
-
-<Step title="Apply body condition deduction" icon="settings">
-
-If `request.bodyCondition` is provided (for example, `B2`), subtract `classData[bodyCondition]` from `finalPrice`.
-
-</Step>
-
-<Step title="Apply screen condition deduction" icon="settings">
-
-If `request.screenCondition` is provided (for example, `S1`), subtract `classData[screenCondition]` from `finalPrice`.
-
-</Step>
-
-<Step title="Apply physical damage deductions" icon="settings">
-
-If `request.physicalCondition` contains one or more codes (for example, `["P1", "P3"]`), iterate through the array and subtract `classData[code]` for each code present.
-
-</Step>
-
-<Step title="Apply technical fault deductions" icon="settings">
-
-If `request.technicalCondition` contains one or more codes (for example, `["T1"]`), iterate through the array and subtract `classData[code]` for each technical issue.
-
-</Step>
-
-<Step title="Apply missing accessory deductions" icon="settings">
-
-Derive the full accessory set for the class (for example, codes `A1`, `A2`, `A3`, `A4`). For each code that is **not** in `request.accessories`, subtract the corresponding `classData[code]` from `finalPrice`.
-
-</Step>
-
-<Step title="Final price fallback" icon="check-circle">
-
-If `finalPrice` is greater than `0`, return it. If `finalPrice` is less than or equal to `0`, return `classData.deadPrice` if available, otherwise return `0`.
-
-</Step>
-
+  <Step title="Final price fallback" icon="check-circle" title-type="p">
+    If `finalPrice` is greater than `0`, return it. If `finalPrice` is less than or equal to `0`, return `classData.deadPrice` if available, otherwise return `0`.
+  </Step>
 </Steps>
 
 ### Laptop strategy (`laptopPriceEvaluation`)
@@ -246,203 +310,202 @@ If `finalPrice` is greater than `0`, return it. If `finalPrice` is less than or 
 Used for `Laptop` (and can be reused for similar form factors such as desktops if needed).
 
 <Steps>
+  <Step title="Dead device check" icon="alert-triangle" title-type="p">
+    If `request.isDeviceTurnedOn` is `false`, return `classData.deadPrice` (or `0` if deadPrice is not present) and skip all further computations.
+  </Step>
 
-<Step title="Dead device check" icon="alert-triangle">
+  <Step title="Start from base price" icon="play-circle" title-type="p">
+    Initialize `finalPrice` with `basePrice` from `EvaluationParams`.
+  </Step>
 
-If `request.isDeviceTurnedOn` is `false`, return `classData.deadPrice` (or `0` if deadPrice is not present) and skip all further computations.
+  <Step title="Apply warranty and cosmetic deductions" icon="settings" title-type="p">
+    - If `request.warrantyStatus` is set, read `classData[request.warrantyStatus]`, resolve it with `resolveDeduction(classData[request.warrantyStatus], basePrice)`, and subtract the resolved amount from `finalPrice`.
 
-</Step>
+    - If `request.bodyCondition` is provided, read `classData[request.bodyCondition]`, resolve it with `resolveDeduction(classData[request.bodyCondition], basePrice)`, and subtract the resolved amount from `finalPrice`.
 
-<Step title="Start from base price" icon="play-circle">
+    - For laptops, treat screen as **screen size code** rather than condition: if `request.screenSize` is provided, expect it to be one of `S1` to `S4`. Read `classData[request.screenSize]`, resolve it with `resolveDeduction(classData[request.screenSize], basePrice)`, and subtract the resolved amount from `finalPrice`. The laptop strategy does **not** use `request.screenCondition` for any calculation.
+  </Step>
 
-Initialize `finalPrice` with `basePrice` from `EvaluationParams`.
+  <Step title="Apply physical and technical deductions" icon="settings" title-type="p">
+    - For each code in `request.physicalCondition`, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
 
-</Step>
+    - For each code in `request.technicalCondition`, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
+  </Step>
 
-<Step title="Apply warranty and cosmetic deductions" icon="settings">
+  <Step title="Apply missing accessory deductions" icon="settings" title-type="p">
+    Compare `request.accessories` against the configured accessory codes (`A1` to `A4`). For each missing accessory code, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
+  </Step>
 
-- If `request.warrantyStatus` is set, subtract `classData[warrantyStatus]`.  
-- If `request.bodyCondition` is provided, subtract `classData[bodyCondition]`.  
-- If `request.screenCondition` or `request.screenSize` is provided, subtract the corresponding value from `classData` (for example, a size-based screen deduction stored per screen size code).
+  <Step title="Add hardware upgrades (processor, RAM, storage, optional graphic card)" icon="database" title-type="p">
+    If `request.processorId`, `request.ramId`, or `request.storageId` are provided:
 
-</Step>
+    - Fetch the matching processor, RAM, and storage records from their respective tables.
 
-<Step title="Apply physical and technical deductions" icon="settings">
+    - For each record found, add its numeric value (for example, `amount` or `priceDelta`) directly to `finalPrice` as an addition, without passing through `resolveDeduction`.
 
-- For each code in `request.physicalCondition`, subtract `classData[code]`.  
-- For each code in `request.technicalCondition`, subtract `classData[code]`.
+    These are **additions** and can offset earlier deductions.
 
-</Step>
+    Optionally, you may also introduce a dedicated **graphic card** lookup table and field in an internal laptop evaluation context. If present, fetch the graphic card record and add its numeric value to `finalPrice` in the same way as processor, RAM, and storage.
+  </Step>
 
-<Step title="Apply missing accessory deductions" icon="settings">
-
-Compare `request.accessories` against the configured accessory codes (`A1` to `A4`). For each missing accessory code, subtract `classData[code]` from `finalPrice`.
-
-</Step>
-
-<Step title="Add hardware upgrades (processor, RAM, storage)" icon="database">
-
-If `request.processorId`, `request.ramId`, or `request.storageId` are provided:
-
-- Fetch the matching processor, RAM, and storage records from their respective tables.  
-- For each record found, add its numeric value (for example, `amount` or `priceDelta`) to `finalPrice`.
-
-These are **additions** and can offset earlier deductions.
-
-</Step>
-
-<Step title="Final price fallback" icon="check-circle">
-
-If `finalPrice` is greater than `0`, return it. If `finalPrice` is less than or equal to `0`, return `classData.deadPrice` if available, otherwise `0`.
-
-</Step>
-
+  <Step title="Final price fallback" icon="check-circle" title-type="p">
+    If `finalPrice` is greater than `0`, return it. If `finalPrice` is less than or equal to `0`, return `classData.deadPrice` if available, otherwise `0`.
+  </Step>
 </Steps>
+
+<Callout kind="info">
+  The **graphic card** add-on in the laptop logic is conceptual and optional. It only applies if you introduce a matching field or lookup table in your laptop evaluation strategy; it is not part of the current `EvaluationRequest` contract.
+</Callout>
 
 ## Main controller: Evaluations(req, res)
 
 `Evaluations(req, res)` is the Express controller that orchestrates validation, mapping, data fetching, and strategy execution.
 
 <Steps>
+  <Step title="Parse and validate request" icon="terminal" title-type="p">
+    - Read the incoming JSON payload as an `EvaluationRequest`.
 
-<Step title="Parse and validate request" icon="terminal">
+    - Based on `deviceType`, validate the payload with the appropriate Zod schema (for example, `LaptopEvaluationRequestSchema`, `MacEvaluationRequestSchema`, `MobileEvaluationRequestSchema`).
 
-- Read the incoming JSON payload as an `EvaluationRequest`.  
-- Based on `deviceType`, validate the payload with the appropriate Zod schema (for example, `LaptopEvaluationRequestSchema`, `MacEvaluationRequestSchema`, `MobileEvaluationRequestSchema`).  
-- If validation fails, return a `400` response with `"Invalid data"`.
+    - If validation fails, return a `400` response with `"Invalid data"`.
+  </Step>
 
-</Step>
+  <Step title="Resolve device mapping" icon="settings" title-type="p">
+    Use `deviceType` to look up the entry in `deviceTableMap`. If there is no mapping for the given type, return a `400` response with `"Evaluation for &lt;type&gt; not yet supported"`.
+  </Step>
 
-<Step title="Resolve device mapping" icon="settings">
+  <Step title="Fetch device and class data" icon="database" title-type="p">
+    - Query the base device table (for example, `deviceMobiles`) using `deviceId`.
 
-Use `deviceType` to look up the entry in `deviceTableMap`. If there is no mapping for the given type, return a `400` response with `"Evaluation for &lt;type&gt; not yet supported"`.
+    - Include or join the corresponding class table row (for example, `classMobile`) that contains `deadPrice`, warranty codes, condition codes, and accessory deductions.
 
-</Step>
+    - If the device record is not found, return `404` with `"Device not found"`.
 
-<Step title="Fetch device and class data" icon="database">
+    - If the class data is missing, return `404` with `"Class data not found for &lt;type&gt;"`.
+  </Step>
 
-- Query the base device table (for example, `deviceMobiles`) using `deviceId`.  
-- Include or join the corresponding class table row (for example, `classMobile`) that contains `deadPrice`, warranty codes, condition codes, and accessory deductions.  
-- If the device record is not found, return `404` with `"Device not found"`.  
-- If the class data is missing, return `404` with `"Class data not found for &lt;type&gt;"`.
+  <Step title="Compute final price" icon="code" title-type="p">
+    Call the mapped evaluation strategy with `EvaluationParams`.
 
-</Step>
+    <CodeGroup show-lines="true" tabs={[]}>
+      ```ts
+      const evaluationRequest = parsedBody;
 
-<Step title="Compute final price" icon="code">
+      const { tableName, classTableName, evaluationStrategy } =
+        deviceTableMap[evaluationRequest.deviceType];
 
-Call the mapped evaluation strategy with `EvaluationParams`.
+      const device = await prisma[tableName].findUnique({
+        where: { id: evaluationRequest.deviceId },
+        include: { classData: true }, // actual relation name depends on schema
+      });
 
-<CodeGroup tabs="Controller call">
+      if (!device) {
+        return res.status(404).json({
+          success: false,
+          message: "Device not found",
+        });
+      }
 
-```ts
-const evaluationRequest = parsedBody;
+      if (!device.classData) {
+        return res.status(404).json({
+          success: false,
+          message: `Class data not found for ${evaluationRequest.deviceType}`,
+        });
+      }
 
-const { tableName, classTableName, evaluationStrategy } =
-  deviceTableMap[evaluationRequest.deviceType];
+      const finalPrice = await evaluationStrategy({
+        classData: device.classData,
+        basePrice: evaluationRequest.price,
+        request: evaluationRequest,
+      });
+      ```
+    </CodeGroup>
+  </Step>
 
-const device = await prisma[tableName].findUnique({
-  where: { id: evaluationRequest.deviceId },
-  include: { classData: true }, // actual relation name depends on schema
-});
+  <Step title="Return response" icon="check-circle" title-type="p">
+    On success, return a `200` response with a payload similar to:
 
-if (!device) {
-  return res.status(404).json({
-    success: false,
-    message: "Device not found",
-  });
-}
+    ```json
+    {
+      "success": true,
+      "message": "Price evaluation successful",
+      "data": {
+        "deviceId": "mbl12345",
+        "deviceType": "Laptop",
+        "credit": "credit_value",
+        "price": 39600
+      }
+    }
+    ```
 
-if (!device.classData) {
-  return res.status(404).json({
-    success: false,
-    message: `Class data not found for ${evaluationRequest.deviceType}`,
-  });
-}
-
-const finalPrice = await evaluationStrategy({
-  classData: device.classData,
-  basePrice: evaluationRequest.price,
-  request: evaluationRequest,
-});
-```
-
-</CodeGroup>
-
-</Step>
-
-<Step title="Return response" icon="check-circle">
-
-On success, return a `200` response with a payload similar to:
-
-```json
-{
-  "success": true,
-  "message": "Price evaluation successful",
-  "data": {
-    "deviceId": "mbl12345",
-    "deviceType": "Laptop",
-    "credit": "credit_value",
-    "price": 39600
-  }
-}
-```
-
-Wrap the entire controller in a `try` or `try/catch` block and return a `500` response with `"Internal Server Error"` if any unhandled exception occurs.
-
-</Step>
-
+    Wrap the entire controller in a `try` or `try/catch` block and return a `500` response with `"Internal Server Error"` if any unhandled exception occurs.
+  </Step>
 </Steps>
 
 ## Error handling
 
 The controller standardizes error responses for common cases:
 
-- **Invalid schema**  
-  - Status: `400`  
-  - Message: `"Invalid data"`  
+- **Invalid schema**
+
+  - Status: `400`
+
+  - Message: `"Invalid data"`
+
   - Trigger: Zod validation fails for the chosen `deviceType` schema.
 
-- **Unsupported device type**  
-  - Status: `400`  
-  - Message: `"Evaluation for &lt;type&gt; not yet supported"`  
+- **Unsupported device type**
+
+  - Status: `400`
+
+  - Message: `"Evaluation for &lt;type&gt; not yet supported"`
+
   - Trigger: `deviceType` not present in `deviceTableMap`.
 
-- **Device not found**  
-  - Status: `404`  
-  - Message: `"Device not found"`  
+- **Device not found**
+
+  - Status: `404`
+
+  - Message: `"Device not found"`
+
   - Trigger: No device record for the given `deviceId` in the mapped `tableName`.
 
-- **Class data missing**  
-  - Status: `404`  
-  - Message: `"Class data not found for &lt;type&gt;"`  
+- **Class data missing**
+
+  - Status: `404`
+
+  - Message: `"Class data not found for &lt;type&gt;"`
+
   - Trigger: Device is found but the associated class data row is missing.
 
-- **Unexpected server error**  
-  - Status: `500`  
-  - Message: `"Internal Server Error"`  
+- **Unexpected server error**
+
+  - Status: `500`
+
+  - Message: `"Internal Server Error"`
+
   - Trigger: Any unhandled runtime error, such as database failure or strategy exception.
 
 ## Example request payload
 
-Use this payload shape when integrating with the evaluation endpoint.
+Use this payload shape when integrating with the evaluation endpoint. This example shows a mobile-style device that uses `screenCondition`; laptops instead populate `screenSize` with a size code (`S1` to `S4`) and ignore `screenCondition`.
 
-<CodeGroup tabs="JSON">
-
-```json
-{
-  "deviceId": "mbl12345",
-  "price": 15000,
-  "bodyCondition": "B2",
-  "screenCondition": "S1",
-  "isDeviceTurnedOn": true,
-  "physicalCondition": ["P1", "P3"],
-  "technicalCondition": ["T1"],
-  "warrantyStatus": "W3",
-  "accessories": ["A1", "A2"],
-  "deviceType": "Mobile"
-}
-```
-
+<CodeGroup show-lines="true" tabs={[]}>
+  ```json
+  {
+    "deviceId": "mbl12345",
+    "price": 15000,
+    "bodyCondition": "B2",
+    "screenCondition": "S1",
+    "screenSize": null,
+    "isDeviceTurnedOn": true,
+    "physicalCondition": ["P1", "P3"],
+    "technicalCondition": ["T1"],
+    "warrantyStatus": "W3",
+    "accessories": ["A1", "A2"],
+    "deviceType": "Mobile"
+  }
+  ```
 </CodeGroup>
 
 ## Extending the logic
@@ -450,104 +513,108 @@ Use this payload shape when integrating with the evaluation endpoint.
 To support a new device type using the same evaluation infrastructure:
 
 <Steps>
+  <Step title="Create Prisma models" icon="database" title-type="p">
+    Add base and class table models for the new type. For example:
 
-<Step title="Create Prisma models" icon="database">
+    - Base table: `deviceSmartTVs`
 
-Add base and class table models for the new type. For example:
+    - Class table: `classSmartTV`
 
-- Base table: `deviceSmartTVs`  
-- Class table: `classSmartTV`
+    Ensure the class table exposes `deadPrice`, warranty codes, condition codes, and accessory fields similar to existing class tables, and that the deduction fields follow the `resolveDeduction` flat-or-percentage pattern (including numeric strings).
+  </Step>
 
-Ensure the class table exposes `deadPrice`, warranty codes, condition codes, and accessory fields similar to existing class tables.
+  <Step title="Implement evaluation strategy" icon="code" title-type="p">
+    Create a new strategy function or reuse an existing one, depending on requirements.
 
-</Step>
+    ```ts
+    async function smartTVPriceEvaluation(
+      params: EvaluationParams
+    ): Promise<number> {
+      // mirror mobilePriceEvaluation with resolveDeduction(classData[code], basePrice)
+      // or customize as needed
+    }
+    ```
+  </Step>
 
-<Step title="Implement evaluation strategy" icon="code">
+  <Step title="Update device table map" icon="settings" title-type="p">
+    Register the new mapping entry so the controller can resolve tables and strategy.
 
-Create a new strategy function or reuse an existing one, depending on requirements.
+    ```ts
+    deviceTableMap.SmartTV = {
+      tableName: "deviceSmartTVs",
+      classTableName: "classSmartTV",
+      evaluationStrategy: evaluationStrategies.smartTVPriceEvaluation,
+    };
+    ```
+  </Step>
 
-```ts
-async function smartTVPriceEvaluation(
-  params: EvaluationParams
-): Promise<number> {
-  // mirror mobilePriceEvaluation or customize as needed
-}
-```
-
-</Step>
-
-<Step title="Update device table map" icon="settings">
-
-Register the new mapping entry so the controller can resolve tables and strategy.
-
-```ts
-deviceTableMap.SmartTV = {
-  tableName: "deviceSmartTVs",
-  classTableName: "classSmartTV",
-  evaluationStrategy: evaluationStrategies.smartTVPriceEvaluation,
-};
-```
-
-</Step>
-
-<Step title="Add validation schema" icon="shield">
-
-Define and wire a Zod schema for the new type so that `Evaluations(req, res)` can validate payloads before execution.
-
-</Step>
-
+  <Step title="Add validation schema" icon="shield" title-type="p">
+    Define and wire a Zod schema for the new type so that `Evaluations(req, res)` can validate payloads before execution.
+  </Step>
 </Steps>
 
 ## Worked examples
 
 ### Mobile example (deductions only)
 
-Assume the following for a mobile device:
+Assume the following for a mobile device, and assume all mentioned class-data values **resolve to flat amounts** using `resolveDeduction` (they may be numbers or numeric strings):
 
-- Base price: `₹20,000`  
-- Device turns on: `true`  
-- Warranty: `W3` → `₹800` deduction  
-- Body: `B2` → `₹500` deduction  
-- Screen: `S1` → `₹400` deduction  
-- Missing accessories: `A3`, `A4` → `₹600` total deduction  
-- Technical issue: `battery` (for example, `T1`) → `₹300` deduction  
+- Base price: `₹20,000`
+
+- Device turns on: `true`
+
+- Warranty: `W3` → resolves to `₹800` deduction
+
+- Body: `B2` → resolves to `₹500` deduction
+
+- Screen condition: `S1` → resolves to `₹400` deduction
+
+- Missing accessories: `A3`, `A4` → resolve to `₹600` total deduction
+
+- Technical issue: `battery` (for example, `T1`) → resolves to `₹300` deduction
 
 Price evolution:
 
-1. Start: `₹20,000`  
-2. After warranty `W3`: `₹20,000 - 800 = ₹19,200`  
-3. After body `B2`: `₹19,200 - 500 = ₹18,700`  
-4. After screen `S1`: `₹18,700 - 400 = ₹18,300`  
-5. After missing `A3` and `A4`: `₹18,300 - 600 = ₹17,700`  
-6. After technical issue `T1`: `₹17,700 - 300 = ₹17,400`  
+1. Start: `₹20,000`
+2. After warranty `W3`: `₹20,000 - 800 = ₹19,200`
+3. After body `B2`: `₹19,200 - 500 = ₹18,700`
+4. After screen `S1`: `₹18,700 - 400 = ₹18,300`
+5. After missing `A3` and `A4`: `₹18,300 - 600 = ₹17,700`
+6. After technical issue `T1`: `₹17,700 - 300 = ₹17,400`
 
-Final evaluated price is `₹17,400`.  
+Final evaluated price is `₹17,400`.\
 Since this is greater than `0`, the strategy returns `₹17,400` instead of `deadPrice`.
 
-If the cumulative deductions had dropped the price below or equal to `0`, the strategy would have returned `deadPrice` from `classData` (for example, `₹500` or `₹1,000`).
+If the cumulative resolved deductions had dropped the price below or equal to `0`, the strategy would have returned `deadPrice` from `classData` (for example, `₹500` or `₹1,000`).
 
 ### Laptop example (deductions and additions)
 
-Assume the following for a laptop:
+Assume the following for a laptop, and again assume all class-data values **resolve to flat amounts** via `resolveDeduction`:
 
-- Base price: `₹40,000`  
-- Device turns on: `true`  
-- Warranty: `W2` → `₹1,000` deduction  
-- Screen size: `15-inch` → `₹400` deduction  
-- Missing accessory: charger (`A1`) → `₹800` deduction  
-- RAM upgrade: `16GB` → `₹1,000` addition  
-- SSD upgrade: `512GB` → `₹800` addition  
+- Base price: `₹40,000`
+
+- Device turns on: `true`
+
+- Warranty: `W2` → resolves to `₹1,000` deduction
+
+- Screen size code: `S2` → resolves to `₹400` deduction from `classData["S2"]`
+
+- Missing accessory: charger (`A1`) → resolves to `₹800` deduction
+
+- RAM upgrade: `16GB` → `₹1,000` addition (from RAM table)
+
+- SSD upgrade: `512GB` → `₹800` addition (from storage table)
 
 Price evolution:
 
-1. Start: `₹40,000`  
-2. After warranty `W2`: `₹40,000 - 1,000 = ₹39,000`  
-3. After screen size deduction: `₹39,000 - 400 = ₹38,600`  
-4. After missing charger `A1`: `₹38,600 - 800 = ₹37,800`  
-5. After RAM upgrade `16GB`: `₹37,800 + 1,000 = ₹38,800`  
-6. After SSD upgrade `512GB`: `₹38,800 + 800 = ₹39,600`  
+1. Start: `₹40,000`
+2. After warranty `W2`: `₹40,000 - 1,000 = ₹39,000`
+3. After screen size deduction `S2`: `₹39,000 - 400 = ₹38,600`
+4. After missing charger `A1`: `₹38,600 - 800 = ₹37,800`
+5. After RAM upgrade `16GB`: `₹37,800 + 1,000 = ₹38,800`
+6. After SSD upgrade `512GB`: `₹38,800 + 800 = ₹39,600`
 
-Final evaluated price is `₹39,600`.  
+Final evaluated price is `₹39,600`.\
 Because `39,600` is greater than `0`, the strategy returns this value and does not fall back to `deadPrice`.
 
 ## Summary formula
@@ -560,11 +627,132 @@ Final Price = Base Price - Total Deductions + Total Additions
 
 Where:
 
-- **Total Deductions** includes warranty, body, screen, physical, technical, and missing accessory deductions.  
-- **Total Additions** currently covers laptop hardware upgrades (processor, RAM, storage).
+- **Total Deductions** includes warranty, body, screen or screen-size, physical, technical, and missing accessory deductions, each computed as `resolveDeduction(classData[code], basePrice)` so that all percentages are based on `basePrice`.
+- **Total Additions** currently covers laptop hardware upgrades (processor, RAM, storage, and optionally graphic card if configured) as direct numeric additions.
 
 If the evaluated `Final Price` is less than or equal to `0`, the system returns:
 
 ```text
 Fallback Price = deadPrice (from classData) or 0 if deadPrice is not defined
+```
+
+## Device price evaluation diagram
+
+This high-level visual matches the rules described above: start from `basePrice`, immediately return `deadPrice` when the device is off, apply all deductions using `resolveDeduction(value, basePrice)`, add laptop hardware upgrades, and perform a final floor check that falls back to `deadPrice`. The `resolve(...)` label inside the boxes refers to the same `resolveDeduction(value, basePrice)` helper documented earlier.
+
+```text
+┌─────────────────────────────────────────────────┐
+│              DEVICE PRICE EVALUATION            │
+│         (Mobile/Tablet/Mac & Others)            │
+└─────────────────────────────────────────────────┘
+
+INPUT:
+  • Device ID → fetches Base Price + Class Data
+  • User selections (warranty, body, screen, etc.)
+
+STEP 1: Check if device is turned ON
+  ├─ NO  → Return Dead Price (from class) ← EXIT
+  └─ YES → Continue
+
+STEP 2: Start with Base Price
+  finalPrice = basePrice
+
+STEP 3: DEDUCTIONS (subtract from price) ↓↓↓
+  ┌──────────────────────────────────────────────┐
+  │ WARRANTY STATUS (pick one)                  │
+  │  W1 = 0-3 months    (lowest deduction)      │
+  │  W2 = 3-6 months                           │
+  │  W3 = 6-11 months                          │
+  │  W4 = 11+ months    (highest deduction)    │
+  │  Value: flat (₹) or percentage (%)         │
+  │  finalPrice -= resolve(W_value, basePrice) │
+  └──────────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────┐
+  │ BODY CONDITION (pick one)                   │
+  │  B1 = Flawless       (usually 0)           │
+  │  B2 = Good                                  │
+  │  B3 = Minor damage                          │
+  │  B4 = Major damage   (highest deduction)    │
+  │  finalPrice -= resolve(B_value, basePrice) │
+  └──────────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────┐
+  │ SCREEN CONDITION (pick one)                 │
+  │  S1 = Flawless       (usually 0)           │
+  │  S2 = Minor scratches                      │
+  │  S3 = Visible scratches                    │
+  │  S4 = Cracked/damaged                      │
+  │  S5 = Heavily damaged (highest deduction)  │
+  │  finalPrice -= resolve(S_value, basePrice) │
+  └──────────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────┐
+  │ PHYSICAL CONDITIONS (pick multiple)         │
+  │  P1, P2, P3, P4 — each independent issue   │
+  │  Each selected = additional deduction       │
+  │  finalPrice -= resolve(P_value, basePrice) │
+  │  (for each selected)                        │
+  └──────────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────┐
+  │ TECHNICAL CONDITIONS (pick multiple)        │
+  │  T1-T15 — each independent issue            │
+  │  Examples: WiFi, Bluetooth, Speaker,        │
+  │  Mic, Camera, Touch, FaceID, etc.           │
+  │  finalPrice -= resolve(T_value, basePrice) │
+  │  (for each selected)                        │
+  └──────────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────┐
+  │ MISSING ACCESSORIES (auto-detect missing)   │
+  │  A1 = Bill/Invoice                          │
+  │  A2 = Box                                   │
+  │  A3 = Charger                               │
+  │  A4 = Other                                 │
+  │  If user DOESN'T have it → deduct          │
+  │  finalPrice -= resolve(A_value, basePrice) │
+  │  (for each MISSING accessory)               │
+  └──────────────────────────────────────────────┘
+
+STEP 4: Floor Check
+  ├─ finalPrice > 0 → Return finalPrice ← EXIT
+  └─ finalPrice ≤ 0 → Return Dead Price ← EXIT
+
+
+Laptop (Additional Add-Ons)
+
+┌─────────────────────────────────────────────────┐
+│          LAPTOP PRICE EVALUATION               │
+│    (Same as above PLUS add-ons)                │
+└─────────────────────────────────────────────────┘
+
+STEP 1-3: Same as Mobile (all deductions apply)
+  Note: Screen = Screen SIZE (S1-S4), not condition
+
+STEP 4: ADD-ONS (add to price) ↑↑↑
+  ┌──────────────────────────────────────────────┐
+  │ PROCESSOR (from lookup table)               │
+  │  finalPrice += Processor.value  ← INCREASES │
+  ├──────────────────────────────────────────────┤
+  │ RAM (from lookup table)                     │
+  │  finalPrice += Ram.value        ← INCREASES │
+  ├──────────────────────────────────────────────┤
+  │ STORAGE (from lookup table)                 │
+  │  finalPrice += Storage.value    ← INCREASES │
+  ├──────────────────────────────────────────────┤
+  │ GRAPHIC CARD (optional, from lookup table)  │
+  │  finalPrice += GraphicCard.value ← INCREASES│
+  └──────────────────────────────────────────────┘
+
+STEP 5: Floor Check (same as Mobile)
+
+
+Value Resolution (Flat vs Percentage)
+
+┌──────────────────────────────────────────────┐
+│ resolveDeduction(value, basePrice)          │
+│                                             │
+│  "500"  → flat ₹500 deduction               │
+│  "10%"  → basePrice × 10 ÷ 100             │
+│  0      → no deduction                      │
+│                                             │
+│  Always calculated from BASE PRICE          │
+│  (not running total)                        │
+└──────────────────────────────────────────────┘
 ```

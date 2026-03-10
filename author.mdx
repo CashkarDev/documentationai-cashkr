@@ -1,0 +1,102 @@
+---
+title: Author
+description: Manage BigboldTech article authors in Strapi, including creating, editing, deleting, searching, and configuring the author list view.
+---
+
+# Author
+
+Manage BigboldTech article authors in the Strapi admin, including creating, editing, deleting, and configuring how the author list is displayed.
+
+## What this page shows
+
+The Author collection in BigboldTech Strapi lets you:
+
+- Add new authors using the **Create new entry** button.
+- Edit existing authors from the list view.
+- Delete authors with a confirmation step.
+- Search and filter authors to quickly find specific records.
+- Configure how authors are displayed using the **settings** icon for the list view.
+
+## User flow
+
+Use the Author collection from the Content Manager to keep your article authors up to date.
+
+<Steps>
+  <Step title="Open the Authors collection" icon="folder">
+
+    From the Strapi sidebar, open **Content Manager**, then select the **Authors** collection type.
+
+  </Step>
+
+  <Step title="Search or filter authors" icon="search">
+
+    Use the **Search** field or **Filter** controls to narrow the list by author name or other criteria. This helps you quickly locate an author to update or remove.
+
+  </Step>
+
+  <Step title="Create a new author" icon="plus">
+
+    Click **Create new entry** to add a new author. Fill in the author details in the edit view, then save and publish as needed.
+
+  </Step>
+
+  <Step title="Update an existing author" icon="edit">
+
+    Click an author row in the list to open the edit view. Update the details, then save your changes to keep the author information current.
+
+  </Step>
+
+  <Step title="Delete an author with confirmation" icon="trash">
+
+    From the author edit view or list actions, choose **Delete**, then confirm the removal in the dialog. Strapi only deletes the author after you explicitly confirm.
+
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+Author changes update article relations instantly. When you save updates for an author, all related articles in the Content Manager and on the BigboldTech website reflect the new author information immediately.
+
+</Callout>
+
+<Callout kind="alert">
+
+When you delete an author, Strapi dissociates that author from any related articles. Articles remain published, but they no longer show the deleted author as a relation.
+
+</Callout>
+
+## UI elements
+
+Use these key controls in the Authors list view:
+
+- **Search / Filter** — Find authors quickly by name or other filter criteria so you can update or review specific records.
+- **Create new entry** — Add a new author record that can be linked to articles in the Content Manager.
+- **Settings (configure view)** — Open the settings icon in the list view to configure which columns are visible, their order, and how the author list is presented.
+
+## Connections and behavior
+
+Changes in the Author collection are directly connected to article management:
+
+- Authors link to articles through relations in the Content Manager.
+- When you update an author, related articles in Strapi and on the BigboldTech website show the updated author details.
+- When you delete an author, those relations are removed so articles no longer reference the deleted author.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754813012.png" width="1600" height="690" alt="Authors collection list view in BigboldTech Strapi showing available actions and controls" />
+
+## Related pages
+
+<Columns cols={2}>
+  <Card title="Browse Articles" href="browse-articles" icon="book-open" cta="Open">
+
+  See how authors connect to live content on the BigboldTech website articles listing.
+
+  </Card>
+
+  <Card title="Categories - BBT" href="categories---bbt" icon="folder" cta="Open">
+
+  Manage BigboldTech article categories that work alongside authors in Strapi.
+
+  </Card>
+</Columns>

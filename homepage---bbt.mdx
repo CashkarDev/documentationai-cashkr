@@ -1,0 +1,119 @@
+---
+title: HomePage
+description: Use the BigboldTech Strapi homepage to see your latest edits and published articles, then jump directly into the Content Manager or live website.
+---
+
+## HomePage dashboard overview
+
+Use the BigboldTech Strapi HomePage dashboard to see your most recent article edits and newly published content, then jump directly into the Content Manager or the live BigBoldTech website.
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754812578.png" width="1600" height="693" alt="Strapi HomePage dashboard showing Last Edits and Published Articles for BigboldTech" />
+
+<Callout kind="info">
+
+The Last Edits and Published Articles lists update in real time based on the latest content changes, so the most recent items always appear at the top.
+
+</Callout>
+
+## Sections on this page
+
+The HomePage shows two key sections that give you quick access to the content you work on most often.
+
+### Last Edits
+
+The **Last Edits** section lists articles that were most recently modified in Strapi, regardless of whether they are published yet. Use this area when you want to:
+
+- Return to drafts or in-progress edits you recently worked on.
+- Double-check a recent change before publishing.
+- Compare multiple recent edits across different articles.
+
+Entries in this list come directly from the Strapi Content Manager, ordered by their latest update time.
+
+### Published Articles
+
+The **Published Articles** section shows articles that were most recently published and are now live on the BigBoldTech website. Use this area when you want to:
+
+- Open the live article on the BigBoldTech website.
+- Quickly confirm that a new article or update is visible on the site.
+- Monitor the latest content that readers can see.
+
+Each item is tied to the published version of the article and reflects the current live state.
+
+## Typical user flow
+
+Use the HomePage as your starting point whenever you log in to Strapi to review or continue work on BigBoldTech content.
+
+<Steps>
+  <Step title="Log in to Strapi" icon="lock">
+
+    Sign in to the BigboldTech Strapi instance. After successful authentication, Strapi loads the HomePage dashboard by default.
+
+  </Step>
+
+  <Step title="Review recent content" icon="home">
+
+    Scan the **Last Edits** list for drafts or updated articles, and the **Published Articles** list for the latest live content that appears on the BigBoldTech website.
+
+  </Step>
+
+  <Step title="Open an entry from the dashboard" icon="arrow-right">
+
+    Click any entry in either list. Strapi opens that article directly in the **Content Manager**, where you can view its current fields, status, and metadata.
+
+  </Step>
+
+  <Step title="Continue editing or reviewing" icon="edit">
+
+    From the Content Manager view, adjust content, update fields, or review the article as needed, then save and publish as appropriate for the BigBoldTech website.
+
+  </Step>
+</Steps>
+
+## Typical actions
+
+Use these common actions to move quickly from the HomePage into deeper content work.
+
+- **Open a recent draft or updated article** from **Last Edits** to continue writing, update images, or refine metadata in the Content Manager.
+- **Check a recently published article** from **Published Articles**, then open the corresponding page on the BigBoldTech website to verify the live version.
+- **Switch between entries** by returning to the HomePage and selecting another item, without navigating manually through the full Content Manager list view.
+
+## How data flows between Strapi and BigBoldTech
+
+The HomePage acts as a bridge between editorial work in Strapi and the published BigBoldTech website.
+
+- **Integration with Content Manager**: Both **Last Edits** and **Published Articles** draw their data directly from the Strapi Content Manager, using the same underlying article records you edit there.
+- **Linking to the website**: Items in **Published Articles** correspond to pages on the BigBoldTech website. When you publish or update an article in Strapi, the live site reflects those changes according to the existing deployment and caching setup.
+
+<Callout kind="info">
+
+Because the HomePage lists reflect the same records as the Content Manager, any create, update, or publish action you perform on an article is visible in these sections as soon as Strapi finishes saving the change.
+
+</Callout>
+
+## Related pages
+
+Use these related pages to understand how homepage entries are structured and how they appear on the BigBoldTech website.
+
+<Columns cols={2}>
+  <Card
+    title="Content Type Builder - BBT"
+    href="/content-type-builder---bbt"
+    icon="database"
+    cta="View content structure"
+  >
+
+    Learn how the article content types and fields are defined in Strapi, which determines what appears in HomePage entries.
+
+  </Card>
+
+  <Card
+    title="Offers and Deals"
+    href="/offers-and-deals"
+    icon="tag"
+    cta="See live offers content"
+  >
+
+    Explore how published promotional content looks on the BigBoldTech website and how it connects back to Strapi entries.
+
+  </Card>
+</Columns>

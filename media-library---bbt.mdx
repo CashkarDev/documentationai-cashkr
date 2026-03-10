@@ -1,0 +1,97 @@
+---
+title: Media Library
+description: Manage photos, videos, and folders in the BigboldTech Strapi Media Library, including uploads, search, folders, and safe deletion behavior.
+---
+
+# Media Library
+
+Use the Media Library in BigboldTech Strapi to manage all photos, videos, and folders used across your website content.
+
+## What the Media Library shows
+
+The Media Library is a central repository for all media used on the BigboldTech website.
+
+- Store and organize photos and videos.
+- Group media into folders that match your content structure.
+- Reuse the same media across multiple articles and content types.
+
+Media items you upload here stay available to editors wherever media fields appear in the Content Manager.
+
+## Accessing the Media Library
+
+Open the Media Library directly from the Strapi sidebar in the BigboldTech project.
+
+<Steps>
+  <Step title="Open the Media Library" icon="folder">
+
+    From the left sidebar, select **Media Library** under the BigboldTech Strapi project to see all media items and folders.
+
+  </Step>
+
+  <Step title="Upload new media" icon="upload">
+
+    Use the **Upload assets** button to add new photos or videos. Select one or more files from your computer, then confirm the upload to add them to the library.
+
+  </Step>
+
+  <Step title="Organize with folders" icon="folder">
+
+    Create folders to group related media. Use the folder actions to add new folders, move media into them, or remove folders that you no longer need.
+
+  </Step>
+
+  <Step title="Search and filter media" icon="search">
+
+    Use the search bar to filter media by name. Combine search with folder navigation to quickly find specific assets.
+
+  </Step>
+
+  <Step title="Delete media you no longer need" icon="trash">
+
+    Select one or more assets and use the **Delete** action to remove them. Confirm the deletion to remove the media from the library and any content that used it.
+
+  </Step>
+</Steps>
+
+## How media is stored and linked
+
+<Callout kind="info">
+
+  Each media item is stored with a unique ID and linked to content entries that reference it. When editors select an image or video inside the Content Manager, Strapi saves the relation between the content entry and that media ID. This keeps media relationships consistent even if you rename files or move them between folders.
+
+</Callout>
+
+The Media Library integrates with the website media API so the same assets you see in Strapi are served to the BigboldTech website. Content entries in the Content Manager reference these media items to display images and videos on your public pages.
+
+## Deletion behavior and content impact
+
+<Callout kind="alert">
+
+  When you delete a media item from the Media Library and confirm the action, Strapi removes that asset and its references from all associated content. Any articles or entries that used this media will no longer display the deleted image or video.
+
+</Callout>
+
+Use deletion when you are sure a file is no longer needed anywhere on the site. For content updates, prefer replacing media in the relevant entries or uploading a new version instead of deleting shared assets.
+
+## UI elements and key actions
+
+Use these core UI elements to work with media efficiently:
+
+- **Upload assets** — Add new photos and videos to the library so editors can use them in content.
+- **Search bar** — Search and filter media by name to quickly locate specific items.
+- **Folders panel** — Create, rename, and delete folders, and navigate between them to organize media.
+- **Media grid/list** — View thumbnails, select multiple media items, and open details for each asset.
+- **Delete action** — Remove selected media from the library and, after confirmation, from all content that referenced it.
+
+## Connections to other parts of the system
+
+The Media Library connects directly to the BigboldTech Strapi Content Manager and website media API.
+
+- **Content Manager** — Editors choose media from the library when adding or updating content, creating a link between entries and media IDs.
+- **Website media API** — The frontend website uses the media API to load the exact assets stored and managed in this library.
+
+Changes you make in the Media Library, such as new uploads or deletions, flow through these connections to update what appears on the live site.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754813516.png" width="1600" height="697" alt="BigboldTech Strapi Media Library interface showing media items and folders" />

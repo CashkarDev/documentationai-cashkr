@@ -1,0 +1,135 @@
+---
+title: Articles
+description: Manage BigboldTech website articles in Strapi, including listing, searching, creating, editing, publishing, and deleting content.
+---
+
+## Articles - BBT overview
+
+Manage all BigboldTech website articles in the Strapi admin here, including drafts, published content, and related metadata such as titles and categories.
+
+<Callout kind="info">
+
+Articles stay in draft until you publish them. Once you save changes on a published article, the BigboldTech website updates immediately.
+
+</Callout>
+
+## What the Articles view shows
+
+The Articles collection view in Strapi displays:
+
+- **All articles** for the BigboldTech website, including drafts and published content.
+- **Key metadata** like article title and category for quick scanning.
+- **Search and filter controls** so you can narrow the list to specific articles.
+- **Actions** for creating, editing, and deleting articles.
+
+Because this collection is integrated with the live website, the list represents exactly what is available to surface on BigboldTech.
+
+## UI elements
+
+Use these UI elements in the Articles collection view to manage content efficiently.
+
+- **Search / Filter**  
+  Use the search box and available filters to find articles by title or narrow down to a subset of content.
+
+- **Create new entry**  
+  Click the button to add a new article. This opens the article editor where you set title, content, category, and other fields.
+
+- **Row actions**  
+  Open an existing article from the list to view or update its fields, then save your changes.
+
+- **Bulk actions (delete)**  
+  Select one or more articles in the list to perform bulk actions such as deletion. Strapi will ask you to confirm before removing anything.
+
+<Callout kind="alert">
+
+When you delete an article, Strapi permanently removes it and it no longer appears on the BigboldTech website. There is no built-in undo.
+
+</Callout>
+
+## Manage articles step by step
+
+Use this flow whenever you need to create, update, or remove an article.
+
+<Steps>
+  <Step title="Open Articles" icon="file-text">
+
+    Log in to the Strapi admin panel, go to **Content Manager**, and select the **Articles** collection type from the sidebar.
+
+  </Step>
+
+  <Step title="Search or filter articles" icon="search">
+
+    Use the search bar to look up articles by title or apply filters to narrow the list. This helps you quickly find existing content to review or edit.
+
+  </Step>
+
+  <Step title="Create a new article" icon="plus">
+
+    Click **Create new entry** to add a new article. Fill in the required fields, link any media from the Media Library if needed, and save the entry.
+
+  </Step>
+
+  <Step title="Edit an existing article" icon="edit">
+
+    Click an article in the list to open its detail view. Update fields such as title, content, or category, then save. If the article is published, these changes appear on the website immediately after saving.
+
+  </Step>
+
+  <Step title="Publish or keep as draft" icon="check-circle">
+
+    Decide whether to keep the article as a draft or publish it. Keep drafts unpublished while you are still working; publish when the article is ready to appear on the BigboldTech website.
+
+  </Step>
+
+  <Step title="Delete with confirmation" icon="trash">
+
+    To remove one or more articles, select them and choose the delete action. Confirm the deletion in the prompt to complete removal from both Strapi and the website.
+
+  </Step>
+</Steps>
+
+## System behavior and connections
+
+The Articles collection type is directly connected to the BigboldTech website and Media Library:
+
+- **Draft vs published**  
+  Articles stay hidden from the website until you publish them. Publishing, unpublishing, and updates happen in Strapi and reflect on the site.
+
+- **Live updates after saving**  
+  When you save a published article, the corresponding page on the BigboldTech website updates with the new content.
+
+- **Deletion impact**  
+  Deleted articles are removed from Strapi and no longer available on the website. This affects single deletions from the detail view and bulk deletions from the list.
+
+- **Media Library integration**  
+  When you embed images or other media into an article, Strapi links those assets from the Media Library so they display correctly on the BigboldTech website.
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754812696.png" width="1600" height="690" alt="Strapi Articles collection view for BigboldTech showing article list, filters, and create new entry button" />
+
+## Related pages
+
+<Columns cols={2}>
+  <Card
+    title="Media Library - BBT"
+    href="/media-library---bbt"
+    icon="image"
+    cta="Manage media assets"
+  >
+
+    Learn how to upload, organize, and reuse images and other media linked inside BigboldTech articles.
+
+  </Card>
+
+  <Card
+    title="Categories - BBT"
+    href="/categories---bbt"
+    icon="folder"
+    cta="Organize article topics"
+  >
+
+    See how to manage article categories used to group and filter content on the BigboldTech website.
+
+  </Card>
+</Columns>

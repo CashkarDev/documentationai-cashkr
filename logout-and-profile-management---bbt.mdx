@@ -1,0 +1,96 @@
+---
+title: Logout and Profile Management - BBT
+description: Manage your BigboldTech Strapi profile and log out safely, including how sessions are cleared and how profile edits affect your own account.
+---
+
+## Logout and profile management overview
+
+Manage your own BigboldTech Strapi account from the profile menu, including logging out securely and updating your basic profile details.
+
+**What it shows**
+
+- Logout option and profile settings for team members.
+
+**System logic**
+
+- Logout clears the current session token.
+- Profile updates apply only to the logged-in user and are saved to the user database.
+
+**Connections**
+
+- Uses Strapi authentication for session creation and session clearing.
+- Writes profile changes (name and email) to the linked user database record.
+
+## User flow
+
+Use the profile menu at the bottom of the interface to log out or update your profile details.
+
+<Steps>
+  <Step title="Open the profile menu" icon="user">
+    Click the profile icon at the bottom of the Strapi interface to open the profile menu.
+  </Step>
+
+  <Step title="Log out of Strapi" icon="log-out">
+    Select <kbd>Logout</kbd> from the menu to end your current session and return to the login screen.
+  </Step>
+
+  <Step title="Open profile settings" icon="settings">
+    To edit your account, select <kbd>Profile</kbd> from the same menu to open your profile details.
+  </Step>
+
+  <Step title="Edit name and email" icon="edit">
+    Update your profile fields, such as your display name and email address, in the profile form.
+  </Step>
+
+  <Step title="Save changes" icon="check">
+    Click the save action in the profile screen to store your updated details in the user database.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+Logging out clears the current session token from Strapi, ending your authenticated session. After logout, you must sign in again to access any protected content or profile settings.
+
+</Callout>
+
+<Callout kind="alert">
+
+Profile changes apply only to your own account but can affect how the system contacts you and how your name appears in the interface. Make sure the email and name you save are correct before confirming your edits.
+
+</Callout>
+
+## UI elements
+
+These interface elements support logout and profile management for team members:
+
+- **Profile menu:** Opens when you click the profile icon at the bottom of the screen and contains account options.
+- **Logout:** Ends your current Strapi session and returns you to the login screen.
+- **Profile (edit and save):** Opens your profile details, where you can change your name and email, then save to update your user record.
+
+## Screenshot
+
+**Profile:**
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754813661.png" width="1600" height="694" alt="BigboldTech Strapi profile screen showing profile fields for name and email" />
+
+## Related pages
+
+<Columns cols={2}>
+  <Card
+    title="User - BBT"
+    href="/user---bbt"
+    icon="users"
+    cta="View user model"
+  >
+    See how BigboldTech users are defined in Strapi, including fields that back profile information.
+  </Card>
+
+  <Card
+    title="Authentication"
+    href="/authentication"
+    icon="lock"
+    cta="Review auth flow"
+  >
+    Learn how authentication and session tokens work across the platform.
+  </Card>
+</Columns>

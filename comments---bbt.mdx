@@ -1,0 +1,115 @@
+---
+title: Comments
+description: Manage BigboldTech article comments in Strapi, including review, approval, rejection, and how changes appear on the website.
+---
+
+# Comments - BBT
+
+Review, manage, and moderate reader comments for BigboldTech articles using the Comments collection in Strapi.
+
+## What it shows
+
+The Comments collection shows all comments submitted on BigboldTech articles, including:
+
+- The related article each comment belongs to
+- The comment text and author details (as defined in the Strapi content type)
+- The current status: **pending**, **approved**, or **rejected**
+
+Use this view to see the full moderation queue and historical comments in one place.
+
+## User flow
+
+<Steps>
+  <Step title="Open the Comments collection" icon="folder">
+    From the Strapi sidebar, open **Content Manager**, then select the **Comments** collection type for BigboldTech.
+  </Step>
+
+  <Step title="Search or filter comments" icon="search">
+    Use the search bar or filters to narrow comments by **article** or **status** (pending, approved, rejected) so you can focus on what needs review.
+  </Step>
+
+  <Step title="Review and edit comment details" icon="edit">
+    Open a comment entry to review its content. Update any editable fields if needed, such as correcting text, then save your changes.
+  </Step>
+
+  <Step title="Approve or reject pending comments" icon="check">
+    From the list view or the detail view, change the comment status to **approved** if it should appear on the website, or **rejected** if it should be archived.
+  </Step>
+
+  <Step title="Add or delete comments manually" icon="plus">
+    Create a new comment entry manually when you need to add internal comments or migrate content. Delete existing comments from the list or detail view when they should be removed from moderation history.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+Comments do not appear on the BigboldTech website until you approve them and publish the updated entry. After you save and publish a change, the website comment section reflects the new status and content.
+
+</Callout>
+
+## System logic
+
+The Comments collection follows these rules:
+
+- **Pending comments**: New comments enter the queue as pending and stay hidden from the public website until you review them.
+- **Approved comments**: Approved comments are eligible for public display on the related article and show up in the article comment section after saving and publishing.
+- **Rejected comments**: Rejected comments are archived for internal reference and do not display on the website.
+
+<Callout kind="alert">
+
+When you **reject** or **delete** a comment, visitors cannot see it on the article anymore. Deleting a comment removes it from the collection, so you lose the moderation history for that entry.
+
+</Callout>
+
+## UI elements
+
+Use the key UI elements in the Comments list view to work efficiently:
+
+- **Search bar**: Type part of the comment text or related article title to quickly locate specific comments.
+- **Filters**:
+  - **Status filter**: Show only pending, approved, or rejected comments to focus on moderation work.
+  - **Article filter**: Limit the list to comments for a specific BigboldTech article.
+- **Status column/actions**:
+  - Change a comment status directly from the list view (for example, set a pending comment to approved or rejected).
+  - Confirm your changes by opening the entry if you need to review details.
+- **Row actions**:
+  - Open an entry to view and edit content.
+  - Delete a comment from the list when it should be permanently removed.
+
+These controls let you moderate comments without leaving the Comments collection.
+
+## Connections
+
+Comments in this collection connect directly to:
+
+- The **article** entry they belong to in the BigboldTech Strapi setup
+- The **article comment section** on the BigboldTech website, where approved comments appear after you publish changes
+
+If a comment is linked to an article but remains pending or rejected, it stays internal and never appears in the website UI.
+
+## Screenshot
+
+<Image
+  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1754812915.png"
+  width="1600"
+  height="701"
+  alt="Strapi Comments collection for BigboldTech showing a list of article comments with statuses and filters"
+/>
+
+## Related pages
+
+<Columns cols={2}>
+  <Card
+    title="Browse Articles"
+    href="/browse-articles"
+    icon="book-open"
+    cta="View how articles appear on BigboldTech"
+  />
+
+  <Card
+    title="Commenting on Articles"
+    href="/commenting-on-articles"
+    icon="message-square"
+    cta="See how users submit comments on the website"
+  />
+</Columns>
