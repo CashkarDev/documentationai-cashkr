@@ -1,20 +1,20 @@
 ---
 title: In Depth Device Price Evaluation Logic
-description: Internal reference for how backend strategies evaluate device prices using class data, request contracts, device table mappings, and the shared resolveDeduction helper.
+description: >-
+  Internal reference for how backend strategies evaluate device prices using
+  class data, request contracts, device table mappings, and the shared
+  resolveDeduction helper.
 ---
-
 ## Overview
 
 The price evaluation module computes a final device price based on physical, technical, and warranty conditions, using device-type-specific strategies and class data lookup tables.
 
 <Callout kind="info" collapsed="false">
+  - All strategies start from a **base price** and apply **deductions** for issues and **additions** for laptop hardware upgrades. Deductions may be flat or percentage values and always resolve from `basePrice`.
 
-- All strategies start from a **base price** and apply **deductions** for issues and **additions** for laptop hardware upgrades. Deductions may be flat or percentage values and always resolve from `basePrice`.
+  - If a device is marked as **dead** (does not turn on), strategies immediately return the configured **deadPrice** from class data.
 
-- If a device is marked as **dead** (does not turn on), strategies immediately return the configured **deadPrice** from class data.
-
-- After applying all deductions and additions, strategies perform a **floor check**. If the computed price is less than or equal to `0`, the strategy falls back to **deadPrice** (or `0` if deadPrice is not available).
-
+  - After applying all deductions and additions, strategies perform a **floor check**. If the computed price is less than or equal to `0`, the strategy falls back to **deadPrice** (or `0` if deadPrice is not available).
 </Callout>
 
 Use this page as the backend reference for engineering and QA when validating evaluation flows, mappings, and edge cases.
@@ -228,6 +228,7 @@ Use a single helper rule, `resolveDeduction(value, basePrice)`, everywhere you a
   - a **percentage string** like `"10%"`, always resolved against `basePrice`.
 
 - When the value is a flat number or a numeric string, `resolveDeduction` returns that number directly.
+
 - When the value is a percentage string, `resolveDeduction` computes the deduction as a percentage of `basePrice`, not of the running `finalPrice`.
 
 In pseudo-code:
@@ -353,7 +354,7 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
   </Step>
 </Steps>
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   The **graphic card** add-on in the laptop logic is conceptual and optional. It only applies if you introduce a matching field or lookup table in your laptop evaluation strategy; it is not part of the current `EvaluationRequest` contract.
 </Callout>
 
@@ -576,10 +577,15 @@ Assume the following for a mobile device, and assume all mentioned class-data va
 Price evolution:
 
 1. Start: `₹20,000`
+
 2. After warranty `W3`: `₹20,000 - 800 = ₹19,200`
+
 3. After body `B2`: `₹19,200 - 500 = ₹18,700`
+
 4. After screen `S1`: `₹18,700 - 400 = ₹18,300`
+
 5. After missing `A3` and `A4`: `₹18,300 - 600 = ₹17,700`
+
 6. After technical issue `T1`: `₹17,700 - 300 = ₹17,400`
 
 Final evaluated price is `₹17,400`.\
@@ -608,10 +614,15 @@ Assume the following for a laptop, and again assume all class-data values **reso
 Price evolution:
 
 1. Start: `₹40,000`
+
 2. After warranty `W2`: `₹40,000 - 1,000 = ₹39,000`
+
 3. After screen size deduction `S2`: `₹39,000 - 400 = ₹38,600`
+
 4. After missing charger `A1`: `₹38,600 - 800 = ₹37,800`
+
 5. After RAM upgrade `16GB`: `₹37,800 + 1,000 = ₹38,800`
+
 6. After SSD upgrade `512GB`: `₹38,800 + 800 = ₹39,600`
 
 Final evaluated price is `₹39,600`.\
@@ -628,6 +639,7 @@ Final Price = Base Price - Total Deductions + Total Additions
 Where:
 
 - **Total Deductions** includes warranty, body, screen or screen-size, physical, technical, and missing accessory deductions, each computed as `resolveDeduction(classData[code], basePrice)` so that all percentages are based on `basePrice`.
+
 - **Total Additions** currently covers laptop hardware upgrades (processor, RAM, storage, and optionally graphic card if configured) as direct numeric additions.
 
 If the evaluated `Final Price` is less than or equal to `0`, the system returns:
@@ -756,3 +768,6 @@ Value Resolution (Flat vs Percentage)
 │  (not running total)                        │
 └──────────────────────────────────────────────┘
 ```
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1773141967597-hjeem1et6h7-summary-table--price-evaluation.summary table -price evaluation?q=85&fm=auto&auto=compress%2Cformat" width="1034" height="692" alt="" />
+
