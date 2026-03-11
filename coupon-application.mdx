@@ -1,0 +1,64 @@
+---
+title: Coupon Application
+description: Define how coupons appear and behave on the checkout page, including user flow, discount rules, and handling invalid or expired codes.
+---
+
+## Coupon application
+
+<Callout kind="info">
+
+Use this SOP when implementing or QA-ing the coupon field on the checkout page so the user experience and discount logic stay consistent.
+
+</Callout>
+
+### User flow
+
+<Steps>
+
+  <Step title="Surface coupon entry on checkout" icon="list-ordered">
+
+  Show an **Apply coupon** field on the checkout screen before the user places the order. The field should be clearly visible near the price or order summary.
+
+  </Step>
+
+  <Step title="User enters a valid coupon" icon="list-ordered">
+
+  Allow the user to type or paste an available, valid coupon code into the field, then trigger validation when the user submits or when the field loses focus.
+
+  </Step>
+
+  <Step title="Update price in real time" icon="list-ordered">
+
+  After a successful validation, recalculate the order amount and show the updated value immediately in the price summary, indicating the applied discount and final payable value.
+
+  </Step>
+
+</Steps>
+
+### Walkthrough snapshot
+
+<Iframe
+  src="https://vento.so/view/4fe0b7d5-64e3-43a6-a528-e9ad5999e0d9/embed"
+  title="Coupon application flow walkthrough"
+  width="100%"
+  height="480"
+/>
+
+### Coupon logic
+
+- **Discount type**
+
+  - Coupons are **flat-value discounts** (for example, reduce the price by Rs 400 from the device calculated price).
+
+- **Inputs to coupon applicability**
+
+  - **Base price**: Start from the **device calculated price**, then subtract the flat coupon value.
+  - **User type**: Limit coupons by customer segment (for example, first-time users only, or all users).
+  - **Device type**: Restrict coupons to specific device categories or models when required.
+  - **Platform**: Apply rules based on where the user is placing the order (for example, web vs app vs other supported platforms).
+
+### Edge cases
+
+- Invalid or expired coupon code entered.
+- Coupon already used by the same user where the rule allows single use only.
+- Coupon conditions not met (for example, wrong device type, user type, or platform) even if the code itself is valid.

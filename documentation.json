@@ -548,6 +548,14 @@
             "group": "Website SOPs",
             "pages": [
               {
+                "title": "Coupon Application",
+                "path": "coupon-application"
+              },
+              {
+                "title": "User Registration & Login",
+                "path": "user-registration-login"
+              },
+              {
                 "title": "Device Search & Sell Flow",
                 "path": "device-search-sell-flow"
               }
