@@ -1,0 +1,102 @@
+---
+title: Hosting, Domains & Security
+description: Understand how Cashkr hosts its website and app, manages domains, and protects customer data using Cloudflare, GoDaddy, and AAPanel.
+---
+
+## Why this matters
+
+<Callout kind="info">
+
+Hosting, domains, and security keep Cashkr online and trustworthy. If servers fail, DNS breaks, or domains expire, the website and apps go offline and customers lose access. Strong security protects customer data, prevents attacks, and maintains brand trust.
+
+</Callout>
+
+## Tools we use
+
+<Card title="Cloudflare" icon="shield">
+
+Cloudflare sits in front of the Cashkr website and app to provide CDN, SSL, and protection from attacks.
+
+- Acts as a Content Delivery Network to cache assets and improve load times.
+- Terminates SSL and manages TLS certificates for secure connections.
+- Filters malicious traffic and helps absorb DDoS attacks.
+
+**Example:** If attackers try to overload Cashkr with fake traffic, Cloudflare blocks or rate-limits them so the site stays online.
+
+</Card>
+
+<Card title="GoDaddy" icon="globe">
+
+GoDaddy manages Cashkr domain registrations and DNS records.
+
+- Registers and renews domains such as `cashkr.com`.
+- Stores DNS records that point domains to Cloudflare and hosting servers.
+- Sends renewal reminders so domains do not accidentally expire.
+
+**Example:** If `cashkr.com` stops resolving correctly, tech and management first confirm the domain is active and DNS records are correct in GoDaddy.
+
+</Card>
+
+<Card title="AAPanel" icon="settings">
+
+AAPanel is the control panel for our backend hosting environment.
+
+- Manages web and app servers, databases, and storage.
+- Installs and renews SSL certificates on the origin servers.
+- Provides access to server logs, resource usage, and service restarts.
+
+**Example:** When the site is slow or returning errors, the tech team uses AAPanel to check server health, error logs, and SSL configuration.
+
+</Card>
+
+## How we use these daily
+
+- **Tech team** → Configures DNS in GoDaddy, manages Cloudflare rules and SSL, monitors and maintains servers and databases via AAPanel.
+- **Management / ops** → Tracks domain ownership and renewal dates in GoDaddy, reviews high-level availability and security posture with the tech team.
+
+## When something breaks
+
+Use this high-level flow when the website or app is down, slow, or behaving unexpectedly. Coordinate between tech and management/ops as needed.
+
+<Steps>
+
+  <Step title="Triage the impact" icon="alert-triangle">
+
+  - Confirm the issue: is it affecting all users or specific regions, devices, or apps.
+  - Check basic reachability: load the site, test the app, and validate with an external status checker if needed.
+  - Log the incident in the internal channel or tracker so everyone uses the same reference.
+
+  **Success signal:** You have a clear description of the problem, scope, and time started.
+
+  </Step>
+
+  <Step title="Identify whether it is domain, DNS, hosting, or security" icon="search">
+
+  - **Domain and DNS checks (GoDaddy):**
+    - Confirm the domain is active and not expired.
+    - Review DNS records to ensure they still point to Cloudflare and the correct servers.
+  - **Hosting checks (AAPanel):**
+    - Verify servers and databases are running and not overloaded.
+    - Review recent deployments, configuration changes, and server logs for errors.
+  - **Security and edge checks (Cloudflare):**
+    - Look for active DDoS events or security rules blocking valid traffic.
+    - Check recent rule changes, firewall logs, and SSL status.
+
+  **Success signal:** You know whether the root cause is domain/DNS, hosting, or security configuration.
+
+  </Step>
+
+  <Step title="Mitigate, stabilize, and follow up" icon="check-circle">
+
+  - Apply the safest quick fix:
+    - Restore correct DNS records or rollback recent DNS changes.
+    - Restart affected services or roll back recent server deployments.
+    - Adjust or temporarily disable a blocking Cloudflare rule if it is affecting real users.
+  - Confirm recovery by re-testing the site or app and watching logs and metrics.
+  - Document what happened, what fixed it, and any follow-up actions (for example, renewals, configuration hardening, monitoring updates).
+
+  **Success signal:** Users can access Cashkr again, and the team has a clear record of the incident and next steps.
+
+  </Step>
+
+</Steps>

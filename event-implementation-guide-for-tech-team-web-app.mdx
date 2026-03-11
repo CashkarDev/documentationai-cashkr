@@ -1,0 +1,319 @@
+---
+title: Event Implementation Guide for Tech Team (Web & App)
+description: Implement new GA4 events consistently across Web and Apps, with prerequisites, platform-specific steps, QA checks, and handover workflow.
+---
+
+## Purpose
+
+Ensure every new GA4 event is implemented in a consistent, debuggable way across:
+
+- **Web** via Google Tag Manager and Data Layer — owned by **Samrat**
+- **Android and iOS apps** via Firebase Analytics — owned by **Shahid**
+
+QA for all implementations is owned by **Nirajan**.
+
+## Prerequisites and ownership
+
+<Callout kind="info">
+
+Before anyone starts coding, make sure the event exists in the shared analytics sheets and GA4 admin. Tech work should never start from an ad-hoc request.
+
+</Callout>
+
+### Event definition in Event Master Sheet
+
+- Event name and final spelling
+- Description and trigger point (where in the flow this fires)
+- Parameter list with:
+  - Parameter name
+  - Data type: `string`, `int`, or `array`
+  - Expected mapping (where the value comes from in Web/App)
+- Target platforms: Web, Android, iOS
+- Goal or usage (funnel step, remarketing, etc.)
+
+### Data Layer JSON in DL Sheet (for Web)
+
+- Example `dataLayer.push` structure for the event
+- Sample values for each parameter
+- Data types clearly marked:
+  - Strings as plain values: `"Apple"`, `"Phone"`
+  - Integers for numeric metrics: `45000`
+  - Arrays for multi-select values: `["Camera Not Working", "Mic Issue"]`
+
+### GA4 custom parameters and dimensions
+
+- Analytics team approves which parameters require GA4 custom dimensions or metrics
+- Analytics team registers them in **GA4 Admin → Custom definitions**
+- Tech team maps these parameters correctly from:
+  - Data Layer (Web) via GTM variables
+  - Firebase parameters (Apps) via event parameter names
+
+### Version control and change log
+
+- Create or update the **Change Log** entry when work starts:
+  - Event name
+  - Platforms in scope
+  - Owner (Samrat or Shahid)
+  - Status: In progress / QA / Live
+
+## End-to-end workflow
+
+Use this sequence whenever a new GA4 event is requested.
+
+<Steps>
+  <Step title="Define the event" icon="settings">
+
+  Analytics team finalizes the event in the **Event Master Sheet** and **DL Sheet**, including name, trigger, parameters, and data types.
+
+  </Step>
+
+  <Step title="Prepare GA4 and change log" icon="database">
+
+  Analytics team registers required custom dimensions/metrics in GA4 and creates a **Change Log** entry for the event.
+
+  </Step>
+
+  <Step title="Implement on Web and/or Apps" icon="code">
+
+  Tech team implements the event for each required platform:
+  Web (Samrat) via Data Layer and GTM, Apps (Shahid) via Firebase `logEvent`.
+
+  </Step>
+
+  <Step title="Run QA in DebugView" icon="terminal">
+
+  QA (Nirajan) validates events in GTM Preview, GA4 DebugView, and Firebase DebugView, checking parameters and types.
+
+  </Step>
+
+  <Step title="Mark event live" icon="check-circle">
+
+  After QA passes, analytics team updates the **Change Log** status to Live and confirms the event is ready for reporting.
+
+  </Step>
+</Steps>
+
+## Platform-specific implementation
+
+<Callout kind="tip">
+
+Use the same event name and parameter set across Web, Android, and iOS. Only the wiring and SDK calls should differ by platform.
+
+</Callout>
+
+### Web implementation (Samrat)
+
+<Tabs>
+  <Tab title="Data Layer push" icon="code">
+
+  Use a structured Data Layer push on the defined trigger (for example, button click, form submit). Parameter types must match the spec: strings for text, integers for numeric values, and arrays for multi-select fields.
+
+  ```typescript
+  dataLayer.push({
+    event: "generate_lead",
+    lead_id: "L12345",                  // string
+    device_type: "Phone",               // string
+    brand: "Apple",                     // string
+    model: "iPhone 13 Pro Max",         // string
+    variant: "128GB",                   // string
+    warranty_status: "Out of Warranty", // string
+    power_condition: "Battery Issue",   // string
+    screen_condition: "Cracked",        // string
+    body_condition: "Dents",            // string
+    issue_list: ["Camera Not Working", "Mic Issue"], // array of strings
+    price_quote: 45000,                 // int
+    user_id: "U6789",                   // string (nullable/optional)
+    session_id: "session_ab12cd34",     // string
+    timestamp: new Date().toISOString() // ISO 8601 string
+  });
+  ```
+
+  </Tab>
+
+  <Tab title="GTM tag & mapping" icon="settings">
+
+  <Steps>
+    <Step title="Create GA4 event tag">
+
+    In Google Tag Manager, create a new **GA4 Event** tag. Set the **Event name** to the exact value from the Event Master Sheet, for example `generate_lead`.
+
+    </Step>
+
+    <Step title="Map parameters to GA4">
+
+    Configure tag parameters to read from the Data Layer. Use Data Layer variables for each field (`lead_id`, `device_type`, `price_quote`, `issue_list`, etc.), and map them to the GA4 event parameters that match the analytics spec.
+
+    </Step>
+
+    <Step title="Attach the trigger">
+
+    Add a trigger that matches the user action, such as the specific button click (`Get Quote Click`) or form submission where the Data Layer push happens.
+
+    </Step>
+  </Steps>
+
+  </Tab>
+
+  <Tab title="Test and validate" icon="terminal">
+
+  <Steps>
+    <Step title="Check Data Layer in GTM Preview">
+
+    Enable **GTM Preview mode**, reproduce the action, and verify that the `generate_lead` event appears with all expected parameters and correct types.
+
+    </Step>
+
+    <Step title="Verify in GA4 DebugView">
+
+    Open **GA4 DebugView**, trigger the event again, and confirm:
+    
+    - `generate_lead` appears at the right time
+    - All parameters are present
+    - Values and types match the Event Master Sheet and DL Sheet
+
+    </Step>
+  </Steps>
+
+  </Tab>
+</Tabs>
+
+### App implementation (Shahid)
+
+<Tabs>
+  <Tab title="Android (Kotlin)" icon="monitor">
+
+  Use Firebase Analytics and pass parameters with the correct types. Strings remain strings, numeric metrics use integer types where possible, and arrays are stored using the appropriate bundle method.
+
+  ```kotlin
+  val params = Bundle().apply {
+      putString("lead_id", "L12345")
+      putString("device_type", "Phone")
+      putString("brand", "Apple")
+      putString("model", "iPhone 13 Pro Max")
+      putString("variant", "128GB")
+      putString("warranty_status", "Out of Warranty")
+      putString("power_condition", "Battery Issue")
+      putString("screen_condition", "Cracked")
+      putString("body_condition", "Dents")
+      putStringArray("issue_list", arrayOf("Camera Not Working", "Mic Issue"))
+      putInt("price_quote", 45000)
+      
+      // user_id is optional; handle nulls safely
+      putString("user_id", "U6789")
+      
+      putString("session_id", "session_ab12cd34")
+      putString("timestamp", "2025-09-22T14:35:22.000Z") // ISO 8601
+  }
+
+  Firebase.analytics.logEvent("generate_lead", params)
+  ```
+
+  </Tab>
+
+  <Tab title="iOS (Swift)" icon="apple">
+
+  Log the same event and parameters from iOS using the Firebase Analytics SDK.
+
+  ```swift
+  Analytics.logEvent("generate_lead", parameters: [
+      "lead_id": "L12345",
+      "device_type": "Phone",
+      "brand": "Apple",
+      "model": "iPhone 13 Pro Max",
+      "variant": "128GB",
+      "warranty_status": "Out of Warranty",
+      "power_condition": "Battery Issue",
+      "screen_condition": "Cracked",
+      "body_condition": "Dents",
+      "issue_list": ["Camera Not Working", "Mic Issue"],
+      "price_quote": 45000,
+      // user_id is optional; pass nil for anonymous users
+      "user_id": "U6789",
+      "session_id": "session_ab12cd34",
+      "timestamp": "2025-09-22T14:35:22.000Z" // ISO 8601
+  ])
+  ```
+
+  </Tab>
+
+  <Tab title="Test in Firebase DebugView" icon="terminal">
+
+  <Steps>
+    <Step title="Enable debug mode">
+
+    Run the app from Android Studio or Xcode with Firebase Analytics debug mode enabled for the device or simulator.
+
+    </Step>
+
+    <Step title="Trigger the event">
+
+    Walk through the app flow until the `generate_lead` event should fire, then confirm in **Firebase DebugView** that the event appears with all parameters.
+
+    </Step>
+  </Steps>
+
+  </Tab>
+</Tabs>
+
+## QA checklist (Web and App)
+
+Use this checklist across Web, Android, and iOS before marking an event live.
+
+- Event fires **exactly once** per intended user action (no duplicates on reload or screen transitions).
+- Event name **exactly** matches the Event Master Sheet, including case and underscores.
+- All defined parameters appear in:
+  - **GA4 DebugView** (Web)
+  - **Firebase DebugView** (Apps)
+- Parameter data types match the spec:
+  - Text as strings
+  - Numeric metrics like `price_quote` as integers
+  - Lists like `issue_list` as arrays of strings
+- `user_id` and `session_id` are included when available:
+  - `user_id` handled safely when the user is anonymous
+- Timestamp is present and valid ISO 8601 string.
+
+## Handover workflow
+
+<Steps>
+  <Step title="Analytics defines and documents the event" icon="database">
+
+  Analytics team updates the Event Master Sheet, DL Sheet (for Web), GA4 custom definitions, and creates a Change Log entry.
+
+  </Step>
+
+  <Step title="Tech implements on assigned platforms" icon="code">
+
+  Samrat implements Web events via Data Layer and GTM. Shahid implements Android and iOS events via Firebase `logEvent`.
+
+  </Step>
+
+  <Step title="QA validates implementation" icon="terminal">
+
+  Nirajan tests in GTM Preview, GA4 DebugView, and Firebase DebugView, running through realistic user flows and comparing against the sheets.
+
+  </Step>
+
+  <Step title="Analytics marks the event live" icon="check-circle">
+
+  After QA passes, analytics team marks the event as Live in the Version Log or Change Log and communicates availability for reporting.
+
+  </Step>
+</Steps>
+
+## Implementation rules and notes
+
+<Callout kind="alert">
+
+Breaking these rules creates long-term reporting issues. Treat event names and parameters as schema, not as flexible labels.
+
+</Callout>
+
+- Never rename events after they are live; use exactly the name from the Event Master Sheet.
+- Always include a `timestamp` parameter formatted as an ISO 8601 string.
+- Treat `user_id` as optional:
+  - Handle anonymous users safely (null or omitted in code, not the string `"null"`).
+- For device-related events, always send condition parameters such as:
+  - `warranty_status`, `power_condition`, `screen_condition`, `body_condition`, `issue_list`
+- Avoid duplicate firing:
+  - On Web, use `sessionStorage` or `localStorage` flags to prevent firing the same event multiple times within a session where it should be unique.
+  - In Apps, use boolean state flags or view-model state to ensure each event fires once per intended interaction.

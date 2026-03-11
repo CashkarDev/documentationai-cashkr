@@ -1,0 +1,97 @@
+---
+title: Monitoring & Automation
+description: Understand how Cashkr uses RobotALP, Zerowork, Sentry, and Firebase Crashlytics to keep systems reliable and reduce manual work.
+---
+
+## Why monitoring and automation matter at Cashkr
+
+<Callout kind="info">
+
+Cashkr runs 24/7, and any downtime or silent failures directly impact customers and revenue. Monitoring alerts us when something breaks, and automation removes repetitive manual work so tech and ops teams can respond faster and focus on higher-value tasks.
+
+</Callout>
+
+## Tools we use
+
+<Card title="RobotALP (uptime monitoring)" icon="monitor">
+
+RobotALP checks whether the Cashkr website, apps, and APIs are online and responding as expected. It sends instant alerts when something goes wrong so the tech team can act before customers are impacted.
+
+- Tracks uptime and response time for cashkr.com, backend APIs, and key services
+- Sends alerts via email or SMS when checks fail
+- Useful for early warning on hosting, DNS, or network issues  
+- Example: If cashkr.com goes offline at 2 AM, RobotALP alerts the tech team before customers start reporting the outage.
+
+</Card>
+
+<Card title="Zerowork (process automation)" icon="zap">
+
+Zerowork is a no-code automation tool that lets ops and tech teams build workflows visually instead of writing scripts. It is used for repetitive, rules-based tasks across support, social, and operations.
+
+- Automates routine responses and updates across tools
+- Lets non-technical users maintain and adjust workflows
+- Reduces manual copy-paste and follow-up work  
+- Example: Automatically posts replies on social media or schedules and publishes LinkedIn posts for campaigns.
+
+</Card>
+
+<Card title="Sentry (web and backend error monitoring)" icon="alert-triangle">
+
+Sentry tracks runtime errors for the Cashkr website and backend services, showing exactly where and why code fails. It gives the tech team stack traces, request context, and trends so they can fix the root cause quickly.
+
+- Captures frontend errors (for example, React issues in the browser)
+- Captures backend exceptions and performance issues
+- Groups similar errors and shows impact over time  
+- Example: Sentry surfaces an error like `Cashkr website crashed due to React hook error on Checkout page`, so the engineer can jump directly to the failing code.
+
+</Card>
+
+<Card title="Firebase Crashlytics (mobile crash reporting)" icon="smartphone">
+
+Firebase Crashlytics tracks crashes in the Customer App and helps the team understand how often they happen, on which devices, and under what conditions.
+
+- Captures crashes and non-fatal issues on Android and iOS
+- Shows device model, OS version, and app version for each crash
+- Helps prioritize fixes based on user impact  
+- Example: Crashlytics alerts the tech team that the Cashkr Customer App crashes on Android 14 during OTP login, so they can reproduce and fix it.
+
+</Card>
+
+## How we use these daily
+
+- **Tech team** → Monitors uptime, error spikes, and crash trends, and uses alerts to prioritize incident response.
+- **Operations team** → Uses automation workflows in Zerowork to handle repetitive tasks and keep processes consistent.
+- **Leads and managers** → Review incident and automation patterns to decide what to improve next.
+
+## When an alert fires
+
+<Steps>
+
+  <Step title="Acknowledge and triage the alert" icon="info">
+
+  Confirm that someone in the tech or ops team is owning the alert. Check which tool raised it (RobotALP, Sentry, or Crashlytics), the affected system (website, backend, or app), and the severity or impact on customers.
+
+  </Step>
+
+  <Step title="Investigate impact and root cause" icon="search">
+
+  Use the linked dashboards or error details to see how many users are affected, when the issue started, and what changed recently. Look at logs, error traces, or recent deployments to narrow down the cause.
+
+  </Step>
+
+  <Step title="Mitigate, communicate, and follow up" icon="check-circle">
+
+  Apply a short-term fix or rollback if needed, and coordinate any customer-facing communication through the usual channels. After the incident is stable, create or update a task to implement a permanent fix and, if useful, improve automation or monitoring so similar issues are caught earlier.
+
+  </Step>
+
+</Steps>
+
+## Benefits
+
+- Instant alerts when systems fail or errors spike
+- Less manual repetitive work for tech and ops
+- Higher reliability and uptime across web and mobile
+- Easier for non-technical staff to run and adjust workflows without code
+
+**Teams using these tools:** Tech, Operations

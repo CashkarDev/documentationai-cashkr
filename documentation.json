@@ -462,6 +462,98 @@
             ]
           },
           {
+            "group": "Analytics and Events",
+            "pages": [
+              {
+                "title": "Event Implementation Guide for Tech Team (Web & App)",
+                "path": "event-implementation-guide-for-tech-team-web-app"
+              }
+            ]
+          },
+          {
+            "group": "Tools Used in Cashkr",
+            "pages": [
+              {
+                "title": "AI Tools (Content, Research & Automation)",
+                "path": "ai-tools-content-research-automation"
+              },
+              {
+                "title": "Link & Engagement Utilities",
+                "path": "link-engagement-utilities"
+              },
+              {
+                "title": "App Store Optimization (ASO)",
+                "path": "app-store-optimization-aso"
+              },
+              {
+                "title": "Social Media Platforms",
+                "path": "social-media-platforms"
+              },
+              {
+                "title": "Advertising Platforms",
+                "path": "advertising-platforms"
+              },
+              {
+                "title": "Productivity & Team Tools",
+                "path": "productivity-team-tools"
+              },
+              {
+                "title": "App Release & Management",
+                "path": "app-release-management"
+              },
+              {
+                "title": "HR & Payroll",
+                "path": "hr-payroll"
+              },
+              {
+                "title": "SEO & Analytics Tools",
+                "path": "seo-analytics-tools"
+              },
+              {
+                "title": "Marketing & CX Automation",
+                "path": "marketing-cx-automation"
+              },
+              {
+                "title": "Analytics, Tagging & Reporting",
+                "path": "analytics-tagging-reporting"
+              },
+              {
+                "title": "Hosting, Domains & Security",
+                "path": "hosting-domains-security"
+              },
+              {
+                "title": "Monitoring & Automation",
+                "path": "monitoring-automation"
+              },
+              {
+                "title": "Learning Platforms",
+                "path": "learning-platforms"
+              },
+              {
+                "title": "Document & Knowledge Management",
+                "path": "document-knowledge-management"
+              }
+            ]
+          },
+          {
+            "group": "Meetings",
+            "pages": [
+              {
+                "title": "Tech Team - Standup Meet",
+                "path": "tech-team---standup-meet"
+              }
+            ]
+          },
+          {
+            "group": "Website SOPs",
+            "pages": [
+              {
+                "title": "Device Search & Sell Flow",
+                "path": "device-search-sell-flow"
+              }
+            ]
+          },
+          {
             "group": "Components",
             "icon": "layers",
             "pages": [

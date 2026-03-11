@@ -1,0 +1,204 @@
+---
+title: Device Search & Sell Flow
+description: >-
+  End-to-end website SOP for searching a device, evaluating its condition,
+  pricing, and completing the sell order via search or direct category
+  selection.
+---
+## Purpose of this SOP
+
+Device Search & Sell Flow covers the end-to-end web journey where a customer selects a device, answers condition questions, views the evaluated price, and completes the sell order. This SOP focuses on the paths starting from the homepage device discovery to final order confirmation.
+
+<Callout kind="info" collapsed="false">
+  This SOP covers the full sell-device journey on the website across two entry points:
+
+  - **Without search**: Direct category navigation (for example, Phones → Brand → Model)
+
+  - **Using search**: Typing a device name/model in the search bar and selecting from suggestions
+
+  Use this document to validate UX, QA flows, and any product changes to the device-selling experience.
+</Callout>
+
+## High-level flow overview
+
+At a high level, the customer:
+
+- Enters the sell journey from the homepage using either direct categories or search.
+
+- Narrows down to a specific device (brand → model → variant).
+
+- Answers condition questions and confirms accessories.
+
+- Reviews the final offered price and continues to checkout.
+
+- Enters address and payment details and submits the sell order.
+
+## Step-by-step website journey
+
+<Steps>
+  <Step title="Entry point: select sell flow" icon="home" title-type="p">
+    From the homepage, the customer starts the sell journey by selecting the **Sell Device** option or equivalent primary CTA that leads into device selection.
+
+    Key expectations:
+
+    - The entry CTA clearly communicates that the user is selling a device (not buying).
+
+    - Analytics/events for sell-journey start fire correctly as defined in the event guide.
+
+    - The next screen clearly shows both **search** and **category browsing** options, or brings the user to a screen where at least one of these is immediately visible.
+  </Step>
+
+  <Step title="Choose device via search or direct categories" icon="search" title-type="p">
+    On the device selection screen, the user can:
+
+    - **Without search**: Use category tiles or menus (for example, Phone, Tablet, Laptop) and then drill down into brand and model.
+
+    - **Using search**: Type brand or model name in the search bar (for example, "Apple iPhone 13") and pick a result from autosuggestions or search results.
+
+    Validation points:
+
+    - Search results and category lists show consistent device naming (brand, model, variant).
+
+    - Both paths eventually land the user on the same device detail / configuration page for the selected model.
+  </Step>
+
+  <Step title="Confirm brand, model, and variant" icon="settings" title-type="p">
+    After choosing a device via search or categories, the user confirms:
+
+    - **Brand** (for example, Apple, Samsung, OnePlus)
+
+    - **Model** (for example, iPhone 13, Galaxy S22)
+
+    - **Variant** (for example, 128 GB, 256 GB, color if applicable)
+
+    UX and QA checks:
+
+    - The selection summary is clearly visible (brand, model, variant).
+
+    - The user has a way to go back and change brand/model/variant if they selected the wrong device.
+
+    - The chosen variant properly drives downstream pricing logic.
+  </Step>
+
+  <Step title="Answer device condition questions" icon="settings" title-type="p">
+    The device assessment screen captures usage, physical condition, and functional status. Based on product configuration, the user:
+
+    - Selects body condition options (for example, like new, good, average, damaged).
+
+    - Answers questions about display, buttons, camera, battery, and other hardware.
+
+    - Declares issues such as broken screen, water damage, or non-working components.
+
+    Validation points:
+
+    - All mandatory condition questions must be answered before progressing.
+
+    - Each answer combination maps to the correct internal condition class used by the pricing engine.
+
+    - Any conflict or impossible combination (for example, selecting "no screen" and "screen perfect") is either prevented or flagged.
+  </Step>
+
+  <Step title="Specify accessories included" icon="package" title-type="p">
+    On the accessories screen, the user confirms what they will provide along with the device, for example:
+
+    - Original box
+
+    - Charger or cable
+
+    - Earphones
+
+    - Additional accessories if configured (for example, cover, stylus)
+
+    Checks:
+
+    - Accessories are optional/required exactly as configured in the pricing rules.
+
+    - Each accessory toggle correctly influences the computed device value when it is part of pricing logic.
+
+    - The summary clearly shows which accessories the user has committed to include.
+  </Step>
+
+  <Step title="Review price and proceed to checkout" icon="bar-chart" title-type="p">
+    Once condition and accessories are captured, the system shows the **offered price** for the device.
+
+    On this screen the user can:
+
+    - Review a price breakdown or at least a single clear offer amount.
+
+    - Go back to edit condition or accessories if they want to adjust.
+
+    - Proceed to the next step to create the sell order.
+
+    Validation points:
+
+    - Any change in condition or accessories should update the price in real time or on refresh.
+
+    - Pricing matches the configured rules and the **Device Price Calculator** logic.
+
+    - If the device is not eligible, the screen clearly communicates the reason and any alternative steps.
+  </Step>
+
+  <Step title="Capture user details, address, and payment preference" icon="users" title-type="p">
+    To complete the order, the user either logs in/signs up or continues from an authenticated state, and then:
+
+    - Confirms or adds personal details (name, phone, email).
+
+    - Adds or selects a pickup address.
+
+    - Chooses payment or payout method (for example, bank transfer, UPI, wallet).
+
+    Checks:
+
+    - Validation errors for missing or invalid fields are clear and actionable.
+
+    - Address selection honors the standard **Address** page logic.
+
+    - Any restrictions on serviceable locations are applied consistently.
+  </Step>
+
+  <Step title="Confirm and place the sell order" icon="check-circle" title-type="p">
+    On the final confirmation screen, the user:
+
+    - Reviews a summary of the device (brand, model, variant, condition, accessories).
+
+    - Sees the final agreed price and any applicable terms.
+
+    - Confirms and places the sell order.
+
+    Success signals:
+
+    - An order confirmation screen shows order ID and key details.
+
+    - The user receives appropriate notifications (SMS/email/in-app) per the **customer notifications** configuration.
+
+    - The order appears under **Track Orders** or equivalent section with the expected initial status.
+  </Step>
+</Steps>
+
+## Visual reference: Vento flow embeds
+
+Use the following Vento flows as the single source of truth for UX details, copy, and branching in the sell-device journey. Keep these in sync when product behavior changes.
+
+<Tabs>
+  <Tab title="Without search">
+    <Iframe uid="955bd398-a8b4-4f10-8955-498cf48be72d" src="https://vento.so/view/c72ae8c7-cfed-4ca8-b903-a6362392d4ed/embed" title="Embedded content" width="560" height="315" allow-full-screen="true" frame-border="0" loading="lazy" />
+  </Tab>
+
+  <Tab title="Using Search">
+    <Iframe uid="582c96d1-4832-4253-a371-15783c931ca6" src="https://vento.so/view/63e2736e-f3a7-46f8-954e-e94b9f58339a/embed" title="Embedded content" width="560" height="315" allow-full-screen="true" frame-border="0" loading="lazy" />
+  </Tab>
+</Tabs>
+
+During the device selection and evaluation steps, the website captures at least the following device-specific fields:
+
+- **Device brand**
+
+- **Device model**
+
+- **Device variant**
+
+- **Device condition**
+
+- **Accessories**
+
+Use these fields to verify integrations with the pricing engine, order creation, and downstream analytics events.

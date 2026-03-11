@@ -1,0 +1,81 @@
+---
+title: App Release & Management
+description: Manage Cashkr customer app releases across iOS and Android, using App Store Connect, Google Play Console, and Firebase for safe, trackable updates.
+---
+
+## Why this matters
+
+<Callout kind="info">
+
+The customer app is the primary touchpoint for users. Reliable release management ensures new features, bug fixes, and notifications reach users quickly, without introducing crashes that hurt conversion or lead flow.
+
+</Callout>
+
+## Tools we use
+
+<Card title="App Store Connect" icon="apple">
+
+Apple platform for managing the iOS version of the Cashkr app: upload builds, manage listings, configure review details, and release updates to users.
+
+- Example: Use App Store Connect to push an iOS update that fixes a crash on the pickup screen and update the release notes so users know what changed.
+
+</Card>
+
+<Card title="Google Play Console" icon="monitor">
+
+Google platform for managing the Android version of the Cashkr app: publish builds, manage store listing, respond to reviews, and control rollout strategies.
+
+- Example: Release a new "Track My Pickup" feature to 10% of Android users first using a staged rollout, then expand to 100% after monitoring performance.
+
+</Card>
+
+<Card title="Firebase" icon="cloud">
+
+Google platform used as the operational backend for the app: Crashlytics for crash reporting, Cloud Messaging for push notifications, and analytics for performance tracking.
+
+- Example: When the app crashes on 100 devices, Firebase Crashlytics alerts the tech team and they investigate while marketing uses Firebase to send "Your pickup is scheduled for today at 5 PM" reminders.
+
+</Card>
+
+## How we use these daily
+
+- **Tech team** → Prepares builds, uploads to App Store Connect and Play Console, configures staged rollout, and monitors Firebase Crashlytics for crashes.
+- **Product team** → Reviews app performance, crash trends, and store feedback to prioritize fixes and new iterations.
+- **Marketing team** → Aligns release notes, in-store messaging, and push campaigns (via Firebase) around major feature releases or fixes.
+- **Support team** → Monitors app store reviews and incoming tickets related to the app, flags critical issues, and communicates known issues and fixes to users.
+
+## Typical app release workflow
+
+<Steps>
+
+  <Step title="Prepare build and release notes" icon="settings">
+
+  Tech prepares the new iOS and Android builds, runs basic QA, and drafts clear release notes that highlight key fixes and features. Product and marketing review the notes for accuracy and messaging.
+
+  </Step>
+
+  <Step title="Upload to app stores" icon="upload">
+
+  Upload the signed builds to App Store Connect and Google Play Console, update the store listing if needed, and configure version details, release notes, and review settings.
+
+  </Step>
+
+  <Step title="Configure staged rollout" icon="play-circle">
+
+  For higher‑risk changes, start with a limited rollout (for example, 5–10% of users) in Google Play Console and use phased release options on iOS where appropriate. Confirm that rollout settings match the release risk.
+
+  </Step>
+
+  <Step title="Monitor crashes and store feedback" icon="alert-triangle">
+
+  After release, monitor Firebase Crashlytics for spikes in crashes and track store reviews and ratings related to the new version. Support and product share any urgent issues with tech for quick triage.
+
+  </Step>
+
+  <Step title="Iterate and notify users" icon="check-circle">
+
+  If issues appear, ship follow‑up fixes through the same flow. When releases are stable, marketing schedules push notifications via Firebase and updates any help content so users understand the new behavior.
+
+  </Step>
+
+</Steps>

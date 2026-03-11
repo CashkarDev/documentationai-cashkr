@@ -1,0 +1,126 @@
+---
+title: Analytics, Tagging & Reporting
+description: Understand how Cashkr uses analytics, tagging, and reporting tools to track campaigns, attribute leads, and share performance across teams.
+---
+
+## Why this matters
+
+<Callout kind="info">
+
+Running ads and campaigns only works if you can see which channels, creatives, and journeys drive leads and revenue. Analytics, tagging, and reporting give Cashkr **end-to-end visibility from click to sale**, so teams spend budget wisely, improve funnels, and align on a single source of truth.
+
+</Callout>
+
+## Tools we use
+
+<Card title="Looker Studio" icon="bar-chart">
+
+Looker Studio turns raw data from sources like GA4, ad platforms, and BigQuery into visual dashboards and shareable reports. Use it to build:
+
+- Channel performance views (Google Ads vs Meta vs organic)
+- Lead and order funnels across web and app
+- Executive summaries for CPA, ROI, and revenue
+
+</Card>
+
+<Card title="Google Tag Manager (GTM)" icon="settings">
+
+Google Tag Manager manages tracking tags for analytics, pixels, and custom events without shipping new code each time. Use it to:
+
+- Configure event tracking for forms, buttons, and page views
+- Deploy and update pixels (Meta, Plerdy, Clarity) centrally
+- Control when tags fire using triggers and variables
+
+</Card>
+
+<Card title="Meta Pixel" icon="users">
+
+Meta Pixel tracks web actions that feed Facebook and Instagram Ads. It allows:
+
+- Conversion tracking for key events such as lead creation and order completion
+- Retargeting site visitors who did not convert
+- Building lookalike audiences based on high-value actions
+
+</Card>
+
+<Card title="Plerdy" icon="monitor">
+
+Plerdy provides UX and conversion insights through heatmaps, scroll maps, and funnels. Teams use it to:
+
+- See where users click and where they drop off on key pages
+- Analyze behavior on forms, pricing, and payment steps
+- Prioritize UX improvements that increase conversion rate
+
+</Card>
+
+<Card title="Microsoft Clarity (App & Website)" icon="monitor">
+
+Microsoft Clarity gives free behavior analytics with session replays and heatmaps across web and app. It helps you:
+
+- Watch real user sessions to understand friction
+- Identify rage clicks, dead clicks, and confusing UI patterns
+- Validate UX changes after releases
+
+</Card>
+
+<Card title="Measuremate" icon="database">
+
+Measuremate automates GA4, GTM, and BigQuery configurations so teams track, tag, validate, and report without manual spreadsheets. Use it to:
+
+- Spin up consistent event tracking for new campaigns
+- Validate that key events and conversions are firing
+- Feed structured data into reporting tools like Looker Studio
+
+</Card>
+
+## How we use these daily
+
+- **Marketing team** → Plans what to track for each campaign, ensures conversions and audiences are configured, and reviews CPA/ROI dashboards.
+- **Analytics team** → Owns the tracking taxonomy, validates events across tools, and maintains core performance and funnel dashboards.
+- **Tech/Web team** → Implements and debugs GTM containers, pixels, and app events; fixes data gaps and supports UX experiments.
+- **Product and CX teams** → Uses heatmaps, funnels, and replays to understand drop-offs, refine flows, and prioritize fixes.
+
+## Typical analytics workflow
+
+<Steps>
+
+  <Step title="Plan what to track" icon="edit">
+
+  - Define the campaign or feature goal: lead, order, repeat purchase, or engagement.
+  - Map key events and parameters that need tracking across web and app.
+  - Align on naming conventions so GA4, GTM, and reporting stay consistent.
+
+  </Step>
+
+  <Step title="Implement tags and pixels" icon="settings">
+
+  - Configure events in GTM and link them to Meta Pixel, GA4, Clarity, and Plerdy where needed.
+  - Add or update triggers for key actions such as form submissions and payment completion.
+  - Coordinate with the tech/web team for any data layer or app-side changes.
+
+  </Step>
+
+  <Step title="Validate tracking" icon="check-circle">
+
+  - Use preview/debug modes in GTM and each tool to confirm events fire correctly.
+  - Check that conversions appear in ad platforms and analytics within expected timeframes.
+  - Review sample session replays or heatmaps to confirm user behavior is captured.
+
+  </Step>
+
+  <Step title="Report and iterate" icon="bar-chart">
+
+  - Pull performance views in Looker Studio and other dashboards by channel, campaign, and funnel stage.
+  - Share insights with marketing, product, and tech teams, highlighting wins and drop-offs.
+  - Propose changes to creatives, targeting, or UX based on data, and loop back into the next tracking plan.
+
+  </Step>
+
+</Steps>
+
+## Teams using these tools
+
+- **Marketing** → Campaign tracking, attribution, and budget decisions.
+- **Analytics** → Data quality, dashboards, and insights.
+- **Tech/Web** → Implementation, maintenance, and debugging of tags and pixels.
+- **Product & CX** → UX evaluation and conversion optimization.
