@@ -1,0 +1,132 @@
+---
+title: How Banners System Works at Cashkr
+description: >-
+  Understand how the Cashkr banners system works, what it displays, how
+  marketing uses it, and how admins add, update, and manage banners.
+---
+## Overview
+
+Banners control the promotional visuals that appear across the Cashkr customer website and app. Each banner record includes its image, targeting, status, and display order so you can manage what customers see on different devices and platforms.
+
+<Callout kind="info" collapsed="false">
+  Use banners to run time-bound or permanent offers, customize messaging by device or platform, and safely deactivate or reorder outdated creatives without code changes.
+</Callout>
+
+## What the banners view shows
+
+The banners section displays all banners in both list and grid layouts. Each banner record includes:
+
+- Banner image
+
+- Banner type (Regular or Offer)
+
+- Device compatibility
+
+- Platform targeting
+
+- Status (Active or Inactive)
+
+- Display order
+
+- Slug
+
+Use the list or grid view to quickly scan which banners are currently active and how they are positioned.
+
+## Typical use cases
+
+Marketing and operations teams use banners to:
+
+- Push time-bound or permanent offers to specific audiences
+
+- Customize visual messaging per device or platform
+
+- Update or deactivate outdated banners
+
+- Control banner order by assigning display order values such as 1, 2, 3
+
+These controls keep customer-facing promotions consistent without requiring engineering changes.
+
+## Filters and search
+
+Use filters and search to find specific banners quickly.
+
+- **Search fields:** Banner Type, Platform, Device Type
+
+- **Filters:**
+
+  - **Banner Type:** Regular, Offer
+
+  - **Device Type:** All Platforms, Mobile Landing, Laptop Landing, Tablet Landing, Mac Landing
+
+  - **Platform:** Web Browser, Web Mobile View, Mobile
+
+Combine search and filters to narrow down banners by campaign, device, or placement.
+
+## Admin workflow: add and update banners
+
+Use the admin panel to add new banners or update existing ones.
+
+<Steps>
+  <Step title="Add a new banner" icon="image" title-type="p">
+    - Open the banners section in the admin panel.
+
+    - Choose the option to add a new banner.
+
+    - Upload the banner image.
+
+    - Set the **Banner Type** as Regular or Offer based on the campaign.
+
+    - Choose the **Platform** where the banner should appear (aligned to the customer touchpoint).
+
+    - Select the **Device Type** when configuring an offer banner, based on where it should render (for example, browser vs mobile app).
+
+    - Set the **Status** to Active or Inactive depending on whether it should show immediately.
+
+    - Configure the **Date** range by setting the starting date and expiry date.
+
+    - Assign the **Order** to control its sequence relative to other banners (for example, 1, 2, 3).
+
+    - Define the **Slug**, such as `home-banner` or `offer-banner`, to identify the banner.
+  </Step>
+
+  <Step title="Update an existing banner" icon="settings" title-type="p">
+    - From the banners list or grid, open the banner you want to edit.
+
+    - Modify any of the fields: image, dates, status, banner type, platform, device type (for offer banners), order, or slug.
+
+    - Save the changes to apply the updated configuration to the website and app.
+  </Step>
+
+  <Step title="Delete a banner" icon="alert-triangle" title-type="p">
+    - Locate the banner in list or grid view.
+
+    - Use the delete control to permanently remove the banner from the system.
+
+    - Confirm deletion when prompted, knowing that the banner will no longer be available for display.
+  </Step>
+
+  <Step title="Switch between list and grid view" icon="columns" title-type="p">
+    - Use the view toggle to switch between **List View** and **Grid View**.
+
+    - Choose the view that best helps you review image creatives, targeting, and status.
+  </Step>
+</Steps>
+
+<Callout kind="alert" collapsed="false">
+  Device Type is valid and available only for offer banners. The Device Type field appears when adding or editing offer banners and does not apply to regular banners.
+</Callout>
+
+## Connections to website and app
+
+Banners are integrated with the customer website and app. Placement logic ensures each banner appears in the correct visual position based on:
+
+- Device type (for example, browser vs mobile app)
+
+- Page type or screen where the banner is configured to show
+
+When you adjust banner status, dates, platform, device type, or order, the changes flow through to the live experiences that customers see.
+
+## Internal walkthrough embed
+
+<Iframe uid="bef44994-bc87-4e92-8c6f-58b3810dd858" src="https://vento.so/view/d1e52014-0baf-425c-bdd4-c11baf109ace/embed" title="Embedded content" width="560" height="315" allow-full-screen="true" frame-border="0" loading="lazy" />
+

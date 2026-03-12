@@ -736,6 +736,10 @@
             "group": "WalkThrough",
             "pages": [
               {
+                "title": "how Banners system works at cashkr ?",
+                "path": "banners"
+              },
+              {
                 "title": "How Cashkr Referral System Works ?",
                 "path": "how-cashkr-referral-system-works"
               }
