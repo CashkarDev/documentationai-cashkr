@@ -1,0 +1,125 @@
+---
+title: Customer Walk-In Flow – Sell Device
+description: Guide for store vendors to handle walk-in customers selling devices, from assessment and registration to checkout completion or failure.
+---
+
+## Overview
+
+Store vendors use this flow in the Store app to help walk-in customers sell their old devices. The flow covers device assessment, customer registration or login, price estimation, and final order outcome as either completed or failed.
+
+## Flow
+
+<Steps>
+
+  <Step title="Start with the walk-in customer" icon="users">
+
+  - Customer visits the store with their old device.
+  - Vendor logs into the Store app panel.
+
+  </Step>
+
+  <Step title="Select and assess the device" icon="monitor">
+
+  - Select **Device Type**, **Brand**, and **Model** (models are searchable).
+  - Fill in **device variant**, **age**, **condition** (battery, screen, body, technical), and **included accessories**.
+
+  </Step>
+
+  <Step title="Register or log in the customer" icon="phone">
+
+  - Ask the customer to **register or log in** using their phone number.
+  - If the customer is new, collect **full name** and **email address**.
+
+  </Step>
+
+  <Step title="Review estimated price and device report" icon="bar-chart">
+
+  - System calculates an **estimated price** using admin-defined pricing logic.
+  - Customer reviews the generated **device report**.
+
+  </Step>
+
+  <Step title="Choose order outcome" icon="arrow-right">
+
+  - Vendor proceeds with either:
+    - **Checkout Flow** to complete the sale, or
+    - **Failure Flow** to fail the order.
+
+  </Step>
+
+</Steps>
+
+## Order outcomes (Checkout vs Failure)
+
+Use these outcomes after the customer has reviewed the device report and agreed on the next action.
+
+<Tabs>
+
+  <Tab title="Checkout Flow" icon="check-circle">
+
+  - Click **Checkout** from the device report screen.
+  - Enter the device **IMEI number**.
+  - Enter the **final sale price** agreed with the customer.
+  - Ask the customer to choose a **Payment Mode**:
+    - **Cash**: amount paid directly to the customer.
+    - **Buyback**: amount used as credit toward a new purchase.
+  - Capture **ID proof**, **customer signature**, and **device bill upload**.
+  - Confirm and submit to mark the order as **Completed**.
+
+  </Tab>
+
+  <Tab title="Failure Flow" icon="x-circle">
+
+  - Click **Fail** instead of Checkout.
+  - Select a **failure reason** from the available options.
+  - (Optional) Add **remarks** explaining why the order is being failed.
+  - Ask the customer to upload **photos of all six sides of the device**.
+  - Click **Submit Report** to mark the order as **Failed**.
+
+  </Tab>
+
+</Tabs>
+
+## System logic
+
+- Pull the device price from **Admin Panel → Products + Class + Pricing**.
+- Tag each order to the **vendor ID** and **store details**.
+- Store all **documents and photos** with the order record.
+- Store both **completed** and **failed** orders in the admin panel.
+
+## Admin panel connections
+
+This flow depends on configuration and records in the Admin Panel:
+
+- **Products**: device catalog used for device type, brand, and model selection.
+- **Pricing & Class**: rules used for quote and estimated price calculation.
+- **Store Orders**: records created for each completed or failed order.
+- **Store Vendors**: vendor profiles and credit logic tied to each order.
+
+## Snapshots
+
+### How to sell a device in the Store app
+
+<Iframe
+  uid="vento-sell-device-store-app"
+  src="https://vento.so/view/0626446b-c573-4244-93d8-a07e29bf2dd9/embed"
+  title="How to sell a device in the Store app"
+  width="100%"
+  height="480"
+  allow-full-screen="true"
+  frame-border="0"
+  loading="lazy"
+/>
+
+### How to fail an order in the Store app
+
+<Iframe
+  uid="vento-fail-order-store-app"
+  src="https://vento.so/view/72875fa3-d814-4e86-904b-00ea74a63344/embed"
+  title="How to fail an order in the Store app"
+  width="100%"
+  height="480"
+  allow-full-screen="true"
+  frame-border="0"
+  loading="lazy"
+/>

@@ -597,6 +597,10 @@
             "group": "Store App",
             "pages": [
               {
+                "title": "Customer Walk-In Flow – Sell Device",
+                "path": "customer-walk-in-flow-sell-device"
+              },
+              {
                 "title": "Store vendor login",
                 "path": "store-vendor-login"
               }
