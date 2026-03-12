@@ -736,6 +736,10 @@
             "group": "WalkThrough",
             "pages": [
               {
+                "title": "How Coupon system works ?",
+                "path": "how-coupon-system-works"
+              },
+              {
                 "title": "how Banners system works at cashkr ?",
                 "path": "banners"
               },

@@ -1,0 +1,194 @@
+---
+title: How coupon system works at Cashkr
+description: >-
+  Understand how the Cashkr coupon system is configured in the admin panel, what
+  fields control eligibility, and how validation logic applies at checkout.
+---
+## Overview
+
+The Cashkr coupon system lets marketing and operations teams configure targeted discount campaigns that apply during checkout on the website and customer app.
+
+<Callout kind="info" collapsed="false">
+  Use coupons to run limited-time or platform-specific promotions, reward first-time or repeat users, and align offers with specific device types, price ranges, or brands.
+</Callout>
+
+## What the coupon list shows
+
+The coupon list view displays all configured coupons with key details so you can review and manage active and inactive campaigns.
+
+You see:
+
+- Coupon code
+
+- Discount value or extra amount
+
+- Platform (Web, App, or Both)
+
+- User type or accessibility (first-time users, all customers)
+
+- Device compatibility (laptop, mac, phone, tablet)
+
+- Validity period (start and expiry dates)
+
+- Max device value and min device value
+
+- Eligible device brands
+
+- Status (active or inactive)
+
+## Typical use cases
+
+Marketing and operations teams use coupons to:
+
+- Run limited-time or platform-specific promotions
+
+- Offer discounts to new or repeat users
+
+- Create campaign-specific or brand-aligned offers
+
+- Target specific device types or price ranges
+
+Coupon visibility and application appear on:
+
+- Cashkr customer website checkout pages
+
+- Cashkr customer app checkout screens
+
+Validation logic then checks platform, device type, user eligibility, price range, brand, and expiry date before applying the coupon.
+
+## Filters and search options
+
+Use filters and search to quickly locate specific coupons in the admin panel.
+
+- **Search:** Find coupons by coupon code.
+
+- **Platform filter:** Web, App, or Both.
+
+- **Device type filter:** Laptop, Mac, Phone, Tablet.
+
+- **Accessibility filter:** All customers or first-time customers.
+
+- **Date range filter:** Based on coupon start date and expiry date.
+
+## Admin workflow: add, edit, delete coupons
+
+Use the coupon admin screen to add new coupons, update existing ones, or remove campaigns that should no longer be available.
+
+<Steps>
+  <Step title="Add a new coupon" icon="settings" title-type="p">
+    When you create a new coupon, configure all the fields that control how and where it applies.
+
+    - **Coupon code:** Unique identifier that customers enter at checkout.
+
+    - **Extra amount:** Flat rupee amount added to the final device price when the coupon applies.
+
+    - **Title:** Short label for the offer, such as `New User Bonus`.
+
+    - **Description:** Internal or customer-facing explanation of the offer.
+
+    - **Platform:** Web, App, or Both, controlling where the coupon is valid.
+
+    - **Max device value and min device value:** Price band within which the device must fall for the coupon to apply.
+
+    - **Max usage limit:** Maximum number of redemptions allowed per coupon.
+
+    - **All customer / max user limit:** Either allow all customers to use the coupon or set a specific number of users who can redeem it.
+
+    - **Accessibility:** Restrict to first-time users or keep it open to all customers.
+
+    - **Compatible devices:** Device categories such as laptop, mac, phone, tablet.
+
+    - **Brand:** Optional brand restriction per device type, for example only for specific phone brands.
+
+    - **Start and expiry dates:** The active window during which the coupon can be applied.
+
+    - **Status:** Active or inactive toggle to control whether the coupon is currently usable.
+
+    After you save, the new coupon appears in the list view with all configured details.
+  </Step>
+
+  <Step title="Edit an existing coupon" icon="settings" title-type="p">
+    Use edit to update any coupon details that need to change while keeping the same coupon code.
+
+    You can adjust values such as discount amount, platform, user limits, device or brand restrictions, date range, and status. Changes affect future validations from the moment you save the updates.
+  </Step>
+
+  <Step title="Delete a coupon" icon="alert-triangle" title-type="p">
+    Delete a coupon when you no longer want it to appear or be usable in the system.
+
+    Deletion removes the coupon from the admin list and prevents any further application at checkout.
+  </Step>
+</Steps>
+
+## Coupon types
+
+Set up coupons with different levels of targeting depending on your campaign needs.
+
+- **Normal coupons:** Device min value, max value, and brand are optional. The coupon can apply broadly across devices if you do not set these fields.
+
+- **Price-range coupons:** Specify min and max device values so the coupon only applies to devices priced within that range.
+
+- **Brand-specific coupons:** Restrict the coupon to particular device types and brands, for example phone devices of a specific brand.
+
+## Coupon validity logic
+
+The system validates each coupon against a set of rules before applying it at checkout.
+
+<Callout kind="alert" collapsed="false">
+  Platform and expiry date are hard constraints: if a coupon does not match the platform where the user checks out, or if the expiry date has passed, the coupon is always rejected.
+</Callout>
+
+### Platform
+
+- If a coupon is set for **Web**, it is only valid on the website and not in the app.
+
+- If a coupon is set for **App**, it is only valid in the app and not on the website.
+
+- If a coupon is set for **Both**, the same code works on both web and app.
+
+### Device type
+
+- If you add a coupon for a specific device type (for example, Laptop), the coupon is only valid when selling that device type.
+
+- Device type checks combine with price, brand, and other rules, so all conditions must pass.
+
+### All customer vs max user
+
+- If **max user** is set to a number (for example, `3`), the coupon is applicable only for the first 3 distinct users who redeem it.
+
+- If **all customer** is selected, every eligible customer can use the coupon, subject to any per-user max usage limits.
+
+### Max usage per user
+
+- The **max usage** value controls how many times each user can use the coupon.
+
+- If **max usage** is `2`, each eligible user can apply that coupon up to 2 times.
+
+### Device value range
+
+- If **min device value** is `5000` and **max device value** is `20000`, the coupon applies only when the device price falls between `5000` and `20000`.
+
+- If you leave these values empty for a normal coupon, the coupon is not restricted by device price.
+
+### Accessibility (user type)
+
+- If **accessibility** is set to first-time user, only customers registering on the platform for the first time can use the coupon.
+
+- A new user can continue using the coupon until either the global max user limit or their per-user max usage limit is reached.
+
+- If accessibility is set to **all user**, the coupon is valid for any user who meets the other criteria.
+
+### Brand
+
+- If you add a coupon for a specific device type and brand (for example, Phone device type and a given brand), the coupon only applies to devices that match both that device type and brand.
+
+### Expiry date
+
+- The coupon remains valid up to and including the expiry date.
+
+- If the expiry date is June 26, the coupon stops working from June 27.
+
+## How coupon system works at Cashkr (video walkthrough)
+
+<Iframe uid="855b2bb4-fbcd-4c3a-947f-f4474c1ab9b8" src="https://vento.so/view/71b34e0a-a333-40e9-b44f-3692f07da892/embed" title="Embedded content" width="560" height="315" allow-full-screen="true" frame-border="0" loading="lazy" />
+
