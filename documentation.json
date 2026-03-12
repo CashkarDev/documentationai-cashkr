@@ -727,6 +727,21 @@
             "icon": "history"
           }
         ]
+      },
+      {
+        "tab": "Cashkr DB",
+        "icon": "activity-square",
+        "groups": [
+          {
+            "group": "WalkThrough",
+            "pages": [
+              {
+                "title": "How Cashkr Referral System Works ?",
+                "path": "how-cashkr-referral-system-works"
+              }
+            ]
+          }
+        ]
       }
     ]
   }
