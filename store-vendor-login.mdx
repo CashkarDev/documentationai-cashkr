@@ -1,0 +1,71 @@
+---
+title: Store vendor login
+description: Secure OTP-based login flow for store vendors using registered mobile numbers, tied to Admin Panel vendor onboarding and session management.
+---
+
+## Overview
+
+Store vendor login provides a secure OTP-based entry point for store vendors to access their Store app dashboard using a registered mobile number.
+
+## Login flow
+
+<Steps>
+
+<Step title="Open the Store vendor web login page" icon="monitor">
+
+The store vendor navigates to the Store vendor web login URL in a browser to start the authentication process.
+
+</Step>
+
+<Step title="Enter registered mobile number" icon="phone">
+
+The vendor enters their registered mobile number on the login screen. The system uses this number to identify the vendor account.
+
+</Step>
+
+<Step title="Receive and submit OTP" icon="lock">
+
+The system sends a one-time password (OTP) via SMS to the entered mobile number. The vendor types this OTP on the verification screen and submits it.
+
+</Step>
+
+<Step title="Redirect to Store app home" icon="arrow-right">
+
+After successful OTP verification, the vendor is authenticated and redirected to the Store app Home page, where they can access their dashboard and features.
+
+</Step>
+
+</Steps>
+
+## Validation and session behavior
+
+The system uses OTP-based authentication to verify that the person attempting to log in has access to the registered mobile number.
+
+After validating the OTP, the system checks that the mobile number belongs to a vendor who is already onboarded in the Admin Panel vendor list.
+
+When validation succeeds, the system creates and stores a session token so the vendor can continue using the Store app without re-entering the OTP for every action, until the session expires or the vendor logs out.
+
+## Admin panel dependency
+
+Vendor login is tightly coupled with the Admin Panel, specifically the Store Vendors section, which manages which vendors are allowed to use the Store app.
+
+<Callout kind="info">
+
+Only store vendors who are onboarded and approved in the Admin Panel vendor list can log in to the Store app. Unlisted or unapproved vendors cannot access the Store vendor dashboard.
+
+</Callout>
+
+## Snapshot
+
+### Embedded screen preview
+
+<Iframe
+  uid="store-vendor-login-vento-embed"
+  src="https://vento.so/view/20637464-ed79-477c-992f-ae83f79225c3/embed"
+  title="Store vendor login screen preview"
+  width="100%"
+  height="600"
+  allow-full-screen="true"
+  frame-border="0"
+  loading="lazy"
+/>

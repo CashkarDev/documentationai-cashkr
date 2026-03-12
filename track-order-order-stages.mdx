@@ -1,0 +1,74 @@
+---
+title: Track Order & Order Stages
+description: >-
+  Document the Track Order page behavior on the Cashkr website, including login
+  requirements, tracking flow, order stages, and lead OTP visibility.
+---
+## Overview
+
+Track Order on the Cashkr website lets logged-in customers view all their orders, see detailed information for each order, and check the current order stage. Customers also see a lead OTP that they must share with the vendor at the time of device inspection.
+
+## Prerequisites
+
+<Callout kind="info" collapsed="false">
+  The customer must be logged in to their Cashkr account to access the Track Order page and view their orders.
+</Callout>
+
+## Flow
+
+Use this flow to validate or implement how customers track their orders on the website.
+
+<Steps>
+  <Step title="Customer logs in" icon="lock" title-type="p">
+    The customer signs in to their Cashkr account using the standard login flow.
+  </Step>
+
+  <Step title="Customer navigates to Track Order" icon="arrow-right" title-type="p">
+    After login, the customer goes to the Track Order section on the website.
+  </Step>
+
+  <Step title="System shows all customer orders" icon="list-ordered" title-type="p">
+    The Track Order page lists all orders associated with the logged-in customer and shows relevant details and the current order stage for each order.
+  </Step>
+
+  <Step title="Customer reviews order details and status" icon="info" title-type="p">
+    For every order row or card, display:
+
+    - Order details for that specific order
+
+    - Current status in the stage flow `Generated → Inprogress → Completed / Failed`
+
+    - The lead OTP for that order
+  </Step>
+</Steps>
+
+<Callout kind="info" collapsed="false">
+  The lead OTP must be visible on the Track Order detail view. Customers share this OTP with the vendor when the vendor starts the inspection of the device.
+</Callout>
+
+## Order stages
+
+Order stages on the Track Order page should follow this flow: `Generated → Inprogress → Completed / Failed`.
+
+### Generated
+
+Generated indicates that the customer has created an order and the system has recorded it.
+
+### Inprogress
+
+Inprogress indicates that activity on the order has started.
+
+### Completed
+
+Completed indicates that the order flow has finished successfully.
+
+### Failed
+
+Failed indicates that the order flow did not finish successfully.
+
+## Snapshot
+
+How can I track my orders?
+
+<Iframe uid="0cdeea83-e9c3-400f-bd50-89f4ab4030c8" src="https://vento.so/view/b7500cf0-ba5e-43ed-8151-33853ed34ba2/embed" title="Embedded content" width="560" height="315" allow-full-screen="true" frame-border="0" loading="lazy" />
+

@@ -1,0 +1,90 @@
+---
+title: Logout and Delete Account
+description: Document the Cashkr website behavior for logging out and permanently deleting a user account, including OTP verification and Vento snapshots.
+---
+
+## Overview
+
+Cashkr website users can either log out from their account or permanently delete their account from the Profile section. This page documents the exact paths and verification steps so you can keep SOPs consistent across tools and flows.
+
+## Logout (steps)
+
+<Steps>
+
+<Step title="Open profile" icon="user">
+
+From the website header, open the **Profile** section for the currently logged-in user.
+
+</Step>
+
+<Step title="Select logout" icon="log-out">
+
+In the profile options, select **Logout** to end the current session.
+
+</Step>
+
+</Steps>
+
+## Delete account (steps)
+
+<Steps>
+
+<Step title="Open profile" icon="user">
+
+From the website header, open the **Profile** section for the currently logged-in user.
+
+</Step>
+
+<Step title="Choose delete account" icon="trash">
+
+In the profile options, select **Delete Account** to start the deletion flow.
+
+</Step>
+
+<Step title="Enter phone number" icon="phone">
+
+Enter the same **phone number** associated with the account to confirm identity before deletion.
+
+</Step>
+
+<Step title="Verify OTP and complete deletion" icon="check-circle">
+
+Enter the **OTP** received on the provided phone number. After successful OTP verification, the user account is deleted.
+
+<Callout kind="info">
+
+Account deletion is allowed only after phone number and OTP verification. Once verified, the account is deleted according to current website behavior.
+
+</Callout>
+
+</Step>
+
+</Steps>
+
+## Snapshots
+
+### How can I get logged out from cashkr?
+
+<Iframe
+  uid="logout-snapshot-web"
+  src="https://vento.so/view/aeb52616-108c-46c6-9dfa-03f84af5e950/embed"
+  title="Cashkr website - Logout flow snapshot"
+  width="100%"
+  height="420"
+  allow-full-screen="true"
+  frame-border="0"
+  loading="lazy"
+/>
+
+### How can I delete my account on cashkr?
+
+<Iframe
+  uid="delete-account-snapshot-web"
+  src="https://vento.so/view/20e440c1-93da-44e5-807a-3d3b5347f4b6/embed"
+  title="Cashkr website - Delete account flow snapshot"
+  width="100%"
+  height="420"
+  allow-full-screen="true"
+  frame-border="0"
+  loading="lazy"
+/>

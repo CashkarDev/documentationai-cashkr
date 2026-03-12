@@ -548,16 +548,57 @@
             "group": "Website SOPs",
             "pages": [
               {
-                "title": "Coupon Application",
-                "path": "coupon-application"
+                "title": "Device Search & Sell Flow",
+                "path": "device-search-sell-flow"
               },
               {
                 "title": "User Registration & Login",
                 "path": "user-registration-login"
               },
               {
-                "title": "Device Search & Sell Flow",
-                "path": "device-search-sell-flow"
+                "title": "Corporate Buyback - SOPs",
+                "path": "corporate-buyback---sops"
+              },
+              {
+                "title": "Reschedule Pickup - SOPs",
+                "path": "reschedule-pickup---sops"
+              },
+              {
+                "title": "Track Order & Order Stages",
+                "path": "track-order-order-stages"
+              },
+              {
+                "title": "Manage Payment Methods",
+                "path": "manage-payment-methods"
+              },
+              {
+                "title": "Update User Details",
+                "path": "update-user-details"
+              },
+              {
+                "title": "Manage Addresses",
+                "path": "manage-addresses"
+              },
+              {
+                "title": "Partner with Cashkr",
+                "path": "partner-with-cashkr"
+              },
+              {
+                "title": "Coupon Application",
+                "path": "coupon-application"
+              },
+              {
+                "title": "Logout and Delete Account",
+                "path": "logout-and-delete-account"
+              }
+            ]
+          },
+          {
+            "group": "Store App",
+            "pages": [
+              {
+                "title": "Store vendor login",
+                "path": "store-vendor-login"
               }
             ]
           },
