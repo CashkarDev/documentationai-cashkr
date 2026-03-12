@@ -1,0 +1,110 @@
+---
+title: Cashkr Store Flow
+description: Understand the end-to-end Cashkr Store app flow, key actors, and how to read and maintain the source-of-truth process diagram.
+---
+
+## Overview
+
+Cashkr Store is the in-store app vendors use to help walk-in customers sell their devices. It connects store-level operations with Admin Panel configuration and pricing so vendors can follow a consistent, compliant process.
+
+Store vendors authenticate with their registered mobile number and OTP, then access Store app flows such as device assessment, pricing, checkout, and fail reporting for walk-in customers.
+
+## Key actors
+
+The store flow diagram brings together three primary actors:
+
+- **Store vendor**  
+  Uses the Store app on a device in the physical store. The vendor logs in with a registered mobile number and OTP and must be approved in the Admin Panel vendor list to access flows.
+
+- **Walk-in customer**  
+  Visits the physical store to sell a device. The vendor guides the customer through device selection, condition assessment, identity collection, and either completing the sale or recording a fail.
+
+- **Admin Panel (configuration and pricing source)**  
+  Stores vendor records and approval status, pricing configuration and evaluation logic, device attributes, and other rules that the Store app uses to calculate estimated prices and enforce allowed flows.
+
+## High-level flow
+
+Use this section as a generic map of what happens in the Store app from vendor login through completing or failing a walk-in order. For detailed customer walk-in behavior, refer to the dedicated page listed under Related pages.
+
+<Steps>
+
+  <Step title="Vendor logs into the Store app" icon="lock">
+
+  The vendor authenticates using a registered mobile number and OTP. The system checks that the vendor is onboarded and approved in the Admin Panel. After OTP verification, the vendor lands on the Store app home screen with an active session.
+
+  </Step>
+
+  <Step title="Vendor starts a walk-in customer flow" icon="users">
+
+  From the home screen, the vendor initiates the process for a walk-in customer who wants to sell a device. The vendor selects the relevant action or entry point to begin capturing details for that customer.
+
+  </Step>
+
+  <Step title="Vendor captures device details and condition" icon="device-mobile">
+
+  The vendor works with the customer to select the device type, brand, and model, then assesses the device condition and accessories. The Store app uses pricing and evaluation logic configured in the Admin Panel to prepare an estimated price.
+
+  </Step>
+
+  <Step title="Customer record and estimated price are confirmed" icon="check-circle">
+
+  The vendor ensures the customer is registered or logged in as needed, then reviews the estimated price with the customer. At this point the flow can continue toward checkout or may terminate later as a fail, depending on assessment and customer acceptance.
+
+  </Step>
+
+  <Step title="Vendor proceeds to checkout or records a fail" icon="terminal">
+
+  If the customer agrees to sell, the vendor moves through checkout steps such as capturing unique device identifiers, confirming final price, recording payment mode, and collecting required documents and signatures, then marks the order as completed. If the sale does not go through, the vendor records a fail with reasons and supporting details, and the order is marked failed.
+
+  </Step>
+
+</Steps>
+
+## Diagram
+
+Use the Cashkr Store flow diagram as the visual source of truth for the end-to-end Store app process, including decision points, data dependencies, and connections between the Store app and Admin Panel.
+
+[View on Eraser](https://app.eraser.io/workspace/emKrPSE5LlEB7l2NIoNY?diagram=ewv9CASVgYY0Qz8ZGEuja){target="_blank"}
+
+<Image
+  src="https://app.eraser.io/workspace/emKrPSE5LlEB7l2NIoNY/preview?diagram=ewv9CASVgYY0Qz8ZGEuja&type=embed"
+  alt="Cashkr Store app end-to-end flow diagram showing vendor login, walk-in customer handling, device evaluation, and checkout or fail paths."
+  width="1200"
+  height="675"
+/>
+
+<Callout kind="info">
+
+Treat this diagram as the source of truth for the Store app flow. Use the Eraser link to zoom in, view the latest updates, and make any approved edits to the process.
+
+</Callout>
+
+## Related pages
+
+Use these pages together with the diagram to understand and implement the Store app:
+
+<Columns cols={2}>
+
+  <Card
+    title="Store vendor login"
+    href="/store-vendor-login"
+    icon="lock"
+    cta="View login flow"
+  >
+
+  Vendor authentication flow, OTP behavior, and access control via the Admin Panel vendor list.
+
+  </Card>
+
+  <Card
+    title="Customer Walk-In Flow – Sell Device"
+    href="/customer-walk-in-flow-sell-device"
+    icon="users"
+    cta="View walk-in flow"
+  >
+
+  Detailed steps for how store vendors handle walk-in customers who want to sell a device, including checkout and fail outcomes.
+
+  </Card>
+
+</Columns>

@@ -1,0 +1,64 @@
+---
+title: Logout – Store app
+description: Understand how customer and vendor sessions end in the Cashkr Store app, including automatic customer logout and manual vendor logout.
+---
+
+## Overview
+
+Logout in the Store app behaves differently for customers and vendors to balance security with convenience.
+
+## Customer session behavior
+
+Customers stay signed in only for the duration of their order flow.
+
+<Callout kind="info">
+
+Customers are automatically logged out once an order is **completed** or **failed**. This ends the session lifecycle for security and prevents unintended reuse of the session.
+
+</Callout>
+
+After logout, customers need to sign in again to start a new order or access any customer-specific details.
+
+## Vendor logout
+
+Vendors stay signed in while they work and end their session manually from the dashboard.
+
+<Steps>
+
+<Step title="Open the dashboard" icon="monitor">
+
+From the Store app, go to the **vendor dashboard** where you manage orders and customer interactions.
+
+</Step>
+
+<Step title="Locate the Logout button" icon="search">
+
+Look for the **Logout** button in the dashboard UI, typically in the header or menu section.
+
+</Step>
+
+<Step title="Confirm logout" icon="log-out">
+
+Tap the **Logout** button. The app ends the current vendor session and returns to the login screen.
+
+</Step>
+
+</Steps>
+
+After logging out, vendors must enter their credentials again to resume work.
+
+## System logic
+
+Customer and vendor sessions follow different lifecycle rules in the Store app:
+
+- **Customer sessions are temporary** and tied to an active order. The app ends the session automatically once the order is completed or failed.
+- **Vendor sessions persist until manual logout**, allowing vendors to stay signed in while handling multiple customers across the day.
+
+## Snapshot
+
+<Iframe
+  uid="store-app-logout-snapshot"
+  src="https://vento.so/view/580fc572-3441-4a53-96e2-e127f678d94c/embed"
+  title="Store app logout and session behavior snapshot"
+  width="560" height="315" allow-full-screen="true" frame-border="0" loading="lazy"
+/>

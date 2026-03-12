@@ -597,12 +597,20 @@
             "group": "Store App",
             "pages": [
               {
+                "title": "Store vendor login",
+                "path": "store-vendor-login"
+              },
+              {
+                "title": "Cashkr Store Flow",
+                "path": "cashkr-store-flow"
+              },
+              {
                 "title": "Customer Walk-In Flow – Sell Device",
                 "path": "customer-walk-in-flow-sell-device"
               },
               {
-                "title": "Store vendor login",
-                "path": "store-vendor-login"
+                "title": "Logout - store app",
+                "path": "logout---store-app"
               }
             ]
           },
