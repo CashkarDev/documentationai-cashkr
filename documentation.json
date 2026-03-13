@@ -736,6 +736,10 @@
             "group": "WalkThrough",
             "pages": [
               {
+                "title": "Marketing Dashboard",
+                "path": "marketing-dashboard"
+              },
+              {
                 "title": "How Coupon system works ?",
                 "path": "how-coupon-system-works"
               },
