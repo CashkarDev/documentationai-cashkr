@@ -1,0 +1,347 @@
+---
+title: Mohsin Surya
+description: Detailed role, KPIs, and SOPs for the Pricing & Buyback Manager at Cashkr, covering consumer, in-house, and corporate buyback responsibilities.
+---
+
+## Contents
+
+- [Role & reporting line](#role--reporting-line)
+- [Role purpose](#role-purpose)
+- [Key result areas (KRAs)](#key-result-areas-kras)
+- [KPIs](#kpis)
+  - [1) Model & variant coverage on App/Web](#1-model--variant-coverage-on-appweb)
+  - [2) New model & price change SLA](#2-new-model--price-change-sla)
+  - [3) Deduction logic & class adherence](#3-deduction-logic--class-adherence)
+  - [4) In-house pickup margin & purchase quality](#4-in-house-pickup-margin--purchase-quality)
+  - [5) In-house inventory sell-through & stock age](#5-in-house-inventory-sell-through--stock-age)
+  - [6) Corporate buyback quotation SLA & win rate](#6-corporate-buyback-quotation-sla--win-rate)
+  - [7) Pricing exceptions & complaints](#7-pricing-exceptions--complaints)
+- [Core processes / SOPs owned](#core-processes--sops-owned)
+- [Weekly & monthly reporting](#weekly--monthly-reporting)
+
+## Role & reporting line
+
+- **Role title:** Pricing & Buyback Manager – Cashkr  
+- **Department:** Pricing & Commercial  
+  - Cross-functional with: App/Web, In-House Associates, Dealers, B2B, Finance
+- **Reports to (primary):** CEO – Ibrahim Surya
+- **Functional / dotted-line:**
+  - Finance (margins, dealer billing feasibility, cashflow impact)
+  - Marketing Head – Pranjal (offers, price communication, positioning)
+  - Data Analyst – Ashwini (margins, model coverage, sell-through, win rate)
+  - Tech / IT – Shahid, Ayaz, Resham (pricing tables, model catalog, images, classes, record logic)
+- **Works closely with:**
+  - In-House Pickup Associates – Adnan Shaikh, Aman Surya, Vishal Joshi
+  - Dealer / Accounts Team (billing, invoicing, rate lists)
+  - Ops / Vendor side (to understand ground feedback on buyback prices)
+  - CX Team (price-related objections and complaints)
+  - Enterprise / Corporate clients (for B2B buyback lots)
+
+## Role purpose
+
+Own all pricing and model decisions at Cashkr across:
+
+- Cashkr consumer App/Web (all device types, all models, all classes, all deductions)
+- In-house pickup purchases and resale to dealers
+- Corporate / B2B buyback quotations and resale pricing
+
+…so that Cashkr can buy devices right, sell with healthy margin, and win corporate buyback deals consistently, with clear logic instead of random pricing.
+
+## Key result areas (KRAs)
+
+- **KRA 1 – Consumer Pricing & Catalog (App/Web – All Device Types):** Own all buyback pricing on Cashkr app/web for phones, laptops, Macs, tablets and other device types, keeping model prices competitive, structured and updated.
+- **KRA 2 – Classes, Problems & Deduction Logic:** Define and maintain class mapping and deduction pricing for every major problem type and scenario so that final payouts at pickup follow a clear, predictable rule.
+- **KRA 3 – In-House Pickup & Dealer Selling Framework:** Manage in-house pickup associates, ensure they acquire devices at the right buyback value, and set clear selling price tags so Accounts can bill dealers easily with margin.
+- **KRA 4 – Corporate Buyback Pricing & Closure:** Prepare and pass buyback quotations for corporate / enterprise requests that win deals while protecting margin, and set selling tags for those devices for dealer billing.
+- **KRA 5 – Margin, Market Alignment & Systemisation:** Monitor margins and market prices across consumer, in-house and B2B deals; adjust pricing strategy and keep everything implemented in system (record tables) rather than ad-hoc.
+
+## KPIs
+
+### 1) Model & variant coverage on App/Web
+
+- **Description:**  
+  Measures how completely Cashkr’s app/web supports live models with valid prices, classes and images.
+
+- **Formula:**  
+  `(` Number of models/variants with valid buyback price, class and image configured `÷` Number of models/variants seen in leads/orders in last X days `) × 100`
+
+- **Target:**  
+  As close to 100% as possible for all actively appearing models and variants.
+
+- **Data source:**  
+  Model master (pricing sheet or DB), Admin Panel / DB (distinct models from orders), app/web catalog.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 1, KRA 2.
+
+### 2) New model & price change SLA
+
+- **Description:**  
+  Speed with which new models and required price changes are added to the system.
+
+- **Formula:**  
+  `(` Number of new models / changes updated within agreed TAT `÷` Total new models / changes requested `) × 100`
+
+- **Target:**  
+  For priority models and critical changes, TAT e.g. 24–48 hours with SLA as close to 100% as possible.
+
+- **Data source:**  
+  Model/price change request log (Sheet/Notion), Admin Panel or pricing table timestamps.
+
+- **Review frequency:**  
+  Weekly / Monthly.
+
+- **Linked KRAs:**  
+  KRA 1, KRA 5.
+
+### 3) Deduction logic & class adherence
+
+- **Description:**  
+  How consistently final payouts at pickup follow the configured class and deduction rules, instead of arbitrary on-spot pricing.
+
+- **Formula:**  
+  `(` Number of deals where final payout is within allowed band according to class and deduction rules `÷` Total completed pickups `) × 100`
+
+- **Target:**  
+  High and improving; aim towards ≥ 90–95% once system is mature.
+
+- **Data source:**  
+  Class/deduction master, payout vs record comparison reports, order-level data from Admin Panel / DB.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 2, KRA 5.
+
+### 4) In-house pickup margin & purchase quality
+
+- **Description:**  
+  Measures whether in-house associates are buying right so that devices can be sold with acceptable margin.
+
+- **Formula examples:**  
+  Average margin per in-house device:  
+  `(` Dealer selling price – in-house buyback payout – direct costs `) ÷` Dealer selling price `× 100`
+
+  Percentage of in-house deals meeting or exceeding target margin band:  
+  `Deals meeting target margin ÷ Total in-house deals × 100`
+
+- **Target:**  
+  Set target margin band per category (e.g., low / mid / premium) and keep majority of in-house deals within or above it.
+
+- **Data source:**  
+  In-house acquisition records, dealer billing data from Accounts, margin calculations (sheet/report).
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 3, KRA 5.
+
+### 5) In-house inventory sell-through & stock age
+
+- **Description:**  
+  Ensures devices purchased via in-house associates are not getting stuck for too long.
+
+- **Formula (stock age):**  
+  Average number of days devices stay unsold in in-house inventory
+
+- **Formula (sell-through):**  
+  `Number of devices sold to dealers within X days ÷ Total devices acquired in that period × 100`
+
+- **Target:**  
+  Define target holding period (e.g., majority sold within 30–45 days) and minimum sell-through percentage in that window.
+
+- **Data source:**  
+  In-house inventory sheet / system, dealer billing records, ageing report.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 3, KRA 5.
+
+### 6) Corporate buyback quotation SLA & win rate
+
+- **Description:**  
+  Shows how well Mohsin handles corporate buyback requests from pricing to closure.
+
+- **Formula (quotation SLA):**  
+  `Corporate buyback enquiries for which quotation was sent within agreed TAT ÷ Total corporate buyback enquiries × 100`
+
+- **Formula (win rate):**  
+  `Corporate buyback deals closed ÷ Corporate buyback quotations sent × 100`
+
+- **Target:**  
+  High quotation SLA (e.g., ≥ 90–95%) and a win rate target decided based on market reality (e.g., ≥ 50–60%).
+
+- **Data source:**  
+  Corporate buyback / B2B log (enquiries, quotes, visits, closures).
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 4, KRA 5.
+
+### 7) Pricing exceptions & complaints
+
+- **Description:**  
+  Tracks where pricing decisions cause problems – either internal exceptions or external complaints.
+
+- **Two parts:**
+  - **Exceptions:** Deals where final pricing goes outside defined bands due to manual override.
+  - **Complaints:** Number of escalations where customer/dealer/corporate client disputes price fairness or last-minute change.
+
+- **Formula example (exceptions rate):**  
+  `Number of deals with manual price override ÷ Total deals (consumer + in-house + corporate) × 100`
+
+- **Target:**  
+  Exceptions should reduce over time as logic improves; pricing complaints should be minimal and trending downwards.
+
+- **Data source:**  
+  Override/exception log (system or sheet), CX escalation logs, operations feedback.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 2, KRA 3, KRA 4, KRA 5.
+
+## Core processes / SOPs owned
+
+Mohsin is owner / co-owner for these SOPs:
+
+- **Consumer App/Web Pricing & Model Catalog SOP**
+  - Structure and maintenance of the full model catalog for all device types (phone, laptop, Mac, tablet, etc.).
+  - How to:
+    - Add new models with images and variants
+    - Map brand, series, storage, and other attributes
+    - Retire or hide old/unsupported models
+  - How base buyback prices are set per model and variant.
+
+- **Class & Deduction Pricing SOP**
+  - Definition of classes (A/B/C/D or Excellent/Good/Fair/Poor) for each device type.
+  - Standard deduction values for each problem/scenario:
+    - Screen damage types
+    - Body condition levels
+    - Battery health ranges
+    - Missing accessories
+    - Other common faults
+  - How this matrix is updated and then pushed to Tech for system implementation.
+
+- **New Model & Image Onboarding SOP**
+  - Step-by-step flow when a new model is spotted in orders or market:
+    - Capture model details and image requirement
+    - Add to model master
+    - Set base price, class bands and key deductions
+    - Coordinate with design/tech (if needed) for product images on app/web
+  - SLA and priority rules (popular models first).
+
+- **In-House Pickup & Dealer Pricing SOP**
+  - Framework for how in-house associates (Adnan, Aman, Vishal) buy:
+    - What guidance they follow for pricing at pickup
+    - How to handle borderline cases using classes and deductions
+  - How selling price tags are decided for sold-to-dealer devices:
+    - Price band per device category and class
+    - Format shared with Accounts so billing is easy and standardised
+  - How to review in-house performance and give feedback on purchase behaviour.
+
+- **In-House Inventory & Ageing Management SOP**
+  - How devices move from “purchased by in-house” → “in inventory” → “sold to dealer”.
+  - Rules for:
+    - Re-pricing slow stock
+    - Marking devices for quick sale or bulk clearance
+    - Regular review cycle for ageing stock.
+
+- **Corporate Buyback Quotation & Closure SOP**
+  - How a corporate buyback enquiry is handled:
+    - Information required from client (list, count, conditions, location)
+    - How Mohsin builds the buyback quotation sheet
+    - How visits and physical checks are done (if required)
+  - Rules around negotiation, minimum margin and when CEO/Finance sign-off is needed.
+  - How selling tags for these bulk devices are set for dealer billing once acquired.
+
+- **Pricing System & Change Implementation SOP**
+  - How changes to prices, classes, deductions and models are:
+    - Logged
+    - Approved (if needed)
+    - Implemented in system (with Tech)
+  - How changes are tested on staging and verified before going live.
+  - How Ashwini and Finance are kept in sync so reporting and margins stay correct.
+
+## Weekly & monthly reporting
+
+### Weekly – "Pricing & Buyback Weekly Snapshot"
+
+- **To:**
+  - CEO – Ibrahim Surya
+  - Finance
+  - Data Analyst – Ashwini
+  - Marketing Head – Pranjal
+  - Ops / relevant associates (for awareness when needed)
+  - Accounts / Dealer relations (for in-house and dealer selling updates, if applicable)
+
+- **Format:**  
+  Short summary (Slack / Email / Doc) with attached or linked sheets/reports.
+
+- **Includes:**
+  - **Consumer Pricing & Models:**
+    - New models/variants added or updated
+    - Important price changes made on app/web
+    - Any key model gaps identified
+  - **Classes & Deductions:**
+    - Any significant updates to deduction matrix or class logic
+    - Quick note on any repeated issues observed (e.g., too many exceptions for a certain problem)
+  - **In-House Associates & Dealer Selling:**
+    - Number of devices bought by in-house associates this week
+    - Highlights of dealer sales and any margin/ageing concerns
+  - **Corporate Buyback:**
+    - Enquiries received, quotations sent, deals in progress or closed
+    - Any large upcoming lots that need planning
+  - **Exceptions & Complaints:**
+    - Notable manual overrides or pricing disputes
+    - Actions taken or planned
+  - **Next Week Focus:**
+    - Specific categories/models or corporate deals Mohsin will focus on
+    - Any dependencies on Tech, Finance, Data, or Ops.
+
+### Monthly – "Pricing & Buyback Section in Monthly Review"
+
+- **To:**
+  - CEO
+  - Finance
+  - Data Analyst – Ashwini
+  - Marketing Head – Pranjal
+  - Ops / Vendor / CX heads
+  - Accounts / Dealer Relations (if part of review)
+
+- **Format:**  
+  Slides / Doc plus links to detailed sheets/dashboards.
+
+- **Includes:**
+  - **Overall Pricing & Margin Overview:**
+    - Consumer (app/web) pricing performance by device type and band
+    - In-house buyback and dealer selling margins
+    - Corporate buyback margins and volumes
+  - **Model & Catalog Health:**
+    - Coverage of models and variants on app/web
+    - Status of new model onboarding and price updates
+  - **In-House Inventory & Ageing:**
+    - Devices bought vs sold
+    - Average holding days, stock ageing distribution
+    - Planned actions for old or low-margin stock
+  - **Corporate / B2B Summary:**
+    - Number of enquiries, quotes, deals won/lost
+    - Learnings on why deals were won or lost
+  - **Pricing Exceptions & Complaints Analysis:**
+    - Patterns in overrides and disputes
+    - Changes applied to classes, deductions, or pricing bands because of them
+  - **Top 3–5 Recommended Actions (Next Month):**
+    - Models or categories to re-price
+    - Adjustments to in-house strategy, dealer pricing or discount policies
+    - B2B segments or specific upcoming corporate opportunities to target
+    - Any system changes needed in pricing tables or flows.

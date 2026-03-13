@@ -813,6 +813,51 @@
                 "path": "event-tracking-taxonomy-sop"
               }
             ]
+          },
+          {
+            "group": "Roles Tasks",
+            "pages": [
+              {
+                "title": "Sham Nadar",
+                "path": "sham-nadar"
+              },
+              {
+                "title": "Yaskar Jung",
+                "path": "yaskar-jung"
+              },
+              {
+                "title": "B2C Sales & Lead Conversion Associate",
+                "path": "b2c-sales-lead-conversion-associate"
+              },
+              {
+                "title": "Kishan Prajapati",
+                "path": "kishan-prajapati"
+              },
+              {
+                "title": "Bikesh Bhaila",
+                "path": "bikesh-bhaila"
+              },
+              {
+                "title": "Pranjal Haldankar",
+                "path": "pranjal-haldankar"
+              },
+              {
+                "title": "Muzammil Shaikh",
+                "path": "muzammil-shaikh"
+              },
+              {
+                "title": "Mohsin Surya",
+                "path": "mohsin-surya"
+              },
+              {
+                "title": "Ayaz Alam",
+                "path": "ayaz-alam"
+              },
+              {
+                "title": "Ashwini Giri",
+                "path": "ashwini-giri"
+              }
+            ]
           }
         ]
       }

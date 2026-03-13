@@ -1,0 +1,249 @@
+---
+title: Ashwini Giri
+description: Detailed role, KPIs, and reporting structure for Ashwini Giri as Data Analyst at Cashkr.
+---
+
+## Contents
+
+- [Role & reporting line](#role--reporting-line)
+- [Role purpose](#role-purpose)
+- [Key result areas (KRAs)](#key-result-areas-kras)
+- [KPIs](#kpis)
+- [Core processes / SOPs owned](#core-processes--sops-owned)
+- [Weekly & monthly reporting](#weekly--monthly-reporting)
+
+## Role & reporting line
+
+- **Role title:** Data Analyst – Cashkr  
+- **Department:** Analytics / Strategy (cross-functional: Marketing, Product, Ops, Finance)
+
+- **Reports to (primary):**
+  - CEO – Ibrahim Surya
+
+- **Functional / dotted-line:**
+  - Marketing Head – Pranjal (growth & campaign analytics)
+  - IT / Tracking – Shahid (events & implementation)
+
+- **Works closely with:**
+  - Rhea (Performance Marketing)
+  - Rabina & Yaskar (SEO & Content)
+  - Ayaz / Shahid / Resham (Tech)
+  - CX / Ops / Vendor Heads
+  - Finance
+
+## Role purpose
+
+Collect, clean, and connect data across Cashkr (marketing, product, ops, vendor, finance) into clear dashboards and insights that help everyone make faster, better decisions.
+
+## Key result areas (KRAs)
+
+- **KRA 1 – Data infrastructure & tracking readiness:** Ensure all key events, parameters, and data sources (GA4, Ads, Firebase, Postgres, CSVs, etc.) are correctly tracked, documented, and connected.
+- **KRA 2 – Dashboard & reports ownership:** Build and maintain accurate, easy-to-understand dashboards and reports (Looker Studio, Sheets, Docs) for leadership and teams.
+- **KRA 3 – Business insights & recommendations:** Translate raw data into clear, actionable insights and recommendations for Marketing, Ops, Vendor, CX, and Product.
+- **KRA 4 – Data quality & consistency:** Maintain a single source of truth, reduce mismatches between tools (GA4 vs Ads vs internal DB), and ensure trust in numbers.
+- **KRA 5 – Experiment & performance measurement:** Support teams in designing, tracking, and measuring experiments (ads, funnels, UX flows) and report impact on leads, orders, CPA, CPO, ROAS, etc.
+
+## KPIs
+
+### 1) Tracking coverage
+
+- **Description:** % of agreed events & parameters correctly implemented and visible in GA4/Firebase/DB vs the event master sheet.
+- **Formula:**  
+  `(# of events/parameters correctly implemented ÷ # of events/parameters in master sheet) × 100`
+- **Target:** 100% for all “Phase 1” events, then new events within agreed timelines.
+- **Data source:** Event master sheet, GA4 DebugView, Firebase, DB checks.
+- **Review frequency:** Weekly.
+- **Linked KRAs:** KRA 1, KRA 5.
+
+### 2) Dashboard uptime & data freshness
+
+- **Description:** % of time core dashboards (Executive, Marketing, SEO, Vendor SLA, Ops, CX, Finance) are working and up to date by the agreed time.
+- **Formula:**  
+  `(# of days dashboards were fully updated by X AM ÷ # of working days) × 100`
+- **Target:** ≥ 95–99% (decide exact number).
+- **Data source:** Looker Studio status, manual daily checks / log sheet.
+- **Review frequency:** Weekly / Monthly.
+- **Linked KRAs:** KRA 2, KRA 4.
+
+### 3) Reporting SLA compliance
+
+- **Description:** On-time delivery rate of weekly snapshot + monthly reports.
+- **Formula:**  
+  `(# of reports sent on or before due date ÷ # of scheduled reports) × 100`
+- **Target:** 100% (unless delay pre-approved).
+- **Data source:** Calendar + email/Slack log.
+- **Review frequency:** Monthly.
+- **Linked KRAs:** KRA 2, KRA 3.
+
+### 4) Data quality issues per month
+
+- **Description:** Number of major discrepancies and time taken to resolve them.
+- **Formula (volume):**  
+  Count of major issues (GA4 vs Ads vs DB mismatch, wrong metric definitions, etc.)
+
+- **Formula (resolution time):**  
+  Average time from issue logged → issue resolved
+
+- **Target:**
+  - 0 critical issues
+  - ≤ X minor issues / month
+  - Average resolution time ≤ Y days (you decide)
+
+- **Data source:** Data quality / bug log (Sheet/Notion), Slack.
+- **Review frequency:** Monthly.
+- **Linked KRAs:** KRA 1, KRA 4.
+
+### 5) Insight & action rate
+
+- **Description:** Number of concrete data-backed recommendations and how many are actually implemented by teams.
+- **Formula (insights):**  
+  `# of specific recommendations documented per month`
+
+- **Formula (action rate):**  
+  `# of recommendations implemented ÷ # of recommendations given × 100`
+
+- **Target:**
+  - X+ recommendations per month (e.g., ≥ 5–10)
+  - Action rate ≥ 60–70%
+
+- **Data source:** “Insights & Actions” log (Notion/Sheet) tagged by month & owner.
+- **Review frequency:** Monthly.
+- **Linked KRAs:** KRA 3, KRA 5.
+
+### 6) Ad & funnel performance clarity (attribution coverage)
+
+- **Description:** % of ad spend, leads & orders that can be clearly tied to a channel/campaign/ad group in dashboards.
+- **Formula (spend coverage):**  
+  `Attributable Spend ÷ Total Spend × 100`
+
+- **Formula (lead coverage):**  
+  `Leads with known source/campaign ÷ Total Leads × 100`
+
+- **Formula (order coverage):**  
+  `Orders with known source/campaign ÷ Total Orders × 100`
+
+- **Target:** Gradually move towards ≥ 90–95% coverage.
+- **Data source:** GA4, Ads platforms, Admin Panel, Looker.
+- **Review frequency:** Monthly.
+- **Linked KRAs:** KRA 1, KRA 2, KRA 5.
+
+### 7) Stakeholder satisfaction (dashboards & insights)
+
+- **Description:** Feedback from CEO + key leads (Marketing, Ops, Vendor, Tech, Finance) on usefulness & clarity of dashboards and insights.
+- **Formula:**  
+  Average rating on 1–5 scale from quarterly mini-survey
+- **Target:** ≥ 4/5 average.
+- **Data source:** Simple Google Form / Notion survey every quarter.
+- **Review frequency:** Quarterly.
+- **Linked KRAs:** KRA 2, KRA 3, KRA 4.
+
+> You can keep KPIs 1–7 as final, and if needed add an 8th later like:  
+> “Number of dashboards delivered vs planned per quarter.”  
+> But what you’ve given is already more than enough & well aligned.
+
+## Core processes / SOPs owned
+
+Ashwini is owner / co-owner for these SOPs:
+
+- **Event & Tracking Taxonomy SOP**
+  - Master sheet for all events (web, app, vendor, admin) with:
+    - Event names
+    - Triggers
+    - Parameters
+    - Expected values
+  - Defines how tracking change requests are raised, prioritised, and closed with Shahid / Ayaz / Resham.
+
+- **Data Pipeline & Source Integration SOP**
+  - How GA4, Google Ads, Meta Ads, Firebase, Postgres, CSV uploads, etc. connect into Looker Studio (and other tools if any).
+  - How to add a new source, update credentials, or fix broken connections.
+
+- **Dashboard Design & Maintenance SOP**
+  - Standards for:
+    - Dashboard names
+    - Filters & date controls
+    - Color schemes & layout (Executive, Marketing, SEO, Vendor SLA, Ops, CX, Finance)
+  - Process to request new dashboards / changes, with priority levels & timelines.
+
+- **Data Quality & Reconciliation SOP**
+  - Regular checks (weekly / monthly) to compare:
+    - GA4 vs Ads
+    - GA4 vs Admin DB
+  - Steps for:
+    - Logging discrepancies
+    - Investigating root cause
+    - Fixing and documenting resolution.
+
+- **Experiment & A/B Testing Measurement SOP**
+  - How teams define an experiment:
+    - Hypothesis, primary metric, secondary metrics, test duration.
+  - How Ashwini:
+    - Sets up tracking
+    - Monitors performance
+    - Produces final test result summary (win/loss/neutral & recommendation).
+
+- **Reporting & Review Rhythm SOP**
+  - Defines:
+    - Exact weekly, monthly, quarterly reports
+    - Who receives what
+    - Format (deck, dashboard links, short doc)
+    - Minimum content (metrics + trends + top insights + actions).
+
+## Weekly & monthly reporting
+
+### Weekly – “Data Weekly Snapshot”
+
+- **To:**
+  - CEO – Ibrahim
+  - Marketing Head – Pranjal
+  - IT / Tracking – Shahid
+  - Other leads (Rhea, Rabina, Ops, Vendor, CX, Finance) as needed.
+
+- **Format:** Short summary (Slack / Email / Doc) with dashboard links.
+
+- **Includes:**
+  - **Key performance highlights:**
+    - Leads, orders, CPA, CPO, ROAS (for paid).
+    - Basic view of organic where available (clicks, leads).
+    - Any big changes vs last week (spend jump, CPA spike, city drop, etc.).
+  - **Dashboards / tracking updates:**
+    - New dashboards / views created.
+    - Fixes done (broken metrics, new fields added).
+    - New events / parameters implemented and verified.
+  - **Important insights:**
+    - Top 3–5 observations, for example:
+      - City or device performing badly.
+      - Vendor segment with high cancellation / SLA issue.
+      - Funnel step with rising drop-off.
+  - **Next week focus:**
+    - Tracking fixes planned.
+    - New dashboards planned.
+    - Deeper analyses (e.g., cohort, funnel, city-wise).
+
+### Monthly – “Data & Analytics Section in Monthly Review”
+
+- **To:** CEO, Marketing Head, Ops/Vendor Head, Tech, Finance.
+
+- **Format:** Slides / Doc + dashboard links.
+
+- **Includes:**
+  - **High-level summary:**
+    - Leads, orders, spend, CPA, CPO, ROAS, revenue (if available).
+    - Trends vs previous month.
+  - **Breakdowns:**
+    - By channel (Google, Meta, SEO, Referral, etc.).
+    - By city.
+    - By device type (Phone, Laptop, Mac, Tablet).
+    - By vendor cluster where relevant.
+  - **Funnel performance:**
+    - Impression → Click → Lead → Order → Pickup.
+    - Key drop-off points and their impact.
+  - **Big insights & shifts:**
+    - What changed this month and why it matters.
+    - Wins (what worked) & red flags (what didn’t).
+  - **Tracking & data improvements completed:**
+    - New events, sources, dashboards, quality fixes.
+  - **Top 3–5 recommended actions (next month):**
+    - Budget shifts (e.g., from weak city/device to stronger ones).
+    - City/device focus changes.
+    - Product/UX changes (e.g., fixing a bad step in the funnel).
+    - Vendor / SLA / CX focus points.
