@@ -1,0 +1,150 @@
+---
+title: Nirajan Bohara
+description: Role, responsibilities, KPIs, and core QA processes owned by Nirajan Bohara as QA Engineer at Cashkr.
+---
+
+## Contents
+
+- [Role & reporting line](#role--reporting-line)
+- [Role purpose](#role-purpose)
+- [Key result areas (KRAs)](#key-result-areas-kras)
+- [KPIs](#kpis)
+  - [1. Bugs found in QA vs bugs found in production](#1-bugs-found-in-qa-vs-bugs-found-in-production)
+  - [2. Test coverage for critical journeys](#2-test-coverage-for-critical-journeys)
+  - [3. Regression execution rate](#3-regression-execution-rate)
+  - [4. Bug report quality](#4-bug-report-quality)
+  - [5. Retest turnaround time](#5-retest-turnaround-time)
+  - [6. Escaped P1/P2 issues per month](#6-escaped-p1p2-issues-per-month)
+  - [7. Test case maintenance and updates](#7-test-case-maintenance-and-updates)
+- [Core processes / SOPs owned](#core-processes--sops-owned)
+- [Weekly & monthly reporting](#weekly--monthly-reporting)
+
+## Role & reporting line
+
+- **Role:** QA Engineer / Full-Time Tester – Cashkr  
+- **Department:** Technology / Quality Assurance  
+- **Reports to:** IT Manager – **Shahid Shaikh**  
+- **Works closely with:** Ayaz – Website; Suraj – Backend/API; Resham – Admin/DevOps; Bikesh – UI/UX  
+
+## Role purpose
+
+Test every change across website, apps, admin panel, and backend flows to catch bugs before release and ensure everything is stable, user-ready, and safe to push to production.
+
+## Key result areas (KRAs)
+
+- **KRA 1: End-to-End Testing of Core Flows** – Ensure all critical flows (lead → order → pickup, wallet/credits, vendor operations, CX workflows) are tested before go-live.
+- **KRA 2: Defect Detection & Clear Reporting** – Identify bugs early and log them with clear steps, evidence, and impact so developers can fix quickly.
+- **KRA 3: Regression & Release Readiness** – Run regression tests before deployments so new changes do not break existing, live features.
+- **KRA 4: Test Planning & Coverage** – Create and maintain test cases/suites so coverage improves over time across web, app, admin, and APIs.
+- **KRA 5: Collaboration for Quality** – Work closely with devs and design to clarify expected behaviour and improve user experience via feedback.
+
+## KPIs
+
+### 1. Bugs found in QA vs bugs found in production
+
+- **Description:** Measure how many issues are caught during QA versus how many escape into production.  
+- **Metric / signal:** Higher percentage of bugs caught in QA, fewer P1 issues detected by real users or internal teams after release.  
+- **Target direction:** Higher bugs caught in QA, lower bugs found in production (especially P1).
+
+### 2. Test coverage for critical journeys
+
+- **Description:** Track how much of the most important user and system journeys are covered by test cases.  
+- **Metric / signal:** Percentage of key flows that have written test cases and are executed before each major release.  
+- **Target direction:** Higher coverage across all critical journeys.
+
+### 3. Regression execution rate
+
+- **Description:** Check how consistently planned regression suites are actually run before deployments.  
+- **Metric / signal:** Percentage of planned regression tests actually run before deployments (especially for major releases).  
+- **Target direction:** Higher execution rate for all planned regression tests.
+
+### 4. Bug report quality
+
+- **Description:** Assess how clear, reproducible, and useful each logged bug is for developers.  
+- **Metric / signal:** Percentage of tickets that are reproducible, have clear steps, screenshots/video, and proper severity, measured via feedback from Shahid and devs.  
+- **Target direction:** Higher proportion of high-quality, actionable bug reports.
+
+### 5. Retest turnaround time
+
+- **Description:** Measure how quickly fixes are re-tested and closed after developers mark them as resolved.  
+- **Metric / signal:** Average time taken to re-test and close bugs once developers mark them as "fixed".  
+- **Target direction:** Lower average retest and closure time.
+
+### 6. Escaped P1/P2 issues per month
+
+- **Description:** Track how many critical or high-severity issues reach production after a tested release.  
+- **Metric / signal:** Number of critical/high (P1/P2) bugs that reach production after a "tested" release, monitored monthly to reduce the trend over time.  
+- **Target direction:** Fewer escaped P1/P2 issues month over month.
+
+### 7. Test case maintenance and updates
+
+- **Description:** Ensure test assets stay aligned with product changes so coverage remains accurate.  
+- **Metric / signal:** Percentage of key modules that have up-to-date test cases when features change.  
+- **Target direction:** Higher proportion of modules with current and maintained test cases.
+
+## Core processes / SOPs owned
+
+Nirajan is **owner / co-owner** of these QA SOPs.
+
+### 1. Test Case & Test Suite Management SOP
+
+- How test cases are written, updated, organised (by module: web, app, admin, vendor, API).
+
+### 2. Release Testing & Regression SOP
+
+- Standard checklist for what must be tested before any release (hotfix, minor, major).
+
+### 3. Bug Logging & Severity SOP
+
+- How to log bugs (tool/format), define severity (P1–P4), environment details, and link screenshots/videos.
+
+### 4. Cross-Platform Testing SOP
+
+- Ensuring coverage across devices: mobile web, desktop web, Android app, iOS app, vendor app, Admin Panel.
+
+### 5. Sanity Testing After Deployment SOP
+
+- Quick post-release checks in production (or production-like) to ensure key flows work.
+
+### 6. Co-ordination with Dev & Design SOP
+
+- How to clarify expected behaviour, get test builds, request logs, and confirm when something is a bug vs expected.
+
+## Weekly & monthly reporting
+
+### Weekly reporting
+
+- **To:**  
+  - IT Manager – **Shahid**  
+  - With visibility to: Ayaz, Suraj, Resham, Bikesh (and others when relevant)
+
+- **Format:**  
+  Short summary in Slack / Notion.
+
+- **Includes:**  
+  - Total bugs logged this week (by module and severity P1/P2/P3).  
+  - Areas tested (for example, "Website evaluation flow", "Admin Vendor assignment", "App checkout").  
+  - Critical/high issues still open and who they are assigned to.  
+  - Any recurring patterns noticed (for example, frequent issues in a specific module).  
+  - Plan for next week’s testing focus.
+
+### Monthly reporting
+
+- **To:**  
+  - Shahid  
+  - Ibrahim (CEO)  
+  - Tech leads (and Ops/CX if useful)
+
+- **Format:**  
+  One small section or slide in the monthly review.
+
+- **Includes:**  
+  - **Bug trends:**  
+    - Total bugs by module and severity.  
+    - Comparison with previous month (up/down).  
+  - **Escaped critical issues:**  
+    - P1/P2 issues found after release and what is being done to prevent them.  
+  - **Coverage snapshot:**  
+    - Which flows are well-covered versus weak areas that need more test cases.  
+  - **Suggestions to improve quality:**  
+    - Process improvements, common problem areas, need for automation later, etc.

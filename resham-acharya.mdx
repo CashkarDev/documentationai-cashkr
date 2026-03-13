@@ -1,0 +1,216 @@
+---
+title: Resham Acharya
+description: Role definition, KRAs, KPIs, core SOPs, and reporting rhythm for Resham Acharya as Full Stack Developer for Admin Panel, DevOps, and Database.
+---
+
+## Contents
+
+- [Role & reporting line](#role--reporting-line)
+- [Role purpose](#role-purpose)
+- [Key result areas (KRAs)](#key-result-areas-kras)
+- [KPIs](#kpis)
+  - [Admin Panel Uptime](#admin-panel-uptime)
+  - [Deployment Success Rate](#deployment-success-rate)
+  - [Change Lead Time – Admin Features](#change-lead-time--admin-features)
+  - [DB Incident Rate](#db-incident-rate)
+  - [Backup & Recovery Health](#backup--recovery-health)
+  - [Pipeline Health (CI/CD)](#pipeline-health-cicd)
+  - [Internal User Issue Volume (Admin-related)](#internal-user-issue-volume-admin-related)
+  - [Admin Feature Delivery vs Plan](#admin-feature-delivery-vs-plan)
+- [Core processes / SOPs owned](#core-processes--sops-owned)
+- [Weekly & monthly reporting](#weekly--monthly-reporting)
+
+## Role & reporting line
+
+- **Role:** Full Stack Developer – Admin Panel, DevOps & Database  
+- **Department:** Technology / Platform Engineering  
+- **Reports to:** IT Manager – Shahid Shaikh  
+
+## Role purpose
+
+Own the Admin Panel, deployments, and database so internal teams (Ops, CX, Vendor, Finance, Marketing, CEO) can work smoothly with accurate, reliable, and up-to-date data – with safe, predictable releases.
+
+## Key result areas (KRAs)
+
+- **KRA 1: Admin Panel Stability & Usability** – Ensure the Admin Panel is fast, stable, and supports day-to-day work for Operations, CX, Vendor Team, Finance, and Marketing without frequent issues.
+- **KRA 2: DevOps & Deployment Pipeline** – Maintain CI/CD pipelines, environments, and deployment processes so releases are frequent, safe, and reversible.
+- **KRA 3: Database Design, Integrity & Performance** – Design and maintain clean database schemas (e.g., masterlead, customer, orders, vendors) with correct relationships and good performance.
+- **KRA 4: Internal Tools Feature Delivery** – Ship new Admin Panel features/reports/controls requested by business teams within agreed timelines.
+- **KRA 5: Monitoring, Access & Security** – Set up proper monitoring, logging, and access controls for Admin & DB to keep data secure and traceable.
+
+## KPIs
+
+### Admin Panel Uptime
+
+**Description**
+
+Availability of the Admin Panel during working hours for internal teams.
+
+**Metrics**
+
+- Availability percentage during working hours for internal teams.
+
+**Target**
+
+- Target aligned with platform uptime (e.g., ≥ 99.5%).
+
+### Deployment Success Rate
+
+**Description**
+
+Stability and quality of deployments without requiring rollback or generating major post-release issues.
+
+**Metrics**
+
+- Percentage of deployments without rollback or major post-release issue.
+
+**Target**
+
+- Target: ≥ 95%.
+
+### Change Lead Time – Admin Features
+
+**Description**
+
+Speed from approval to release for small/medium Admin features.
+
+**Metrics**
+
+- Average time from approved request (by Shahid/CEO/Ops head) to live in Admin for small/medium features.
+
+### DB Incident Rate
+
+**Description**
+
+Stability of the database in relation to schema and query changes.
+
+**Metrics**
+
+- Number of incidents caused by schema changes, migrations, or wrong queries per month (aim to minimize).
+
+### Backup & Recovery Health
+
+**Description**
+
+Reliability of database backups and restore processes.
+
+**Metrics**
+
+- Percentage of successful automated backups.  
+- Number of restore tests done per quarter.
+
+### Pipeline Health (CI/CD)
+
+**Description**
+
+Reliability and responsiveness of CI/CD pipelines.
+
+**Metrics**
+
+- Ratio of successful pipeline runs vs failures.  
+- Average time to fix broken pipeline issues.
+
+### Internal User Issue Volume (Admin-related)
+
+**Description**
+
+Volume and severity of Admin-related issues raised by internal teams.
+
+**Metrics**
+
+- Number of P1/P2 Admin issues raised by Ops/CX/Finance/Marketing per month (track and reduce trend).
+
+### Admin Feature Delivery vs Plan
+
+**Description**
+
+Delivery reliability against planned Admin-related tasks.
+
+**Metrics**
+
+- Percentage of planned Admin-related tasks delivered within the month/sprint.
+
+## Core processes / SOPs owned
+
+Resham is owner / co-owner for these SOPs:
+
+- **Admin Panel Development SOP**
+  - How new Admin features (screens, filters, actions, reports) are requested, estimated, developed, tested, and released.
+  - Includes role-based access (who can see what in Admin).
+
+- **DevOps & CI/CD SOP**
+  - Pipelines for web, backend, apps (where relevant).
+  - Environment strategy: dev, staging, production.
+  - Release steps, approvals, canary/rollback process.
+
+- **Database Design & Migration SOP**
+  - Standards for schema design (naming, relations, indexes, constraints).
+  - How migrations are planned, reviewed, tested, and executed.
+  - Keeping analytics needs in mind (Ashwini’s dashboards, GA4 exports, etc.).
+
+- **Access & Permissions SOP (Admin & DB)**
+  - Creation/removal/change of access for new joiners/exits (with HR & Shahid).
+  - Role-based Admin access for Ops, CX, Vendor Team, Accounting, Marketing, CEO.
+
+- **Monitoring & Logging SOP**
+  - What metrics and logs are tracked (errors, slow queries, downtime).
+  - How alerts are configured and who gets notified.
+
+- **Internal Stakeholder Request SOP**
+  - How Ops, CX, Vendor, Finance, Marketing raise Admin or data-related requests (new filters, status changes, exports, KPIs).
+  - How they are triaged and prioritised with Shahid.
+
+- **Data Quality & Integrity SOP**
+  - Routine checks for orphaned records, inconsistent statuses, broken relations between masterlead, customer, orders, vendors, etc.
+  - Basic data correction process with proper approval.
+
+## Weekly & monthly reporting
+
+### Weekly reporting
+
+**To**
+
+- IT Manager – Shahid  
+- Plus visibility (when relevant) to Ops Head, CX Lead, Vendor Head, Finance, CEO
+
+**Format**
+
+- Short Slack / Notion update
+
+**Includes**
+
+- Admin Panel changes shipped this week  
+  - New features, filters, reports, status changes, tools for Ops/CX/Vendor/Finance.
+- Deployments done  
+  - What was released (web/backend/app if pipeline involved you).
+- Incidents & fixes (Admin/DB/DevOps)  
+  - P1/P2 issues, root cause summary, what’s fixed.
+- Infra / pipeline / DB work  
+  - Any improvements to performance, indexes, queries, backups, monitoring.
+- Next week focus  
+  - Top 3–5 tasks (admin features, infra tasks, DB work).
+
+### Monthly reporting
+
+**To**
+
+- Shahid  
+- Ibrahim (CEO)  
+- Heads of Ops, CX, Vendor, Finance (since they use Admin heavily)
+
+**Format**
+
+- 1–2 slides / short doc section
+
+**Includes**
+
+- Admin Panel: major improvements shipped  
+  - New tools/reports that helped Ops/CX/Vendor/Finance.
+- DevOps & Deployment Summary  
+  - Number of releases, rollback incidents, pipeline stability.
+- Database & Backup Health  
+  - Backup status, restore tests, any major schema work.
+- Incident Summary (Admin/DB/Infra)  
+  - Count by severity, patterns, key RCAs & prevention steps.
+- Next Month Roadmap  
+  - Planned Admin features, infra upgrades, DB improvements.

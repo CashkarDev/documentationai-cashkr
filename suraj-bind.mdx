@@ -1,0 +1,196 @@
+---
+title: Suraj Bind
+description: Role, responsibilities, KPIs, and reporting structure for Suraj Bind as Full Stack Developer for backend systems and APIs at Cashkr.
+---
+
+## Contents
+
+- [Role & reporting line](#role--reporting-line)
+- [Role purpose](#role-purpose)
+- [Key result areas (KRAs)](#key-result-areas-kras)
+- [KPIs](#kpis)
+  - [API uptime percentage (core services)](#api-uptime-percentage-core-services)
+  - [Average response time (critical APIs)](#average-response-time-critical-apis)
+  - [Backend P1/P2 incidents per month](#backend-p1p2-incidents-per-month)
+  - [Feature delivery vs plan](#feature-delivery-vs-plan)
+  - [API error rate 5xx and time to fix](#api-error-rate-5xx-and-time-to-fix)
+  - [API documentation coverage](#api-documentation-coverage)
+  - [Integration stability](#integration-stability)
+  - [Rework due to backend issues](#rework-due-to-backend-issues)
+- [Core processes / SOPs owned](#core-processes--sops-owned)
+- [Weekly & monthly reporting](#weekly--monthly-reporting)
+
+## Role & reporting line
+
+- **Role:** Full Stack Developer – Backend Systems & APIs  
+- **Department:** Technology / Backend Engineering  
+- **Reports to:** IT Manager – Shahid Shaikh  
+
+## Role purpose
+
+Build and maintain the core backend systems and APIs that power the Cashkr website, apps, vendor tools, and admin panel, ensuring reliability, security, and performance for all key business flows.
+
+## Key result areas (KRAs)
+
+- **KRA 1: Stable and scalable backend architecture** — Design and maintain clean, modular, and scalable backend services for all Cashkr products.
+- **KRA 2: High-quality APIs for frontend and admin** — Deliver secure, well-documented APIs that are easy for Ayaz (website), apps, and Resham (admin panel) to consume.
+- **KRA 3: Business logic and feature delivery** — Translate business requirements (leads, orders, wallet, credits, referrals, payouts, reports) into robust backend logic and features.
+- **KRA 4: Performance, reliability and error control** — Keep backend response times low, error rates under control, and handle load without breaking core journeys.
+- **KRA 5: Collaboration with DB, DevOps and QA** — Work closely with Resham on DB and DevOps and Nirajan on testing to release stable backend changes.
+
+## KPIs
+
+### API uptime percentage (core services)
+
+**Description**
+
+API uptime percentage for core backend services.
+
+**Metrics**
+
+- Uptime for critical APIs (auth, pricing, lead and order, wallet and credits, vendor flows).
+
+**Target**
+
+- Target aligned with platform uptime (for example, ≥ 99.5%).
+
+### Average response time (critical APIs)
+
+**Description**
+
+Average response time for critical backend APIs.
+
+**Metrics**
+
+- Average latency for pricing, lead creation, order creation, wallet payment, and similar critical operations.
+
+**Target**
+
+- Target to be defined (for example, ≤ X ms for majority of calls).
+
+### Backend P1/P2 incidents per month
+
+**Description**
+
+Number of high-priority backend incidents.
+
+**Metrics**
+
+- Number of critical incidents caused by backend or API problems, with an aim to reduce over time.
+
+### Feature delivery vs plan
+
+**Description**
+
+Alignment of backend delivery with planned work.
+
+**Metrics**
+
+- Percentage of backend tasks and features shipped as per sprint or monthly plan.
+
+**Target**
+
+- For example, ≥ 85–90%.
+
+### API error rate 5xx and time to fix
+
+**Description**
+
+Stability of APIs and speed of resolving issues.
+
+**Metrics**
+
+- Error rate on key endpoints (5xx errors) and average time taken to fix recurring issues.
+
+### API documentation coverage
+
+**Description**
+
+Coverage and quality of backend API documentation.
+
+**Metrics**
+
+- Percentage of major endpoints properly documented, including endpoints, parameters, responses, and error codes.
+
+### Integration stability
+
+**Description**
+
+Reliability of external service integrations.
+
+**Metrics**
+
+- Number of issues related to external integrations (bank and virtual accounts, payment gateways, Acefone, analytics, and others) per month.
+
+### Rework due to backend issues
+
+**Description**
+
+Impact of backend changes or bugs on other teams.
+
+**Metrics**
+
+- Number of times frontend or admin work has to be redone due to backend contract changes or bugs.
+
+## Core processes / SOPs owned
+
+Suraj is owner or co-owner of these backend-focused SOPs:
+
+- **Backend Development and Code Standards SOP**
+  - Coding conventions, project structure, error handling, logging, security practices.
+
+- **API Design and Versioning SOP**
+  - REST standards, consistent naming, versioning, deprecation rules, backwards compatibility.
+
+- **Backend Feature Delivery SOP**
+  - How backend tasks move from requirement → estimation → development → code review → test → deploy.
+
+- **Service and Integration SOP**
+  - Connecting to payment gateways, bank or virtual account systems, Acefone, GA and other services; handling failures and retries.
+
+- **Security and Validation SOP (Backend Layer)**
+  - Authentication, authorization, input validation, rate limiting, data protection at API level.
+
+- **Collaboration SOP with Frontend and Admin**
+  - How API contracts are shared with Ayaz and Resham, how changes are communicated, how mocks are provided.
+
+- **Error Monitoring and Logging SOP**
+  - How logs are structured, where they are stored, how errors and alerts are monitored and triaged.
+
+## Weekly & monthly reporting
+
+### Weekly reporting
+
+- **To:** IT Manager – Shahid (with visibility for Ayaz and Resham where needed)
+- **Format:** Short update in Slack or Notion
+
+**Includes:**
+
+- Backend features and APIs delivered this week
+  - New endpoints, updated logic, refactors.
+- P1 and P2 backend incidents
+  - What happened, status, any short RCA.
+- Integration updates
+  - Any work on payments, bank, Acefone, and similar integrations.
+- Dependencies and blockers
+  - Waiting on requirements, DB changes, infrastructure, and similar dependencies.
+- Plan for next week
+  - Top 3–5 backend priorities.
+
+### Monthly reporting
+
+- **To:** Shahid, Ibrahim, and relevant tech and ops leads
+- **Format:** One slide or section in monthly tech review
+
+**Includes:**
+
+- Summary of key backend projects delivered
+  - Wallet and credits, pricing changes, funnel logic, vendor flows, reports.
+- Backend incident summary
+  - Count, severity, root cause patterns.
+- Performance and stability snapshot
+  - Uptime, error rate, response time trends.
+- Integration health
+  - Any major issues or improvements with external services.
+- Next month backend roadmap
+  - Core items to be built or improved.

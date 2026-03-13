@@ -818,6 +818,50 @@
             "group": "Roles Tasks",
             "pages": [
               {
+                "title": "Nirajan Bohara",
+                "path": "nirajan-bohara"
+              },
+              {
+                "title": "Accounts Associate",
+                "path": "accounts-associate"
+              },
+              {
+                "title": "CRM Expert / Lifecycle Marketing Specialist",
+                "path": "crm-expert-/-lifecycle-marketing-specialist"
+              },
+              {
+                "title": "Umair Kherade",
+                "path": "umair-kherade"
+              },
+              {
+                "title": "Marketing Generalist",
+                "path": "marketing-generalist"
+              },
+              {
+                "title": "Vishal Joshi, Adnan Shaikh, Aman Surya",
+                "path": "vishal-joshi-adnan-shaikh-aman-surya"
+              },
+              {
+                "title": "Rabina Khadka",
+                "path": "rabina-khadka"
+              },
+              {
+                "title": "Rohit Mane",
+                "path": "rohit-mane"
+              },
+              {
+                "title": "Resham Acharya",
+                "path": "resham-acharya"
+              },
+              {
+                "title": "Suraj Bind",
+                "path": "suraj-bind"
+              },
+              {
+                "title": "Helpdesk Associate – Customer Support",
+                "path": "helpdesk-associate-customer-support"
+              },
+              {
                 "title": "Sham Nadar",
                 "path": "sham-nadar"
               },
