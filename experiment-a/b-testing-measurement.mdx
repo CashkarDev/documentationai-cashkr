@@ -1,0 +1,303 @@
+---
+title: Experiment & A/B Testing Measurement
+description: Standard process for planning, running, measuring, and documenting experiments and A/B tests at Cashkr, including roles, metrics, and reporting.
+---
+
+## Overview
+
+Experiments and A/B tests at Cashkr must be structured, measurable, and repeatable so teams can make confident decisions on product, marketing, and process changes.
+
+**Category:** Data & Analytics  
+**Subcategory:** Experimentation & Optimization
+
+## Purpose
+
+Ensure every experiment:
+
+- Starts from a clear hypothesis.
+- Has defined primary and secondary metrics.
+- Runs for a sufficient duration with reliable tracking.
+- Ends with a documented result and recommendation.
+
+## Who is involved
+
+### Teams initiating experiments
+
+The following teams initiate and own experiments:
+
+- Marketing
+- SEO
+- Product/App
+- Ops (pickup slot tests, vendor flow tests)
+- CX (scripts, contact strategy tests)
+
+### Data analyst (Ashwini)
+
+Ashwini is responsible for:
+
+- Designing the measurement setup.
+- Creating tracking.
+- Monitoring experiment results.
+- Producing the final report.
+
+## Defining an experiment (team responsibility)
+
+Every experiment must include four components: hypothesis, primary metric, secondary metrics, and test duration.
+
+### Hypothesis
+
+Write a clear statement of what you expect to happen.
+
+**Format:** `If we change X, it will cause Y because Z.`
+
+**Examples:**
+
+- `If we shorten our landing page text, conversion rate will increase because users understand value faster.`
+- `If we show trust badges above the fold, lead conversion will improve due to increased trust.`
+
+### Primary metric (success metric)
+
+Use one main metric that decides whether the experiment is a WIN or LOSS.
+
+**Examples:**
+
+- Lead Conversion Rate
+- CTR of Google Ads
+- Order Completion Rate
+- Add-to-Cart Rate
+- Pickup Success %
+
+<Callout kind="info">
+
+Set the primary metric before the test starts and do not change it during the experiment. The primary metric decides the final WIN/LOSS/NEUTRAL status.
+
+</Callout>
+
+### Secondary metrics
+
+Use secondary metrics to understand side effects and broader impact.
+
+**Examples:**
+
+- Bounce Rate
+- Average Time on Page
+- CPC / CPA
+- Vendor Acceptance Rate
+- Customer Complaints
+
+### Test duration
+
+Experiments must run long enough to produce reliable data.
+
+**Standard minimum durations:**
+
+- Website experiments → 7–14 days
+- App experiments → 10–21 days
+- Ads experiments → 7 days
+- CX/Sales scripts → 3–5 days per variant
+
+<Callout kind="info">
+
+Run each test until both variants receive enough traffic to achieve statistical power. Do not stop early unless there is a clear tracking or data issue.
+
+</Callout>
+
+### Experiment requirement sheet (team → Ashwini)
+
+Before starting, the initiating team must submit an experiment requirement sheet to Ashwini.
+
+Use the following fields:
+
+- **experimentName** (required) — Short, clear title for the experiment.
+- **hypothesis** (required) — Expected change in the format `If we change X, it will cause Y because Z`.
+- **variantAControl** (required) — Description of the existing version (control).
+- **variantBTest** (required) — Description of the modified version (test).
+- **primaryMetric** (required) — Metric that defines success (WIN or LOSS).
+- **secondaryMetrics** — Supporting KPIs used to understand side effects.
+- **targetUsers** — Audience definition such as web/app, city, device type, or other segmentation criteria.
+- **tools** — Measurement and experiment tools such as GA4, Firebase, Ads experiments, or similar.
+- **startDate** (required) — Planned experiment start date.
+- **duration** (required) — Planned experiment duration.
+
+## Ashwini’s responsibilities
+
+### Tracking setup (before experiment starts)
+
+Before the experiment begins, Ashwini must:
+
+- Enable event tracking in GA4 / Firebase for:
+  - Clicks
+  - Scrolls
+  - New UI tests
+  - Buttons and banners
+- Confirm parameters such as:
+  - `experiment_name`
+  - `variant_name`
+- Set up A/B testing tools if needed:
+  - Google Optimize (if used)
+  - Firebase Remote Config
+  - In-app flags
+  - Google Ads A/B Experiments (for ads tests)
+- Create a Looker Studio experiment dashboard:
+  - Control vs variant metrics
+  - Trend charts
+  - Conversion funnels
+- Verify data flow:
+  - Test in DebugView
+  - Confirm events fire correctly
+  - Confirm variant segmentation
+
+### Monitoring during experiment
+
+Ashwini checks performance daily for sanity and every three days for trends.
+
+Monitor:
+
+- Volume balance between variants (similar traffic to each).
+- Conversion rate trends.
+- Any abnormal spikes (bot traffic, tracking failure).
+- Overall data reliability.
+
+<Callout kind="info">
+
+If you detect a data or tracking problem, pause the test, fix the tracking, and restart the experiment if required.
+
+</Callout>
+
+## Final analysis and result summary
+
+When the experiment ends, Ashwini produces a Test Result Summary.
+
+### Compute core metrics
+
+For each variant, compute:
+
+- Conversion rate
+- Total users
+- Primary metric lift (percentage difference)
+- Statistical significance (if possible)
+- Impact on secondary metrics
+
+### Result classification
+
+Classify the outcome into one of three buckets:
+
+1. **WIN**  
+   Variant B beats Variant A on the primary metric significantly.
+
+2. **LOSS**  
+   Variant B performs worse than Variant A.
+
+3. **NEUTRAL**  
+   No significant difference; keep the control (Variant A).
+
+### Recommendation summary
+
+Based on the classification, Ashwini must provide a final recommendation:
+
+- **WIN →** Roll out Variant B fully.
+- **LOSS →** Revert to Variant A.
+- **NEUTRAL →** Keep Variant A, no change.
+
+### Documentation template (Test Result Summary)
+
+Use the following structure when writing the Test Result Summary.
+
+#### Experiment summary
+
+- **experimentName** (required) — Name of the experiment.
+- **dates** (required) — Start and end dates of the experiment.
+- **hypothesis** (required) — Original hypothesis used for the experiment.
+- **result** (required) — Outcome label such as WIN, LOSS, or NEUTRAL.
+
+#### Variant A vs Variant B
+
+- **primaryMetricDifference** (required) — Difference in the primary metric between Variant A and Variant B.
+- **secondaryEffects** — Observed changes in secondary metrics and side effects.
+- **statisticalConfidence** — Statistical confidence level or notes on significance, if available.
+
+#### Conclusion
+
+- **finalClassification** (required) — Final classification: WIN, LOSS, or NEUTRAL.
+
+#### Recommendation
+
+- **implementationRecommendation** (required) — Action to take: scale (roll out Variant B), revert (keep Variant A), or retest.
+
+#### Notes
+
+- **issuesFaced** — Issues encountered during the experiment run.
+- **learnings** — Key learnings to reuse in future experiments.
+
+Use this checklist when preparing the final document:
+
+- [ ] Experiment summary completed (name, dates, hypothesis, result).
+- [ ] Variant A vs Variant B comparison documented (primary and secondary metrics, confidence).
+- [ ] Conclusion and classification clearly stated.
+- [ ] Recommendation provided (scale/revert/retest).
+- [ ] Notes on issues and learnings captured.
+
+## Storage and record keeping
+
+Store all experiments in the central folder:
+
+- `Fusebase / Google Drive → Cashkr → Data → Experiments`
+
+Inside each experiment folder, include:
+
+- Experiment Requirement Sheet.
+- Tracking setup screenshot.
+- Mid-test checks.
+- Final Analysis (PDF).
+- Data sheet (CSV).
+
+This structure builds institutional knowledge for future team members.
+
+## Approval workflow
+
+Use the following approval flow for all experiments.
+
+<Steps>
+
+<Step title="Submit experiment request" icon="play-circle">
+
+Marketing, Product, or SEO submits an experiment request and sends the completed requirement sheet to Ashwini.
+
+</Step>
+
+<Step title="Validate and set up tracking" icon="settings">
+
+Ashwini validates the request, confirms feasibility, and sets up all required tracking and dashboards.
+
+</Step>
+
+<Step title="Run the experiment" icon="play-circle">
+
+The initiating team runs the experiment according to the defined hypothesis, variants, and duration.
+
+</Step>
+
+<Step title="Measure and report" icon="bar-chart">
+
+Ashwini measures the outcome, prepares the Test Result Summary, and shares the final report.
+
+</Step>
+
+<Step title="Approve rollout" icon="check-circle">
+
+Leadership reviews the report and approves rollout for WIN variants or confirms next steps for LOSS or NEUTRAL outcomes.
+
+</Step>
+
+</Steps>
+
+## Quality standards
+
+Use this checklist to confirm experiment quality:
+
+- [ ] Hypothesis is written in the `If we change X, it will cause Y because Z` format.
+- [ ] Primary metric is defined before the test and does not change mid-test.
+- [ ] Test runs for at least the standard minimum duration for its type.
+- [ ] Both variants receive fair and unbiased traffic.
+- [ ] Tracking is verified before launch and monitored during the test.
+- [ ] Final report is complete, clear, and stored in the central experiment folder.

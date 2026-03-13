@@ -1,0 +1,306 @@
+---
+title: Data Pipeline & Source Integration for Looker Studio
+description: Internal SOP to connect, maintain, and troubleshoot all Cashkr data sources feeding into Looker Studio, with naming standards and quality checks.
+---
+
+## Purpose
+
+Ensure all Cashkr data sources (GA4, Google Ads, Meta Ads, Firebase, Postgres, CSVs, etc.) are integrated correctly into Looker Studio with stable connections, proper naming, and scheduled refresh.
+
+## Roles and responsibilities
+
+- **Primary:** Data Analyst (Ashwini Giri)
+- **Secondary:** Tech Team → For Postgres and Firebase access
+- **Marketing Team:** Provides access for Google Ads, Meta Ads, Search Console
+
+## Tools required
+
+- Looker Studio
+- GA4
+- Google Ads
+- Meta Ads Manager
+- Firebase
+- PostgreSQL Database
+- Google Search Console
+- Google Sheets
+- CSV files
+- Admin access to dashboards
+
+## Full data pipeline overview
+
+Cashkr data flows into Looker Studio through these paths.
+
+### Website and app analytics → GA4 → Looker Studio
+
+- GA4 tracks web and app events.
+- GA4 connects to Looker Studio using the GA4 connector.
+
+### Ad campaigns → Google Ads / Meta Ads → Looker Studio
+
+- Google Ads data connects via the Google Ads connector.
+- Meta Ads connects via Supermetrics or Google Sheets → API pull → Looker Studio.
+
+### App events and user properties → Firebase → Looker Studio
+
+- Firebase connects to Looker Studio via the Firebase connector.
+- Used for installs, events, and user engagement.
+
+### Internal product data → PostgreSQL → Looker Studio
+
+- Vendor, lead, customer, and orders data is stored in Postgres.
+- Looker Studio connects through the PostgreSQL connector.
+
+### Manual and offline data → CSV → Google Sheets → Looker Studio
+
+- Manual sheets are uploaded to Google Sheets.
+- Looker Studio pulls Sheets via the Google Sheets connector.
+
+## Connect each source to Looker Studio
+
+### Connect GA4
+
+<Steps>
+  <Step title="Add GA4 data source" icon="plus">
+    Open Looker Studio and select Create → New report. Click Add data, choose Google Analytics, and select the correct Account, Property, and Data stream.
+  </Step>
+  <Step title="Connect and add to report" icon="arrow-right">
+    Click Connect, then Add to report to attach the GA4 data source.
+  </Step>
+  <Step title="Rename GA4 source" icon="edit">
+    Rename the data source to <code>GA4 – Cashkr Web/App</code> for consistency.
+  </Step>
+  <Step title="Validate metrics" icon="check-circle">
+    Verify that key metrics such as Sessions, Events, and Users are available and returning values.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Enable daily refresh for GA4 so Looker Studio always reads the latest analytics data.
+</Callout>
+
+### Connect Google Ads
+
+<Steps>
+  <Step title="Add Google Ads data" icon="plus">
+    In the report, click Add data and select Google Ads as the connector.
+  </Step>
+  <Step title="Authenticate with Cashkr Ads Gmail" icon="lock">
+    Sign in using the Cashkr Ads Gmail account and select the correct Google Ads account.
+  </Step>
+  <Step title="Connect and attach to report" icon="arrow-right">
+    Click Connect, then Add to include the Google Ads data source in the report.
+  </Step>
+  <Step title="Confirm required metrics" icon="check-circle">
+    Confirm that metrics include Clicks, Cost, Impressions, and Conversions.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Set the Google Ads data source refresh to Daily so campaign data stays in sync.
+</Callout>
+
+### Connect Meta Ads (Facebook/Instagram Ads)
+
+You have two options to bring Meta Ads data into Looker Studio.
+
+#### Option 1 (recommended): Supermetrics connector
+
+<Steps>
+  <Step title="Choose Meta Ads via Supermetrics" icon="plus">
+    Click Add data, select Supermetrics as the connector, and choose Meta Ads.
+  </Step>
+  <Step title="Log in with Meta Business account" icon="lock">
+    Log in using the Meta Business account that has access to the correct ad account.
+  </Step>
+  <Step title="Select ad account and connect" icon="arrow-right">
+    Select the Meta ad account and click Connect, then Add to attach it to the report.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Use the Supermetrics connector when available, as it maintains automated pulls from Meta Ads into Looker Studio.
+</Callout>
+
+#### Option 2 (free): Google Sheets pull
+
+<Steps>
+  <Step title="Export Meta Ads data to Sheets" icon="download">
+    Export Meta Ads data to Google Sheets using the API or by manual download into a Google Sheet.
+  </Step>
+  <Step title="Connect Google Sheets to Looker Studio" icon="arrow-right">
+    In Looker Studio, click Add data, choose the Google Sheets connector, select the exported sheet, and click Connect, then Add.
+  </Step>
+</Steps>
+
+### Connect Firebase
+
+<Steps>
+  <Step title="Add Firebase connector" icon="plus">
+    In Looker Studio, click Add data and select Firebase as the connector.
+  </Step>
+  <Step title="Select Firebase project and views" icon="settings">
+    Choose the Cashkr Firebase project and select App events, Crashlytics, and Debug view as needed.
+  </Step>
+  <Step title="Connect and add to report" icon="arrow-right">
+    Click Connect, then Add to bring Firebase data into the report.
+  </Step>
+</Steps>
+
+### Connect PostgreSQL database
+
+<Steps>
+  <Step title="Add PostgreSQL connector" icon="plus">
+    Click Add data in Looker Studio and choose PostgreSQL as the connector.
+  </Step>
+  <Step title="Enter database credentials" icon="lock">
+    Enter the PostgreSQL host, port, database name, username, and password.
+  </Step>
+  <Step title="Select schema and tables" icon="database">
+    Select the <code>public</code> schema and choose the following tables: <code>masterlead</code>, <code>customer</code>, <code>vendor</code>, and <code>orders</code>.
+  </Step>
+  <Step title="Test and add connection" icon="check-circle">
+    Test the connection, then click Connect and Add to attach the Postgres data source to the report.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+  Credentials expire if the PostgreSQL password changes. Always coordinate with the Tech Team to keep database access working.
+</Callout>
+
+### Connect CSV and Google Sheets
+
+#### CSV upload
+
+<Steps>
+  <Step title="Upload CSV file" icon="upload">
+    Click Add data, choose File upload, and select the CSV file containing manual or offline data.
+  </Step>
+  <Step title="Connect and add to report" icon="arrow-right">
+    Click Connect, then Add to include the uploaded CSV as a data source in the report.
+  </Step>
+</Steps>
+
+#### Google Sheets
+
+<Steps>
+  <Step title="Add Google Sheets connector" icon="plus">
+    In Looker Studio, click Add data and select Google Sheets as the connector.
+  </Step>
+  <Step title="Select the correct sheet" icon="folder">
+    Choose the Google Sheet that stores the manual or offline data and confirm the correct tab.
+  </Step>
+  <Step title="Connect and enable refresh" icon="check-circle">
+    Click Connect, then Add to attach the sheet as a data source.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Enable auto-refresh for Google Sheets data sources so manual and offline data stays updated in Looker Studio.
+</Callout>
+
+## Add a new data source
+
+Follow this when integrating any new data source into Looker Studio.
+
+<Steps>
+  <Step title="Get required access" icon="users">
+    Request access from the relevant team: Ads, Tech, or Analytics depending on the source.
+  </Step>
+  <Step title="Choose connector in Looker Studio" icon="plus">
+    Open Looker Studio, click Add data, and select the correct connector for the new source.
+  </Step>
+  <Step title="Connect and name the source" icon="edit">
+    Complete the connection and rename the data source using the standard naming format <code>Brand – Platform – Source</code>.
+  </Step>
+  <Step title="Use correct naming examples" icon="info">
+    Use names such as <code>Cashkr – Google Ads</code>, <code>Cashkr – GA4 Web</code>, or <code>Cashkr – Postgres – Leads</code> depending on the data.
+  </Step>
+  <Step title="Attach to dashboard and test" icon="check-circle">
+    Add the data source to the dashboard, build test charts to confirm values, and enable daily refresh.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Always verify that new sources have daily refresh enabled so reports stay aligned with underlying platforms.
+</Callout>
+
+## Updating credentials
+
+When passwords or permissions change, the connection breaks and must be updated.
+
+<Steps>
+  <Step title="Open data source management" icon="settings">
+    Open the affected dashboard, go to Resource → Manage added data sources.
+  </Step>
+  <Step title="Identify the broken source" icon="alert-triangle">
+    Find the affected source that shows an error indicator such as the warning icon.
+  </Step>
+  <Step title="Edit and re-authenticate" icon="lock">
+    Click Edit connection, then sign in with new credentials or update the database password as required.
+  </Step>
+  <Step title="Save and refresh fields" icon="check-circle">
+    Save the connection and click Refresh fields so Looker Studio updates the schema.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Connections usually break when Google account logins expire, Meta Ads tokens refresh, Postgres passwords are updated by Tech, or when a connected Sheet is moved or its permission is removed.
+</Callout>
+
+## Fixing broken connections
+
+Looker Studio shows broken connections using clear error messages.
+
+### Common error messages
+
+- ❌ `Data Set Configuration Error`
+- ❌ `Access Denied`
+- ❌ `Unable to fetch schema`
+- ❌ `Failed to fetch data`
+
+### Fix workflow
+
+<Steps>
+  <Step title="Fix 1 — Re-authenticate" icon="lock">
+    Click Reconnect on the affected data source, log in again with the correct account, and approve permissions.
+  </Step>
+  <Step title="Fix 2 — Update database credentials" icon="database">
+    Ask the Tech Team for the updated PostgreSQL credentials, enter the new username and password, and test the connection.
+  </Step>
+  <Step title="Fix 3 — Restore Google Sheets access" icon="folder">
+    If a sheet was moved or access changed, request Editor access to the Google Sheet, reconnect the sheet, and re-add the correct tabs.
+  </Step>
+  <Step title="Fix 4 — Refresh fields" icon="refresh-ccw">
+    Go to Resource → Manage data sources, click Refresh fields for the source, and accept any schema changes.
+  </Step>
+  <Step title="Fix 5 — Reconnect entire source" icon="trash">
+    If none of the above works, remove the broken data source, re-add a new connection, and re-map the charts as needed.
+  </Step>
+</Steps>
+
+## Standard naming convention
+
+Always name data sources using the format:
+
+- **Brand – Platform – Type**
+
+Examples:
+
+- Cashkr – GA4 Web
+- Cashkr – GA4 App
+- Cashkr – Google Ads
+- Cashkr – Meta Ads
+- Cashkr – Postgres – Leads
+- Cashkr – CSV – Manual Upload
+
+## Quality control checklist
+
+Before publishing a dashboard, confirm:
+
+- [ ] All data sources are connected.
+- [ ] All connections have been refreshed.
+- [ ] Credentials are updated.
+- [ ] No error icons are visible.
+- [ ] All metrics match values in the original platforms.
+- [ ] Naming convention is followed for every data source.
+- [ ] Only the Data Analyst has Edit access.

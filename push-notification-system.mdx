@@ -1,0 +1,234 @@
+---
+title: "🔔 Push Notification System"
+description: "Use the Admin Panel push notification system to compose, schedule, and track messages sent to Customer and Vendor apps."
+---
+
+## Purpose
+
+Use the Admin Panel push notification system to send real-time or scheduled messages to Customer App users and Vendor App users.
+
+You can:
+
+- Send push notifications to **Customer App** users
+- Send push notifications to **Vendor App** users
+- Send immediately or schedule for later
+
+## Tabs in the push notification module
+
+When you open the push notification module, you see three tabs:
+
+- **Compose** – Create and configure a new notification.
+- **History** – Review notifications that have already been sent.
+- **Scheduled** – View and manage notifications that are queued for later.
+
+## Step-by-step: Send a push notification
+
+<Steps>
+
+<Step title="Open the push notification module" icon="folder">
+
+Navigate in the Admin Panel to:
+
+```text
+Admin Panel → Push Notifications
+```
+
+Confirm that you see the **Compose**, **History**, and **Scheduled** tabs at the top.
+
+</Step>
+
+<Step title="Fill the Compose form" icon="edit">
+
+In the **Compose** tab, fill out the notification fields:
+
+- **Title** (required)
+- **Body** (required)
+- **Image URL** (optional)
+- **Target App** (required)
+- **Audience** (required)
+- **Schedule toggle**
+- **Send Now** button
+- **Live Preview** panel on the right
+
+<Callout kind="info">
+
+Title, Body, Target App, and Audience are mandatory. The system blocks sending if any required field is empty.
+
+</Callout>
+
+</Step>
+
+<Step title="Enter the notification title" icon="edit">
+
+Add a short, clear headline in the **Title** field.
+
+Examples:
+
+- `Limited Time Offer`
+- `Order Successfully Picked`
+
+<Callout kind="info">
+
+The title is required. Use a short phrase that clearly describes the notification.
+
+</Callout>
+
+</Step>
+
+<Step title="Write the notification body" icon="edit">
+
+Type the main message in the **Body** field.
+
+Examples:
+
+- `Sell your old phone today and get instant cash.`
+- `Your pickup has been confirmed.`
+
+As you type, the **Live Preview** panel updates to show how the notification will appear on the device.
+
+</Step>
+
+<Step title="(Optional) Add an image URL" icon="image">
+
+If you want to include an image, paste the image link in the **Image URL** field, for example:
+
+```text
+https://assets.cashkr.in/banners/summer-offer.jpg
+```
+
+<Callout kind="info">
+
+If you leave the Image URL empty, the system sends a standard text-only notification.
+
+</Callout>
+
+</Step>
+
+<Step title="Choose the target app" icon="monitor">
+
+Use the **Target App** field to choose where to deliver the notification:
+
+- **Customer App**
+- **Vendor App**
+
+Example uses:
+
+- Promotions or offers → **Customer App**
+- Order assignment or operational updates → **Vendor App**
+
+<Callout kind="info">
+
+Target App is required. The notification only goes to users of the selected app.
+
+</Callout>
+
+</Step>
+
+<Step title="Select the audience" icon="users">
+
+Choose who should receive the notification in the **Audience** field:
+
+- **All Users** – Send to every user of the selected app.
+- **Topic** – Send only to users subscribed to a specific topic.
+- **Specific Users** – Send to a list of selected user IDs.
+
+Pick the option that best matches the campaign or update you are sending.
+
+</Step>
+
+<Step title="Choose send type: now or scheduled" icon="clock">
+
+Control when the notification is delivered using the **Schedule** toggle and **Send Now** button.
+
+**Option A: Send now**
+
+- Keep the **Schedule** toggle **off**.
+- Click **Send Now**.
+- The system sends the notification immediately.
+
+**Option B: Schedule for later**
+
+- Turn the **Schedule** toggle **on**.
+- Select the desired **Date & Time**.
+- Save the schedule.
+
+The notification stays in the **Scheduled** tab until the scheduled time, then sends automatically.
+
+<Callout kind="info">
+
+You cannot select a date or time in the past. Choose a future time to schedule the notification.
+
+</Callout>
+
+</Step>
+
+<Step title="Send the notification" icon="send">
+
+When you click **Send Now** (for immediate sends) or confirm a scheduled notification:
+
+1. The system validates all required fields.
+2. It creates a notification record.
+3. It sends the push request to FCM or APNS.
+4. It saves the entry in **History** for future reference.
+
+Check the **History** tab for the final status (Sent or Failed).
+
+</Step>
+
+</Steps>
+
+## History tab
+
+Use the **History** tab to track all notifications that have already been processed.
+
+Each entry typically shows:
+
+- Notification title
+- Target app
+- Audience
+- Date and time sent
+- Status (Sent or Failed)
+
+Review this tab to confirm delivery and audit past campaigns.
+
+## Scheduled tab
+
+Use the **Scheduled** tab to manage upcoming notifications.
+
+For each scheduled item, you see:
+
+- Notification title
+- Target app
+- Audience
+- Scheduled date and time
+- Option to edit or cancel (if supported)
+
+Update or cancel scheduled notifications here before they go out.
+
+## Live preview panel
+
+The **Live Preview** panel appears on the right side of the **Compose** tab and updates as you modify fields.
+
+It shows:
+
+- How the notification will look on a mobile device
+- The selected target app
+- The selected audience
+
+Use the preview to confirm the text, image, and targeting before sending.
+
+## Behind the scenes flow
+
+```text
+Admin clicks Send
+        ↓
+Backend validates data
+        ↓
+Push request sent to FCM/APNS
+        ↓
+Notification delivered to selected app
+```
+
+## Demo: How the push notification works
+
+<Iframe uid="3a764c57-0b5a-48ad-8e2d-5f46c5ee6c99" src="https://vento.so/view/14145115-8d04-465a-9bea-da649e6814d4/embed" title="Embedded content" height="315" allow-full-screen="true" frame-border="0" loading="lazy" display-mode="auto-resize" />

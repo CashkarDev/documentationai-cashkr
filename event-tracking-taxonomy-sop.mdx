@@ -1,0 +1,385 @@
+---
+title: Event & Tracking Taxonomy SOP
+description: Standardize how Cashkr designs, implements, validates, and governs GA4 event tracking using structured sheets and a shared data layer.
+---
+
+## Purpose
+
+Cashkr manages GA4 events using structured sheets and a shared Data Layer implementation. This SOP explains how to:
+
+- Understand how events are designed, tracked, and QA’d.
+- Extend the system for new events without breaking consistency.
+- Hand over work seamlessly to tech and marketing teams.
+
+## Process overview
+
+The event tracking process uses sheets plus implementation work across Web, Android, and iOS.
+
+<Steps>
+
+<Step title="Define events in the Event Master Sheet">
+
+- Define each event in the Event Master Sheet, including name, trigger, parameters, and usage.
+- Capture how and where the event fires so tech and marketing teams share the same source of truth.
+
+</Step>
+
+<Step title="Define parameters in the Parameters Sheet">
+
+- Define all parameters in the Parameters Sheet, including data type, mapping, and description.
+- Reuse parameters across events where possible to keep taxonomy clean.
+
+</Step>
+
+<Step title="Classify events in the Event Taxonomy">
+
+- Classify events in the Event Taxonomy by categories and business purpose.
+- Map events to GA4 concepts so reporting and funnels stay consistent.
+
+</Step>
+
+<Step title="Design Data Layer JSON for each event">
+
+- Design the Data Layer JSON format for each event in the Data Layer (DL) Sheet, ready for GTM and apps.
+- Include parameter names, types, and mapping so tech teams can implement directly.
+
+</Step>
+
+<Step title="Add user properties for persistent attributes">
+
+- Define user properties for persistent attributes such as `user_id`, `city`, and `platform`.
+- Ensure these properties apply across relevant events and platforms.
+
+</Step>
+
+<Step title="Map events into funnels">
+
+- Map events into business funnels to see drop-offs and outcomes.
+- Align funnel steps with core events such as `generate_lead`, `create_order`, and `payout_success`.
+
+</Step>
+
+<Step title="Define audiences for remarketing and segmentation">
+
+- Define remarketing and segmentation audiences using the Audiences sheet.
+- Use event conditions and parameters (for example `price_quote`) to build GA4 audiences.
+
+</Step>
+
+<Step title="QA and validate events">
+
+- Perform QA and validation after implementation across Web, Android, and iOS.
+- Use the QA / Validation sheet to document test coverage and results.
+
+</Step>
+
+<Step title="Log changes in Version & Change Log">
+
+- Log all changes in the Version & Change Log sheet for governance.
+- Include version, owner, and impacted events for traceability.
+
+</Step>
+
+</Steps>
+
+## Sheets and their roles
+
+Each sheet has a specific responsibility in the tracking taxonomy. Always update sheets together to keep the system in sync.
+
+### Event Master Sheet
+
+The Event Master Sheet is the core definition of every event.
+
+**Columns:**
+
+- Event Name
+- Description
+- Trigger Point
+- Parameters
+- Platform(s)
+- Mapped GA4 Event
+- Goal/Usage
+- Notes
+- Update
+
+**Example:**
+
+- `generate_lead` → Fires when a user clicks Get Quote after answering condition questions.
+
+### Parameters Sheet
+
+The Parameters Sheet defines all parameters used across events.
+
+**Columns:**
+
+- Parameter Name
+- Data Type
+- Associated Event(s)
+- Description
+- GA4 Mapping
+- Goal/Usage
+- Notes
+
+**Example:**
+
+- `screen_condition` → `string` → associated with `generate_lead` → captures if screen is cracked or damaged.
+
+### Event Taxonomy
+
+The Event Taxonomy sheet classifies events by purpose.
+
+**Columns:**
+
+- Category
+- Event Name
+- Description
+- Key Parameters
+- GA4 Mapping
+- Notes
+
+**Example:**
+
+- Category = Condition Tracking → Event = `generate_lead` → includes `warranty`, `power`, `screen`, `body`, `issues`.
+
+### Data Layer (DL) Sheet
+
+The Data Layer (DL) Sheet defines the technical implementation layer for Web and App.
+
+**Columns:**
+
+- Event Name
+- Trigger Point
+- DataLayer JSON
+- Parameters (with Types)
+- GA4 Mapping
+- Notes/Implementation Tips
+
+**Example:**
+
+- `generate_lead` fires with JSON including `lead_id`, `device_type`, `warranty_status`, `price_quote`, and other condition fields.
+
+### User properties
+
+The User Properties sheet defines persistent attributes applied across events.
+
+**Columns:**
+
+- Property Name
+- Data Type
+- Description
+- Associated Events
+- GA4 Mapping
+- Goal/Usage
+- Notes
+
+**Example:**
+
+- `user_id` → `string` → persisted across sessions → maps users across Web and App.
+
+### Funnels
+
+The Funnels sheet defines how events connect into business funnels.
+
+**Columns:**
+
+- Funnel Name
+- Step Order
+- Step Event Name
+- Key Parameters
+- GA4 Conversion?
+- KPI
+- Notes
+
+**Example:**
+
+- Lead Funnel → Step `7` = `generate_lead` → Step `9` = `create_order` → Step `10` = `payout_success`.
+
+### Audiences
+
+The Audiences sheet defines remarketing and segmentation audiences.
+
+**Columns:**
+
+- Audience Name
+- Inclusion Conditions
+- Exclusion Conditions
+- Time Window
+- Use Case
+- GA4 Mapping / Audience ID
+- Notes
+
+**Example:**
+
+- High Value Leads → `generate_lead` where `price_quote` ≥ `₹30,000` → GA4 Audience ID = `audience_high_value_leads`.
+
+### QA / Validation
+
+The QA / Validation sheet is used for testing event firing and parameters.
+
+**Columns:**
+
+- Event Name
+- Platform
+- Trigger Point
+- Expected Parameters
+- Test Method
+- Test Device
+- Result
+- Date
+- Tester
+- Notes
+
+**Example:**
+
+- `generate_lead` → Web → Trigger = Get Quote click → Tested on Chrome with GTM Preview → Pass.
+
+### Version & Change Log
+
+The Version & Change Log sheet provides governance for all updates.
+
+**Columns:**
+
+- Date
+- Version
+- Changed By
+- Change Description
+- Impacted Events
+- Status
+- Notes
+
+**Example:**
+
+- `22-Sep-25` | `v1.0` | Ibrahim | Added condition parameters to `generate_lead` | `generate_lead` | Draft.
+
+## Implementation best practices
+
+Use these patterns to keep tracking consistent and reliable.
+
+<Callout kind="tip">
+
+Multiple events on the same page are allowed. For example, fire `screen_view`, `select_condition`, and `generate_lead` on the same page, as long as each event has a clear, unique trigger.
+
+</Callout>
+
+### Multiple events on the same page
+
+- Use multiple events such as `screen_view`, `select_condition`, and `generate_lead` on the same page when needed.
+- Ensure each event has a unique trigger so analysis and deduplication remain clean.
+
+### Ensuring unique triggers and avoiding duplicates
+
+- Ensure unique triggers for each event on a page or screen.
+- Use `sessionStorage` or `localStorage` flags to prevent duplicate firing when users refresh or revisit.
+
+<Callout kind="tip">
+
+For deduplication, use backend identifiers wherever possible. At Cashkr, use the combination of `lead_id` (backend) and `session_id` to avoid counting the same lead twice.
+
+</Callout>
+
+### Deduplication rule
+
+- Deduplicate using `lead_id` (from backend) plus `session_id`.
+- Apply this rule in reporting and downstream systems to avoid overcounting leads.
+
+### Custom dimensions in GA4
+
+- Always register new parameters as custom dimensions in GA4, such as `warranty_status` and `screen_condition`.
+- Confirm registration before relying on these fields in reports or audiences.
+
+### Cross-platform identity
+
+- Ensure `user_id` is set after login for stitching user journeys across Web, iOS, and Android.
+- Use consistent `user_id` values across platforms so GA4 can join sessions correctly.
+
+### QA discipline and governance
+
+<Callout kind="info">
+
+QA before launch and change logging are mandatory governance rules. Always test events in GTM Preview and GA4 DebugView before marking as Live, and log every change in the Version & Change Log.
+
+</Callout>
+
+- QA Before Launch → Always test events in GTM Preview plus GA4 DebugView before marking status as Live.
+- Documentation Discipline → Log every change in the Version & Change Log sheet, including version, description, and impacted events.
+
+## Example workflow: `generate_lead`
+
+This example shows how the `generate_lead` event moves through the full taxonomy and implementation workflow.
+
+<Steps>
+
+<Step title="User completes condition selection">
+
+- User selects values for `warranty`, `power`, `screen`, `body`, and `issues`.
+- These selections form the condition context used later in pricing and analytics.
+
+</Step>
+
+<Step title="Get Quote triggers the data layer event">
+
+- On Get Quote click, the Data Layer fires the `generate_lead` event.
+- The event uses the JSON format defined in the Data Layer (DL) Sheet.
+
+</Step>
+
+<Step title="Capture parameters for generate_lead">
+
+- Capture parameters such as `device`, `condition`, `price_quote`, and user or session identifiers.
+- Include `lead_id`, `user_id` or `session_id`, and condition fields like `warranty_status` and `screen_condition`.
+
+</Step>
+
+<Step title="GA4 logs event and feeds funnels">
+
+- GA4 logs the `generate_lead` event using the mapped GA4 event name.
+- Use this event in funnels such as Lead → Order, alongside `create_order` and `payout_success`.
+
+</Step>
+
+<Step title="Build audiences from generate_lead">
+
+- Build an audience such as Quote Generators (no order in 7 days) based on `generate_lead`.
+- For example, include users with `generate_lead` but no `create_order` in the last 7 days.
+
+</Step>
+
+<Step title="QA in GTM and Firebase DebugView">
+
+- QA the `generate_lead` event using GTM Preview for Web and Firebase DebugView for apps.
+- Confirm the event fires at the correct trigger and that all expected parameters appear.
+
+</Step>
+
+<Step title="Log version and changes">
+
+- Log the implementation in Version Control: `v1.0` → Added condition parameters.
+- Record details such as date, owner, and impacted event `generate_lead` in the Version & Change Log sheet.
+
+</Step>
+
+</Steps>
+
+## Handover guidelines
+
+Use these guidelines when onboarding new team members or handing over tracking work.
+
+### For new team members
+
+New team members should:
+
+- Review all sheets, starting with the Event Master Sheet, then Parameters Sheet, then Data Layer (DL) Sheet.
+- Use existing Data Layer JSON templates for new events to stay consistent with current patterns.
+- Always perform QA and log changes in the Version & Change Log after updates.
+- Confirm that custom dimensions exist in GA4 Admin before starting reporting.
+
+### For tech and QA teams
+
+- Tech team: Samrat (Web) and Shahid (Apps) are responsible for pushing updates to production.
+- QA / Testing: Nirajan validates implementations before marking events as Live.
+
+With this SOP, any new person can quickly understand:
+
+- How Cashkr events are planned across sheets.
+- How they are implemented in GTM and apps.
+- How to test and track them end-to-end using GA4, GTM Preview, and Firebase DebugView.
