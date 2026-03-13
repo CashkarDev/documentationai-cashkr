@@ -1,0 +1,242 @@
+---
+title: Data Quality & Reconciliation
+description: Ensure Cashkr dashboards and reports show accurate, consistent data through routine cross-platform checks and reconciliation.
+---
+
+## Objective
+
+To ensure all Cashkr dashboards and reports show accurate, consistent, and reliable data by performing routine data quality checks and reconciliation across platforms.
+
+## Scope
+
+Covers reconciliation between:
+
+- GA4 vs Google Ads
+- GA4 vs Admin DB (Postgres)
+- Campaign Data vs Actual Orders
+- Manual CSV vs Dashboard Data
+
+## Roles & Responsibilities
+
+**Category:** Data & Analytics  
+**Subcategory:** Data Accuracy & Governance
+
+**Primary Owner**
+
+- Data Analyst (Ashwini Giri)
+
+**Support**
+
+- Marketing (Rhea, Rabina)
+- Tech Team (Resham / Shahid / Suraj)
+- Ops Team (Order-related checks)
+
+## Reconciliation Frequency
+
+### Weekly checks
+
+- GA4 vs Google Ads conversions
+- GA4 vs Admin DB lead counts
+- Event tracking issues
+
+### Monthly checks
+
+- Overall traffic alignment
+- Conversion funnel accuracy
+- Admin DB vs Dashboard order counts
+- New event taxonomy audit
+
+## Data Comparison Checklist
+
+### GA4 vs Google Ads (Weekly)
+
+Compare:
+
+| Metric      | GA4                  | Google Ads        |
+| ---------- | -------------------- | ----------------- |
+| Clicks      | Should match within ± 3–5% | Ads               |
+| Sessions    | GA4                  | Not available     |
+| Conversions | GA4 Events           | Ads Conversions   |
+| Cost / Conv | Calculated           | Ads               |
+
+What differences are acceptable?
+
+- Click difference up to 5% (tracking protection, ad blockers).
+- Conversion difference up to 10% (attribution model differences).
+
+What differences require investigation?
+
+- Differences > 10%
+- Missing conversions entirely
+- Sudden drop in GA4 events
+
+### GA4 vs Admin DB (Weekly)
+
+Compare:
+
+| Metric         | GA4                          | Admin DB          |
+| ------------- | ---------------------------- | ----------------- |
+| Leads created | begin\_checkout / generate\_lead | Lead table count  |
+| Orders created | create\_order event            | Orders table      |
+| City selection | event parameters               | DB fields         |
+
+Acceptable margin:
+
+- 0–3% difference due to time lag, filters.
+
+Investigate if:
+
+- Difference > 5%
+- City/order counts mismatch
+- Missing events
+
+## How to Log Discrepancies
+
+Create a log sheet (Google Sheet) with:
+
+**Columns**
+
+- Date
+- Source Comparison (GA4 vs Ads / GA4 vs DB etc.)
+- Metric
+- Expected Value
+- Actual Value
+- % Difference
+- Severity (Low / Medium / High)
+- Possible Reason
+- Assigned To
+- Status (Open / In Progress / Resolved)
+- Final Fix Notes
+
+**Severity levels**
+
+- Low: &lt;5% difference (monitor only)
+- Medium: 5–15% difference
+- High: >15% difference or data missing
+
+## Root Cause Investigation Steps
+
+After logging the discrepancy, follow this systematic flow:
+
+<Steps>
+  <Step title="Step 1: Check Tracking Setup">
+    Open GA4 DebugView.
+
+    Check if the specific event is firing.
+
+    Validate parameters.
+
+    Verify GTM tags/triggers.
+
+    If missing → GTM/GA4 issue.
+  </Step>
+  <Step title="Step 2: Check Data Filters">
+    Check if GA4 filters are excluding traffic.
+
+    Check if dashboard filters exclude data.
+
+    Check date ranges.
+
+    If mismatch → dashboard issue.
+  </Step>
+  <Step title="Step 3: Check Attribution Differences">
+    Ads uses last click (platform-based).
+
+    GA4 uses data-driven attribution.
+
+    If mismatch within 10–20% → attribution issue.
+  </Step>
+  <Step title="Step 4: Check DB Table Values">
+    Query DB:
+
+    ```sql
+    SELECT COUNT(*) FROM masterlead WHERE created_at BETWEEN X AND Y;
+    ```
+
+    Compare with GA4 event count.
+
+    If mismatch → App/Web tracking vs DB mismatch.
+  </Step>
+  <Step title="Step 5: Check for Tech Bugs">
+    Event not firing on certain OS/device.
+
+    API failure.
+
+    DB write issue.
+
+    App version not updated.
+
+    Assign to Tech if needed.
+  </Step>
+  <Step title="Step 6: Document Root Cause">
+    Examples:
+
+    “GA4 event missing for iOS due to Firebase bug”
+
+    “GTM container not published correctly”
+
+    “Admin DB had stale data due to cron delay”
+
+    “Attribution difference between Ads and GA4”
+  </Step>
+</Steps>
+
+## Fixing the Issue
+
+Based on the root cause:
+
+1. Tracking Fixes (GTM / GA4 / Firebase)
+   - Update GTM tag
+   - Fix event parameters
+   - Publish new version
+   - Test in DebugView
+   - Backfill data (if possible)
+
+2. Data Source Fix (Looker Studio)
+   - Reconnect broken sources
+   - Update expired credentials
+   - Refresh fields
+   - Rebuild chart if corrupted
+
+3. Database Fixes
+   - Inform Tech team
+   - Fix query
+   - Repair API
+   - Restart data cron jobs
+
+4. Ads Fixes
+   - Enable auto-tagging in Google Ads
+   - Restore disabled conversion action
+   - Re-import conversions from GA4
+
+## Documenting the Resolution
+
+Every resolved discrepancy must include:
+
+- Root cause
+- Action taken
+- Date resolved
+- Owner (Ashwini / Tech / Marketing)
+- Prevention steps
+
+Example entry:
+
+| Date   | Issue                               | Source   | Root Cause                            | Fix Done                       | Owner   | Status   |
+| ------ | ----------------------------------- | -------- | ------------------------------------- | ------------------------------ | ------- | -------- |
+| 15 Dec | GA4 vs DB leads mismatch (20%)      | GA4 vs DB | Missing parameters in generate\_lead | Updated GTM tag, tested        | Ashwini | Resolved |
+
+## Monthly Audit Summary
+
+At month-end, Data Analyst must prepare a Data Quality Report covering:
+
+- Summary of discrepancies found
+- Platforms affected
+- Fixes completed
+- Open issues
+- Recommendations
+
+This report goes to:
+
+- CEO (Ibrahim)
+- Marketing Head (Pranjal)
+- Tech Lead (Resham / Shahid)

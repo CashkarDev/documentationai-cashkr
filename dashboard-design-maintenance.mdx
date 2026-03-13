@@ -1,0 +1,297 @@
+---
+title: Dashboard Design & Maintenance
+description: Standardize Cashkr dashboards in Looker Studio with clear rules for naming, filters, colors, layout, requests, and maintenance.
+---
+
+**Category:** Data & Analytics  
+**Subcategory:** Dashboard Development & Governance
+
+## Purpose
+
+Ensure all dashboards across Cashkr follow a consistent design, naming standard, color scheme, and maintenance process to improve readability, accuracy, and decision-making for all teams.
+
+## Scope
+
+This SOP applies to all dashboards created in Looker Studio, including:
+
+- Executive Dashboard  
+- Marketing Dashboard  
+- Performance Dashboard  
+- SEO Dashboard  
+- Vendor SLA Dashboard  
+- Operations Dashboard  
+- CX Dashboard  
+- Finance Dashboard  
+- Custom dashboards requested by departments
+
+## Responsibilities
+
+### Data Analyst (primary owner)
+
+- Builds dashboards  
+- Maintains connections  
+- Ensures design standard compliance  
+- Fixes errors and refresh issues
+
+### Department Heads
+
+- Provide accurate requirements  
+- Approve final dashboard
+
+### CEO / Directors
+
+- Approve executive-level dashboards
+
+## Dashboard naming standards
+
+All dashboards must follow the same naming format.
+
+<Callout kind="info">
+
+Use this exact naming format for every dashboard. Do not use random names, and avoid abbreviations unless explicitly allowed.
+
+</Callout>
+
+### Naming format
+
+`Cashkr – [Department] – [Dashboard Purpose] – [Version/Month/Year]`
+
+### Examples
+
+- Cashkr – Executive – Business Overview – V1  
+- Cashkr – Marketing – Weekly Performance – Jan 2026  
+- Cashkr – SEO – Keyword Ranking Tracker – V2  
+- Cashkr – Vendor SLA – Compliance Scorecard – 2026  
+- Cashkr – CX – Ticket Efficiency Dashboard – V1  
+- Cashkr – Finance – Payout & Expense Summary – Q1 2026
+
+### Rules
+
+- No random names  
+- No abbreviations unless defined (SEO, SLA, CX are allowed)  
+- Updated dashboards must include V2, V3, etc.
+
+## Filter and date control standards
+
+Every dashboard must include the standard filters and date controls listed in this section.
+
+<Callout kind="info">
+
+Include all mandatory filters and use the specified default date ranges for each dashboard type.
+
+</Callout>
+
+### Mandatory filters
+
+Every dashboard must include:
+
+- Date range  
+- City  
+- Device type  
+- Source/Medium (for marketing dashboards)  
+- Vendor (for Vendor SLA and Ops dashboards)  
+- Status filters (Lead Status, Order Status)  
+- Campaign filter (for ads reporting)
+
+### Date control standards
+
+Use these defaults:
+
+- Default: Last 7 Days  
+- Executive Dashboard: Last 30 Days  
+- SEO Dashboard: Last 28 Days (matches GSC/GA4)  
+- Vendor SLA Dashboard: This Week  
+- CX Dashboard: Today / This Week  
+- Finance: This Month / Custom
+
+### Filter placement
+
+Keep filter placement consistent:
+
+- Top row of the dashboard  
+- Left-aligned  
+- Same positioning across all dashboards
+
+## Color scheme and UI layout standards
+
+### Standard color palette (branding)
+
+Use these colors consistently across all dashboards.
+
+| Purpose                         | Color        |
+| ------------------------------- | ------------ |
+| Primary Brand Color             | `#00A86B`    |
+| Secondary                       | `#1C1C1C`    |
+| Highlight / CTA                 | `#FFD700`    |
+| Light Background                | `#F4F4F4`    |
+| Red (SLA breach, alerts)        | `#E63946`    |
+| Blue (Info metrics)             | `#1D3557`    |
+
+### Dashboard-specific color themes
+
+#### Executive Dashboard
+
+- Cashkr Green (`#00A86B`) for KPIs  
+- Gold (`#FFD700`) for important highlights  
+- Minimal colors → clean and board-ready
+
+#### Marketing Dashboard
+
+- Blue (`#1D3557`) for traffic  
+- Green for conversions  
+- Yellow for cost metrics  
+- Red for underperforming campaigns
+
+#### SEO Dashboard
+
+- Green → Improved ranking  
+- Yellow → Stable  
+- Red → Rankings dropped  
+- Organic traffic in blue
+
+#### Vendor SLA Dashboard
+
+- Red → SLA breach  
+- Orange → Warning  
+- Green → SLA compliant  
+- Grey → No activity
+
+#### Ops Dashboard
+
+- Dark Blue for operational metrics  
+- Green for completed pickups  
+- Red for failures
+
+#### CX Dashboard
+
+- Blue for tickets  
+- Green for resolved  
+- Red for escalated
+
+#### Finance Dashboard
+
+- Green → Incoming  
+- Blue → Outgoing  
+- Red → Pending or Delayed
+
+## Layout and visual design rules
+
+### General layout rules
+
+- Place KPIs at the top  
+- Add charts and visuals below KPIs  
+- Place tables at the bottom  
+- Use consistent spacing (20–25px)  
+- Align everything left; avoid messy placements
+
+### KPI box standards
+
+Always include KPI views for:
+
+- Today  
+- Last 7 days  
+- Last 30 days  
+- WoW % Change (optional)
+
+### Chart standards
+
+- Use line charts for trends  
+- Use bar charts for comparisons  
+- Use pie charts only for proportions  
+- Enable sorting on all tables
+
+### Text rules
+
+- Titles bold, 16–18px  
+- Labels 12–14px  
+- No long paragraphs; use short notes only
+
+## Process to request new dashboards or changes
+
+Any department needing a new dashboard or change must follow this process.
+
+<Steps>
+  <Step title="Submit request" icon="edit">
+    
+  Via Slack or email to the Data Analyst with:
+
+  - Department
+  - Dashboard Purpose
+  - Metrics required
+  - Filters needed
+  - Sample reference (if any)
+  - Priority Level
+
+  </Step>
+  <Step title="Set priority level" icon="bar-chart">
+    
+  Use these priority levels:
+
+  - P0 — Critical (1–2 days)
+    - Data not refreshing
+    - Dashboard broken
+    - CEO meeting requirement
+    - SLA data not loading
+  - P1 — High Priority (3–5 days)
+    - New report for monthly review
+    - New dashboards for Ops, Marketing, SLA
+    - Add major new metrics
+    - Add new data source
+  - P2 — Medium Priority (5–10 days)
+    - Dashboard improvements
+    - Layout redesign
+    - Add charts or filters
+  - P3 — Low Priority (10–15 days)
+    - Cosmetic changes
+    - Color updates
+    - Text labels
+    - Reordering charts
+
+  </Step>
+  <Step title="Analyst review" icon="search">
+    
+  The Data Analyst:
+
+  - Checks feasibility
+  - Checks if a new data source is needed
+  - Estimates the timeline
+  - Sends confirmation to the requester
+
+  </Step>
+  <Step title="Build and test" icon="code">
+    
+  The Data Analyst:
+
+  - Creates the dashboard in Looker Studio
+  - Tests with real data
+  - Fixes errors
+  - Shares a preview with the team
+
+  </Step>
+  <Step title="Approval" icon="check-circle">
+    
+  - For Executive dashboards → CEO approval
+  - For department dashboards → Department Head approval
+
+  </Step>
+  <Step title="Publish and share" icon="upload">
+    
+  - Set edit rights only to the Data Analyst
+  - Share a view-only link
+  - Add the dashboard to the Cashkr Dashboard Index Sheet
+
+  </Step>
+</Steps>
+
+## Dashboard maintenance schedule
+
+Use this schedule to keep all dashboards accurate and reliable.
+
+| Task                              | Frequency | Owner        |
+| --------------------------------- | --------- | ------------ |
+| Refresh check for all dashboards  | Daily     | Data Analyst |
+| Fix broken connections            | As needed | Data Analyst |
+| Update new data sources           | Weekly    | Data Analyst |
+| Clean and optimise dashboards     | Monthly   | Data Analyst |
+| Archive old dashboards            | Quarterly | Data Analyst |
+| Access review for editors/viewers | Monthly   | Data Analyst |

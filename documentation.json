@@ -761,6 +761,38 @@
             "group": "SOPs & Processes",
             "pages": [
               {
+                "title": "How to Write Captions",
+                "path": "how-to-write-captions"
+              },
+              {
+                "title": "Reporting & Review Rhythm",
+                "path": "reporting-review-rhythm"
+              },
+              {
+                "title": "Data Quality & Reconciliation",
+                "path": "data-quality-reconciliation"
+              },
+              {
+                "title": "How to Create Office Fun Reels for Social Media",
+                "path": "how-to-create-office-fun-reels-for-social-media"
+              },
+              {
+                "title": "How to Create Captions for Festive and Event Posts",
+                "path": "how-to-create-captions-for-festive-and-event-posts"
+              },
+              {
+                "title": "How to Launch a Social Media Giveaway or Contest",
+                "path": "how-to-launch-a-social-media-giveaway-or-contest"
+              },
+              {
+                "title": "Post-Publishing Activities on Social Media",
+                "path": "post-publishing-activities-on-social-media"
+              },
+              {
+                "title": "Dashboard Design & Maintenance",
+                "path": "dashboard-design-maintenance"
+              },
+              {
                 "title": "Data Pipeline & Source Integration for Looker Studio",
                 "path": "data-pipeline-source-integration-for-looker-studio"
               },
