@@ -818,6 +818,18 @@
             "group": "Roles Tasks",
             "pages": [
               {
+                "title": "Shahid Shaikh",
+                "path": "shahid-shaikh"
+              },
+              {
+                "title": "HR Manager",
+                "path": "hr-manager"
+              },
+              {
+                "title": "Rhea Chheda",
+                "path": "rhea-chheda"
+              },
+              {
                 "title": "Nirajan Bohara",
                 "path": "nirajan-bohara"
               },
@@ -900,6 +912,56 @@
               {
                 "title": "Ashwini Giri",
                 "path": "ashwini-giri"
+              }
+            ]
+          },
+          {
+            "group": "Templates & Tools",
+            "pages": [
+              {
+                "title": "HR",
+                "path": "hr"
+              },
+              {
+                "title": "Analytics",
+                "path": "analytics"
+              },
+              {
+                "title": "IT",
+                "path": "it"
+              },
+              {
+                "title": "Sales",
+                "path": "sales"
+              },
+              {
+                "title": "Marketing",
+                "path": "marketing"
+              },
+              {
+                "title": "Business Development",
+                "path": "business-development"
+              },
+              {
+                "title": "Operations",
+                "path": "operations"
+              }
+            ]
+          },
+          {
+            "group": "Training",
+            "pages": [
+              {
+                "title": "Vendor Credits, Refunds & Reversals Script",
+                "path": "vendor-credits-refunds-reversals-script"
+              },
+              {
+                "title": "Vendor Reactivation Script",
+                "path": "vendor-reactivation-script"
+              },
+              {
+                "title": "Vendor Hold & Deactivation Process",
+                "path": "vendor-hold-deactivation-process"
               }
             ]
           }

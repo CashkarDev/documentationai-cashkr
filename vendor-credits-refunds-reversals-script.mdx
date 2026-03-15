@@ -1,0 +1,161 @@
+---
+title: Vendor Credits, Refunds & Reversals Script
+description: Training script for vendor support agents to explain credits, refunds, reversals, and wallet behavior in the Cashkr Vendor App clearly and consistently.
+---
+
+Used by: Vendor Management / Operations Team
+
+## Overview
+
+Support and operations agents use this script during vendor calls and chats to explain how credits, refunds, reversals, and Wallet balances work in the Cashkr Vendor App. The goal is to give clear, consistent answers and reduce confusion or disputes about deductions and payouts.
+
+<Callout kind="info">
+
+Maintain transparency with vendors, reduce disputes, and ensure vendors clearly understand when and how their credits or Wallet amounts are deducted, reversed, or refunded.
+
+</Callout>
+
+### Objective
+
+- Maintain transparency with vendors about credits, refunds, reversals, and Wallet balance changes.
+- Reduce disputes by giving clear, consistent explanations across the team.
+- Help vendors understand when deductions are final versus when they are reversed or refunded.
+
+## Scenario scripts
+
+<ExpandableGroup>
+
+<Expandable title="My credits got deducted, but the order did not happen.">
+
+> "I understand your concern. Let me quickly check this for you.  
+>  
+> When an order is unlocked, the credits are deducted instantly — but if that order is later canceled or marked as Failed by Cashkr, your credits are automatically reversed within 24 hours.  
+>  
+> You will get a notification once the reversal is processed and it will reflect back in your credit balance."
+
+**If vendor insists further:**
+
+> "No worries, I will escalate this internally to confirm whether the reversal has been triggered. You do not need to raise a separate request — our system tracks reversals automatically."
+
+</Expandable>
+
+<Expandable title="I have not received my refund yet.">
+
+> "I understand. Refunds are usually processed within 24–48 hours once approved.  
+>  
+> Could you confirm if this is related to a Wallet refund or a credit reversal?  
+>  
+> • Wallet refunds are related to customer payments.  
+> • Credit reversals are related to orders you unlocked.  
+>  
+> I will check which one is pending and update you with the exact status."
+
+**If confirmed pending:**
+
+> "Got it. I have verified the transaction. The refund has been approved from our side — it will reflect in your Wallet shortly. You will also get an SMS or in‑app notification once it is updated."
+
+</Expandable>
+
+<Expandable title="Why was my credit deducted for this order?">
+
+> "Credits are deducted when you unlock an order. That amount acts as a commission to access customer details and take the pickup.  
+>  
+> If the order is completed successfully, the deduction stays as normal.  
+>  
+> But if the order fails or is canceled by Cashkr, your credits are reversed automatically within 24 hours."
+
+**If vendor argues it was not their fault:**
+
+> "I understand. Let us check the failure reason together.  
+>  
+> If the failure was on the customer side or canceled by Cashkr, reversal will be done.  
+>  
+> But if it failed due to vendor‑side cancellation or an SLA violation, then credits are not refundable as per policy."
+
+</Expandable>
+
+<Expandable title="My credits were deducted twice.">
+
+> "That should not happen normally. Let me double‑check both transactions for you.  
+>  
+> Sometimes, due to a sync delay, the same order might show two deductions temporarily — but do not worry, any duplicate deduction is automatically reversed within 24 hours after verification."
+
+**If vendor asks for proof:**
+
+> "Sure, I can share the transaction reference IDs or screenshots from the backend once I verify it. Your extra credits will be reversed right after validation."
+
+</Expandable>
+
+<Expandable title="How do I check my refund or reversal status?">
+
+> "You can check it anytime inside your Vendor App.  
+>  
+> Go to `Transactions` → `Refunds & Reversals`.  
+>  
+> You will see the date, order ID, model name, amount, and status of each entry.  
+>  
+> Here is how it works:  
+>  
+> • When a credit is deducted for unlocking an order, it shows as a minus `–` amount.  
+> • If you successfully complete that order, no reversal appears — it means it is settled.  
+> • If the order fails and is accepted by Cashkr, you will see a plus `+` amount below the earlier deduction.  
+> • The status will show as `Failed Approved` when reversal is processed.  
+> • If the failure is rejected due to an SLA violation or a vendor‑side issue, no reversal will appear — only `Rejected` status is shown."
+
+**If vendor says they cannot see it clearly:**
+
+> "No problem, I can check it from my side and confirm the same entries for you.  
+>  
+> You can also refresh the app or re‑login if it is not loading correctly."
+
+</Expandable>
+
+<Expandable title="My Wallet balance is showing less even after refund.">
+
+> "That could be due to an ongoing or completed order payment.  
+>  
+> The Wallet updates instantly whenever you make a payout to a customer or unlock a new order.  
+>  
+> I can check the breakdown for you — refund received, payments made, and Wallet deductions — so you can match it with your transaction history."
+
+</Expandable>
+
+<Expandable title="Can I transfer my Wallet balance back to my bank?">
+
+> "Currently, Wallet balance can only be used for customer payouts and order‑related transactions within the Cashkr app.  
+>  
+> It is not withdrawable directly.  
+>  
+> However, if you ever decide to close your vendor account, we will process a final settlement to your registered bank account."
+
+</Expandable>
+
+<Expandable title="I got a refund message, but the balance is not showing.">
+
+> "That usually happens if the app has not refreshed yet.  
+>  
+> Try refreshing your dashboard or log out and log back in.  
+>  
+> If it still does not reflect, I will verify the backend posting time and confirm once it is updated."
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Internal team notes (quick reference)
+
+| Scenario                             | What to verify          | Action                                      |
+| ------------------------------------ | ----------------------- | ------------------------------------------- |
+| Order canceled by Cashkr            | Credit reversal         | Auto within 24 hours                        |
+| Customer refund                      | Wallet refund           | Within 48 hours                             |
+| Duplicate deduction                  | Validate in Admin Panel | Reverse immediately                         |
+| Vendor‑side cancellation / SLA fail | No refund               | Communicate policy politely                 |
+| Refund not reflected in Wallet      | Check in DB             | Escalate to Finance if more than 48 hours  |
+
+## Key phrases to remember (for tone consistency)
+
+- "I completely understand your concern."
+- "Let me quickly verify this from my end."
+- "You do not need to raise a request — our system automatically tracks and reverses it."
+- "Once approved, it reflects within 24–48 hours."
+- "We will make sure this is resolved smoothly for you."

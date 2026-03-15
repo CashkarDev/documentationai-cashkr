@@ -1,0 +1,359 @@
+---
+title: Shahid Shaikh
+description: Role, responsibilities, KPIs, and core technology processes owned by Shahid Shaikh as Head of Technology and IT at Cashkr.
+---
+
+## Contents
+
+- [Role & reporting line](#role--reporting-line)
+- [Role purpose](#role-purpose)
+- [Key result areas (KRAs)](#key-result-areas-kras)
+- [KPIs](#kpis)
+  - [1. Platform uptime (Web, App, Admin, APIs)](#1-platform-uptime-web-app-admin-apis)
+  - [2. Critical incident count and resolution time](#2-critical-incident-count-and-resolution-time)
+  - [3. Roadmap delivery and release timeliness](#3-roadmap-delivery-and-release-timeliness)
+  - [4. Release quality and bug leakage to production](#4-release-quality-and-bug-leakage-to-production)
+  - [5. Tracking implementation coverage (Web, App, Admin)](#5-tracking-implementation-coverage-web-app-admin)
+  - [6. Tech request response and completion SLA](#6-tech-request-response-and-completion-sla)
+  - [7. IT hygiene and access control issues](#7-it-hygiene-and-access-control-issues)
+- [Core processes / SOPs owned](#core-processes--sops-owned)
+  - [Tech roadmap and prioritisation SOP](#tech-roadmap-and-prioritisation-sop)
+  - [Development and release management SOP](#development-and-release-management-sop)
+  - [Tracking and event implementation SOP](#tracking-and-event-implementation-sop)
+  - [Incident management and post-mortem SOP](#incident-management-and-post-mortem-sop)
+  - [Security, access and IT hygiene SOP](#security-access-and-it-hygiene-sop)
+  - [QA and testing SOP](#qa-and-testing-sop)
+  - [Tool and vendor selection SOP (tech side)](#tool-and-vendor-selection-sop-tech-side)
+- [Weekly & monthly reporting](#weekly--monthly-reporting)
+  - [Weekly reporting](#weekly-reporting)
+  - [Monthly reporting](#monthly-reporting)
+
+## Role & reporting line
+
+- **Role:** Head of Technology and IT (CTO equivalent) – Cashkr  
+- **Department:** Technology / IT (cross-functional: Product, Marketing, Ops, Vendor, CX, Finance, Analytics)  
+- **Reports to:** CEO – **Ibrahim Surya**  
+
+- **Functional / dotted-line collaboration with:**
+  - Data Analyst – **Ashwini** (events, data layer, reporting needs)
+  - Marketing Head – **Pranjal** (tracking, website/app needs, campaign enablement)
+  - Pricing and Buyback Manager – **Mohsin** (pricing logic, models, record tables)
+  - Ops / Vendor / CX leads (flows, SLAs, tools to run operations smoothly)
+  - Finance (systems impact on billing, payouts, reconciliations)
+
+- **Leads / manages tech team:**
+  - **Ayaz** – Website-focused full stack developer (web frontend, backend APIs for web, CRO/SEO support)
+  - **Resham** – Admin panel and database developer
+  - **Suraj** – DevOps and APIs (infrastructure, CI/CD, integrations)
+  - **Shahid** – Mobile apps, IT, tracking (plus overall Head of Tech responsibilities)
+  - **Nirajan** – Tester (QA)
+  - **Bikesh** – UI/UX designer
+
+## Role purpose
+
+Own and lead all technology and IT for Cashkr so that:
+
+- Website, apps, admin tools and internal systems are **reliable, secure and scalable**.  
+- Business teams (Marketing, Ops, Pricing, CX, Vendor, Finance) get the **flows, features and tracking** they need.  
+- The **tech roadmap is clear, prioritised and delivered on time**.  
+- **Data and tracking foundations are strong**, so decisions are driven by accurate numbers, not guesswork.
+
+## Key result areas (KRAs)
+
+- **KRA 1 – Tech strategy, architecture and roadmap**  
+  Define and maintain the overall technology vision and architecture for Cashkr (web, app, admin, vendor tools, APIs, infrastructure) and convert business goals into a clear, prioritised tech roadmap.
+
+- **KRA 2 – Platform reliability, performance and security**  
+  Ensure Cashkr website, apps, admin panel and APIs are stable, fast and secure, supporting smooth customer journeys and internal operations with minimal downtime and incidents.
+
+- **KRA 3 – Delivery management and quality (Web, App, Admin, APIs)**  
+  Plan, coordinate and deliver tech changes across the team (Ayaz – web, Resham – admin/DB, Suraj – DevOps/APIs, Shahid – apps, Nirajan – testing, Bikesh – UX) on a predictable release cadence with strong QA so production stays stable.
+
+- **KRA 4 – Tracking, events and data readiness (with Ashwini)**  
+  Work with Ashwini to ensure all key events, parameters and IDs across web, app and admin are correctly implemented and verified in GA4, Firebase and databases so analytics and campaigns are reliable.
+
+- **KRA 5 – IT hygiene, security and access management**  
+  Own the IT foundation: access controls, credentials, environments, backups and incident response so that systems are safe, compliant and manageable.
+
+- **KRA 6 – Cross-functional enablement (Marketing, Ops, Pricing, CX, Vendor, Finance)**  
+  Act as the single accountable tech owner who receives requirements from other teams, translates them into tech tasks and ensures delivery in a way that supports business KPIs.
+
+## KPIs
+
+### 1. Platform uptime (Web, App, Admin, APIs)
+
+- **Description:**  
+  Measures availability of key systems (website, consumer apps, admin panel, APIs) that Cashkr relies on.
+
+- **Formula:**  
+  `(Total time systems were up and functioning ÷ Total time in period) × 100`
+
+- **Target:**  
+  High uptime, for example ≥ 99% for critical components (to be defined per system).
+
+- **Data source:**  
+  Monitoring tools, uptime logs, infrastructure dashboards.
+
+- **Review frequency:**  
+  Weekly / monthly.
+
+- **Linked KRAs:**  
+  KRA 2, KRA 3, KRA 5.
+
+### 2. Critical incident count and resolution time
+
+- **Description:**  
+  Count and manage major technical incidents that impact customers or internal teams (for example, cannot place order, cannot assign order, payouts blocked, app crash loops).
+
+- **Formula (incident count):**  
+  Number of P0/P1 incidents per month.
+
+- **Formula (resolution time):**  
+  Average time from incident detected or reported to incident resolved (per severity).
+
+- **Target:**  
+  Minimal P0/P1 incidents; resolution time targets defined by severity (for example, P0 within same day).
+
+- **Data source:**  
+  Incident and bug tracker, Slack incident channels, post-mortem logs.
+
+- **Review frequency:**  
+  Weekly / monthly.
+
+- **Linked KRAs:**  
+  KRA 2, KRA 3, KRA 5.
+
+### 3. Roadmap delivery and release timeliness
+
+- **Description:**  
+  Measures how reliably the tech team delivers planned roadmap items (features, improvements, refactors) on time.
+
+- **Formula:**  
+  `Number of roadmap items delivered on or before agreed date ÷ Total roadmap items planned for that period × 100`
+
+- **Target:**  
+  As close to 100 percent as possible for agreed scope, after proper prioritisation.
+
+- **Data source:**  
+  Roadmap tracker (Sheet, Notion or Jira) and release logs.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 1, KRA 3, KRA 6.
+
+### 4. Release quality and bug leakage to production
+
+- **Description:**  
+  Measures quality of releases by tracking bugs that escape to production after items are marked done.
+
+- **Formula examples:**
+  - `Number of P0/P1 bugs created by new release ÷ Number of releases in that month`
+  - Total post-release bugs reported within X days of deployment
+
+- **Target:**  
+  Reduce post-release critical bugs over time; ensure QA (Nirajan) catches most issues pre-release.
+
+- **Data source:**  
+  Bug tracker, release notes, QA logs.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 2, KRA 3.
+
+### 5. Tracking implementation coverage (Web, App, Admin)
+
+- **Description:**  
+  Percentage of events and parameters requested in the event master sheet that are correctly implemented and visible.
+
+- **Formula:**  
+  `(Number of events or parameters correctly implemented and verified ÷ Number of events or parameters assigned to Tech in master sheet) × 100`
+
+- **Target:**  
+  100 percent coverage for all events in the agreed scope; new events delivered within agreed timelines.
+
+- **Data source:**  
+  Event master sheet, GA4 DebugView, Firebase, database checks, QA verification with Ashwini.
+
+- **Review frequency:**  
+  Weekly / monthly.
+
+- **Linked KRAs:**  
+  KRA 4.
+
+### 6. Tech request response and completion SLA
+
+- **Description:**  
+  Measures how well tech supports Marketing, Ops, Pricing, CX, Vendor and Finance with required changes and fixes.
+
+- **Formula (response SLA):**  
+  Average time from request raised to acknowledged or triaged.
+
+- **Formula (completion SLA):**  
+  `Number of requests completed within agreed TAT ÷ Total requests closed × 100`
+
+- **Target:**  
+  High response and completion SLA for agreed priorities, with clear expectations set with teams.
+
+- **Data source:**  
+  Tech request log (Sheet, Notion or Jira) and Slack threads.
+
+- **Review frequency:**  
+  Monthly.
+
+- **Linked KRAs:**  
+  KRA 3, KRA 6.
+
+### 7. IT hygiene and access control issues
+
+- **Description:**  
+  Tracks hygiene issues around access, credentials, backups and environments.
+
+- **Formula:**  
+  Number of IT hygiene issues per month (wrong access, missing revokes, unprotected secrets, missing backups and similar issues).
+
+- **Target:**  
+  Zero critical IT hygiene issues; reduce minor ones via process improvements.
+
+- **Data source:**  
+  Access control sheet, internal audits, incident reports.
+
+- **Review frequency:**  
+  Monthly / quarterly.
+
+- **Linked KRAs:**  
+  KRA 5.
+
+## Core processes / SOPs owned
+
+Shahid is owner or co-owner for these SOPs.
+
+### Tech roadmap and prioritisation SOP
+
+- How business teams (CEO, Marketing, Ops, Pricing, CX, Vendor, Finance) submit new requirements.  
+- How Shahid, with the CEO and functional leads, decides priorities and breaks work into:
+  - Web (Ayaz)
+  - Admin and database (Resham)
+  - APIs and infrastructure (Suraj)
+  - App (Shahid)
+  - QA (Nirajan)
+  - UX (Bikesh)
+- How the roadmap is documented and updated (quarterly, monthly).
+
+### Development and release management SOP
+
+- Common branching, coding and review standards for web, app, admin and APIs.  
+- Standard flow: requirement → spec → design (with Bikesh if UX/UI) → development → QA (with Nirajan) → staging → production.  
+- Release cadence (weekly, bi-weekly or as defined) and rollback procedures.
+
+### Tracking and event implementation SOP
+
+- Co-owned with Ashwini.  
+- How Ashwini shares event requirements (fields, names, triggers).  
+- Allocation of implementation:
+  - Ayaz for web
+  - Shahid for app
+  - Resham for admin
+- Testing and sign-off flow so no event is marked done until visible in tools.
+
+### Incident management and post-mortem SOP
+
+- Severity levels (P0/P1/P2 etc.) and who is paged for what.  
+- Steps when a major incident occurs: detection → communication → mitigation → fix → post-mortem.  
+- Documentation of root cause, lessons learned and prevention action items.
+
+### Security, access and IT hygiene SOP
+
+- Access rules for code repositories, servers, databases, admin tools, analytics tools, Play Console, App Store and other systems.  
+- Process when someone joins, changes role or leaves (grant, modify, revoke access).  
+- Password and secret handling policy (no sharing in plain text, use of secure storage).
+
+### QA and testing SOP
+
+- Co-owned with Nirajan.  
+- Minimum testing requirements before any release, including regression checks for key flows (lead → order → assign → pickup → payout).  
+- Testing expectations for new features, bug fixes and tracking changes.  
+- Bug logging, severity tagging and re-test protocol.
+
+### Tool and vendor selection SOP (tech side)
+
+- How new tools and vendors (hosting, monitoring, communication, analytics) are evaluated.  
+- Evaluation criteria (cost, reliability, support, integration complexity).  
+- Approval and implementation process from tech side.
+
+## Weekly & monthly reporting
+
+### Weekly reporting
+
+**Format:** Technology and IT weekly snapshot.
+
+- **Audience:**
+  - CEO – **Ibrahim Surya**
+  - Core tech team (Ayaz, Suraj, Resham, Nirajan, Bikesh)
+  - Data Analyst – **Ashwini**
+  - Marketing Head – **Pranjal**
+  - Key Ops, Vendor, CX and Pricing stakeholders when relevant
+
+- **Channel and format:**
+  - Short summary via Slack, email or shared document with key metrics and links (monitoring, dashboards, trackers).
+
+- **Includes:**
+  - **Platform health**
+    - Any major outages or incidents during the week, with current status.
+    - Quick view of uptime or crash trends if available.
+  - **Releases and changes**
+    - Web, app, admin and API releases completed.
+    - Key features, fixes and tracking updates shipped.
+  - **Open issues and risks**
+    - Top priority bugs or infrastructure risks currently being handled.
+    - Any blockers or dependencies on other teams.
+  - **Requests and roadmap updates**
+    - Important business requests received and how they are planned or queued.
+    - Any roadmap adjustments from the original plan.
+  - **Next week focus**
+    - Planned releases and big tasks for web, app, admin, APIs, UX and tracking.
+    - Any cross-functional coordination needed (marketing campaigns, ops launches and similar).
+
+### Monthly reporting
+
+**Format:** Technology and IT section in monthly review.
+
+- **Audience:**
+  - CEO
+  - Tech team
+  - Data Analyst
+  - Marketing Head
+  - Ops, Vendor and CX leads
+  - Pricing (Mohsin)
+  - Finance
+
+- **Channel and format:**
+  - Slides or document with charts and links to dashboards.
+
+- **Includes:**
+  - **Overall platform and incident summary**
+    - Uptime for web, app, admin and APIs.
+    - Number and details of P0/P1 incidents and how they were resolved.
+  - **Major tech deliveries**
+    - Key features, flows and tech improvements shipped across web, app, admin and APIs.
+    - How they supported business goals (leads, orders, SLAs, CX, pricing and similar outcomes).
+  - **Tracking and data status**
+    - Progress on event implementation versus master sheet.
+    - Any major tracking issues found and fixed.
+  - **IT hygiene and security**
+    - Access changes and audits done, issues found.
+    - Security or infrastructure improvements implemented.
+  - **Support to business teams**
+    - Major support given to:
+      - Marketing (campaign requirements, landing pages, tracking)
+      - Ops (admin changes, vendor tools)
+      - Pricing (record logic)
+      - CX (status flows, communications)
+      - Finance (billing and payout flows)
+  - **Top 3–5 priorities for next month**
+    - Big roadmap themes (for example, new flows, refactors, infrastructure uplift).
+    - Tracking or security improvements.
+    - Any high-risk items that need management attention.
