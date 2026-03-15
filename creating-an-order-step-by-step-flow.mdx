@@ -1,0 +1,357 @@
+---
+title: Creating an Order – Step-by-Step Flow
+description: Learn the complete Cashkr customer order creation journey, from homepage entry to vendor assignment, including CX tips, scripts, and edge case handling.
+---
+
+## Overview
+
+Use this SOP to train Sales, CX, Marketing, and Product teams on the exact customer order creation journey on Cashkr web and app. It shows how customers move from landing on the site to vendor assignment, which steps impact conversion, what happens in the backend, what to explain to customers, and how to troubleshoot common issues.
+
+After this page, you should be able to walk any customer through the flow confidently, set the right expectations on pricing and pickup, and coordinate with internal teams using the same language and rules.
+
+## Full flow (quick summary)
+
+Select Device Type → Brand → Model → Variant → Condition → Get Price → Enter Details → Create Order → Order Confirmation → Vendor Assigned
+
+## Step-by-step flow
+
+<Steps>
+
+<Step title="Customer opens Cashkr website/app" icon="monitor">
+
+**Entry sources**
+
+- Google Ads  
+- SEO  
+- Social media  
+- Referral  
+- Direct visit  
+- App Store / Play Store  
+
+**Customer sees**
+
+- Sell Your Device options  
+- Search bar  
+- Popular brand icons  
+- Trust badges such as Instant Payment and Free Pickup  
+
+**Marketing tip**
+
+Homepage UX impacts conversion heavily.
+
+**CX tip**
+
+Help confused users navigate to Sell Device.
+
+</Step>
+
+<Step title="Customer selects device type" icon="smartphone">
+
+**Available categories**
+
+- Phone  
+- Laptop  
+- MacBook  
+- Tablet / iPad  
+
+**Internal notes**
+
+- Helps route the customer to the correct pricing engine.  
+- Reduces user drop-off by narrowing device categories.  
+- If the user chooses the wrong category, Sales or CX must guide them.
+
+</Step>
+
+<Step title="Customer selects brand, model, and variant" icon="list-ordered">
+
+**Brand selection**
+
+- Examples: Apple, Samsung, OnePlus, Dell, HP, Lenovo  
+
+**Model selection**
+
+- Examples: iPhone 11, HP Pavilion 15  
+
+**Variant selection**
+
+- Storage: 64GB / 128GB / 256GB  
+- RAM: 8GB / 16GB  
+- Processor: i3 / i5 / i7 / M1  
+
+**Important CX/Sales rule**
+
+- If the customer cannot find their model:  
+  - If new and supported → raise ticket to Pricing Team (Mohsin).  
+  - If very old and not supported → explain politely that the model is not supported.
+
+</Step>
+
+<Step title="Customer selects device condition" icon="settings">
+
+Condition selection decides the initial estimated price.
+
+**For phones**
+
+- Display condition (cracks, green line, spots)  
+- Body condition  
+- Battery health  
+- Camera working  
+- Face ID or Touch ID  
+- Buttons and ports  
+- Functional faults  
+
+**For laptops and MacBooks**
+
+- Screen condition  
+- Keyboard  
+- Trackpad  
+- Battery backup  
+- Body dents  
+- Charger availability  
+
+**Internal notes**
+
+- Price is not locked at this stage.  
+- Wrong selection leads to price changes after vendor inspection.  
+- Sales and CX must set the correct expectation with the customer.
+
+</Step>
+
+<Step title="System displays estimated price" icon="bar-chart">
+
+**Price is based on**
+
+- Model value  
+- Condition deductions  
+- Market value  
+- Variant  
+- Recent pricing updates  
+
+**Customer sees**
+
+- Estimated price  
+- Option to Sell Now or Continue  
+
+<Callout kind="info">
+
+Estimated price is not the final price. The final price is confirmed only after the vendor inspects the actual device condition.
+
+</Callout>
+
+**Internal notes**
+
+- This is not the final price.  
+- Final price is confirmed after vendor inspection.  
+- Marketing uses CTAs and trust badges here to increase conversion.
+
+</Step>
+
+<Step title="Customer enters personal and address details" icon="users">
+
+**Form fields typically include**
+
+- Full name  
+- Phone number  
+- WhatsApp number (if different)  
+- Pickup address  
+- Pincode  
+- Landmark  
+- Preferred pickup date and time  
+
+**Key internal points**
+
+- Pincode decides vendor assignment.  
+- Incorrect pincode means pickup may not be available and CX must verify.  
+- Capturing the correct number is crucial for OTP payment later.
+
+<Callout kind="info">
+
+Pincode directly affects vendor assignment and serviceability. Always verify and correct wrong pincodes to avoid pickup failures.
+
+</Callout>
+
+</Step>
+
+<Step title="Customer clicks Create Order" icon="play-circle">
+
+When the customer submits the form, backend actions trigger:
+
+- Order created in the database  
+- Order ID generated  
+- Customer receives SMS or WhatsApp notification  
+- Vendor pool is notified  
+- Order appears in Unassigned Orders in the vendor system  
+- Sales and CX team gets the lead in the Admin Panel  
+
+</Step>
+
+<Step title="Order confirmation screen" icon="check-circle">
+
+**Customer sees**
+
+- Order ID  
+- Estimated price  
+- Device details  
+- Pickup address  
+- Trust elements such as Vendor will call soon  
+
+**Internal systems update**
+
+- Status set to Order Created  
+- Timestamp recorded  
+- Marketing tracking such as GA4, Meta Pixel, and GTM logs the event  
+- Sales team may call high-value orders for confirmation  
+
+</Step>
+
+<Step title="Vendor assignment (backend)" icon="users">
+
+**Vendor assignment depends on**
+
+- Area and pincode availability  
+- Vendor wallet and credits  
+- Device category permissions  
+- SLA score of the vendor  
+- Vendor proximity  
+
+**Outcome**
+
+- If vendor is available → vendor receives order notification.  
+- If no vendor is available → CX team follows the SOP Pickup Not Available in Pincode.
+
+</Step>
+
+<Step title="Customer journey after order creation (for context)" icon="arrow-right">
+
+Though this is not part of creating the order, internal teams must know what follows:
+
+- Vendor calls the customer.  
+- Vendor visits for pickup.  
+- Vendor inspects the device.  
+- App shows the final price.  
+- Customer confirms.  
+- OTP-based instant payment happens.  
+- Order is completed.  
+
+Sales and CX often handle customer questions at this point, so they must understand this full journey.
+
+</Step>
+
+</Steps>
+
+## Customer objections (CX/Sales scripts)
+
+<ExpandableGroup>
+
+<Expandable title="Will the price change later?">
+
+Q: Will the price change later?
+
+Script: “Price may change depending on actual condition after inspection.”
+
+</Expandable>
+
+<Expandable title="Why do you need my exact address?">
+
+Q: Why do you need my exact address?
+
+“Vendor needs it for doorstep pickup.”
+
+</Expandable>
+
+<Expandable title="Is pickup free?">
+
+Q: Is pickup free?
+
+“Yes, doorstep pickup is 100% free.”
+
+</Expandable>
+
+<Expandable title="When will the vendor come?">
+
+Q: When will the vendor come?
+
+“Usually the same day or next day, depending on availability.”
+
+</Expandable>
+
+<Expandable title="Can I change my address after placing order?">
+
+Q: Can I change my address after placing order?
+
+“Yes, before the vendor arrives you can update it.”
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Internal quality checks
+
+Teams must ensure:
+
+- Tracking parameters such as UTM and GA4 events fire correctly.  
+- Pincodes map to the correct cities.  
+- Models list is updated daily.  
+- Duplicate orders are reduced.  
+- High-value orders are monitored manually.  
+
+## Edge cases and handling
+
+<ExpandableGroup>
+
+<Expandable title="A. Customer cannot find their model">
+
+A. Customer cannot find their model
+
+→ Guide them to search or raise model request.
+
+</Expandable>
+
+<Expandable title="B. Price not loading">
+
+B. Price not loading
+
+→ Clear cache or try app.
+
+</Expandable>
+
+<Expandable title="C. Pincode not serviceable">
+
+C. Pincode not serviceable
+
+→ CX uses How to Close a Lead When Pickup Isnt Available SOP.
+
+</Expandable>
+
+<Expandable title="D. Customer entered wrong address">
+
+D. Customer entered wrong address
+
+→ CX can manually edit in the admin panel if needed.
+
+</Expandable>
+
+<Expandable title="E. Customer placed multiple duplicate orders">
+
+E. Customer placed multiple duplicate orders
+
+→ Keep highest-value one and cancel others politely.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## One-page summary (training card)
+
+**Customer flow**
+
+Device Type → Model → Variant → Condition → Price → Address → Create Order → Confirmation → Vendor Assigned → Pickup
+
+**Internal teams should remember**
+
+- Price shown is an estimate.  
+- Device condition is the key factor in final pricing.  
+- Proper address is essential.  
+- Serviceable pincode is required.  
+- Vendor needs correct details for pickup.  
+- Final step is OTP-based payment.

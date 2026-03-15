@@ -1,0 +1,278 @@
+---
+title: Lead Handling in Admin Panel (Lead → Order Flow)
+description: Convert inbound leads into confirmed orders using the Admin Panel, with clear priorities, SLAs, dispositions, and call handling rules for sales teams.
+---
+
+## Overview
+
+Use this module to understand how inbound leads move from lead to order in the Admin Panel and how to handle each lead to maximize conversions.
+
+This guide is for the Sales and Follow-Up teams who work daily inside the Admin Panel on incoming leads.
+
+Goals:
+
+- Convert high-intent users into orders
+- Reduce drop-offs after price check
+- Maintain structured and documented follow-ups
+- Ensure correct handoff to Operations
+- Improve lead-to-order conversion rate
+
+## What is a lead?
+
+A lead is a customer who:
+
+- Selected a device
+- Checked the price
+- Entered contact details
+- Did not complete checkout
+
+These users already have high buying intent and require timely follow-up.
+
+## Where to work in the Admin Panel
+
+Path:
+
+- Admin Panel → Leads
+
+Key tabs:
+
+- All Leads
+- Not Called
+- Callbacks
+- High Ends
+
+Sales should work primarily from Not Called and High Ends.
+
+## Lead → Order conversion flow
+
+<Steps>
+
+<Step title="New lead is created" icon="plus">
+
+A new lead is created when a user shows intent but does not complete checkout.
+
+- User drops off after viewing the price
+- User exits during checkout
+- User closes the app or website after entering contact details
+
+The new lead appears in the Not Called tab.
+
+</Step>
+
+<Step title="Call the lead" icon="phone">
+
+Call the lead from the Not Called or High Ends tab using the approved opening line.
+
+> Hi, you checked the price for your device on Cashkr. Can I help you complete your order?
+
+<Callout kind="info">
+
+High Ends: call within 15 minutes.  
+All other leads: call within the same day.
+
+</Callout>
+
+</Step>
+
+<Step title="Identify customer intent" icon="help-circle">
+
+During the call, identify the customer's intent and take the matching action.
+
+**Ready to sell**
+
+- Move directly to Create Order from the lead
+- Confirm device details, price, and pickup basics
+
+**Needs time**
+
+- Mark the lead as Callback with the correct date and time
+- Add clear notes on what the customer is waiting for
+
+**Has doubts**
+
+- Address objections using the objection handling guide below
+- If they still need time, move to Callback with notes
+
+**Not interested**
+
+- Mark the correct disposition
+- Add a short note explaining why
+- Do not push for an order
+
+</Step>
+
+<Step title="Assist with order creation" icon="edit">
+
+Help the customer complete the order in whichever way is easiest for them.
+
+You can:
+
+- Guide the customer to complete checkout on the website or app
+- Or manually create an order from the Admin Panel
+
+Path for manual creation:
+
+- Leads → Convert to Order
+
+Collect and confirm these required fields:
+
+- Device model
+- Condition
+- Pincode
+- Address
+- Pickup time
+
+</Step>
+
+<Step title="Order is created and handed to Ops" icon="check-circle">
+
+Once confirmed:
+
+- The lead converts into an Order ID
+- The order moves to Pending Vendor Assignment
+- Sales responsibility ends
+- Operations takes over from this stage
+
+</Step>
+
+</Steps>
+
+## Lead statuses and dispositions
+
+Every call must end with a disposition. Never leave a lead without an updated status.
+
+<Tabs>
+
+<Tab title="Connected" icon="check">
+
+For calls where you spoke to the customer:
+
+- Create Order
+- Customer Will Place Order
+- Callback
+- Waiting for Quote
+- Already Placed an Order
+
+</Tab>
+
+<Tab title="Not connected" icon="x">
+
+For calls where you did not speak to the customer:
+
+- Not Reachable / Switched Off
+
+</Tab>
+
+</Tabs>
+
+<Callout kind="alert">
+
+Never leave a lead without a disposition. No blank dispositions are allowed.
+
+</Callout>
+
+## Handling each lead type
+
+<Tabs>
+
+<Tab title="Not Called" icon="alert-triangle">
+
+Handle Not Called leads first because they are fresh and most likely to convert.
+
+- Treat as highest priority
+- Call immediately when leads appear
+- Attempt to call at least 3 times per day
+- Add clear call notes after every attempt
+
+</Tab>
+
+<Tab title="Callbacks" icon="clock">
+
+Follow callback commitments strictly to maintain trust and conversion.
+
+- Call at the exact scheduled time
+- Treat missed callbacks as poor customer experience and avoid them
+- If the customer is still not ready, reschedule with a new time and update notes
+
+</Tab>
+
+<Tab title="High Ends" icon="star">
+
+High Ends leads usually have higher-value devices and need extra care.
+
+- Assign to a senior sales agent
+- Clearly explain Cashkr advantages and process
+- Push for same-day order creation where possible
+- Offer assisted checkout and stay on call until order is confirmed
+
+</Tab>
+
+</Tabs>
+
+## Objection handling (quick guide)
+
+Use these standard responses when customers raise common objections.
+
+| Objection        | Sales response                    |
+| ---------------- | --------------------------------- |
+| Price too low    | Explain inspection-based pricing  |
+| Pickup trust     | Explain verified vendors          |
+| Payment delay    | Emphasize instant UPI payment     |
+| Wants to compare | Ask for competitor quote and try to match |
+| Not sure         | Offer callback and WhatsApp follow-up |
+
+## When not to create an order
+
+<Callout kind="alert">
+
+Do not create an order in these cases:
+
+- Pincode is not serviceable
+- Customer is clearly not interested
+- Customer wants a pickup date far in the future
+- Device is not supported in the system
+
+</Callout>
+
+## Sales KPIs (tracked daily)
+
+These metrics show how effectively you are converting leads into orders:
+
+- Calls made
+- Leads contacted
+- Orders created
+- Lead → Order conversion percentage
+- High-end conversion percentage
+- Callback success rate
+
+## Common mistakes to avoid
+
+<Callout kind="alert">
+
+Avoid these mistakes that directly hurt conversions and customer experience:
+
+- Delaying the first call after a lead is created
+- Missing scheduled callbacks
+- Not adding call notes
+- Selecting wrong or incomplete dispositions
+- Over-promising on pickup timelines or price
+
+</Callout>
+
+## Quick summary card
+
+<Callout kind="tip">
+
+**Lead → Order flow**
+
+Lead Created → Call → Identify Intent → Assist Checkout → Order Created → Ops Takes Over
+
+**Priority order**
+
+High Ends → Not Called → Callbacks
+
+**Where sales responsibility ends**
+
+Sales ownership ends once the order is created and moves to Pending Vendor Assignment. Operations handles everything after that stage.
+
+</Callout>

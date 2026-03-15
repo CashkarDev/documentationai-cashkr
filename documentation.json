@@ -952,6 +952,138 @@
             "group": "Training",
             "pages": [
               {
+                "title": "Customer Will Place Order / Already Ordered – Handling",
+                "path": "customer-will-place-order-/-already-ordered-handling"
+              },
+              {
+                "title": "Vendor Verification Script (Post Registration & KYC Confirmation)",
+                "path": "vendor-verification-script-post-registration-kyc-confirmation"
+              },
+              {
+                "title": "Cashkr Training Module List",
+                "path": "cashkr-training-module-list"
+              },
+              {
+                "title": "Order Tracking & Customer Notifications",
+                "path": "order-tracking-customer-notifications"
+              },
+              {
+                "title": "Store Training Script",
+                "path": "store-training-script"
+              },
+              {
+                "title": "Price Change Explanation Script",
+                "path": "price-change-explanation-script"
+              },
+              {
+                "title": "Creating an Order – Step-by-Step Flow",
+                "path": "creating-an-order-step-by-step-flow"
+              },
+              {
+                "title": "“To Be Failed” Orders & Credit Deduction Logic",
+                "path": "to-be-failed-orders-credit-deduction-logic"
+              },
+              {
+                "title": "Store Vendor Hold / Deactivation Script",
+                "path": "store-vendor-hold-/-deactivation-script"
+              },
+              {
+                "title": "Vendor Credits, Refunds & Reversals Explanation",
+                "path": "vendor-credits-refunds-reversals-explanation"
+              },
+              {
+                "title": "Price Match / Objection Handling Script",
+                "path": "price-match-/-objection-handling-script"
+              },
+              {
+                "title": "Store Vendor SLA & Violation Policy Script",
+                "path": "store-vendor-sla-violation-policy-script"
+              },
+              {
+                "title": "Handling Refunds (Wallet & Credits Reversal Flow)",
+                "path": "handling-refunds-wallet-credits-reversal-flow"
+              },
+              {
+                "title": "Feedback & Review Collection Process",
+                "path": "feedback-review-collection-process"
+              },
+              {
+                "title": "Referral & Offer Communication Script",
+                "path": "referral-offer-communication-script"
+              },
+              {
+                "title": "Lead to Order Conversion Script",
+                "path": "lead-to-order-conversion-script"
+              },
+              {
+                "title": "Lead Handling in Admin Panel (Lead → Order Flow)",
+                "path": "lead-handling-in-admin-panel-lead-order-flow"
+              },
+              {
+                "title": "Creating Orders Manually for Customers",
+                "path": "creating-orders-manually-for-customers"
+              },
+              {
+                "title": "Vendor Hold / Deactivation Script",
+                "path": "vendor-hold-/-deactivation-script"
+              },
+              {
+                "title": "Store Reactivation Script",
+                "path": "store-reactivation-script"
+              },
+              {
+                "title": "Exporting Data & Reports for Analysis",
+                "path": "exporting-data-reports-for-analysis"
+              },
+              {
+                "title": "Daily Reporting & KPI Expectations",
+                "path": "daily-reporting-kpi-expectations"
+              },
+              {
+                "title": "Store Follow-Up Script",
+                "path": "store-follow-up-script"
+              },
+              {
+                "title": "Admin Panel Overview",
+                "path": "admin-panel-overview"
+              },
+              {
+                "title": "Escalation Flow for Lead Issues",
+                "path": "escalation-flow-for-lead-issues"
+              },
+              {
+                "title": "SLA Violations & Escalation Rules",
+                "path": "sla-violations-escalation-rules"
+              },
+              {
+                "title": "Review Request Script",
+                "path": "review-request-script"
+              },
+              {
+                "title": "Store Vendor Payment & Pickup Process Script",
+                "path": "store-vendor-payment-pickup-process-script"
+              },
+              {
+                "title": "Store Vendor Reporting & SLA Compliance Script",
+                "path": "store-vendor-reporting-sla-compliance-script"
+              },
+              {
+                "title": "Requirement Gathering Script (Corporate Buyback)",
+                "path": "requirement-gathering-script-corporate-buyback"
+              },
+              {
+                "title": "Store Vendor Onboarding Script",
+                "path": "store-vendor-onboarding-script"
+              },
+              {
+                "title": "Adding/Editing Device Models & Pricing Updates",
+                "path": "adding/editing-device-models-pricing-updates"
+              },
+              {
+                "title": "Vendor Payment OTP & Confirmation Flow",
+                "path": "vendor-payment-otp-confirmation-flow"
+              },
+              {
                 "title": "Vendor Credits, Refunds & Reversals Script",
                 "path": "vendor-credits-refunds-reversals-script"
               },

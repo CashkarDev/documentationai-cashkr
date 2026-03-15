@@ -1,0 +1,194 @@
+---
+title: Vendor Payment OTP & Confirmation Flow
+description: Train vendors and internal teams on the mandatory wallet to OTP to bank transfer payment flow, confirmation rules, and fraud zero-tolerance policy.
+---
+
+## Overview
+
+This training guide is for Cashkr vendors and internal Ops, CX, Finance, and Tech teams. All payments from vendors to customers happen only through the wallet to OTP verification to bank transfer flow; no other payment method is allowed.
+
+<Callout kind="info">
+
+All vendor payments must follow this exact path: wallet to OTP verification to bank transfer. No UPI, no cash, no manual transfers.
+
+</Callout>
+
+## When payment happens
+
+Vendor payments happen only after all of the following:
+
+- Vendor completes the device inspection.
+- The app calculates and shows the final price.
+- The customer agrees to the final price.
+
+Only then does the payment module open and the vendor can tap **Pay Now**.
+
+## Payment OTP flow
+
+Use this step-by-step flow every time you make a payment to a customer.
+
+<Steps>
+
+<Step title="Vendor taps Pay Now" icon="play-circle">
+
+- The app shows the final payable amount.
+- The vendor reviews and confirms the payment details with the customer.
+
+</Step>
+
+<Step title="Customer receives OTP" icon="phone">
+
+- The system sends an OTP via SMS to the customer's registered mobile number.
+- The vendor asks the customer to read the OTP aloud before entering it in the app.
+
+Vendor must never guess the OTP or enter it without clear verbal confirmation from the customer.
+
+</Step>
+
+<Step title="Vendor enters OTP in the app" icon="terminal">
+
+- The vendor enters the OTP on the payment screen.
+- If the OTP is correct:
+  - Payment is processed automatically.
+  - Wallet balance is deducted.
+  - Customer receives an instant bank transfer.
+- If the OTP is incorrect:
+  - Payment fails.
+  - The app prompts to retry with the correct OTP.
+
+</Step>
+
+<Step title="Payment confirmation" icon="check-circle">
+
+- The app shows a **Payment Successful** screen.
+- A transaction ID is generated.
+- The customer receives:
+  - SMS confirmation of payment.
+  - Bank credit notification within seconds.
+- The vendor sees:
+  - Payment success screen on the app.
+  - Transaction entry in wallet or payment history.
+
+</Step>
+
+</Steps>
+
+## Customer communication script
+
+Use clear, simple language so customers know what to expect.
+
+**Before payment**
+
+"Please check the final amount. You will receive an OTP on your phone. Kindly read it out to me so I can complete the payment."
+
+**After payment success**
+
+"The payment is completed. You should receive an SMS or bank message shortly. Please check once."
+
+## What happens in the system after OTP payment
+
+Internally, once OTP verification succeeds:
+
+1. The wallet to customer bank transfer is triggered.
+2. Payment logs and transaction details are stored.
+3. The order cannot move to Completed status until payment is successful.
+4. The vendor cannot re-initiate payment without approval.
+5. Any refund or reversal can only be processed through the Admin panel.
+
+## OTP not received: troubleshooting
+
+If the customer does not receive the OTP, check these common issues first:
+
+| Issue          | Possible cause                 | Solution                                            |
+| -------------- | ------------------------------ | --------------------------------------------------- |
+| OTP not coming | Network issue                  | Ask customer to move to an open area and wait 30 seconds. |
+| OTP delayed    | SMS provider delay             | Tap **Resend OTP** in the app.                     |
+| Phone on DND   | DND blocking transactional SMS | Ask customer to temporarily turn off DND.          |
+| Wrong number   | Customer using different SIM   | Confirm the registered number in the order details. |
+| SIM error      | SIM blocked or offline         | Ask customer to restart the phone and check the SIM. |
+
+If the OTP still does not arrive after these checks and resend attempts, the vendor must contact Vendor Support and must not use any offline or alternative payment method.
+
+## Important rules vendors must follow
+
+Follow these rules strictly for every payment.
+
+### Mandatory rules
+
+- Receive OTP on the customer's phone and confirm it verbally before entry.
+- Complete the payment before taking the device from the customer.
+- Show the **Payment Successful** screen to the customer.
+- Ensure the transaction appears in wallet or payment history.
+
+### Strictly prohibited actions
+
+- Paying the customer with cash.
+- Paying via UPI apps such as Google Pay or PhonePe.
+- Taking the OTP from anyone other than the customer.
+- Guessing the OTP or entering random digits.
+- Taking the device without successful payment in the app.
+
+<Callout kind="alert">
+
+Zero tolerance fraud example: If a vendor enters random OTP digits, the payment fails but the vendor still takes the device. Such an order is marked as fraud, and the vendor is blocked from the platform. Legal action, including a police complaint, is also possible.
+
+</Callout>
+
+## After payment: order completion flow
+
+After you see **Payment Successful**:
+
+1. Collect the device from the customer.
+2. Tap **Mark as Completed** in the app.
+3. The order moves to Completed Orders.
+4. The transaction remains visible in Payment or Wallet history.
+
+## Refund rules
+
+Refunds, reversals, or adjustments are managed centrally and never by vendors.
+
+Refunds:
+
+- Are processed only through the Admin panel.
+- Return wallet amounts and any credits used, if applicable.
+
+Refunds are processed when:
+
+- There is a customer price dispute validated by Ops.
+- A wrong payment was made and confirmed.
+- An order cancellation is approved by Ops.
+- A vendor failure is corrected through internal review.
+
+## Internal training notes for teams
+
+### Ops team
+
+- Ensure vendors always follow the OTP payment process.
+- Monitor payment disputes and escalations.
+- Handle cases where the registered number or OTP flow is incorrect.
+
+### CX team
+
+- Explain the OTP payment process to customers when needed.
+- Handle "payment not received" or "money not credited" complaints.
+- Verify transaction IDs and payment status in tools.
+
+### Finance team
+
+- Reconcile wallet debits with bank transfers.
+- Track reversals, chargebacks, and refunds.
+- Maintain accurate vendor wallet and ledger records.
+
+### Tech team
+
+- Maintain and monitor the OTP gateway and SMS integrations.
+- Track payment failure logs and OTP errors.
+- Investigate and fix SMS delivery or delay issues.
+
+## Quick summary
+
+<Callout kind="info">
+
+Inspect the device, show the final price, tap Pay Now, have the customer read out the OTP, enter the OTP, confirm Payment Successful, collect the device, then mark the order as Completed.
+
+</Callout>

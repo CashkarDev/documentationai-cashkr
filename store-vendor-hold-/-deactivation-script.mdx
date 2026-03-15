@@ -1,0 +1,227 @@
+---
+title: Store Vendor Hold / Deactivation Script
+description: Training script for store vendor managers to place vendors on Hold or Deactivated status with clear reasons, process flows, communication, and reporting rules.
+---
+
+## Overview
+
+**Used by:** Store Partnerships / Vendor Management Team  
+
+**Purpose:**  
+Define when and how a store vendor should be placed on Hold or Deactivated status, including reasons, actions, communication format, and process flow.
+
+**Objective:**
+
+- Ensure consistent, fair, and transparent action on vendor compliance issues.
+- Distinguish correctly between temporary Hold and permanent Deactivation.
+- Maintain smooth communication to vendors without conflict or confusion.
+
+## Training script (for vendor managers)
+
+<Steps>
+
+<Step title="1. Understanding the two actions" icon="info">
+
+Hold and Deactivation are two distinct actions with different meanings and impact.
+
+| Action       | Meaning                                    | Impact                                                                 |
+| ------------ | ------------------------------------------ | ---------------------------------------------------------------------- |
+| Hold         | Temporary pause on vendor activity         | Vendor cannot create or complete new orders; existing store orders remain visible |
+| Deactivation | Permanent removal from the store network   | All app access revoked, Wallet/Credit settled, and account closed     |
+
+> A Hold is for correction.  
+> A Deactivation is for closure.
+
+<Callout kind="info">
+
+Hold is used for temporary correction. Deactivation is used for permanent closure when the vendor cannot be trusted for reinstatement or refuses to comply.
+
+</Callout>
+
+</Step>
+
+<Step title="2. Reasons for placing a vendor on Hold" icon="alert-triangle">
+
+Use a Hold when you expect the vendor to correct an issue and continue in the network.
+
+| Category               | Example                                             | Action                     |
+| ---------------------- | --------------------------------------------------- | -------------------------- |
+| SLA breach             | Repeated delay in order completion or device collection | Hold for 24–72 hours       |
+| Unprofessional behavior| Rude conduct with store or customer                | Immediate Hold             |
+| Low activity           | No store orders handled for 7+ days                | Soft Hold until confirmed active |
+| Wallet/Credit default  | Daily credit settlement not completed              | Hold until dues cleared    |
+| Missing reports        | 3+ days of skipped daily reporting                 | Hold until reporting resumed |
+| Ongoing dispute / audit| Refund or reversal under investigation             | Hold until issue resolved  |
+
+</Step>
+
+<Step title="3. Hold process flow" icon="list-ordered">
+
+Follow this sequence whenever you place a vendor on Hold.
+
+| Step                 | Action                                        | Owner                  |
+| -------------------- | --------------------------------------------- | ---------------------- |
+| 1. Violation detected| SLA, Ops, or Store feedback triggers flag     | Vendor Management Team |
+| 2. Verification      | Confirm issue from system logs or store records | Ops Associate          |
+| 3. Approval          | Ops Manager authorizes Hold                   | Ops Manager            |
+| 4. Status change     | Set vendor to Hold in Admin Panel             | Vendor Management      |
+| 5. Communication     | Inform vendor officially                      | Vendor Support Team    |
+
+</Step>
+
+<Step title="4. Communication template — Hold notice" icon="mail">
+
+Use this template when informing a vendor about a Hold.
+
+```text
+Subject: Temporary Hold on Your Cashkr Vendor Account
+
+Hi [Vendor Name],
+
+Your account has been temporarily placed on Hold due to [Reason – e.g., missed SLA compliance or pending daily credit settlement].
+
+During this Hold period:
+• You will not be able to create or complete new store orders.
+• Ongoing orders remain visible for reconciliation.
+
+Once the issue is reviewed and resolved, your account may be reactivated.
+
+Please reply confirming when the pending requirement is completed.
+
+— Cashkr Vendor Management Team
+```
+
+</Step>
+
+<Step title="5. Hold duration and reactivation" icon="clock">
+
+Align Hold duration and reactivation strictly with the issue type.
+
+| Issue type           | Typical Hold duration | Reactivation trigger               |
+| -------------------- | --------------------- | ---------------------------------- |
+| SLA breach / delay   | 48–72 hours           | After 3 days of compliance review  |
+| Credit default       | Until dues cleared    | Once daily payment completed       |
+| Reporting gaps       | 48 hours              | After daily summaries resumed      |
+| Audit / fraud review | Until audit complete  | After Ops Manager approval         |
+
+> Once Hold is cleared, vendor must log out and log in again to restore access.
+
+<Callout kind="tip">
+
+After you clear the Hold, remind the vendor to log out and log in again so their access reflects the updated status.
+
+</Callout>
+
+</Step>
+
+<Step title="6. Reasons for permanent deactivation" icon="x-circle">
+
+Use Deactivation only for serious or repeated violations where reinstatement is not expected.
+
+| Category                | Description                                         | Severity |
+| ----------------------- | --------------------------------------------------- | -------- |
+| Fraudulent activity     | Fake order marking, fake ID, duplicate payment claims | Critical |
+| Repeated misconduct     | 3+ complaints from store or customer               | High     |
+| Credit or payment default| Failure to settle daily credits repeatedly        | High     |
+| Repeated SLA failures   | SLA below 70% for 3 consecutive weeks              | Medium   |
+| Policy violation        | Breach of contract terms or data misuse            | High     |
+| Inactive more than 30 days | Vendor inactive without intimation              | Low      |
+
+> Permanent deactivation is used only when the vendor cannot be trusted for reinstatement or refuses to comply.
+
+</Step>
+
+<Step title="7. Deactivation process flow" icon="settings">
+
+Follow this sequence for every permanent deactivation.
+
+| Step             | Action                                     | Owner           |
+| ---------------- | ------------------------------------------ | --------------- |
+| 1. Record review | Verify vendor history, violations, dues    | Vendor Manager  |
+| 2. Final approval| Confirm by Ops Head                        | Ops Head        |
+| 3. Settlement    | Reconcile and close Wallet + Credits       | Finance         |
+| 4. Deactivate    | Remove access in Admin Panel               | Vendor Management |
+| 5. Inform vendor | Send final closure email                   | Vendor Support  |
+
+</Step>
+
+<Step title="8. Communication template — Deactivation notice" icon="mail">
+
+Use this template for permanent deactivation communication.
+
+```text
+Subject: Account Deactivation Notice – Cashkr Store Vendor Program
+
+Hi [Vendor Name],
+
+After repeated review and non-compliance with Cashkr’s vendor policies, your account has been deactivated permanently.
+
+Reason: [Specify issue clearly — e.g., repeated SLA breach, unprofessional behavior, or unpaid dues].
+
+Your Wallet and Credit balance (if any) will be settled as per policy within 5 business days.
+
+You will no longer have access to the Cashkr Vendor App or related systems.
+
+Thank you for your past service.
+
+— Cashkr Vendor Management Team
+```
+
+</Step>
+
+<Step title="9. Reinstatement rules" icon="shield">
+
+Apply these rules consistently when vendors ask about reinstatement.
+
+> Once deactivated, reactivation is not guaranteed.
+
+> Vendors removed for performance or inactivity can reapply after 30 days through a new onboarding review.
+
+> Vendors deactivated for fraud, misconduct, or unpaid dues are permanently blacklisted.
+
+</Step>
+
+<Step title="10. Reporting and documentation" icon="bar-chart">
+
+Log every Hold and Deactivation and keep reports updated.
+
+| Task                     | Frequency | Owner              |
+| ------------------------ | --------- | ------------------ |
+| Hold / Deactivation log  | Real-time | Vendor Management  |
+| Weekly status summary    | Weekly    | Ops Associate      |
+| Pending review list      | Daily     | Ops Manager        |
+| Audit of actions         | Monthly   | Compliance         |
+
+> Every Hold or Deactivation must include:  
+> • Vendor Name and ID  
+> • Reason category  
+> • Supporting proof  
+> • Action date and approver name
+
+</Step>
+
+</Steps>
+
+## Quick reference summary
+
+Use this table as a one-glance reference during calls.
+
+| Type         | Trigger                                         | Duration     | Access   | Reactivation                     |
+| ------------ | ----------------------------------------------- | ----------- | -------- | -------------------------------- |
+| Hold         | Temporary issues (SLA, pending dues, missing reports) | 24–72 hours | Limited  | Allowed after review             |
+| Deactivation | Repeated or serious violations                  | Permanent   | Blocked  | Not allowed (except inactive vendors) |
+
+## Key talking points
+
+<Callout kind="alert">
+
+No manual settlements during Hold or Deactivation.  
+Deactivation is final only after financial clearance.
+
+</Callout>
+
+- Hold equals temporary pause, not punishment.
+- All Hold and Deactivation actions must be logged and approved.
+- Communication tone must stay factual and professional.
+- No manual settlements during Hold or Deactivation.
+- Deactivation is final only after financial clearance.

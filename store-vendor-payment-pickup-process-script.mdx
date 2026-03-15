@@ -1,0 +1,335 @@
+---
+title: Store Vendor Payment & Pickup Process Script
+description: Training script for onboarding associates on store vendor wallet payments, voucher issuance, same-day device collection, and audit-ready reconciliation.
+---
+
+## Overview
+
+Train Onboarding Associates on how B2Ch store vendors handle payments, vouchers, wallet balances, and same-day device collection inside the Cashkr Vendor App.
+
+- Who uses this: Store Partnership and Channel Expansion teams training new Onboarding Associates.
+- Vendor responsibilities: initiate in-app payments or vouchers and collect devices before store closure.
+- System focus: wallet funding, payout handling, order statuses, refunds/reversals, and audit trail.
+
+<Callout kind="info">
+
+Store vendors must complete all payments or vouchers inside the app, keep their wallet funded to avoid payout delays, collect all paid or voucher devices by end of day, and maintain a clear audit trail for every transaction.
+
+</Callout>
+
+## Internal training script
+
+<ExpandableGroup>
+
+<Expandable title="1. Purpose of this flow" default-open="true">
+
+**Associate script**
+
+> In the store model, the vendor’s responsibility does not end with quoting and verifying a device.  
+>  
+> Their two key roles are:  
+>  
+> 1. Making instant, verified payments to customers via Wallet or vouchers.  
+> 2. Ensuring secure end-of-day collection of all devices that were sold that day.  
+>  
+> Both actions happen within the Cashkr Vendor App, ensuring full traceability and compliance.
+
+</Expandable>
+
+<Expandable title="2. How payment works inside the app">
+
+**Associate script**
+
+> After customer verification and ID upload, the app automatically moves to the payment screen.  
+>  
+> The vendor sees two options:  
+>  
+> Option 1 — Instant Transfer  
+>  
+> - Vendor selects `Instant Payment`.  
+> - The app deducts the amount directly from the vendor’s Wallet balance.  
+> - The customer receives money instantly in their linked account or UPI.  
+>  
+> Option 2 — Store Voucher  
+>  
+> - Vendor selects `Issue Voucher`.  
+> - The system generates a store-specific voucher code worth the quoted price plus an extra bonus amount, for example ₹500 extra.  
+> - The customer can redeem that voucher at the same store for a new purchase.  
+>  
+> Both methods are completely handled inside the app; there is no manual or external payment step.
+
+**Payment flow steps**
+
+<Steps>
+
+<Step title="Complete verification and ID upload" icon="check-circle">
+
+- Finish device verification and confirm the final quote.  
+- Upload customer ID and complete any required OTP verification.  
+- Wait for the app to move automatically to the payment screen.
+
+</Step>
+
+<Step title="Review payable amount" icon="info">
+
+- Confirm the final payable amount shown on the payment screen.  
+- Ensure the amount matches the agreed quote and any applicable bonus.
+
+</Step>
+
+<Step title="Choose Instant Payment" icon="zap">
+
+- Select `Instant Payment` if the customer wants direct transfer.  
+- Confirm that the vendor’s Wallet has enough balance to cover the amount.  
+- Complete the payment so the app deducts the amount and sends it to the customer’s linked account or UPI.
+
+</Step>
+
+<Step title="Or choose Issue Voucher" icon="ticket">
+
+- Select `Issue Voucher` if the customer prefers a store voucher.  
+- Let the app generate a store-specific voucher code with the quoted price plus the extra bonus, for example ₹500 extra.  
+- Share the voucher details with the customer so they can redeem it at the same store.
+
+</Step>
+
+<Step title="Confirm payment completion" icon="check">
+
+- Check that the order shows as completed in the Vendor App and Store App.  
+- Confirm that the customer received a digital confirmation on their number.  
+- Verify that the order appears under `Completed Orders`.
+
+</Step>
+
+</Steps>
+
+</Expandable>
+
+<Expandable title="3. Wallet functionality">
+
+**Associate script**
+
+> The vendor’s Wallet is the central point for all customer payouts.  
+>  
+> The Wallet is topped up by the vendor through bank or UPI transfers to Cashkr’s virtual account.  
+> Once topped up, the balance becomes visible inside their app.  
+>  
+> Whenever a payment is made to a customer, that exact amount is deducted instantly.  
+> The customer receives it directly in their account, and a transaction ID is generated automatically.  
+>  
+> Wallets are vendor-specific and traceable, ensuring every payout has a recorded source.
+
+</Expandable>
+
+<Expandable title="4. What happens after payment completion">
+
+**Associate script**
+
+> As soon as payment is made or a voucher is issued:  
+>  
+> - The order is marked as `Completed` in both the vendor and store app.  
+> - The customer receives a digital confirmation on their number.  
+> - The vendor’s `Completed Orders` list updates instantly.  
+>  
+> From that point, the device becomes ready for end-of-day collection.
+
+</Expandable>
+
+<Expandable title="5. End-of-day collection process">
+
+**Associate script**
+
+> At the end of the day, each vendor or their associate must collect all devices that were:  
+>  
+> - Successfully completed and paid for, or  
+> - Marked as voucher transactions.  
+>  
+> Here is the correct end-of-day flow:  
+>  
+> 1. Open the `Completed Orders` tab in the Vendor App.  
+> 2. Verify IMEI or serial numbers of each device at the store.  
+> 3. Collect all devices and mark them as `Collected` in the app.  
+> 4. Store staff hand over devices only after this confirmation.  
+>  
+> This ensures all payouts are linked to collected inventory, preventing fraud or duplicate claims.
+
+**End-of-day collection steps**
+
+<Steps>
+
+<Step title="Open Completed Orders" icon="monitor">
+
+- Navigate to the `Completed Orders` tab in the Vendor App.  
+- Filter for that day’s completed and voucher-tagged orders.
+
+</Step>
+
+<Step title="Verify device details at store" icon="info">
+
+- Match each device’s IMEI or serial number against the order details in the app.  
+- Confirm that the device condition matches what was recorded at the time of sale.
+
+</Step>
+
+<Step title="Mark devices as Collected" icon="check-circle">
+
+- For each verified device, update the order status to `Collected` in the app.  
+- Ensure there are no missed or partially updated entries.
+
+</Step>
+
+<Step title="Collect physical devices" icon="package">
+
+- Take physical custody of all confirmed devices from the store.  
+- Confirm with store staff that only `Collected` orders are handed over.
+
+</Step>
+
+<Step title="Review collection summary" icon="bar-chart">
+
+- Check the app’s summary for total devices collected that day.  
+- Flag any `Completed but Pending Collection` orders for immediate follow-up.
+
+</Step>
+
+</Steps>
+
+</Expandable>
+
+<Expandable title="6. Order tracking and visibility">
+
+**Associate script**
+
+> Each order handled through the app has three final statuses visible in the vendor dashboard:  
+>  
+> - `Completed & Collected` — Payment done, device collected.  
+> - `Completed but Pending Collection` — Payment done, device not yet picked up.  
+> - `Voucher Issued` — Customer opted for store voucher; device remains at store until voucher is redeemed.  
+>  
+> The Operations team monitors these daily to ensure every transaction is closed within the same day or next morning.
+
+**Status reference**
+
+| Status                         | Meaning                                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------- |
+| Completed & Collected          | Payment completed and the device has been collected from the store.                    |
+| Completed but Pending Collection | Payment completed but the device is still at the store and not yet picked up.          |
+| Voucher Issued                 | Store voucher issued; device stays at the store until the voucher is redeemed.         |
+
+</Expandable>
+
+<Expandable title="7. Refunds and reversals">
+
+**Associate script**
+
+> Refunds or reversals are rare in the store model since device checks happen on the spot.  
+>  
+> But if a vendor mistakenly pays for a non-eligible or misreported device, the process is:  
+>  
+> 1. Vendor raises a ticket in the app within 24 hours under `Refund Request`.  
+> 2. Cashkr team reviews transaction ID, customer details, and device photos.  
+> 3. If approved, the refunded amount is credited back to the vendor’s Wallet directly.  
+>  
+> No manual settlements are done outside the system.
+
+**Refund and reversal steps**
+
+<Steps>
+
+<Step title="Raise refund request in app" icon="alert-triangle">
+
+- Open the relevant order and select the `Refund Request` option.  
+- Submit the request within 24 hours of the original payment.  
+- Provide a clear reason, especially if the device was non-eligible or misreported.
+
+</Step>
+
+<Step title="Attach required evidence" icon="upload">
+
+- Ensure the order has correct transaction ID and customer details.  
+- Add or verify device photos and any supporting documentation.  
+- Confirm that all information is visible to the Cashkr review team.
+
+</Step>
+
+<Step title="Ops review and decision" icon="settings">
+
+- Wait for the Cashkr team to review the submitted request.  
+- Monitor app notifications or dashboard updates for the decision.
+
+</Step>
+
+<Step title="Wallet credit on approval" icon="check-circle">
+
+- If the refund is approved, check that the refunded amount is credited back to the vendor’s Wallet.  
+- Note that there are no manual or offline settlements; everything is processed digitally in the system.
+
+</Step>
+
+</Steps>
+
+</Expandable>
+
+<Expandable title="8. Daily wallet monitoring">
+
+**Associate script**
+
+> Vendors must always maintain a sufficient Wallet balance to handle customer payouts during the day.  
+>  
+> - Minimum Wallet requirement: ₹5,000 (varies by store volume).  
+> - If balance is low, the app automatically restricts new payment completions.  
+> - Vendors can top up anytime; balance updates within 5–10 minutes after bank transfer.  
+>  
+> Onboarding Associates must emphasize this during training; no payment should be delayed due to Wallet shortage.
+
+</Expandable>
+
+<Expandable title="9. Payment security and audit trail">
+
+**Associate script**
+
+> Every single transaction, payment or voucher, is digitally recorded with:  
+>  
+> - Order ID  
+> - Transaction ID  
+> - IMEI or serial number  
+> - Customer ID proof and OTP verification  
+> - Payment mode, Wallet or Voucher  
+>  
+> This creates a secure audit trail for both the vendor and Cashkr, reducing disputes and maintaining trust with stores.
+
+</Expandable>
+
+<Expandable title="10. Operational SLA reminders">
+
+**Associate script**
+
+> The SLA for store vendors is different from home pickup vendors:  
+>  
+> - Payments and ID uploads must be completed on the spot; no pending orders.  
+> - All devices must be collected the same day before store closure.  
+> - Wallet balance should be checked and refilled before the next working day.  
+>  
+> Delays in collection or missing payment confirmations trigger automatic SLA flags visible to the Ops Manager.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Internal team notes (quick reference)
+
+| Step | Function           | Key responsibility                    | Verification                    |
+| ---- | ------------------ | ------------------------------------- | ------------------------------- |
+| 1    | Payment            | Vendor initiates payout or voucher    | Auto-confirmed in system        |
+| 2    | Wallet             | Funded by vendor, used for payouts    | Balance check before activation |
+| 3    | Device collection  | Same-day pickup from store            | Marked `Collected` in app       |
+| 4    | Refunds/Reversals  | Rare, handled through app             | Processed by Ops review         |
+| 5    | Reporting          | Daily reconciliation                  | Dashboard summary verified      |
+
+## Key talking points for associates
+
+- All customer payments and vouchers are handled entirely inside the app; no external UPI or manual transfer.  
+- Vendors must collect all paid or voucher devices by end of day; nothing should remain pending.  
+- Wallet balance equals payout capacity; if the Wallet is empty, the vendor cannot complete new orders.  
+- Refunds, if any, are processed digitally within the app only.  
+- Audit trails protect both Cashkr and vendors; every payment has a matching ID, IMEI, and timestamp.

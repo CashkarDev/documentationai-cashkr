@@ -1,0 +1,256 @@
+---
+title: "To Be Failed Orders and Credit Deduction Logic"
+description: Training guide for Vendor App, Ops, CX, and Finance teams on handling To Be Failed orders, credit deductions, refunds, and wallet adjustments.
+---
+
+## Overview
+
+Use this guide when a vendor cannot complete a pickup and the order moves into a To Be Failed state. It aligns Vendor App, Ops, CX, and Finance teams on fail reasons, credit and wallet logic, internal review flow, and strict rules for deductions and refunds.
+
+A To Be Failed order is any order where the vendor cannot complete pickup successfully due to:
+
+- Customer issues  
+- Vendor issues  
+- Device mismatch  
+- Incorrect inspection  
+- SLA breach  
+- Fraud triggers  
+
+These orders require manual review and can lead to credit deduction or refund depending on the root cause.
+
+## What is a To Be Failed order?
+
+An order becomes To Be Failed when the vendor tried to fulfill the order but could not complete it.
+
+Examples:
+
+- Customer refused revised price  
+- Device does not match what customer selected  
+- Customer unavailable after appointment  
+- Payment not possible due to customer issue  
+- Vendor found device defective beyond what was claimed  
+- Customer changed mind at the last minute  
+- Customer unreachable after vendor arrival  
+- Fraud suspicion such as IMEI mismatch, tampering, sealed box claims  
+
+These are not instantly failed. Ops verifies before marking the order as Failed and deciding on credit deduction or refund.
+
+## Types of To Be Failed reasons
+
+There are two categories of reasons: customer-side (vendor not at fault) and vendor-side (vendor at fault).
+
+### Customer-side fail reasons (vendor not at fault)
+
+These reasons do not deduct credits.
+
+| Reason                       | Explanation                       |
+| ---------------------------- | --------------------------------- |
+| Customer Rejected Final Price | Actual condition lower than claimed |
+| Customer Not Responding      | Multiple failed contact attempts  |
+| Customer Address Wrong       | Vendor reached but not found      |
+| Customer Not Available       | Customer not at home              |
+| Customer Changed Mind        | Customer opted not to sell        |
+| OTP Not Provided             | Customer refuses or delays payment OTP |
+| Device Not Charged / Not Accessible | Cannot verify device               |
+| Customer Asking Higher Price | Beyond platform price             |
+
+Result:
+
+- Credits returned  
+- Wallet untouched  
+- Vendor performance unaffected  
+
+### Vendor-side fail reasons (vendor at fault)
+
+These reasons lead to credit deduction and sometimes an SLA penalty.
+
+| Vendor mistake                | Explanation                               |
+| ----------------------------- | ----------------------------------------- |
+| Wrong Inspection              | Marking wrong defects intentionally or mistakenly |
+| Price Manipulation            | Trying to reduce price to benefit personally |
+| Not Visiting Customer         | Marking status falsely without visiting   |
+| Arrived Late Beyond SLA       | Customer cancels due to vendor delay      |
+| Rude Behaviour                | Customer reports behaviour issue          |
+| Device Taken Without Payment  | Serious fraud                              |
+| Attempting Offline Payment    | Google Pay, Cash, PhonePe                 |
+| Multiple Cancels by Vendor    | Pattern of poor behaviour                  |
+| Failing to Understand Device Condition | Inaccurate inspections                    |
+| Asking for Extra Charges      | Illegal behaviour                          |
+
+Result:
+
+- Credits deducted  
+- SLA strike applied  
+- Vendor may be put on hold  
+- Repeat offences can lead to deactivation  
+
+## Credit deduction logic
+
+When an order is unlocked, credits are deducted instantly.
+
+- **Situation 1 → Vendor not at fault:** Credits should be refunded fully after Ops review.  
+- **Situation 2 → Vendor is at fault:** Credits are not refunded.
+
+<Callout kind="info">
+
+General rule: if the vendor made a mistake, credits are deducted. If the customer caused the failure, credits are refunded.
+
+</Callout>
+
+## Wallet deduction logic
+
+Wallet is not involved until payment is attempted.
+
+Wallet is refunded only when:
+
+- Vendor paid customer (rare scenario before failure)  
+- Ops changes order to failed and triggers refund  
+- Payment must be reversed  
+
+<Callout kind="info">
+
+Wallet is not touched in most failure cases. Wallet comes into play only when payment has already happened and needs to be reversed.
+
+</Callout>
+
+## Internal review flow (Ops)
+
+Every To Be Failed order goes through a 5 step process.
+
+<Steps>
+
+<Step title="Vendor submits fail reason" icon="edit">
+
+Vendor selects a fail reason and adds a short explanation in the system.
+
+</Step>
+
+<Step title="Ops verifies" icon="search">
+
+Ops verifies the case using:
+
+- Call logs  
+- Customer statement  
+- Vendor GPS logs  
+- Inspection entry  
+- Chat or ticket reports  
+
+</Step>
+
+<Step title="Decide who is at fault" icon="settings">
+
+- Vendor fault → Deduction  
+- Customer fault → Refund  
+
+</Step>
+
+<Step title="Update vendor balance" icon="database">
+
+- Adjust credits  
+- Adjust wallet if needed  
+
+</Step>
+
+<Step title="Update status to Failed" icon="check-circle">
+
+- Change order status from To Be Failed to Failed  
+- Update SLA  
+- Notify vendor about the final decision  
+
+</Step>
+
+</Steps>
+
+## Examples
+
+Use these examples to apply the logic consistently.
+
+### Example 1: Customer rejects price
+
+Vendor is correct, customer rejects revised price.
+
+- Credits refunded  
+- No penalty  
+
+### Example 2: Vendor arrives late and customer cancels
+
+Vendor reaches beyond SLA and customer cancels due to delay.
+
+- Vendor at fault  
+- Credits not refunded  
+- One SLA strike  
+
+### Example 3: Device mismatch
+
+- If customer chose wrong options → Credits refunded  
+- If vendor claims wrongly → Credits deducted  
+
+### Example 4: Vendor tries offline payment
+
+Vendor attempts payment outside the app such as Google Pay, Cash, or PhonePe.
+
+- Major violation  
+- Credits deducted  
+- Vendor put on hold  
+- Possible deactivation  
+
+## When credits must always be deducted
+
+Credits must be deducted in all of the following cases.
+
+<Callout kind="alert">
+
+Treat these as strict rules. Do not override or skip credit deduction in these scenarios.
+
+</Callout>
+
+- Vendor lies about inspection  
+- Vendor marks Customer Not Available without going  
+- Vendor mixes IMEI  
+- Behaviour complaint from customer  
+- Vendor tries to negotiate outside the app  
+- Vendor forces customer to accept price  
+- Vendor delays pickup intentionally  
+- Vendor repeatedly fails orders  
+
+## When credits must always be refunded
+
+Credits must be returned in all of the following cases.
+
+<Callout kind="alert">
+
+Treat these as strict rules. Always approve credit refunds in these customer issue scenarios.
+
+</Callout>
+
+- Customer unreachable  
+- Customer wrong device details  
+- Customer changed mind  
+- Customer refuses OTP  
+- Customer unavailable after agreed time  
+- Customer only wants higher price  
+- Customer cancels before inspection  
+
+## Vendor training summary (workshops)
+
+Use this section as a quick recap during vendor workshops.
+
+**Credits deducted if:**
+
+- Vendor mistake  
+- Vendor behaviour issue  
+- Vendor fraud  
+- Vendor SLA violation  
+
+**Credits refunded if:**
+
+- Customer issue  
+- Wrong details provided by customer  
+- Legit mismatch  
+- Price disagreement  
+
+**Wallet refund:**
+
+- Only when payment already happened  
+- Never automatic  
+- Only through Admin panel

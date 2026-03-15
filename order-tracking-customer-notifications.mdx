@@ -1,0 +1,344 @@
+---
+title: Order Tracking & Customer Notifications
+description: Standardize how Cashkr teams track orders, send notifications, handle CX queries, and manage SLAs for transparent customer communication.
+---
+
+## Overview
+
+Use this SOP to keep order tracking and customer notifications consistent across Sales, CX, Vendor Ops, Marketing, and Support.
+
+- **Audience:** Sales, CX, Vendor Ops, Marketing, Support, and Training teams.
+- **Purpose:**
+  - Define how customers track their order and what they see.
+  - Map internal statuses to customer-facing stages and notifications.
+  - Standardize CX responses, manual updates, and escalations.
+- **Goals:**
+  - Zero confusion on order status.
+  - Transparent order flow.
+  - Consistent messaging across channels.
+  - Better customer trust.
+  - Improved SLA handling.
+
+<Callout kind="info">
+
+Transparent, consistent messaging at every stage of the order journey reduces customer confusion, builds trust, and helps teams meet SLAs.
+
+</Callout>
+
+## Customer-visible order flow
+
+Customers see the following main order stages in their tracking view.
+
+<Steps>
+
+<Step title="Order Created" icon="check">
+
+The customer places an order and receives confirmation that their request is recorded.
+
+</Step>
+
+<Step title="Vendor Assigned" icon="users">
+
+A pickup partner is assigned and will contact the customer to confirm timings.
+
+</Step>
+
+<Step title="Vendor En Route" icon="truck">
+
+The vendor starts the trip and is on the way to the customer location.
+
+</Step>
+
+<Step title="Vendor Arrived" icon="check-circle">
+
+The pickup partner reaches the customer address.
+
+</Step>
+
+<Step title="Inspection in Progress" icon="search">
+
+The vendor inspects the device and evaluates its condition.
+
+</Step>
+
+<Step title="Final Price Generated" icon="bar-chart">
+
+The system or vendor generates the final price for the device.
+
+</Step>
+
+<Step title="Payment Sent (OTP Generated)" icon="lock">
+
+The vendor initiates payment, and the customer receives an OTP to confirm.
+
+</Step>
+
+<Step title="Order Completed – Payment Successful" icon="zap">
+
+Payment is completed successfully and the order is closed.
+
+</Step>
+
+<Step title="Order Failed / Cancelled / Customer Rejected Price" icon="x-circle">
+
+If payment fails, the order is cancelled, the vendor fails, or the customer rejects the price, the order ends in a failure status.
+
+</Step>
+
+</Steps>
+
+## Internal status mapping (Admin Panel)
+
+The Admin Panel uses more granular internal statuses that drive customer-facing statuses and notifications.
+
+- Created
+- Pending Vendor Assignment
+- Assigned
+- Vendor Accepted
+- Vendor En Route
+- At Location
+- Inspection Started
+- Inspection Completed
+- Payment Initiated
+- Payment Successful
+- Completed
+- Customer Rejected / Vendor Failed / Unable to Reach
+
+These internal statuses trigger the automated messages and help CX understand where the order is stuck.
+
+## Automated customer notifications
+
+Customers receive SMS, WhatsApp, and App notifications at key events.
+
+| Event                               | Trigger                        | Message                                                                                  |
+| ----------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------- |
+| Order Creation                      | Customer places order          | Your order has been created! Your vendor partner will contact you soon for pickup.      |
+| Vendor Assigned                     | Vendor unlocks order           | A pickup partner has been assigned. They will call you shortly to confirm timings.      |
+| Vendor En Route                     | Vendor taps `Start Trip`       | Your pickup partner is on the way.                                                      |
+| Vendor Arrival                      | Vendor taps `Arrived`          | Your pickup partner has arrived at your location.                                       |
+| Final Price Ready                   | Vendor completes inspection    | Final price for your device is ready. Please confirm to proceed with payment.           |
+| OTP Payment                         | Vendor initiates payment       | Your payment OTP is XXXXXX. Share it with the pickup partner to complete payment.       |
+| Payment Success / Order Completion  | Payment processed              | Payment successful! Thank you for selling your device on Cashkr.                        |
+| Order Failed / Customer Rejected    | Vendor selects failure option  | Your order could not be completed. No worries—create another order anytime.             |
+
+## Customer tracking options
+
+### SMS / WhatsApp links
+
+- Customers receive a direct link to the order tracking page in SMS and WhatsApp.
+- The link shows the live status and key details.
+
+### App order history
+
+- Customers go to **My Orders** in the app.
+- They see:
+  - Live order status.
+  - Vendor details and contact (after assignment).
+  - Any important notes or next steps.
+
+### Customer Support (CX team)
+
+- CX can fetch and share:
+  - Vendor name.
+  - Vendor contact.
+  - Current status.
+  - ETA.
+  - Payment verification details.
+
+## CX handling: common tracking questions
+
+Use these patterns when customers ask about their order status or vendor.
+
+<ExpandableGroup>
+
+<Expandable title="Where is my vendor?">
+
+Check the current status:
+
+- If **Assigned**: Vendor has the order but has not called yet.
+- If **En Route**: Share the ETA.
+- If **Accepted but not en route**: Call the vendor and update the customer.
+
+Recommended script:
+
+> I have checked your order—your pickup partner will reach you shortly. I will keep you updated.
+
+</Expandable>
+
+<Expandable title="Why is my order still waiting for vendor?">
+
+Possible reasons:
+
+- Low vendor availability.
+- High rush period.
+- Remote or hard-to-serve area.
+
+CX steps:
+
+- Tag Vendor Ops.
+- Try assigning an alternative vendor.
+- Provide a realistic time estimate to the customer.
+
+Recommended script:
+
+> We are assigning the best available partner. Please allow us a short time—we will update you soon.
+
+</Expandable>
+
+<Expandable title="Vendor is late">
+
+Steps:
+
+- Call the vendor.
+- Confirm the updated ETA.
+- Reassign the order if the vendor is unavailable.
+
+Recommended script:
+
+> I apologize for the delay. I am coordinating with your pickup partner right now.
+
+</Expandable>
+
+<Expandable title="Payment not received but vendor left">
+
+Steps:
+
+- Check payment logs.
+- Verify the transaction status.
+- Escalate to Finance if needed.
+
+Recommended script:
+
+> I am checking the transaction right now. You will receive confirmation shortly.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Manual notifications (CX)
+
+CX should send manual messages when automation does not fully explain the situation.
+
+Typical cases:
+
+- Vendor reassignment.
+- Vendor failure.
+- Delay due to traffic or operational issues.
+- Price dispute review.
+- Return flow.
+- Payment verification or investigation.
+
+Use this template and adapt details as needed:
+
+```text
+We’re updating your order status. Our team is reviewing the situation and will update you shortly.
+```
+
+## Notification SLAs
+
+Use these SLAs to ensure customers are notified on time.
+
+| Stage            | SLA to notify customer |
+| ---------------- | ---------------------- |
+| Vendor Assigned  | Within 5 minutes       |
+| Vendor Delayed   | 10–20 minutes          |
+| Vendor Reassigned| Immediate              |
+| Final Price Ready| Instant                |
+| Payment Completed| Instant                |
+| Order Failed     | Within 15 minutes      |
+
+## Escalation rules
+
+Escalate quickly when an issue cannot be resolved at CX level.
+
+### Escalate to Vendor Ops when
+
+- Vendor is unreachable.
+- Vendor delays are more than 30 minutes.
+- Customer reports feeling unsafe.
+- Vendor misbehaviour is reported.
+- Wrong inspection or evaluation is suspected.
+
+### Escalate to Finance when
+
+- Payment is stuck or pending for too long.
+- Double deduction is reported.
+- Payment not received in the customer bank account.
+
+### Escalate to Tech when
+
+- Status is not updating in the app or Admin Panel.
+- App shows errors during tracking or payment.
+- Wrong notifications are sent or triggers are misfiring.
+
+## Common issues and resolutions
+
+Use these troubleshooting flows for frequent problems.
+
+<ExpandableGroup>
+
+<Expandable title="Customer did not receive notifications">
+
+Ask the customer to:
+
+- Check SMS spam or blocked senders.
+- Check WhatsApp blocked status.
+- Confirm mobile network coverage.
+- Reinstall or update the Cashkr app.
+
+If the issue continues after these checks, create a Tech escalation.
+
+</Expandable>
+
+<Expandable title="Vendor assigned but did not call">
+
+- Call the vendor directly.
+- Confirm the ETA.
+- Reassign to another vendor if needed.
+
+Keep the customer informed about any change or delay.
+
+</Expandable>
+
+<Expandable title="Order stuck on a status">
+
+- Open the Admin Panel and refresh.
+- Check if the vendor has updated the status from their app.
+- If status is still stuck:
+  - Ask the vendor to update from the app.
+  - Raise a Tech escalation if the status still does not move.
+
+</Expandable>
+
+<Expandable title="Customer wants live tracking">
+
+- Share the vendor’s contact number and ETA.
+- Only share these details **after** the order is assigned to a vendor.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## One-page summary (training card)
+
+### Order flow
+
+Created → Assigned → En Route → Arrived → Inspection → Final Price → OTP Payment → Completed
+
+### Automatic notifications sent at
+
+- Order Created.
+- Vendor Assigned.
+- Vendor En Route.
+- Arrival.
+- Final Price.
+- OTP Payment.
+- Completion or Failure.
+
+### CX should
+
+- Provide clear ETA and set expectations.
+- Coordinate with the vendor when there are delays or issues.
+- Assist customers with payment and OTP verification.
+- Proactively update customers when there is any delay or change.
+- Escalate to Vendor Ops, Finance, or Tech as per the rules above.

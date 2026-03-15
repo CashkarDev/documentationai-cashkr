@@ -1,0 +1,278 @@
+---
+title: Exporting Data & Reports for Analysis
+description: Export accurate data from the Admin Panel for reporting, analysis, audits, and decision-making, with clear steps, roles, and safeguards.
+---
+
+## Overview
+
+Exporting data from the Admin Panel enables accurate reporting, analysis, audits, and day-to-day decision-making across teams.
+
+Use exports for:
+
+- Performance reviews and SLA tracking
+- Vendor evaluation and compliance monitoring
+- City and area planning, including pincode coverage
+- Finance reconciliation and refunds audit
+- Weekly and monthly business reviews and management reporting
+
+## Who uses data exports
+
+<Tabs>
+
+<Tab title="Operations" icon="settings">
+
+- Order flow and funnel analysis  
+- SLA delay tracking and TAT monitoring  
+- Reassignment and operational bottleneck analysis  
+
+</Tab>
+
+<Tab title="CX" icon="users">
+
+- Complaint trend analysis across cities and devices  
+- Failure reason analysis  
+- Resolution time and SLA tracking  
+
+</Tab>
+
+<Tab title="Vendor Ops" icon="folder">
+
+- Vendor SLA scorecards and evaluations  
+- Performance and violation tracking  
+- Hold or deactivate justification and documentation  
+
+</Tab>
+
+<Tab title="BD / Area Management" icon="bar-chart">
+
+- Pincode-wise demand and lead volume  
+- Coverage gap analysis  
+- City and area expansion planning  
+
+</Tab>
+
+<Tab title="Finance" icon="database">
+
+- Wallet transactions and adjustments  
+- Credit movements and reversals  
+- Refund reconciliation and audit support  
+
+</Tab>
+
+<Tab title="Management" icon="monitor">
+
+- High-level dashboards and KPIs  
+- Weekly and monthly business reviews  
+- Strategic and capacity planning  
+
+</Tab>
+
+</Tabs>
+
+## Types of data that can be exported
+
+<Tabs>
+
+<Tab title="Orders" icon="package">
+
+**Includes**
+
+- Order ID and customer details  
+- Vendor assigned and device details  
+- City and pincode  
+- Order status and payment status  
+- Failure reasons  
+- Timestamps for created, assigned, and completed  
+
+Used by: Operations, CX, Management, BD  
+
+</Tab>
+
+<Tab title="Leads" icon="users">
+
+**Includes**
+
+- Lead ID  
+- Device type  
+- City  
+- Lead status such as Not Called, Callback, High End  
+- Dispositions and call outcomes  
+- Call notes and conversion outcome  
+
+Used by: Sales, CX, Management  
+
+</Tab>
+
+<Tab title="Vendor" icon="folder">
+
+**Includes**
+
+- Vendor ID and name  
+- Area coverage and service regions  
+- SLA score and orders completed  
+- Violations and actions taken  
+- Wallet and credit balance  
+- Hold or deactivation status  
+
+Used by: Vendor Ops, Operations, BD, Management  
+
+</Tab>
+
+<Tab title="SLA & Escalation" icon="alert-triangle">
+
+**Includes**
+
+- Violation type and severity  
+- Order ID and vendor ID  
+- City  
+- Escalation level  
+- Action taken or pending  
+
+Used by: Operations, Vendor Ops, Management  
+
+</Tab>
+
+<Tab title="Finance & Payments" icon="credit-card">
+
+**Includes**
+
+- Wallet deductions and reversals  
+- Credit deductions and refunds  
+- Refund reasons  
+- Transaction references such as UTR  
+
+Used by: Finance, Management  
+
+</Tab>
+
+<Tab title="Coverage & Area" icon="map">
+
+**Includes**
+
+- Serviceable pincodes  
+- Non-serviceable pincodes  
+- Device-type availability per area  
+- Vendor count per pincode  
+
+Used by: BD, Vendor Ops, Management  
+
+</Tab>
+
+</Tabs>
+
+## How to export data from the Admin Panel
+
+<Steps>
+
+<Step title="Open the relevant module" icon="arrow-right">
+
+- Go to the required module: Orders, Leads, Vendors, Payments, SLA, or Areas.
+
+</Step>
+
+<Step title="Apply filters" icon="settings">
+
+- Set the date range  
+- Filter by city  
+- Filter by vendor  
+- Filter by status  
+- Filter by device type  
+
+Use the narrowest filters that still give the data you need to avoid oversized or noisy exports.
+
+</Step>
+
+<Step title="Trigger the export" icon="download">
+
+- Click **Export** or **Download** in the module toolbar.
+
+</Step>
+
+<Step title="Choose file format" icon="file-text">
+
+- Select **CSV** as the preferred format for analysis and dashboards  
+- Use **Excel (XLSX)** if you need native Excel formatting  
+
+After you confirm, the file downloads automatically to your system.
+
+</Step>
+
+</Steps>
+
+## Standard export frequency
+
+| Report type        | Frequency |
+| ------------------ | --------- |
+| Orders and SLA     | Daily     |
+| Leads              | Daily     |
+| Vendor performance | Weekly    |
+| Coverage and area  | Weekly    |
+| Finance and payments | Weekly  |
+| Business summary   | Monthly   |
+
+## Data validation before analysis
+
+<Callout kind="tip">
+
+Validate every export before analysis or reporting:
+
+- Check that the date range matches what you intend to analyze  
+- Check for missing or obviously incorrect values  
+- Verify key totals against the corresponding dashboard view  
+- Confirm there are no duplicate rows in critical datasets  
+- Cross-check critical metrics that feed management or finance reporting  
+
+If you find any mismatch, raise it with the Tech or Data Analyst team before sharing or using the report.
+
+</Callout>
+
+## Where exported data is used
+
+- **Google Sheets or Excel** for quick analysis and ad hoc reporting  
+- **Looker Studio** for dashboards and recurring views  
+- **Finance systems** for reconciliation and audits  
+- **Management decks** for weekly and monthly reviews  
+- **Audit files** for compliance and external review  
+
+## Data access and security rules
+
+<Callout kind="alert">
+
+Follow these rules whenever you export or share data:
+
+- Only authorized users export data from the Admin Panel  
+- Restrict finance-related exports to Finance and Management  
+- Do not share vendor personal data outside the company  
+- Keep an untouched master copy of every raw export and avoid editing it directly  
+- Store export files only in approved internal drives or shared folders  
+- Do not share sensitive data externally without explicit approval  
+
+</Callout>
+
+## Common mistakes to avoid
+
+<Callout kind="alert">
+
+Avoid these issues to keep reporting accurate and consistent:
+
+- Exporting without filters and ending up with noisy or unusable data  
+- Sharing outdated reports that no longer match the dashboard  
+- Editing the raw export file instead of working on a copy  
+- Using different date ranges across teams for the same review  
+- Allowing a mismatch between dashboard metrics and exported numbers  
+
+</Callout>
+
+## Role of Data and Analytics team
+
+<Callout kind="info">
+
+If a dedicated Data or Analytics team is available, involve them for recurring or complex reporting.
+
+</Callout>
+
+- Clean and standardize exports from multiple modules  
+- Merge and model data across orders, leads, vendors, and finance  
+- Build dashboards and recurring reporting views  
+- Highlight insights for Ops, BD, Finance, and Management  
+- Flag anomalies or data quality issues and coordinate fixes

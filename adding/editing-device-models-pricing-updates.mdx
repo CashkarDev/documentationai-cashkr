@@ -1,0 +1,341 @@
+---
+title: Adding/Editing Device Models & Pricing Updates
+description: Train pricing, tech, vendor ops, operations, CX, and management teams to add device models, update pricing, and keep deductions accurate and auditable.
+---
+
+## Overview
+
+This module guides the Pricing, Tech, Vendor Ops, CX, Ops, BD, and Management teams to add new device models, maintain accurate pricing, and manage deduction logic. Follow these workflows to keep vendor and customer prices transparent, market-aligned, and consistent across the platform.
+
+## Purpose of this module
+
+To ensure:
+
+- Accurate and up-to-date pricing for all devices
+- Smooth addition of new models and variants
+- Correct deduction logic for conditions and issues
+- Vendors see the right prices during inspection
+- Customers get transparent and trustworthy pricing
+- Ops and Sales teams avoid mismatching models
+- Market-competitive pricing updated regularly
+
+## Who is responsible
+
+**Primary owner**
+
+- Pricing Team (Mohsin Surya)
+
+**Supported by**
+
+- Tech Team → Implementation in admin, app, and website
+- Vendor Ops → Vendor device support mapping and training
+- CX → Reporting customer price mismatch issues
+- Ops → Reporting inspection-related errors
+- Management → Final approval for major pricing resets
+
+## Location in the admin panel
+
+Open:
+
+- Admin Panel → Models & Pricing
+
+This section includes:
+
+- Brands
+- Models
+- Variants
+- Storage options
+- Base prices
+- Deduction logic
+- Model images
+- Supported device types (Phone, Laptop, Tablet, Mac)
+
+## Adding a new device model
+
+Use this flow whenever a new device is launched or not available in the system.
+
+<Steps>
+
+<Step title="Create brand entry (if required)" icon="plus">
+
+- If the brand does not exist, go to **Brands → Add Brand** in the admin panel.
+- Upload the brand icon or logo.
+- Save the brand so it becomes available when adding models.
+
+</Step>
+
+<Step title="Add model under the brand" icon="package">
+
+- Go to **Models → Add New Model**.
+- Select the **Brand**.
+- Enter the **Model Name** (for example, `iPhone 16 Pro Max`).
+- Select **Device Type** (Phone, Laptop, Tablet, Mac).
+- Upload relevant **Model Images**.
+- Save the model.
+
+</Step>
+
+<Step title="Add variants" icon="layers">
+
+- For phones, tablets, and MacBooks:
+  - Add storage variants.
+  - Add RAM options if applicable.
+- For laptops:
+  - Add processor variants.
+- For Macs:
+  - Add year model.
+
+**Example**
+
+- iPhone 16 → 128 GB / 256 GB / 512 GB / 1 TB
+
+</Step>
+
+<Step title="Set base prices" icon="bar-chart">
+
+- Define the **base price** as the price for a device in like-new condition with no issues.
+- Use:
+  - Market trends
+  - Competitor prices
+  - Recycle industry rates
+  - Internal profit margins
+  - Vendor purchase pricing
+- Mohsin sets the final base value.
+
+</Step>
+
+<Step title="Add deduction logic" icon="settings">
+
+Deduction logic is critical. Configure deductions based on:
+
+- Overall condition (Good, Fair, Bad)
+- Screen condition
+- Battery health
+- Body dents or damage
+- Replacement parts
+- Non-working features
+- Storage, RAM, and generation
+
+**Example deductions**
+
+- Battery health less than 80% → -₹500
+- Screen replacement → -₹1500
+- Back glass cracked → -₹700
+
+</Step>
+
+<Step title="Run final testing" icon="check-circle">
+
+The Tech team verifies:
+
+- The model shows correctly in app and website.
+- The price calculator works as expected.
+- Deductions apply properly for different conditions.
+- All variants are visible.
+- Images load correctly.
+
+</Step>
+
+<Step title="Publish pricing" icon="rocket">
+
+- After internal checks and approvals, publish the model so pricing goes live.
+- Confirm that vendors and customers see the updated model and prices.
+
+</Step>
+
+</Steps>
+
+## Editing existing models or updating pricing
+
+Use this when market prices move, device demand changes, or teams report pricing issues.
+
+Pricing updates are needed when:
+
+- Market price fluctuates
+- High-demand models drop in resale value
+- New price trends are observed
+- Competitors change their price
+- Hardware availability changes
+- Seasonal demand shifts
+- Vendors raise repeated complaints about lower or incorrect prices
+
+<Steps>
+
+<Step title="Open the model" icon="search">
+
+- Go to **Admin Panel → Models**.
+- Search and open the specific model that needs an update.
+
+</Step>
+
+<Step title="Update base price" icon="edit">
+
+- Enter the new base price value for the model or variant.
+- Align with current market and internal margin expectations.
+
+</Step>
+
+<Step title="Update deduction pricing" icon="settings">
+
+Adjust deduction slabs based on:
+
+- Screen crack impact
+- Battery health levels
+- Functional issues
+- Fair/Good/Like-New multipliers
+
+Ensure the final payout remains fair to customers and vendors while protecting margins.
+
+</Step>
+
+<Step title="Update market notes (optional)" icon="info">
+
+- Add or revise market notes that help Ops and CX explain pricing to customers.
+- Use notes for context such as demand shifts, part availability, or recent market changes.
+
+</Step>
+
+<Step title="Save changes and notify teams" icon="upload">
+
+- Save all changes in the admin panel.
+- Inform the relevant teams:
+  - Ops
+  - CX
+  - Vendor Ops
+  - Marketing (only if needed)
+- Clear communication avoids misalignment between what different teams communicate and what the system shows.
+
+</Step>
+
+</Steps>
+
+## Pricing approval workflow
+
+Use this sequence when rolling out pricing changes, especially major updates.
+
+| Step | Team               | Action                          |
+| ---- | ------------------ | ------------------------------- |
+| 1    | Pricing (Mohsin)   | Drafts pricing update           |
+| 2    | Management         | Approves major changes          |
+| 3    | Tech               | Implements change               |
+| 4    | Vendor Ops         | Validates real-world impact     |
+| 5    | Ops                | Confirms no user disruption     |
+| 6    | CX                 | Updates information for support |
+
+## Handling incorrect pricing by pincode or area
+
+When any pincode or area reports incorrect pricing, CX must:
+
+- Log the complaint in the internal system.
+- Attach screenshots or customer remarks when available.
+- Notify Mohsin about the issue.
+- Support Pricing while they verify the concern.
+- If the issue is genuine:
+  - Update pricing as needed.
+  - Communicate the resolution back to all relevant teams.
+
+## BD and Vendor Ops responsibilities
+
+### BD team responsibilities
+
+- Track device pricing trends by area.
+- Monitor performance of high-value devices.
+- Ensure models are available in fast-moving cities.
+- Share demand patterns and insights with the Pricing Team.
+
+### Vendor Ops responsibilities
+
+- Ensure vendors support all newly added models.
+- Train vendors on updated pricing and deduction logic.
+- Report deduction issues observed in the field.
+- Flag models that cause frequent disputes or confusion.
+
+## Common scenarios and solutions
+
+<ExpandableGroup>
+
+<Expandable title="A. New model not showing in app" default-open="true">
+
+- **Cause**
+  - Tech sync issue between admin and app or website.
+- **Solution**
+  - Clear cache.
+  - Sync the database.
+  - Check that all variants and required fields are correctly configured.
+
+</Expandable>
+
+<Expandable title="B. Wrong price showing">
+
+- **Cause**
+  - Incorrect deduction logic or slabs applied.
+- **Solution**
+  - Review and update rules under **Deductions** for the relevant model and variants.
+
+</Expandable>
+
+<Expandable title="C. Vendors complaining about too low pricing">
+
+- **Cause**
+  - Market fluctuations not reflected in current pricing.
+- **Solution**
+  - Review current market price and adjust base price and deductions if required.
+
+</Expandable>
+
+<Expandable title="D. Customer says price is too low">
+
+- **Solution**
+  - CX explains condition-based pricing to the customer.
+  - Refer to specific deductions applied for condition, parts, and functionality.
+
+</Expandable>
+
+<Expandable title="E. Customer model not listed">
+
+- **Solution**
+  - If it is an old model → Mark as not supported.
+  - If it is a new model → Inform Mohsin so the model is added immediately.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Audit rules
+
+<Callout kind="alert">
+
+- Every pricing change must include internal notes.
+- Do not use manual or unofficial pricing outside the system.
+- Retain pricing change logs for 12 months.
+- Ensure all changes are visible in the audit trail.
+- Only authorized users may change pricing.
+
+</Callout>
+
+## One-page quick summary (training card)
+
+<Callout kind="info">
+
+**Adding a new model**
+
+- Brand → Model → Variants → Base Price → Deductions → Test → Publish
+
+**Updating pricing**
+
+- Edit Base Price → Update Deductions → Save → Notify Teams
+
+**Teams involved**
+
+- Pricing Team → Creates and updates pricing
+- Tech → Implements in system
+- Vendor Ops → Validates and trains vendors
+- Ops and CX → Communicate to customers and handle issues
+- BD Team → Tracks area-level demand and trends
+- Management → Approves major changes
+
+**Goal**
+
+- Keep pricing accurate, market-aligned, and transparent for vendors and customers.
+
+</Callout>

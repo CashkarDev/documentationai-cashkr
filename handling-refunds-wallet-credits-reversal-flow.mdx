@@ -1,0 +1,411 @@
+---
+title: Handling Refunds (Wallet & Credits Reversal Flow)
+description: Standard operating procedure for handling vendor wallet refunds, credit reversals, and rare customer refunds in Cashkr with clear approvals and audit rules.
+---
+
+## Overview
+
+Handle refunds in a consistent way across Finance, Ops, CX, Vendor Ops, and Business Development so that balances stay accurate, fraud is prevented, and every decision is auditable.
+
+This SOP covers:
+
+- Vendor wallet refunds
+- Vendor credit reversals
+- Rare customer refunds linked to misrouted payments
+
+It defines when refunds are allowed, who can approve them, exact Admin Panel actions, fraud checks, and documentation rules.
+
+## Refund types
+
+<Tabs>
+
+<Tab title="Vendor wallet refunds" icon="wallet">
+
+Vendor wallet refunds apply when vendors paid customers from their wallet but the order is later reversed or corrected and the vendor balance must be restored.
+
+Typical cases:
+
+- Wrong payment
+- Duplicate payment
+- Ops-approved return
+- Vendor refund due to system error
+
+The result is that the vendor wallet balance increases by the refunded amount.
+
+</Tab>
+
+<Tab title="Vendor credit reversal" icon="database">
+
+Vendor credit reversals apply when credits were deducted to unlock an order and those credits must be returned.
+
+Typical cases:
+
+- Order wrongly assigned
+- System glitch during unlock
+- Vendor not at fault after Ops confirmation
+- Return flow where vendor is not responsible
+
+The result is that the vendor unlock credit balance is restored.
+
+</Tab>
+
+<Tab title="Customer refunds (rare)" icon="users">
+
+Customer refunds are rare because customers usually receive money from Cashkr, not pay into Cashkr.
+
+Use this only when:
+
+- Payment sent to wrong UPI
+- Duplicate payout by vendor
+- Customer did not receive amount due to bank errors
+
+In these cases, Finance first verifies the issue, then the refund amount is re-sent to the correct customer UPI.
+
+</Tab>
+
+</Tabs>
+
+## When refunds are allowed
+
+Refunds are processed only under these verified cases:
+
+- **Order cancelled after payment (return flow approved)**
+  - Ops confirms vendor fault or system fault.
+  - Device returned to customer.
+  - Wallet and credits reversed as per decision.
+
+- **Wrong payment by vendor**
+  - Incorrect UPI entered.
+  - Double payment.
+  - Payment mismatch.
+  - Wrong amount paid.
+
+- **System errors or app bugs**
+  - Payment triggered twice.
+  - Credits deducted multiple times.
+  - Wallet deducted without payout.
+
+- **Vendor needs reversal after Ops decision**
+  - Vendor not responsible for failure.
+  - Ops approves restore of credits.
+
+- **High-level correction from Finance or Management**
+  - Audit corrections.
+  - Ledger misalignment.
+  - Exception-based approvals.
+
+## Approval authority levels
+
+Use this matrix to confirm who must approve each type of refund before processing.
+
+| Refund type                     | Approval required                     |
+| ------------------------------- | ------------------------------------- |
+| Credit reversal (low amount)    | Vendor Ops                            |
+| Credit reversal (high amount)   | Vendor Ops Manager                    |
+| Wallet refund (less than ₹5,000) | Finance                               |
+| Wallet refund (more than ₹5,000) | Finance Head and Ops Manager          |
+| Customer refund                 | Finance Head, Ops, and Management     |
+| Fraud or suspicious cases       | CEO or Compliance Team                |
+
+<Callout kind="alert">
+
+No team may bypass these approval rules under any circumstance.
+
+</Callout>
+
+## Wallet refund (vendor wallet reversal)
+
+Use this process when a vendor wallet must be credited back.
+
+<Steps>
+
+<Step title="CX or Ops identifies the case" icon="search">
+
+Collect all required details:
+
+- Order ID
+- Vendor ID
+- Payment proof
+- Reason for reversal
+- Vendor explanation
+
+Add clear internal notes in the Admin Panel describing what happened and what the vendor is requesting. The case is ready for Ops validation when all data and proofs are attached.
+
+</Step>
+
+<Step title="Ops validates the case" icon="shield">
+
+Ops must check:
+
+- Payment logs
+- Order reason
+- Vendor performance history
+- Inspection correctness
+
+If the case is justified and aligns with the allowed refund conditions, Ops approves the reversal and escalates the case to Finance. If not justified, Ops clearly records the rejection reason in notes.
+
+</Step>
+
+<Step title="Finance verifies the payment" icon="database">
+
+Finance validates that the payment issue is real by checking:
+
+- Bank statement
+- UPI transaction logs
+- System payout logs
+- Any duplicate or incorrect payments
+
+If Finance confirms the issue, proceed to wallet adjustment. If not, Finance records the reason and closes the case.
+
+</Step>
+
+<Step title="Adjust wallet in Admin Panel" icon="settings">
+
+Update the vendor wallet balance.
+
+Path:
+
+- `Finance Panel → Wallet Adjustments → Add Wallet Balance`
+
+Fields:
+
+- Vendor ID
+- Amount
+- Reason (must be detailed)
+- Reference ID (UTR, Order ID, or both)
+
+Save the adjustment only after re-checking the amount and references.
+
+</Step>
+
+<Step title="Add detailed refund reason in notes" icon="edit">
+
+Record the refund decision for audit.
+
+Include:
+
+- Exact reason for refund
+- Who approved and at what level
+- Linked Order ID and UTR
+- Any supporting screenshot reference
+
+These notes are mandatory for investigation and future audits.
+
+</Step>
+
+<Step title="Vendor notification" icon="check-circle">
+
+After the wallet is credited, the vendor receives an automatic notification such as:
+
+`Your Wallet has been credited with ₹____ for Order ID ______.`
+
+Confirm that the wallet balance reflects the new amount in the Admin Panel.
+
+</Step>
+
+</Steps>
+
+## Credit reversal (order unlock credits)
+
+Use this process when unlock credits must be restored to a vendor.
+
+<Steps>
+
+<Step title="Ops approves credit reversal" icon="check-circle">
+
+Ops reviews the case and approves credit reversal when:
+
+- Vendor is not at fault.
+- There was a system error.
+- Failure was marked incorrectly.
+- Return is approved and vendor is not responsible.
+
+Ops adds clear internal notes in the Admin Panel explaining why credits should be restored.
+
+</Step>
+
+<Step title="Vendor Ops confirms vendor eligibility" icon="users">
+
+Vendor Ops checks that the vendor:
+
+- Is not involved in fraud.
+- Is not on hold.
+- Has a valid and documented reason.
+
+If the vendor fails these checks, Vendor Ops does not proceed and records the reason.
+
+</Step>
+
+<Step title="Adjust credits in Admin Panel" icon="settings">
+
+Restore the required number of credits.
+
+Path:
+
+- `Vendor → Credit Management → Add Credits`
+
+Fields:
+
+- Vendor ID
+- Number of credits
+- Reason
+- Order ID reference
+
+Confirm that the credits added match the original deduction.
+
+</Step>
+
+<Step title="Confirm credits reversal and notification" icon="terminal">
+
+Once saved, the system updates the vendor credit balance instantly.
+
+The vendor receives a notification such as:
+
+`Your Credits have been restored successfully.`
+
+Verify that the updated credit balance is visible in the vendor profile.
+
+</Step>
+
+</Steps>
+
+## Customer refund (rare)
+
+Use this flow only for payment misrouting or bank-related issues affecting the customer.
+
+<Steps>
+
+<Step title="CX logs the issue" icon="edit">
+
+CX collects:
+
+- UTR screenshot from the customer
+- Payment delay details
+- Any wrong UPI or beneficiary details
+
+CX logs the complete issue in the Admin Panel with attached proofs and a clear problem statement.
+
+</Step>
+
+<Step title="Finance validates the transaction" icon="database">
+
+Finance checks:
+
+- Vendor payout logs
+- Bank processing timelines and delays
+- Whether the payment went to the wrong beneficiary
+
+If Finance confirms that the customer has not received the due amount or it went to a wrong UPI, they mark the case as refund-approved pending sign-off.
+
+</Step>
+
+<Step title="Obtain required approvals" icon="shield">
+
+Customer refunds require:
+
+- Finance Head approval
+- Ops Manager or Ops team approval
+- Management sign-off
+
+Record all approvals in the Admin Panel notes before re-initiating the payment.
+
+</Step>
+
+<Step title="Re-initiate payment to customer" icon="upload">
+
+Re-send the refund amount to the customer's correct UPI ID after verification.
+
+Capture the new UTR and payment confirmation, and attach these details to the same case in the Admin Panel.
+
+</Step>
+
+<Step title="Update Admin Panel notes" icon="check-circle">
+
+Update notes with:
+
+- Why refund was needed
+- Proofs attached (screenshots, logs)
+- Action taken (re-initiated payment details)
+- Confirmation from Finance and other approvers
+
+These notes complete the audit trail for the customer refund.
+
+</Step>
+
+</Steps>
+
+## Fraud detection in refund requests
+
+Identify and block fraudulent or high-risk refund requests immediately.
+
+Fraud indicators:
+
+- Vendor claims false payment issues not supported by logs.
+- Vendor attempts a double refund for the same order or payment.
+- Vendor uploads edited or suspicious screenshots as proof.
+- Vendor requests reversal without a valid and documented reason.
+- Vendor requests refund for orders marked as `To Be Failed` due to vendor mistake.
+
+Required actions for fraudulent vendors:
+
+- Put the vendor on hold.
+- Open an investigation into all recent activities and refunds.
+- Penalize with credit deduction where appropriate.
+- Deactivate the vendor if fraudulent behaviour is repeated.
+
+<Callout kind="alert">
+
+If you detect any fraud indicator, do not process the refund. Escalate to the Compliance Team or CEO as per the approval matrix.
+
+</Callout>
+
+## BD team responsibilities
+
+Business Development does not process or approve refunds but must use refund data to improve network quality and performance.
+
+BD should:
+
+- Identify high-failure zones using refund and reversal patterns.
+- Flag problematic vendors in specific areas with repeated refunds.
+- Highlight cities or regions with poor SLA that lead to more refunds.
+- Improve coverage and vendor quality in high-refund pincodes based on data.
+
+BD focuses on analytics and vendor or area performance, not on executing refunds.
+
+## Documentation and notes (mandatory)
+
+Every refund case must include the following details in the Admin Panel:
+
+- Order ID
+- Vendor or customer details
+- Amount refunded
+- Why the refund was needed
+- Who approved the refund
+- Evidence such as screenshots and UTR references
+- Final confirmation from Finance
+
+<Callout kind="alert">
+
+If any of these notes or evidences are missing, the refund is treated as invalid and must be corrected or reversed.
+
+</Callout>
+
+## Quick summary card
+
+<Callout kind="tip">
+
+**One-page quick summary**
+
+- **Wallet refund** = Vendor wallet balance returned  
+  Used when vendor overpaid or a reversal is approved.
+
+- **Credit refund** = Commission or unlock credits returned  
+  Used when the vendor is not at fault.
+
+- **Customer refund** = Very rare  
+  Used only for payment misrouting or bank issues.
+
+**Approval flow:** Ops → Vendor Ops → Finance → Final approval  
+All actions require strict verification and complete audit notes.
+
+</Callout>

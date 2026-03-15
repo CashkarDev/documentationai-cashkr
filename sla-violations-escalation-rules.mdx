@@ -1,0 +1,324 @@
+---
+title: SLA Violations & Escalation Rules
+description: Define SLA violations for Cashkr vendors, how they are tracked, and the exact escalation, penalty, and communication rules Ops teams must follow.
+---
+
+## Overview
+
+Use this SOP when handling SLA issues for **Cashkr vendors, Ops team, CX, and Support**. It defines what counts as an SLA violation, how violations are tracked, when escalation triggers, and what actions the Ops team must take at each stage.
+
+The goal is to maintain a consistent customer experience and remove poor-performing or high-risk vendors while treating everyone fairly and consistently.
+
+<Callout kind="info">
+
+Two key rules:
+
+- 5+ violations in a week automatically trigger escalation.
+- Fraud and high-risk violations are **zero tolerance** and lead to an immediate block.
+
+</Callout>
+
+### Purpose
+
+This SOP defines:
+
+- What counts as an SLA violation
+- How violations are tracked
+- How many violations trigger escalation
+- What actions the Ops Team should take
+- When vendors are fined, put on hold, or terminated
+
+## What is SLA?
+
+An SLA (Service Level Agreement) is the set of rules every vendor must follow to ensure:
+
+- On-time pickups
+- Accurate inspections
+- Professional behaviour
+- Proper payment flow
+- Zero fraud
+- Completed orders within the expected time
+
+Breaking these rules counts as an **SLA violation**.
+
+## Types of SLA violations
+
+There are six major SLA categories, each with defined violation types.
+
+<Tabs>
+
+<Tab title="Pickup SLA violations" icon="truck">
+
+| Violation                         | Description                                                                 |
+| --------------------------------- | --------------------------------------------------------------------------- |
+| Delayed pickup                    | Vendor does not reach the customer within the agreed time.                 |
+| No-show / not visiting           | Vendor marks `Customer Not Available` without actually going.              |
+| Not calling customer             | Vendor makes no attempt to contact the customer after unlock.             |
+| Multiple reschedules by vendor   | Vendor keeps postponing the pickup.                                        |
+| Taking too long (3–6 hour window) | Vendor exceeds the 3–6 hour pickup window.                                 |
+| Delay causing customer cancellation | Delays from vendor side lead to customer cancelling the order.            |
+
+</Tab>
+
+<Tab title="Behaviour SLA violations" icon="users">
+
+| Violation                   | Description                                               |
+| --------------------------- | --------------------------------------------------------- |
+| Rude behaviour / impolite tone | Customer reports disrespectful interaction by the vendor. |
+| Arguments / fighting        | Vendor argues with or threatens the customer.            |
+| Unprofessional conduct      | Smoking, shouting, or using bad language at pickup.      |
+
+</Tab>
+
+<Tab title="Inspection SLA violations" icon="search">
+
+| Violation               | Description                                                                 |
+| ----------------------- | --------------------------------------------------------------------------- |
+| Wrong condition marking | Vendor misrepresents defects intentionally or due to carelessness.         |
+| IMEI mismatch / wrong serial | Vendor enters wrong IMEI or serial number details.                        |
+| Manipulating price      | Vendor tries to reduce the price for personal benefit.                     |
+| Incomplete inspection   | Vendor does not check the device properly, leading to disputes.            |
+
+</Tab>
+
+<Tab title="Payment SLA violations" icon="payment">
+
+| Violation                 | Description                                                               |
+| ------------------------- | ------------------------------------------------------------------------- |
+| Delayed payment           | Vendor delays OTP payment after inspection.                               |
+| Offline payment attempt   | Vendor attempts Google Pay, PhonePe, cash, or other offline payment.     |
+| Taking device before payment | Vendor takes the device before payment completion (major violation, fraud risk). |
+| Entering OTP without customer consent | Vendor enters payment OTP without clear customer permission.           |
+
+</Tab>
+
+<Tab title="Order handling SLA violations" icon="settings">
+
+| Violation                  | Description                                               |
+| -------------------------- | --------------------------------------------------------- |
+| Marking wrong failure reason | Vendor lies about the customer issue when failing orders. |
+| Frequent `To Be Failed` due to vendor fault | Pattern of `To Be Failed` orders caused by vendor issues.  |
+| Not closing order properly | Vendor leaves orders pending and does not close them.    |
+
+</Tab>
+
+<Tab title="Fraud & high-risk violations" icon="alert-triangle">
+
+| Violation                         | Description                                        |
+| --------------------------------- | -------------------------------------------------- |
+| Taking device without payment     | Fraud – immediate block.                          |
+| Tampering with device            | Vendor removes parts or intentionally damages it. |
+| Forcing customer for lower price | Vendor uses coercion or pressure to reduce price. |
+| Asking for extra money / hidden charges | Vendor asks for extra or hidden charges.          |
+| Using personal UPI for payment   | Vendor uses personal UPI for customer payment (against policy). |
+| Fake location / fake completion mark | Vendor manipulates system location or completion status. |
+
+</Tab>
+
+</Tabs>
+
+## SLA violation severity levels
+
+SLA violations fall into three severity categories. Use these levels to decide the default response before checking the escalation rules.
+
+| Level                     | Examples                                             | Default action                                      |
+| ------------------------- | ---------------------------------------------------- | --------------------------------------------------- |
+| Level 1 — Minor           | Late by a small margin, customer not responding, low-impact issues | Warning and education.                              |
+| Level 2 — Major           | No-show, wrong inspection, rude behaviour, offline payment attempt | Credit deduction, lead limit reduction, SLA strike. |
+| Level 3 — Critical / Fraud | Taking device without payment, fake entries, intentional cheating, threatening customer | Immediate hold or block, escalation to Ops Manager, possible legal action. |
+
+## SLA violation tracking system
+
+Monitor every vendor on a **weekly** basis using:
+
+- App data
+- `To Be Failed` orders
+- Customer complaints
+- Ops feedback
+- Payment logs
+
+If a vendor exceeds **5 violations in a week**, escalation **automatically triggers** based on the escalation ladder below.
+
+## Escalation rules
+
+Use this escalation ladder when weekly violations or specific behaviours meet the triggers.
+
+<Steps>
+
+<Step title="Stage 1 — Warning (1–2 violations/week)" icon="info">
+
+**Trigger**
+
+- Vendor has **1–2 violations in a week**.
+
+**Ops team actions**
+
+- Call the vendor.
+- Explain the violation clearly.
+- Provide behaviour and process correction.
+- Reset expectations on SLA and customer experience.
+
+**Vendor status**
+
+- **Active** (no restrictions).
+
+</Step>
+
+<Step title="Stage 2 — Strike & training (3–5 violations/week)" icon="alert-triangle">
+
+**Trigger**
+
+- Vendor has **3–5 violations in a week**.
+
+**Ops team actions**
+
+- Issue an **SLA Strike**.
+- Schedule mandatory training on pickup and behaviour.
+- Reduce daily unlock limit.
+- Monitor performance closely for the next 7 days.
+
+**Vendor status**
+
+- **Active with restrictions** (reduced limits and close monitoring).
+
+</Step>
+
+<Step title="Stage 3 — Hold (5+ violations/week)" icon="x-circle">
+
+**Trigger**
+
+- Vendor has **5+ violations in a week** (as per your company rule for holds).
+
+**Ops team actions**
+
+- Put the vendor on **temporary hold**.
+- Stop all new orders for the vendor.
+- Deduct credits for vendor faults.
+- Inform the vendor on WhatsApp or SMS.
+- Require the vendor to complete retraining before reactivation.
+
+**Vendor status**
+
+- **On Hold** (no new orders until retraining and approval).
+
+</Step>
+
+<Step title="Stage 4 — Escalation to Ops Manager" icon="chevron-right">
+
+**Trigger**
+
+- Vendor crosses **5+ violations in a week**, or
+- Vendor has multiple holds within 30 days, or
+- There are customer escalations, behaviour issues, or payment misconduct.
+
+**Ops Manager actions**
+
+- Review the entire vendor performance and history.
+- Decide on fine, limit reduction, or long-term hold.
+- If the issue repeats after action, move the vendor to Stage 5.
+
+**Vendor status**
+
+- **Critical review** (under Ops Manager assessment).
+
+</Step>
+
+<Step title="Stage 5 — Permanent block / termination" icon="trash">
+
+**Trigger**
+
+- Repeated major violations, fraud attempts, payment manipulation, customer harassment, or device stealing / unpaid pickups.
+
+**Ops Manager + CEO actions**
+
+- Permanently block the vendor.
+- Remove area access.
+- Flag the vendor in the system to avoid re-onboarding.
+- Escalate legally if required.
+
+**Vendor status**
+
+- **Terminated** (no future work with Cashkr).
+
+</Step>
+
+</Steps>
+
+## SLA penalty matrix
+
+Use this matrix to decide credits and escalation for common scenarios.
+
+| Violation type               | Vendor fault? | Credits deducted? | Vendor status | Escalation  |
+| ---------------------------- | ------------- | ----------------- | ------------- | ----------- |
+| Minor delay                  | Maybe         | No                | Active        | No          |
+| Wrong inspection             | Yes           | Yes               | Strike        | Yes         |
+| Rude behaviour               | Yes           | Yes               | Strike        | Yes         |
+| Offline UPI attempt          | Yes           | Yes               | Hold          | Yes         |
+| No-show                      | Yes           | Yes               | Strike        | Yes         |
+| Device taken without payment | Yes           | Yes (full)        | Block         | Immediate   |
+| Customer rejects price       | No            | No                | Active        | No          |
+| Customer not available       | No            | No                | Active        | No          |
+
+## Vendor communication templates
+
+Use these standard messages when communicating SLA actions to vendors.
+
+<ExpandableGroup>
+
+<Expandable title="Warning message (Stage 1)" default-open="true">
+
+> Your recent order had SLA issues. Please follow pickup timing and proper behaviour. This is a warning.
+
+</Expandable>
+
+<Expandable title="Strike message (Stage 2)">
+
+> We noticed multiple SLA violations. You are given an SLA Strike. Your limits may reduce until improvement.
+
+</Expandable>
+
+<Expandable title="Hold message (Stage 3)">
+
+> Your account is on Hold due to repeated SLA violations. Complete retraining to reactivate.
+
+</Expandable>
+
+<Expandable title="Termination message (Stage 5)">
+
+> Your vendor account has been permanently deactivated due to critical SLA violations as per company policy.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Internal Ops rules summary
+
+### Always deduct credits when
+
+- Vendor fault
+- Wrong inspection
+- No-show
+- Offline payment
+- Behaviour issue
+
+### Always refund credits when
+
+- Customer fault
+- Mismatch created by customer
+- Customer cancels
+- OTP issues from customer side
+
+## Quick overview
+
+<Callout kind="tip">
+
+Fast summary for training:
+
+- **3 SLA levels**  
+  - Level 1 → Warning  
+  - Level 2 → Strike  
+  - Level 3 → Hold / Block
+- **5+ violations per week** = Escalation
+- **Fraud** = Immediate block
+
+</Callout>
