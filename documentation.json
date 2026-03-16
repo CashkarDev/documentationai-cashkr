@@ -36,7 +36,7 @@
               {
                 "title": "Emails of cashkr",
                 "path": "emails-of-cashkr",
-                "icon": "airplay"
+                "icon": "file-text"
               },
               {
                 "title": "Components",
@@ -117,7 +117,7 @@
                 "path": "logout-and-account-deletion"
               }
             ],
-            "icon": "airplay"
+            "icon": "file-text"
           },
           {
             "group": "Customer App",
@@ -191,7 +191,7 @@
                 "path": "delete-account"
               }
             ],
-            "icon": "album"
+            "icon": "file-text"
           },
           {
             "group": "Vendor App",
@@ -261,12 +261,12 @@
                 "path": "logout---vendor-app"
               }
             ],
-            "icon": "align-center"
+            "icon": "file-text"
           },
           {
             "group": "Admin Panel",
             "pages": [],
-            "icon": "airplay-icon"
+            "icon": "file-text"
           },
           {
             "group": "Core Features",
@@ -621,12 +621,12 @@
               {
                 "title": "Images",
                 "path": "components/images",
-                "icon": "image"
+                "icon": "file-text"
               },
               {
                 "title": "Cards",
                 "path": "components/cards",
-                "icon": "square"
+                "icon": "file-text"
               },
               {
                 "title": "Code",
@@ -636,17 +636,17 @@
               {
                 "title": "Callouts",
                 "path": "components/callouts",
-                "icon": "message-square"
+                "icon": "file-text"
               },
               {
                 "title": "Steps",
                 "path": "components/steps",
-                "icon": "list-ordered"
+                "icon": "list"
               },
               {
                 "title": "Tabs",
                 "path": "components/tabs",
-                "icon": "columns"
+                "icon": "layout"
               }
             ]
           }
@@ -669,7 +669,8 @@
           },
           {
             "group": "Sample Endpoints",
-            "openapi": "openapi.yaml"
+            "openapi": "api-reference/openapi.yaml",
+            "pages": []
           }
         ]
       },
@@ -695,7 +696,7 @@
           },
           {
             "group": "Troubleshooting",
-            "icon": "alert-triangle",
+            "icon": "alert-circle",
             "expandable": false,
             "pages": [
               {
@@ -730,7 +731,7 @@
       },
       {
         "tab": "Cashkr DB",
-        "icon": "activity-square",
+        "icon": "file-text",
         "groups": [
           {
             "group": "WalkThrough",
@@ -964,7 +965,7 @@
                 "path": "vendor-behavior-guidelines-dos-donts-at-pickup"
               },
               {
-                "title": "🧠 Vendor SLA & Violation Policy Script",
+                "title": "Vendor SLA & Violation Policy Script",
                 "path": "vendor-sla-violation-policy-script"
               },
               {
