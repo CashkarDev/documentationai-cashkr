@@ -1,0 +1,357 @@
+---
+title: Order Flow – Unlock → Pickup → Payment
+description: Standard operating procedure for vendors and internal teams from order unlock through pickup, inspection, OTP payment, and completion.
+---
+
+## Purpose and prerequisites
+
+Order unlock to payment completion is the core vendor workflow. This SOP aligns vendor actions, app statuses, and customer communication so that every order moves cleanly from Generated to Completed or Failed.
+
+Before unlocking any order, confirm:
+
+- Vendor credits are available and within the Max Lead cap as per [Unlock Lead](/unlock-lead).
+- Wallet has enough balance to complete likely payouts.
+- You or your assigned agent can serve the pincode within SLA.
+- Your account has no active holds, deactivations, or SLA blocks.
+
+<Callout kind="info">
+
+Ops can use this SOP as the high-level flow and refer to detailed screens in:
+
+- [Unlock Lead](/unlock-lead)
+- [Out for Pickup or Fail](/out-for-pickup-or-fail)
+- [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow)
+- [Order Status](/order-status)
+- [Order Tracking & Customer Notifications](/order-tracking-customer-notifications)
+
+</Callout>
+
+## What unlock gives the vendor
+
+When an order moves from Available Orders to InProgress Orders after a successful unlock:
+
+- Credits are checked and deducted only if unlock succeeds, following [Unlock Lead](/unlock-lead).
+- Max Lead cap is enforced; if reached, unlock fails and no credits are deducted.
+- You see full customer and device details needed for pickup.
+
+Unlocked data typically includes:
+
+- Customer name and primary phone number
+- Pickup address with map link
+- Device make, model, and configuration
+- Original expected price and selected device condition
+- Order ID and current status (for example, InProgress)
+
+If unlock fails due to insufficient credits, Max Lead cap, or the order already taken, keep the order as Available or move to the correct failure bucket as defined in [Unlock Lead](/unlock-lead).
+
+## OTP types in this flow
+
+Two different OTPs are involved in the field workflow:
+
+- **Lead OTP (inspection OTP)**  
+  The customer receives a lead OTP when the order is generated. During the pickup visit, you use this OTP to verify that you are inspecting the correct device and starting inspection. Lead OTP is part of the OutForPickup to InspectionStarted transition described in [Out for Pickup or Fail](/out-for-pickup-or-fail) and [Order Status](/order-status).
+
+- **Payment OTP**  
+  After final price is confirmed, the customer receives a payment OTP. You must enter this OTP in the app to trigger payment from your wallet to the customer account. This is documented in [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow) and reflected in customer-facing “OTP Payment” notifications in [Order Tracking & Customer Notifications](/order-tracking-customer-notifications).
+
+<Callout kind="alert">
+
+OTP usage is mandatory:
+
+- Never start inspection without validating the lead OTP with the customer.
+- Never complete a payout without entering the correct payment OTP.
+- Never guess or enter random OTPs.
+
+</Callout>
+
+## End-to-end workflow: unlock → pickup → payment
+
+Use this sequence for every standard order. Status names below follow [Order Status](/order-status), and customer-visible events follow [Order Tracking & Customer Notifications](/order-tracking-customer-notifications).
+
+<Steps>
+
+<Step title="Unlock the order" icon="unlock" titleType="h3">
+
+- Open **Available Orders** and choose a suitable lead based on area and timing.
+- Tap **Unlock**. The system checks credits, Max Lead, and any holds as defined in [Unlock Lead](/unlock-lead).
+- On success:
+  - Credits are deducted.
+  - Order moves from **Generated** to **InProgress (Assigned)**.
+  - Customer sees a **Vendor Assigned** / **Vendor En Route** style notification depending on later actions.
+- On failure:
+  - No credits are deducted.
+  - Follow the reason-specific handling in [Unlock Lead](/unlock-lead) or escalate if the error is unexpected.
+
+</Step>
+
+<Step title="Call the customer and confirm pickup plan" icon="phone" titleType="h3">
+
+- Call the customer shortly after unlock to:
+  - Introduce yourself as the Cashkr pickup partner.
+  - Confirm device, address, and preferred pickup window.
+  - Align expectations on inspection on-site and instant payment after OTP.
+- Use the tone and sample lines from [Pickup Communication Best Practices](/pickup-communication-best-practices).
+- Update call disposition correctly in [Call Disposition](/call-disposition) so Ops can see contact outcome.
+- If customer wants to reschedule or change address, follow [Reschedule](/reschedule) or [Reschedule Pickup – SOPs](/reschedule-pickup---sops) instead of informal promises.
+
+</Step>
+
+<Step title="Decide Out for Pickup vs Fail after call" icon="arrow-right" titleType="h3">
+
+- After the call, set the correct next stage using [Out for Pickup or Fail](/out-for-pickup-or-fail):
+  - If customer is ready and reachable: move order to **OutForPickup**.
+  - If order clearly cannot proceed (for example, wrong device, non-serviceable, customer clearly uninterested), use **Fail** with an accurate reason.
+- When you set **OutForPickup**:
+  - Customer sees a **Vendor En Route** or similar notification.
+  - The app makes **lead OTP verification** available during the visit.
+- When you mark **Fail**:
+  - Order moves to **Failed** with the selected failure reason.
+  - Credits and refunds follow the logic in **To Be Failed Orders & Credit Deduction Logic** if applicable.
+
+</Step>
+
+<Step title="Visit customer and verify lead OTP" icon="map-pin" titleType="h3">
+
+- Reach the customer location based on the confirmed plan.
+- At the door:
+  - Confirm customer name and order ID verbally.
+  - Explain that you will check the device and then pay via Cashkr app only.
+- Ask the customer to open their SMS or WhatsApp and share the **lead OTP** associated with this order.
+- Enter the lead OTP in the app:
+  - On success, the status moves to **InspectionStarted** and the app opens the device assessment screens.
+  - If OTP fails or customer cannot show it, follow the handling in [Handling Customer Issues During Pickup](/handling-customer-issues-during-pickup) or escalate to support.
+
+</Step>
+
+<Step title="Assess the device accurately in app" icon="monitor" titleType="h3">
+
+- Perform a complete assessment based on SBWPTA (screen, body, warranty, physical, technical, accessories, device on).
+- Enter actual condition fields in the vendor app without shortcuts; do not adjust to match the original quote if the condition has changed.
+- Follow the detailed checklist and examples in [Device Assessment Workflow](/device-assessment-workflow) and [Body Condition Selection Logic](/body-condition-selection-logic).
+- Save the inspection so that:
+  - The pricing engine recalculates the final price.
+  - Status remains **InspectionStarted** until you confirm with the customer.
+
+<Callout kind="alert">
+
+Do not perform manual pricing. Always use the app-generated inspection screens:
+
+- No off-system quote edits or side agreements.
+- All field changes must be done in the app so that audit logs and pricing logic stay intact.
+
+</Callout>
+
+</Step>
+
+<Step title="Share final price and choose complete vs requote vs fail" icon="info" titleType="h3">
+
+- Show the customer:
+  - Original expected price from order creation.
+  - Final inspected price generated after SBWPTA inputs.
+- Explain any difference using the script guidance in [Price Change Explanation Script](/price-change-explanation-script).
+- Based on customer response:
+  - If customer accepts: proceed towards **Complete** via payment.
+  - If customer wants a changed offer or different configuration: follow **Requote** flow in [Requote Order](/requote-order).
+  - If customer clearly rejects or cannot proceed even after requote: handle **Fail After Requote** or direct **Fail** as per [Fail After Requote](/fail-after-requote).
+
+When you choose **Requote**, the system can move to intermediate statuses, and final outcome will be **Completed** or **Failed** after requote result.
+
+</Step>
+
+<Step title="Trigger payment using OTP (wallet to customer)" icon="credit-card" titleType="h3">
+
+- Once the customer agrees to the final price:
+  - Tap **Pay Now** in the app.
+  - Confirm that the final price on screen matches what you communicated.
+- The system sends a **payment OTP** to the customer’s registered contact:
+  - Ask the customer to read the OTP from their SMS or WhatsApp.
+  - Enter the OTP in the app exactly as shared.
+- On successful OTP validation:
+  - Payment moves from **Vendor Wallet** to the customer’s bank or chosen payment method, as documented in [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+  - The app shows **Payment Successful** with transaction ID.
+  - Customer sees an **OTP Payment** and **Completed** style update in tracking as per [Order Tracking & Customer Notifications](/order-tracking-customer-notifications).
+
+If the OTP is delayed or not received, use the troubleshooting steps in [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow) and avoid repeated blind retries.
+
+<Callout kind="alert">
+
+Payment rules are strict:
+
+- No cash, no direct UPI, and no manual bank transfers outside the app.
+- Never take the customer’s phone or enter OTP without their clear consent.
+- Never take the device until the app shows **Payment Successful**.
+- Every payout must flow through wallet and OTP so that transaction and audit logs remain accurate.
+
+</Callout>
+
+</Step>
+
+<Step title="Mark order completed and collect device" icon="check-circle" titleType="h3">
+
+- After payment shows as successful:
+  - Hand over any receipt or confirmation screen to the customer.
+  - Collect the device and any agreed accessories.
+  - Tap **Mark as Completed** in the app.
+- The system:
+  - Moves status to **Completed**.
+  - Sends the final **Completed** notification to the customer.
+  - Stores payment transaction ID and inspection data for audit.
+
+Only treat an order as closed when:
+
+- Inspection is done and recorded.
+- Payment is fully processed in app.
+- Status is set to **Completed** or **Failed** with a clear reason.
+
+</Step>
+
+</Steps>
+
+## Vendor vs Ops/CX view of the flow
+
+Use these tabs to align actions on the same stages from different perspectives.
+
+<Tabs>
+
+<Tab title="Vendor checklist" icon="check">
+
+- Unlock only when you are ready to serve the lead and have credits and wallet balance.
+- Call customer promptly and set a realistic pickup window; update call disposition correctly.
+- Use **Out for Pickup** when you intend to visit; use **Fail** only with accurate reasons.
+- Verify **lead OTP** at the door before starting inspection.
+- Follow [Device Assessment Workflow](/device-assessment-workflow) for all condition inputs.
+- Explain final price changes using [Price Change Explanation Script](/price-change-explanation-script).
+- Use **Requote** when system logic allows a revised offer; do not improvise off-app prices.
+- Trigger payment only after clear acceptance, and use the **payment OTP** strictly as per [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+- Mark the order **Completed** only after payment success and device handover.
+
+</Tab>
+
+<Tab title="Ops/CX notes" icon="info">
+
+- Monitor transitions: **Generated → InProgress → OutForPickup → InspectionStarted → Completed/Failed** using [Order Status](/order-status).
+- Check unlock failures and Max Lead rejections against [Unlock Lead](/unlock-lead) and [Max Lead](/max-lead) to detect misuse or system issues.
+- For communication complaints, cross-reference call notes with [Pickup Communication Best Practices](/pickup-communication-best-practices).
+- When customers report “no one came” or “vendor asked for cash/UPI”, verify:
+  - OutForPickup timestamps.
+  - Payment logs in [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+- For mismatch disputes, compare:
+  - Original quote answers.
+  - SBWPTA inspection inputs from [Device Assessment Workflow](/device-assessment-workflow).
+- Use [Handling Customer Issues During Pickup](/handling-customer-issues-during-pickup) and [SLA Violations & Escalation Rules](/sla-violations-escalation-rules) for complex cases.
+- Ensure all failures use the correct reason code, and route **Fail After Requote** via [Fail After Requote](/fail-after-requote) for clean reporting.
+
+</Tab>
+
+</Tabs>
+
+## Failure and exception handling
+
+Most deviations from the happy path fall into a few patterns. Use the correct outcome so that credits, refunds, and SLAs follow system rules.
+
+<ExpandableGroup>
+
+<Expandable title="Customer unreachable or repeatedly not picking calls">
+
+- Update call disposition accurately in [Call Disposition](/call-disposition).
+- Follow [Pickup Communication Best Practices](/pickup-communication-best-practices) for follow-ups and messages.
+- If the customer remains unreachable within SLA:
+  - Use the appropriate **Fail** reason such as “Unable to contact”.
+  - Ensure timestamps and notes are clear so Ops can validate any credit impact under **To Be Failed Orders & Credit Deduction Logic**.
+
+</Expandable>
+
+<Expandable title="Customer wants to reschedule or change address">
+
+- Do not mark **Fail** for genuine reschedule requests.
+- Use the flows in [Reschedule](/reschedule) and [Reschedule Pickup – SOPs](/reschedule-pickup---sops) to move the order.
+- Keep the status aligned with actual field reality (for example, still **InProgress** or updated OutForPickup date).
+- Inform Ops if repeated reschedules risk SLA breach so they can apply [SLA Violation Tracking & Escalations](/sla-violation-tracking-escalations).
+
+</Expandable>
+
+<Expandable title="Device does not match order details">
+
+- At inspection, if IMEI/model/condition is significantly different from the original order:
+  - Document the actual device using [Device Assessment Workflow](/device-assessment-workflow).
+  - Decide with the customer whether to proceed as a **Requote** or to stop.
+- If proceeding with a changed configuration: use [Requote Order](/requote-order) and, if needed, [Same Customer Order](/same-customer-order).
+- If customer declines to continue after mismatch explanation:
+  - Use **Fail** with “Device mismatch” or equivalent reason.
+  - Follow [Fail After Requote](/fail-after-requote) when a requote was already generated.
+
+</Expandable>
+
+<Expandable title="Customer disagrees with final price after inspection">
+
+- Explain price difference clearly using [Price Change Explanation Script](/price-change-explanation-script), pointing to actual SBWPTA findings.
+- If customer is open to a slightly modified configuration that system supports, raise a **Requote** via [Requote Order](/requote-order).
+- Outcomes:
+  - If customer accepts requote: complete payment and mark **Completed**.
+  - If customer still refuses: mark **Fail After Requote** using [Fail After Requote](/fail-after-requote) so reporting stays accurate.
+
+</Expandable>
+
+<Expandable title="Customer refuses lead OTP or payment OTP">
+
+- For **lead OTP**:
+  - Explain that OTP protects both customer and vendor and is required to start inspection.
+  - If customer still refuses or claims not to have it:
+    - Follow [Handling Customer Issues During Pickup](/handling-customer-issues-during-pickup).
+    - If inspection cannot start, close as **Fail** with the correct reason after checking with Ops.
+- For **payment OTP**:
+  - Do not attempt alternative payments or keep the device.
+  - Explain the OTP requirement using [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+  - If customer still refuses to provide OTP, mark **Payment not completed** or equivalent fail reason and leave the device with the customer.
+
+</Expandable>
+
+<Expandable title="Vendor or customer requests offline cash/UPI settlement">
+
+- Politely decline any request to pay or receive money outside the app.
+- Explain that:
+  - All payments must be wallet → bank with OTP.
+  - Offline deals are against Cashkr policy and not supported by support or refunds.
+- If the customer insists and will not proceed with in-app OTP flow:
+  - Do not take the device.
+  - Mark the order as **Fail** with the appropriate reason and inform Ops if there is any pressure or dispute.
+
+<Callout kind="alert">
+
+Offline or side-channel payments expose both vendor and company to fraud and are treated as a serious violation. Use escalation paths in [SLA Violations & Escalation Rules](/sla-violations-escalation-rules) if needed.
+
+</Callout>
+
+</Expandable>
+
+<Expandable title="System issues during payment or status update">
+
+- If the app crashes, payment screen hangs, or status does not update:
+  - Do not retry blindly if you are unsure about payment status.
+  - Check transaction logs following [Vendor Payment OTP & Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+  - Contact support using [How to Report Issues to Admin Panel / Support](/how-to-report-issues-to-admin-panel-/-support) with:
+    - Order ID
+    - Time of attempt
+    - Screenshots if possible
+- Until you have confirmation that payment is successful:
+  - Do not collect the device.
+  - Keep the status at the last known correct state.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Non-negotiable rules
+
+<Callout kind="alert">
+
+These apply to every order and are grounds for strict action if violated:
+
+- Use only app-based pricing; no manual quote adjustments or off-record deals.
+- Use lead OTP before inspection and payment OTP for every payout.
+- Never use customer devices or OTPs for any other purpose.
+- Never pay or collect in cash, direct UPI, or any manual transfer outside the app.
+- Never take the device before confirmed **Payment Successful** status.
+- Keep notes and dispositions accurate to support audits, credits, and SLA tracking.
+
+</Callout>

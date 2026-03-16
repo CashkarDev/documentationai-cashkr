@@ -1,0 +1,425 @@
+---
+title: City & Pincode Availability (Serviceable Areas)
+description: Train Sales, CX, BD and Marketing to check serviceability correctly, talk to customers clearly and log demand for expansion using pincode data.
+---
+
+## Purpose of this module
+
+Use this module to handle city and pincode serviceability in a consistent way across Sales, CX, BD and Marketing.
+
+You will learn how to:
+
+- Check whether a customer area is serviceable
+- Guide customers correctly during order creation
+- Avoid lead wastage in non-serviceable areas
+- Plan expansion and vendor onboarding using demand data
+- Align marketing campaigns with real operational coverage
+
+<Callout kind="alert">
+
+Serviceability is an operations rule, not a sales hack. Never promise pickup where coverage does not exist, and never override serviceability for a one-off case.
+
+</Callout>
+
+---
+
+## Quick definitions and what customer sees
+
+### Status types
+
+- **Serviceable**
+  - Pickup supported for all relevant device types configured for that pincode.
+  - Customer on app/website: sees normal price flow, pickup slots and can place order.
+
+- **Partially serviceable**
+  - Pickup supported only for some device categories in that pincode.
+  - Customer: sees only supported device categories; unsupported categories do not appear as options.
+
+- **Non-serviceable**
+  - No pickup possible in that pincode.
+  - Customer: sees a message like `We currently do not serve this area.` and cannot place an order.
+
+Serviceability logic is controlled only in the **Admin Panel → Serviceable Areas → Pincode & Area Management** and reflects in real time on the app and website.
+
+---
+
+## Quick checklist for every lead or order
+
+Use this as your default operating checklist.
+
+- Check pincode serviceability before helping with order creation.
+- Confirm device category is supported, especially in partially serviceable pincodes.
+- If non-serviceable, communicate clearly, stay future-focused and add the area to the expansion list.
+- If customer reports a mismatch (app shows serviceable but pickup fails), verify status in Admin Panel and escalate to BD/Ops.
+- For marketing and campaigns, target only confirmed serviceable pincodes and pause as soon as status changes.
+
+<Callout kind="alert">
+
+Do not manually override serviceability, push through an order for a non-serviceable pincode, or run campaigns in areas that are not marked as serviceable in Admin Panel.
+
+</Callout>
+
+---
+
+## What not to say
+
+Keep language aligned across Sales, CX, BD and Marketing.
+
+- Do not say or imply that lack of service is **permanent**.
+- Do not give **fixed dates** or guaranteed timelines for launch.
+- Do not blame **tech bugs** when the real reason is non-serviceability.
+- Do not promise that **“we will definitely send someone”** when the pincode is non-serviceable.
+- Do not suggest customers **fake addresses** or choose random pincodes that are not actually theirs.
+
+Better framing:
+
+- Use phrases like **“not live yet”**, **“we are expanding city by city”**, **“we will notify you as soon as we start in your area”**.
+- Capture pincode, area and contact details to add customer to the notification/expansion list.
+
+<Callout kind="alert">
+
+Never commit a launch date for a new city or pincode. You can talk about plans to expand, but you cannot promise a specific week or month.
+
+</Callout>
+
+---
+
+## How to check pincode serviceability
+
+The Admin Panel is the single source of truth. Do not rely only on your memory or what the customer says.
+
+<Steps>
+
+<Step title="Open the serviceability module" icon="settings">
+
+- Log in to the **Admin Panel** with your credentials.
+- Go to **Serviceable Areas → Pincode & Area Management**.
+- Confirm you are on the correct city or region view if filters are available.
+
+</Step>
+
+<Step title="Search by pincode" icon="search">
+
+- Enter the customer pincode shared on call/chat or visible in the lead.
+- Check the **status** shown for that pincode:
+  - Serviceable
+  - Partially serviceable
+  - Non-serviceable
+
+</Step>
+
+<Step title="Check device category coverage" icon="monitor">
+
+- For **serviceable** pincodes, confirm that the relevant device categories (mobile, tablet, laptop, etc.) are enabled.
+- For **partially serviceable** pincodes, note which categories are supported and which are not.
+- If the customer device category is not supported, treat it as **not serviceable for that device** even if the pincode is partially serviceable.
+
+</Step>
+
+<Step title="Decide the next action" icon="check-circle">
+
+- If **fully serviceable** → proceed to guide customer through price check and order.
+- If **partially serviceable** → check if the customer device category is covered; proceed only if supported.
+- If **non-serviceable** or device not supported → follow the scripts and log the demand for BD.
+
+</Step>
+
+</Steps>
+
+---
+
+## Customer messaging scripts
+
+Use these copy-ready lines during calls, chats or emails. Adapt slightly to context but keep the meaning.
+
+<Tabs>
+
+<Tab title="English (customer messaging)" icon="book-open">
+
+**When pincode is fully serviceable**
+
+- `Good news, pickups are available in your area. I will help you complete the order now.`
+- `Your pincode is serviceable, so once you place the order, our pickup partner will visit the address you select.`
+
+**When pincode is partially serviceable but device is supported**
+
+- `Pickups are active in your area for this device type, so you can go ahead and place the order.`
+- `For your pincode we currently support pickups for this device category, so I will help you complete the booking.`
+
+**When pincode is partially serviceable but device is not supported**
+
+- `Right now, we are not picking up this type of device in your area, but we are expanding category by category.`
+- `Currently, pickups in your pincode are open only for some device types, and this device is not live yet. I can add your details so we can inform you when it starts.`
+
+**When pincode is non-serviceable**
+
+- `At the moment, pickups are not live in your area. We are expanding city by city, and I can add your pincode to our list to notify you once we start.`
+- `We currently do not serve this area, but I have noted your pincode so the team can prioritise it when we expand.`
+
+**When customer asks “When will you start in my area?”**
+
+- `We do not have an exact date yet, but we are actively expanding. I have added your pincode so we can reach out when we launch there.`
+- `I cannot promise a date today, but your area request is helpful for our expansion plan, and we will update you once service is live.`
+
+</Tab>
+
+<Tab title="Hinglish (real conversations)" icon="users">
+
+**When pincode is fully serviceable**
+
+- `Good news, aapke area mein pickup available hai. Main abhi aapka order complete kar deta hoon.`
+- `Aapka pincode serviceable hai, order place karne ke baad hamara pickup partner aapke address par aayega.`
+
+**When pincode is partially serviceable but device is supported**
+
+- `Is pincode mein is type ke device ke pickup chalu hai, aap order aaram se place kar sakte ho.`
+- `Aapke area mein yeh device category ke pickup on hai, main aapko pura process karwa deta hoon.`
+
+**When pincode is partially serviceable but device is not supported**
+
+- `Abhi aapke area mein is type ke device ka pickup start nahi hua hai, lekin hum category by category expand kar rahe hain.`
+- `Is pincode pe kuch specific device types ka hi pickup chalu hai, aapka device abhi list mein nahi hai. Main aapki details note kar leta hoon, jaisi hi start hoga hum aapko bata denge.`
+
+**When pincode is non-serviceable**
+
+- `Filhaal hum aapke area mein pickup nahi kar rahe hain. Hum city by city expand kar rahe hain, main aapka pincode note kar raha hoon future ke liye.`
+- `Is waqt is area mein service live nahi hai, lekin main aapka area aur pincode team ko pass karunga taaki expansion plan mein consider ho sake.`
+
+**When customer asks “Kab se start hoga?”**
+
+- `Exact date abhi fix nahi hui hai, isliye main date commit nahi kar sakta. Jaise hi aapke area mein service start hogi, hum aapko update kar denge.`
+- `Main aapko koi specific week ya month promise nahi kar sakta, par aapka pincode list mein add kar raha hoon. Jaisi hi start hoga, hum aapse contact karenge.`
+
+</Tab>
+
+</Tabs>
+
+---
+
+## Team roles and ownership
+
+### Sales
+
+**Role:** Lead qualification and conversion.
+
+Responsibilities:
+
+- Confirm pincode and device category serviceability before creating an order or pushing for conversion.
+- Avoid creating orders for non-serviceable pincodes or unsupported device types.
+- Suggest nearby serviceable pincodes only when it is genuinely the customer address area, not as a workaround.
+- Mark leads correctly as non-serviceable in the CRM when applicable.
+
+<Callout kind="alert">
+
+Do not push orders for non-serviceable pincodes just to hit targets. Failed pickups and refunds hurt trust and conversion.
+
+</Callout>
+
+### Customer Experience (CX)
+
+**Role:** Customer guidance and issue resolution.
+
+Responsibilities:
+
+- Check pincode availability during every serviceability-related call or chat.
+- Explain calmly why an area or device category is not serviceable and what will happen next.
+- Offer alternate options where relevant (for example, nearby pincode that is genuinely accessible to the customer, or adding to waitlist).
+- Log non-serviceable requests for BD and do not escalate them as complaints if the system is behaving correctly.
+
+### Marketing
+
+**Role:** Campaign planning and lead quality control.
+
+Responsibilities:
+
+- Run geo-targeted campaigns only in confirmed serviceable cities and pincodes.
+- Coordinate with BD before launching city-level or pincode-specific campaigns.
+- Pause or adjust campaigns immediately when a pincode or city moves to non-serviceable.
+- Use serviceability data to reduce wasted ad spend on non-coverable areas.
+
+### Business Development (BD) and Area Management
+
+**Role:** Coverage ownership and expansion planning.
+
+Responsibilities:
+
+- Own and maintain the serviceable pincode map in coordination with Vendor Ops.
+- Track demand from non-serviceable pincodes and unsupported device categories.
+- Prioritise high-demand pincodes and categories for expansion based on logged data.
+- Coordinate with Vendor Ops to onboard vendors before enabling new pincodes.
+- Share periodic coverage updates with Sales, CX and Marketing so messaging stays aligned.
+
+---
+
+## Handling partial serviceability
+
+Partial serviceability is where many confusions start. Treat it carefully.
+
+- **System behaviour**
+  - In partially serviceable pincodes, only supported device categories appear on the app/website.
+  - Unsupported device categories are hidden to avoid false promises.
+
+- **On calls/chats**
+  - Confirm both pincode **and** device category.
+  - If the device is:
+    - Supported → treat as normal serviceable case.
+    - Not supported → treat as **not serviceable for that device**, even if other devices are allowed.
+
+- **Customer explanation example**
+  - `Aapke area mein kuch selected device types ke pickups chalu hain. Aapka current device abhi unmein include nahi hai, isliye pickup possible nahi hoga. Main aapki details note kar raha hoon future ke liye.`
+
+If you notice customers repeatedly asking for a device type that is not supported in a partially serviceable pincode, log this clearly for BD as potential expansion demand.
+
+---
+
+## Common scenarios and objection handling
+
+Use these scenario cards to respond consistently.
+
+<ExpandableGroup>
+
+<Expandable title="Customer from a clearly non-serviceable area" default-open="true">
+
+**What you see**
+
+- Admin Panel status: non-serviceable.
+- App/website blocks order with `We currently do not serve this area.` or similar message.
+
+**How to respond**
+
+- Acknowledge and be future-focused:
+  - `Right now pickups are not live in your area, but we are expanding city by city.`
+- Offer to add them to notification list:
+  - Capture **pincode, area/locality name and contact details**.
+
+**What to log for BD/Ops**
+
+- Pincode and city.
+- Area/locality name as customer describes it.
+- Device category.
+- Lead source and any notes on demand (for example, repeat calls from same pincode).
+
+</Expandable>
+
+<Expandable title="Customer says app shows serviceable but pickup failed">
+
+**What you see**
+
+- Customer claims they could select address and pickup.
+- Pickup got cancelled or vendor did not show.
+
+**Immediate checks**
+
+- Verify the pincode status in **Admin Panel → Serviceable Areas → Pincode & Area Management**.
+- Check whether the device category is allowed for that pincode.
+
+**If Admin Panel shows non-serviceable**
+
+- Tell the customer there was a mismatch and correct expectation:
+  - `System mein abhi aapka area active nahi hai, isliye pickup complete nahi ho paaya. Hum isko internally flag kar rahe hain.`
+
+**If Admin Panel shows serviceable and category supported**
+
+- Treat as operational issue, not serviceability:
+  - Apologise and assure internal follow-up.
+  - Escalate to Ops/BD with:
+    - Pincode and city
+    - Order ID (if created)
+    - Vendor (if assigned)
+    - What customer saw on app
+
+</Expandable>
+
+<Expandable title="High lead volume from a non-serviceable area">
+
+**What you see**
+
+- Multiple leads or calls from the same non-serviceable pincode.
+- Marketing may already be targeting that area or organic demand is high.
+
+**Actions**
+
+- Sales/CX:
+  - Continue to communicate honestly using the scripts.
+  - Tag leads correctly as non-serviceable and mark demand volume.
+- BD:
+  - Review lead count and potential order value from that pincode.
+  - Coordinate with Vendor Ops on feasibility and timelines for enabling.
+
+**What to log**
+
+- Pincode and area.
+- Number of leads in a period (for example, weekly count).
+- Predominant device categories requested.
+
+</Expandable>
+
+<Expandable title="Customer confused by partial serviceability">
+
+**What you see**
+
+- Customer says:
+  - `Mera pincode aa raha hai, par mera device nahi dikh raha.`
+- Admin Panel shows partially serviceable for that pincode.
+
+**How to clarify**
+
+- Explain category-based coverage:
+  - `Aapke pincode pe kuch specific device categories ke pickup chalu hain, isliye baaki devices list mein nahi dikhenge.`
+- Offer to note their device and pincode for future:
+  - Add to expansion/feedback list for that pincode and device category.
+
+**Internal follow-up**
+
+- Share repeated category-specific demand in partially serviceable pincodes with BD.
+- BD uses this to decide which device categories to enable next in that area.
+
+</Expandable>
+
+</ExpandableGroup>
+
+---
+
+## Internal handoff and logging for BD/Ops
+
+Whenever you handle a non-serviceable or partially serviceable case that indicates demand, log it in a structured way so BD and Ops can use it.
+
+Minimum fields to capture:
+
+- **Pincode** (for example, 400708).
+- **City and area/locality name** as the customer describes it.
+- **Device category** (phone, tablet, laptop and so on).
+- **Number of enquiries or leads** if you see a repeated pattern.
+- **Customer contact preference** (whether they want to be notified when service starts).
+- **Notes on urgency** (for example, many customers wanting same-day pickup).
+
+BD and Ops use this information to:
+
+- Decide which pincodes to move from non-serviceable to serviceable.
+- Prioritise vendor onboarding in high-demand pockets.
+- Inform Marketing which new areas can be safely targeted.
+
+---
+
+## One-page quick summary
+
+Use this section as your training card or refresher.
+
+- **What this module controls**
+  - Where Cashkr offers pickup services and for which device categories.
+
+- **Core rules**
+  - Admin Panel serviceability is the only source of truth.
+  - Never override serviceability or promise pickups in non-serviceable areas.
+  - Do not give fixed dates for future expansion.
+
+- **Team responsibilities**
+  - **Sales:** Verify serviceability and convert only valid leads.
+  - **CX:** Communicate clearly, handle objections and log demand.
+  - **Marketing:** Target only serviceable areas; pause when status changes.
+  - **BD/Ops:** Own the pincode map, onboard vendors and plan expansion.
+
+- **Customer outcome**
+  - Clear availability communication.
+  - Fewer failed pickups and cancellations.
+  - Better experience and higher conversion for valid leads.

@@ -1,0 +1,310 @@
+---
+title: Serviceable Area & Pincode Management
+description: SOP for managing serviceable pincodes, vendor coverage, and device support so customers can order only where Cashkr can reliably serve.
+---
+
+## Purpose
+
+Control where Cashkr is live so customers can only place orders where pickup is actually possible, vendors are available, and internal teams do not waste time on unserviceable leads.
+
+This module ensures:
+
+- Customers can place orders only where Cashkr can serve
+- Vendors are available in all live areas
+- Marketing spends target only live or soon-to-go-live areas
+- Sales and CX avoid leads from non-serviceable zones
+- Operational efficiency across cities
+- Accurate mapping of pincodes, areas, and clusters
+
+This system controls where Cashkr is live and whether customers can request pickups.
+
+## Quick checklist before changing any pincode
+
+Use this checklist every time you add, update, or pause a pincode.
+
+- Confirm at least one reliable vendor covers the pincode for the planned device types.
+- Check device-type support and make sure it matches real vendor capability (for example, phones only vs phones and laptops).
+- Review nearby pincodes and clusters to avoid gaps or overlaps in coverage.
+- Validate how the change will affect customer ordering (will customers see pickup available or blocked?).
+- Consider marketing campaigns and ads targeting this city/area and whether they need updates.
+- Align with BD and Vendor Ops on expansion or pause reasoning, not just one-off cases.
+- Update the correct sections in Admin Panel: Add Pincode, Edit Area Details, Assign Device Type Support, Assign Vendor Coverage, Mark Serviceable/Not Serviceable.
+- Log the change in your team’s tracking sheet or ticket tool with date, owner, and reason.
+- Inform CX of any change that affects what customers will see or hear.
+- For major city-level changes, inform Management and Marketing so they can adjust plans.
+
+## Module location and sections
+
+Path in Admin Panel:
+
+**Admin Panel → Serviceable Areas → Pincode & Area Management**
+
+Available sections:
+
+- Add Pincode
+- Edit Area Details
+- Assign Device Type Support
+- Assign Vendor Coverage
+- Mark Pincode as Serviceable / Not Serviceable
+- City-Level Overview
+- Coverage Heat Map
+
+Use only these sections when following the SOPs below.
+
+## Key concepts
+
+Understand these terms before you change any coverage.
+
+### Serviceable pincode
+
+Customer can place an order, there is vendor coverage, and pickup is operationally possible.
+
+### Non-serviceable pincode
+
+No usable vendor support or operations, so the customer cannot complete an order.
+
+### Partially serviceable pincode
+
+Only some device types are supported in that pincode, for example phones but not laptops.
+
+### Cluster
+
+Group of pincodes used for city-level planning, routing, and vendor allocation.
+
+### Area
+
+Locality or neighborhood name mapped under a pincode for customer clarity and routing.
+
+## Statuses and when to use
+
+Use these three statuses consistently.
+
+| Status                 | Customer ordering behavior                           | Vendor requirement                                  | Typical use-case                                                      |
+| ---------------------- | ---------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------------------------- |
+| Serviceable            | Customer can see pickup available and place orders  | Active vendor coverage for relevant device types    | Mature or launched areas with stable operations                       |
+| Partially serviceable  | Customer can order only for supported device types  | Vendor coverage limited to specific device types    | Areas where vendors handle phones but not laptops or other categories |
+| Non-serviceable        | Customer cannot complete order for that pincode     | No reliable vendor coverage for planned device mix  | New, testing, or paused areas; operations not ready or suspended      |
+
+<Callout kind="alert">
+
+Always align the pincode status with real vendor and operations capacity. Never mark a pincode as serviceable for future plans or expected coverage.
+
+</Callout>
+
+## SOP 1: Making a pincode serviceable (go live)
+
+Use this when launching coverage in a new pincode or re-activating a previously non-serviceable pincode.
+
+<Steps>
+  <Step title="Confirm vendor and operational readiness" icon="check">
+
+  - Coordinate with Vendor Ops to confirm at least one vendor is willing and able to serve the pincode.
+  - Check which device types the vendor will actually pick up from this pincode.
+  - Verify with Operations that routing and pickup timelines are feasible for this area or cluster.
+
+  </Step>
+
+  <Step title="Review city-level impact" icon="map">
+
+  - Open **City-Level Overview** to see current coverage for the city and cluster.
+  - Use **Coverage Heat Map** to check if the new pincode fills a genuine gap or duplicates existing coverage.
+  - Decide whether the pincode should be fully serviceable or partially serviceable based on vendor capability.
+
+  </Step>
+
+  <Step title="Add the pincode and area details" icon="plus">
+
+  - Go to **Add Pincode** and add the new pincode entry.
+  - Use **Edit Area Details** to map the correct area or locality names under this pincode.
+  - Ensure area names match how customers refer to the locality to avoid confusion during address selection.
+
+  </Step>
+
+  <Step title="Assign device type support and vendor coverage" icon="settings">
+
+  - Open **Assign Device Type Support** and enable only the device types vendors agreed to serve.
+  - Go to **Assign Vendor Coverage** and link the correct vendor or vendors to this pincode.
+  - Cross-check that vendor types and their capabilities match what is marked in device type support.
+
+  </Step>
+
+  <Step title="Mark the pincode as serviceable" icon="zap">
+
+  - Open **Mark Pincode as Serviceable / Not Serviceable**.
+  - Set the status to **Serviceable** or **Partially serviceable** as per vendor and device support.
+  - Re-check the pincode in **City-Level Overview** to confirm it appears with the correct status.
+
+  </Step>
+
+  <Step title="Communicate and log the change" icon="users">
+
+  - Inform **CX Team** with a short summary: pincode, device types, live date, and any limitations.
+  - Inform **Marketing** (if campaigns are running or planned) so they can target or exclude this area correctly.
+  - Update BD or Ops tracking sheet or ticket with who approved the go-live, reason, and date for future audits.
+
+  </Step>
+</Steps>
+
+## SOP 2: Updating a live pincode (vendor or device support changes)
+
+Use this when vendor availability changes, device support expands or reduces, or operational constraints appear for an already live pincode.
+
+<Steps>
+  <Step title="Identify what is changing and why" icon="info">
+
+  - Confirm whether the change is about vendor coverage, device-type support, or both.
+  - Check with Vendor Ops if this is a temporary issue or a long-term change.
+  - Review current status of the pincode in **City-Level Overview**.
+
+  </Step>
+
+  <Step title="Adjust device type support" icon="settings">
+
+  - Open **Assign Device Type Support** for the specific pincode.
+  - Reduce or expand supported device types to match real vendor and operational capability.
+  - If only some categories remain supported, treat the pincode as **Partially serviceable**.
+
+  </Step>
+
+  <Step title="Update vendor coverage" icon="users">
+
+  - Go to **Assign Vendor Coverage**.
+  - Add new vendors who are taking over this pincode or remove vendors who are no longer serving it.
+  - Ensure that at least one active vendor remains for every device type that is still marked as supported.
+
+  </Step>
+
+  <Step title="Verify serviceability status" icon="check-circle">
+
+  - Open **Mark Pincode as Serviceable / Not Serviceable**.
+  - Confirm whether the pincode should stay **Serviceable**, move to **Partially serviceable**, or be set to **Non-serviceable**.
+  - Check again in **Coverage Heat Map** to understand how this change affects city-level coverage.
+
+  </Step>
+
+  <Step title="Inform impacted teams and update logs" icon="message-square">
+
+  - Notify **CX Team** if customer behavior will change (for example, laptops no longer supported).
+  - Inform **BD and Ops** so they can plan expansion or alternative coverage if needed.
+  - Note the change in your internal log with pincode, type of change, date, and owner for audit history.
+
+  </Step>
+</Steps>
+
+## SOP 3: Marking a pincode non-serviceable (pause)
+
+Use this when you need to temporarily or permanently stop taking orders from a pincode.
+
+<Steps>
+  <Step title="Confirm reason and duration of pause" icon="alert-triangle">
+
+  - Align with **BD**, **Vendor Ops**, and **Operations** on why the pincode must be paused.
+  - Clarify whether this is a short-term issue (for example, vendor gap) or a longer-term strategic exit.
+  - Check existing order volumes from this pincode to understand customer impact.
+
+  </Step>
+
+  <Step title="Review coverage alternatives" icon="map">
+
+  - Use **City-Level Overview** to see if nearby pincodes remain serviceable.
+  - Check **Coverage Heat Map** to understand how this pause will affect cluster-level coverage.
+  - Decide whether to pause the entire pincode or adjust to **Partially serviceable** if some device types can still be handled.
+
+  </Step>
+
+  <Step title="Update vendor coverage and device support" icon="minus">
+
+  - In **Assign Vendor Coverage**, remove or disable vendors that will no longer serve this pincode.
+  - In **Assign Device Type Support**, disable device types that are no longer supported.
+  - Ensure no device types are left enabled without real vendor coverage.
+
+  </Step>
+
+  <Step title="Mark the pincode as non-serviceable" icon="x-circle">
+
+  - Go to **Mark Pincode as Serviceable / Not Serviceable**.
+  - Set the status to **Non-serviceable**.
+  - Confirm in **City-Level Overview** that the pincode no longer shows as live for new orders.
+
+  </Step>
+
+  <Step title="Communicate clearly and log the pause" icon="users">
+
+  - Inform **CX Team** with the pincode, start date of pause, expected duration, and recommended customer messaging.
+  - Inform **Marketing** so they can exclude this pincode from campaigns and landing pages targeting.
+  - Update internal logs with the reason for pause, decision owner, and any follow-up date to review the status.
+
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+
+Never leave a pincode in a state where the website shows it as serviceable but there is no vendor or operational support. Always update both vendor coverage and pincode status together.
+
+</Callout>
+
+## Team responsibilities
+
+### Business Development (BD) / Area management
+
+- Own city and cluster-wise expansion planning and decide which pincodes should go live.
+- Coordinate with Vendor Ops and Operations on feasibility before approving serviceability.
+- Review City-Level Overview and Coverage Heat Map regularly to spot gaps or over-concentration.
+
+### Operations team
+
+- Validate whether pickups are practical for each pincode based on routing and on-ground constraints.
+- Flag operational issues that require status changes from serviceable to partially or non-serviceable.
+- Support BD in planning clusters so coverage is efficient and balanced.
+
+### Vendor Ops team
+
+- Secure and maintain vendor coverage for each serviceable or partially serviceable pincode.
+- Inform BD and Ops when a vendor is added, removed, or capacity changes for a pincode.
+- Ensure Assign Vendor Coverage always reflects the latest vendor reality.
+
+### CX team
+
+- Use the latest serviceability status to set correct expectations with customers.
+- Follow the scripts below when explaining why pickup is or is not available.
+- Escalate repeated issues where the website shows availability but pickups are failing.
+
+### Management
+
+- Approve major city launches, large-scale expansion, and city-level pauses.
+- Review coverage distribution to align with growth and profitability goals.
+- Resolve conflicts between teams when there are trade-offs between growth and operational risk.
+
+## Customer and CX guidance
+
+Use these sample scripts as a base. CX can adapt wording but must keep the core message accurate and consistent with the pincode status.
+
+### When the pincode is serviceable
+
+> “Yes, Cashkr currently offers pickup in your area. You can place your order on the website or app, and our partner will come to your location for pickup. You will see the available slots during checkout based on your address and pincode.”
+
+### When the pincode is not serviceable
+
+> “Right now, we are not able to offer pickup in your pincode. We are expanding our service and will update you as soon as we go live in your area. You can still check device prices on the website, but pickup and order completion are not available for this pincode today.”
+
+<Callout kind="tip">
+
+Keep the tone factual and empathetic. Do: acknowledge the customer’s interest, explain availability clearly, and avoid over-promising timelines. Do not: blame vendors, promise a specific go-live date unless confirmed, or suggest workarounds that bypass the official pincode and area setup.
+
+</Callout>
+
+## Audit cadence
+
+Run these regular checks to keep serviceability accurate.
+
+- **Daily (Ops and Vendor Ops)**  
+  - Scan recently changed pincodes in **City-Level Overview** and confirm vendor coverage matches the current status.  
+  - Review any escalations from CX where customers saw pickup available but vendors could not serve.
+
+- **Weekly (BD, Ops, Vendor Ops)**  
+  - Use **Coverage Heat Map** to review cluster-level balance and identify pincodes that need to be added, upgraded to serviceable, or paused.  
+  - Revisit temporarily non-serviceable pincodes and decide whether to reactivate or keep them paused.
+
+- **Monthly (Management with BD and Ops)**  
+  - Review overall live vs non-serviceable pincodes per city and cluster.  
+  - Align on next expansion areas and any strategic exits so the Pincode and Area Management module stays in sync with business plans.

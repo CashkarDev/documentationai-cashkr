@@ -1,0 +1,448 @@
+---
+title: Referral & Coupon Application Process
+description: Internal SOP for how referral codes and coupons work at Cashkr, including flows, validations, admin checks, and CX messaging for all teams.
+---
+
+## Who this SOP is for and what it covers
+
+For Marketing, Sales, CX, Tech, and Support teams.
+
+Use this page to answer:
+
+- How the referral program works end-to-end  
+- How coupons are applied in the sell device flow  
+- Where customers enter codes (referral and coupon)  
+- When and how rewards are credited  
+- What validations and restrictions apply  
+- What to check in Admin/logs when something looks wrong  
+- How to talk to customers about these topics
+
+<Callout kind="alert">
+
+- Do not commit to any fixed reward amount in customer conversations.  
+- Always say rewards and bonuses are as per the active referral program or coupon configuration.  
+- Do not promise exact timelines for wallet credit; say it depends on order completion and internal approval.
+
+</Callout>
+
+---
+
+## Key definitions
+
+**Referral code**
+
+- A personal code each existing customer gets from the Refer & Earn section of the app or website.  
+- The code links new users they invite to their account for referral rewards.
+
+**Coupon code**
+
+- A promotional code created and configured by Marketing in the coupon system.  
+- Coupons apply to a specific order and adjust the payout by a flat amount, as per coupon configuration.
+
+---
+
+## Referral flow (customer and system journey)
+
+Use this section to understand how referral codes behave from sharing to reward credit.
+
+<Steps>
+
+<Step title="Referral code generation and sharing" icon="users">
+
+- Each user has one permanent referral code linked to their account.  
+- User finds it in the Refer & Earn section in the customer app or website.  
+- They share via WhatsApp, SMS, social media, or copy-paste. Links contain the referral code plus tracking parameters.
+
+</Step>
+
+<Step title="New user registration and code locking" icon="lock">
+
+- The invited friend installs the app or opens the website from the shared link.  
+- During registration, the referral code field can be auto-filled from the link or entered manually.  
+- Once used at registration, the referral code locks to that new account for lifetime tracking.
+
+</Step>
+
+<Step title="Eligibility check for referred user" icon="settings">
+
+- System checks if this is a first-time user using the registered phone number.  
+- If the phone number already has any past order, the referral benefit does not apply.  
+- Reinstalling the app, deleting the account, or changing the device does not reset eligibility.
+
+</Step>
+
+<Step title="Order created and completed by referee" icon="terminal">
+
+- The referred user creates and completes an order in the normal sell device flow.  
+- Rewards do not trigger on lead creation or quote generation; they trigger only after order completion.  
+- If the order is cancelled, rejected, or fails at any stage, no referral reward is created.
+
+</Step>
+
+<Step title="Referee reward application (new user benefit)" icon="check-circle">
+
+- For eligible new users, the system applies the referee benefit automatically on the checkout or final payout screen.  
+- The extra amount appears in the pricing breakdown as a referral-related bonus or similar label, as per current UI copy.  
+- The user receives this benefit as part of their final payout when the order is completed.
+
+</Step>
+
+<Step title="Referrer reward creation and approval" icon="bar-chart">
+
+- After the referred user’s order is marked completed, the system creates a referral reward entry for the referrer with status Pending.  
+- Operations/Admin review and approve or reject the reward as per internal rules and fraud checks.  
+- Only after approval does the system convert the Pending reward into an actual wallet credit for the referrer.
+
+</Step>
+
+<Step title="Wallet credit to referrer" icon="database">
+
+- Once approved, the referrer’s reward gets credited to their Cashkr wallet or referral earnings balance.  
+- The referrer can see this in their wallet or referral history, depending on current UI.  
+- Finance and Ops use the referral transaction logs to reconcile payout totals.
+
+</Step>
+
+</Steps>
+
+<Callout kind="alert">
+
+- Each referee can use a referral code only once in their lifetime.  
+- The system enforces eligibility using the customer’s phone number; changing devices or reinstalling the app does not bypass this.  
+- A referrer cannot refer themselves (same phone number, same user).
+
+</Callout>
+
+---
+
+## Referral rules and validations (internal logic)
+
+Use these points when checking if a referral should have applied.
+
+- Referral applies only to **first-time users** with no previous completed orders on their phone number.  
+- One referral code use per referee for life; the first successful referral-eligible order consumes this chance.  
+- System blocks self-referrals and suspicious duplicate accounts as per referral system rules.  
+- Rewards trigger **only after the referred user’s order is completed** successfully.  
+- Referee reward: applied automatically in pricing at checkout/final payout for eligible first order.  
+- Referrer reward: created as Pending after completion and credited to wallet only after admin approval.  
+- Referral may or may not be combinable with coupons depending on active program rules and coupon configuration. Always confirm in Admin or product notes.  
+
+---
+
+## Coupon flow (customer app sell device journey)
+
+Coupons alter the payout for a specific order on the final quote screen.
+
+<Steps>
+
+<Step title="Customer reaches final quote screen" icon="monitor">
+
+- In the Customer App sell device flow, the user selects device, answers condition questions, and sees the final quote.  
+- On this screen, the user sees the Apply Coupon option.
+
+</Step>
+
+<Step title="Customer enters coupon code" icon="terminal">
+
+- The user taps Apply Coupon and enters the coupon code they have.  
+- The system sends the code to the coupon module for validation, along with device and user context.
+
+</Step>
+
+<Step title="System validation of coupon" icon="settings">
+
+- Coupon module verifies at least the following:  
+  - Platform targeting (Web, App, or Both)  
+  - User accessibility (first-time only, all users, specific user types)  
+  - Device type and brand compatibility  
+  - Validity dates (start and end date/time)  
+  - Min/max device value if configured  
+  - Max usage limits (per user and/or global)  
+  - City or region restrictions (if configured)  
+  - Coupon status (active/inactive)
+
+</Step>
+
+<Step title="Successful coupon application" icon="check-circle">
+
+- If all validations pass, the system applies the coupon as a flat adjustment to the quote as per coupon configuration.  
+- The quote screen updates instantly to show:  
+  - Base price  
+  - Coupon benefit added or discount applied  
+  - New total payout amount
+
+</Step>
+
+<Step title="Order completion with coupon" icon="play-circle">
+
+- The order moves ahead to pickup, inspection, and completion.  
+- Coupon benefit remains tied to the order as long as coupon rules stay valid for that order.  
+- If inspection changes the base price, the coupon rule decides whether the benefit still applies (for example, if min value still met).
+
+</Step>
+
+<Step title="Failed or cancelled orders" icon="x-circle">
+
+- If the order is cancelled, fails, or the customer rejects the revised price, the coupon benefit does not get paid out.  
+- From the user’s perspective, the coupon is considered consumed only when the order completes successfully, as per current business logic and coupon settings.
+
+</Step>
+
+</Steps>
+
+---
+
+## Coupon rules and validations (internal logic)
+
+Grounded in coupon configuration and apply-coupon behavior.
+
+- **Configured by Marketing in Admin**: code, flat extra amount, platform, accessibility, device compatibility, validity dates, min/max device value, brand restrictions, city restrictions, and max usage.  
+- Platform targeting and expiry are hard constraints: if either fails, coupon cannot apply.  
+- Coupon applies **per order**, not per customer lifetime (unless configured otherwise via usage limits).  
+- System allows only one coupon per order.  
+- Coupon can be restricted to:  
+  - First-time users only  
+  - Returning users only  
+  - Specific cities/regions  
+  - Specific device categories or brands  
+- Coupon benefit is calculated as a flat change to the payout; the quote screen updates immediately on successful application.  
+- Benefit is effectively paid out only when the order is fully completed.  
+- Usage limit checks prevent abuse (for example, per-user max use or global max redemptions).
+
+<Callout kind="alert">
+
+- Do not promise that any specific coupon will work for a customer until you check its configuration and eligibility in Admin.  
+- Always say coupons are subject to platform, user, device, and validity rules set in the backend.
+
+</Callout>
+
+---
+
+## CX messaging: how to explain to customers
+
+Use these suggested scripts and adapt based on the situation. Keep reward amounts generic and refer to the active offer.
+
+<Tabs>
+
+<Tab title="English (customer messaging)" icon="book-open">
+
+**Explaining referral program**
+
+- "You have a personal referral code in the Refer & Earn section. When your friend signs up with it and completes their first sale, both of you get benefits as per the current referral offer."  
+- "Referral benefits apply only if your friend is a new user on this phone number and completes their order successfully."  
+- "Your reward first shows as pending and gets added to your wallet once it is approved internally."
+
+**Explaining coupon usage**
+
+- "At the last step of your device sale, you will see an Apply Coupon option. Enter the coupon code there, and if your order is eligible, the payout will update instantly."  
+- "Coupons depend on rules like app/website, device, city, and validity dates. If any rule does not match, the coupon will show as invalid."
+
+**Explaining delays or missing rewards**
+
+- "Referral and coupon benefits are only confirmed after your order is successfully completed. If the order was cancelled or failed, the benefit will not apply."  
+- "For referral rewards, after your friend’s order is completed, the reward first goes into pending status and is then credited to your wallet after internal approval."
+
+</Tab>
+
+<Tab title="Hinglish (real conversations)" icon="help-circle">
+
+**Referral program samjhana**
+
+- "Aapka ek personal referral code hai Refer & Earn section mein. Agar aapka friend ye code use karke signup kare aur apni first sale complete kare, to dono ko benefit milta hai jo current offer mein define hota hai."  
+- "Referral tabhi lagta hai jab aapka friend bilkul new user ho iss phone number se aur uski order successfully complete ho jaye."  
+- "Aapka reward pehle pending mein dikhega, phir internal approval ke baad aapke wallet mein credit hota hai."
+
+**Coupon use karna samjhana**
+
+- "Device bechte time last step pe aapko Apply Coupon ka option dikhega. Waha code daaliye, agar aapka order eligible hai to amount turant update ho jayega."  
+- "Coupon ke kuch rules hote hain jaise app ya website, device type, city, aur expiry date. Inme se kuch bhi match nahi hua to system coupon invalid dikhayega."
+
+**Delay ya missing reward explain karna**
+
+- "Referral aur coupon ka benefit sirf tab milta hai jab order successfully complete ho. Agar order cancel ya fail ho jaye to benefit apply nahi hota."  
+- "Referral ke case mein, aapke friend ki order complete hone ke baad reward pending mein jata hai, phir internal approval ke baad aapke wallet mein credit hota hai."
+
+</Tab>
+
+</Tabs>
+
+---
+
+## What to check in Admin Panel and logs
+
+Use this as a checklist when investigating referral or coupon issues.
+
+### For referral issues
+
+- **Order history for referee (new user)**  
+  - Confirm if it is truly the first completed order for that phone number.  
+  - Check if the referral code was attached to the user at registration or at first order.
+
+- **Referral transaction / referral system logs**  
+  - Verify if a referral entry exists for this pair (referrer and referee).  
+  - Check status: Pending, Approved, Rejected, or Cancelled.  
+  - Look for reasons if marked invalid (for example, duplicate account behavior, self-referral).
+
+- **Wallet / referral earnings view**  
+  - For referrer: confirm if the approved reward amount has been credited.  
+  - Cross-check totals with Finance if there is a mismatch.
+
+### For coupon issues
+
+- **Order details / price snapshot**  
+  - Confirm whether a coupon was attached to the order at the time of quote.  
+  - Review the price breakdown to see if a coupon adjustment was included.  
+
+- **Coupon configuration in Admin** (see [How coupon system works at Cashkr](/how-coupon-system-works))
+
+  - Code status: active or inactive.  
+  - Platform: is the order platform allowed (Web/App/Both)?  
+  - Accessibility: is the user type allowed (first-time/all users/specific segment)?  
+  - Device/brand rules: does the device in this order match those rules?  
+  - Validity window: is the order date within start and end time?  
+  - Min/max device value: does this order’s device price fall within the required range?  
+  - Max usage: has the user or the coupon reached its allowed usage limit?
+
+- **Usage and logs**
+
+  - Check how many times this coupon has been used by this user.  
+  - Look for any system notes or flags about misuse or blocking.
+
+---
+
+## Common customer issues and how to handle them
+
+Use this section like a mini troubleshooting FAQ. Each item shows what you should check and how you can respond.
+
+<ExpandableGroup>
+
+<Expandable title="“My referral code is not applying”" default-open="true">
+
+**What to check**
+
+- Does this phone number already have any past completed order?  
+- Was the referral code entered correctly or applied via link at registration?  
+- Is the referral code active and valid as per current program rules?  
+- Is the referrer different from the referee (no self-referral)?
+
+**Suggested response**
+
+- English: "Referral codes work only for new users on their first successful order. I will quickly check if your account is eligible on this phone number."  
+- Hinglish: "Referral code sirf new users ke first successful order pe lagta hai. Main aapke phone number se check karta hoon ki aap eligible ho ya nahi."
+
+</Expandable>
+
+<Expandable title="“My friend did not get their referral benefit”">
+
+**What to check**
+
+- Did the friend register using the referral code (link or manual entry)?  
+- Did the friend’s first order actually complete successfully?  
+- Does the pricing breakdown for the friend’s order show the referee benefit?  
+- Is there any referral entry for this pair in the referral logs?
+
+**Suggested response**
+
+- English: "Referral benefit for your friend applies on their first completed sale after using your code. Let me confirm if their order is marked completed and linked to your referral."  
+- Hinglish: "Aapke friend ko benefit tab milta hai jab woh aapka code use karke apni first sale complete karte hain. Main check karta hoon unka order complete aur referral se link hai ya nahi."
+
+</Expandable>
+
+<Expandable title="“I did not get my referral wallet credit yet”">
+
+**What to check**
+
+- Has the referee’s order been marked completed, or is it still in progress/cancelled?  
+- Is there a referral reward record with status Pending for this referrer?  
+- Has Admin approved or rejected the reward yet?  
+- Is the wallet balance/transactions list correctly updated?
+
+**Suggested response**
+
+- English: "Your referral reward is created only after your friend’s order is completed. After that, it goes into pending status and is credited to your wallet once it is approved internally. I will check its current status now."  
+- Hinglish: "Aapka referral reward tab banta hai jab aapke friend ka order complete ho jata hai. Uske baad reward pehle pending mein rehta hai, phir approval ke baad wallet mein credit hota hai. Main abhi uska status check karta hoon."
+
+</Expandable>
+
+<Expandable title="“My coupon says invalid”">
+
+**What to check**
+
+- Spelling of the code and extra spaces.  
+- Coupon status: active, expired, or disabled.  
+- Platform: is the customer on app vs web as required?  
+- Device type and brand: does the coupon support this device?  
+- City and region: is the customer in an allowed location?  
+- Min/max device value: does the quote amount meet the criteria?  
+- Usage limit: has the customer already used this coupon before the allowed limit?
+
+**Suggested response**
+
+- English: "This coupon depends on rules like device, platform, city, and validity dates. It is showing invalid because one of these rules is not matching for your order. I will check if there is any other active coupon that fits your profile."  
+- Hinglish: "Is coupon ke kuch rules hote hain jaise device, app/website, city, aur expiry date. Aapke order ke liye inme se koi rule match nahi ho raha, isliye invalid dikha raha hai. Main dekh leta hoon ki aapke liye koi doosra active coupon hai ya nahi."
+
+</Expandable>
+
+<Expandable title="“My coupon benefit did not show in final payout”">
+
+**What to check**
+
+- Was the coupon successfully applied and visible on the quote screen earlier?  
+- Did the order complete, or was it cancelled/failed/requoted?  
+- Did inspection change the device value and break min/max condition for the coupon?  
+- In Admin, does the final order price breakdown include any coupon adjustment?
+
+**Suggested response**
+
+- English: "Coupon benefits are paid only if the order completes and all coupon rules still match after inspection. I will verify your final order price and see whether the coupon was still valid at completion."  
+- Hinglish: "Coupon ka benefit sirf tab milta hai jab order complete ho aur inspection ke baad bhi coupon ke saare rules match karein. Main aapke final order price aur coupon status check karta hoon."
+
+</Expandable>
+
+</ExpandableGroup>
+
+---
+
+## Do and Don’t for Sales and CX teams
+
+Keep communication and actions consistent across the company.
+
+### Do
+
+- **Do** explain that all referral and coupon benefits depend on order completion and active configuration.  
+- **Do** check user history (previous orders, phone number reuse) before promising referral eligibility.  
+- **Do** confirm coupon rules (platform, device, city, validity, usage limits) in Admin before assuring customers that a coupon will work.  
+- **Do** use the suggested English/Hinglish scripts as a baseline and keep reward amounts generic.  
+- **Do** log any suspected fraud or abuse (multiple accounts, self-referral, coupon misuse) for Ops and Tech review.  
+
+### Don’t
+
+<Callout kind="alert">
+
+- Do not manually add wallet credits, extra payouts, or manual referral/coupon adjustments without written approval from Ops/Marketing/Finance.  
+- Do not quote fixed rupee amounts for referral or coupon benefits unless you have the latest offer details open in front of you.  
+- Do not promise that a referral or coupon reward is guaranteed; always mention that it is subject to successful order completion and internal checks.
+
+</Callout>
+
+- Do not advise customers to reinstall the app or create a new account to become "new" again; eligibility is tied to the phone number and order history.  
+- Do not stack or mix multiple coupons in one order; the system supports only a single coupon per order.  
+- Do not bypass or ignore system error messages; investigate via Admin/logs and escalate if something looks technically wrong.
+
+---
+
+## One-page mental summary
+
+Use this as your quick mental model during calls and chats.
+
+- **Referral**:  
+  - One permanent code per user → friend signs up with it → friend’s first order completes → friend’s benefit auto-applied → referrer reward created as Pending → Admin approval → wallet credit.
+
+- **Coupon**:  
+  - User reaches final quote in sell device flow → taps Apply Coupon → system validates against config (platform, user type, device, price, city, expiry, usage) → if eligible, flat benefit applied to quote → benefit paid out only if order completes.
+
+- **Core rules**:  
+  - Referral only for genuinely new users on that phone number.  
+  - One coupon per order, and it must pass all backend validations.  
+  - No manual credits or overrides without proper approval.  
+  - Never lock yourself to a specific rupee amount; always tie to active configuration and successful completion.

@@ -1,0 +1,461 @@
+---
+title: "🧠 Vendor SLA & Violation Policy Script"
+description: Training script for Vendor Ops to explain SLA violations, actions, and appeals to vendors using system-logged data and standard escalation rules.
+---
+
+## Purpose, audience, and when to use
+
+Use this script when you speak to vendors about SLA performance, violations, credit deductions, holds, or deactivation.  
+
+Primary audience: Vendor Management and Operations team members who handle vendor calls, chats, and WhatsApp messages.
+
+Use it when:
+
+- A vendor asks why leads are reduced or account is on hold.
+- You need to explain what counts as an SLA violation and what action was taken.
+- You must guide a vendor on how to avoid future violations.
+- You handle appeals or review requests related to SLA and credits.
+
+<Callout kind="info">
+
+SLA handling is always system-logged and evidence-based. Before you explain anything to the vendor, verify the order timeline, app logs, and escalation tracker so you speak from facts, not guesses.
+
+</Callout>
+
+## What SLA means and what gets tracked
+
+<Callout kind="info">
+
+SLA (Service Level Agreement) is the minimum performance standard every active Cashkr vendor must maintain so customers get timely, fair, and professional service.
+
+</Callout>
+
+SLA tracking for vendors covers:
+
+- Response time to new leads and calls.
+- Pickup timing against the committed slot.
+- Inspection quality and correct failure reasons.
+- Payment completion and confirmation to the customer.
+- Professional and safe behaviour with customers and the Cashkr team.
+
+All violations are logged automatically or by Ops in the [SLA Violation Tracking and Escalations workflow](/sla-violation-tracking-escalations).
+
+## What counts as an SLA violation (quick list)
+
+Use this list as a quick reference on calls. Full definitions and severity levels are in the [SLA Violations and Escalation Rules](/sla-violations-escalation-rules).
+
+Common violation types:
+
+- **Pickup and response**
+  - No response or very late response to lead.
+  - Delayed pickup beyond committed window.
+  - Fake status or not attempted pickup but marked attempted.
+
+- **Inspection and order handling**
+  - Improper failure without valid reason or proof.
+  - Wrong inspection or manipulating device condition to mis-price.
+  - Order handling that does not follow standard flow or OTP rules.
+
+- **Payment and settlement**
+  - Missed or delayed payout to the customer.
+  - Not following the [Vendor Payment OTP and Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+
+- **Behaviour and fraud**
+  - Unprofessional or abusive behaviour with customer or staff.
+  - Any fraud, harassment, theft, or data misuse.
+
+<Callout kind="alert">
+
+Fraud, harassment, theft, or serious payment integrity issues are zero-tolerance. These cases may skip intermediate steps and move directly to escalation or deactivation as per the [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+
+</Callout>
+
+## Escalation ladder (high level)
+
+Always follow the ladder and thresholds defined in [SLA Violations and Escalation Rules](/sla-violations-escalation-rules). Do not invent new ranges on calls.
+
+At a high level, escalation works like this:
+
+- **Single or low-count violations**: Warning and coaching on call, no status change.
+- **Repeated violations in a week**: Strikes and mandatory training; lead flow may be reduced.
+- **Serious or repeated weekly violations**: Escalation to Ops Manager, temporary account hold, and/or credit penalties.
+- **Ongoing pattern or severe behaviour/fraud**: Escalation to management, long-term hold or permanent deactivation as per [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+
+For exact counts, severity categories, and actions, always cross-check the canonical rules page and the current week’s tracker.
+
+## Standard handling flow for SLA calls
+
+Follow this flow every time you talk to a vendor about SLA or violations.
+
+<Steps>
+
+<Step title="Verify details before speaking" icon="search">
+
+- Open the SLA tracker in [SLA Violation Tracking and Escalations](/sla-violation-tracking-escalations).
+- Check order IDs, violation type, timestamps, severity, and current action (warning, strike, hold, deactivation).
+- Confirm if this is a normal escalation or a zero-tolerance case linked to [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process) or [Vendor Payment OTP and Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+
+Success signal: You have a clear list of orders, violation reasons, and the exact action applied.
+
+</Step>
+
+<Step title="Explain SLA and why it matters" icon="info">
+
+- Briefly define SLA in simple language.
+- Connect it to customer experience and the vendor’s ability to keep getting orders.
+- Emphasize that logs and system data drive actions, not personal opinions.
+
+Success signal: Vendor acknowledges they understand what SLA is, even if they disagree with the decision.
+
+</Step>
+
+<Step title="Walk through specific violations" icon="list-ordered">
+
+- Share 1–3 clear examples with order IDs, dates, and violation types.
+- Mention how each was verified (call recording, GPS, app logs, timeline).
+- Clarify if these are pickup, behaviour, inspection, or payment-related issues.
+
+Success signal: Vendor can see which exact orders led to the current action.
+
+</Step>
+
+<Step title="Clarify current action and its basis" icon="alert-triangle">
+
+- State the current status: fully active, reduced leads, hold, or deactivated.
+- Link action to the escalation ladder in [SLA Violations and Escalation Rules](/sla-violations-escalation-rules).
+- For holds or deactivation, align language with the [Vendor Hold and Deactivation Script](/vendor-hold-/-deactivation-script).
+
+Success signal: Vendor knows exactly what action is applied and why.
+
+</Step>
+
+<Step title="Capture vendor side and document" icon="edit">
+
+- Listen to the vendor’s explanation without arguing.
+- Note their points against each order ID.
+- Update the SLA tracker and, if needed, add comments for Ops Manager or BD review according to [SLA Violation Tracking and Escalations](/sla-violation-tracking-escalations).
+
+Success signal: Tracker has up-to-date comments and is ready for any review or appeal.
+
+</Step>
+
+<Step title="Confirm next steps and appeal options" icon="check-circle">
+
+- Explain what the vendor should do now to avoid further issues.
+- If they want to appeal, explain how review works and what evidence is useful.
+- For payment or fraud-related cases, direct to the correct process and do not promise reactivation.
+
+Success signal: Vendor knows what they need to change immediately and how an internal review will proceed.
+
+</Step>
+
+</Steps>
+
+## Main vendor questions and scripts
+
+Use these expandable blocks as your ready reference during calls or chats.
+
+<ExpandableGroup>
+
+<Expandable title='1. "Why is my account on hold or my leads reduced?"' default-open="true">
+
+**What to check (internal)**
+
+- Current vendor status and lead settings in Admin Panel or vendor dashboard.
+- Weekly SLA violation count and severity in the tracker.
+- Any recent escalation note from Ops Manager or Management.
+- Whether this action is linked to hold/deactivation rules in [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+
+**What to say (copy-ready)**
+
+“Thanks for reaching out. I have checked your profile and the system shows recent SLA issues on some of your orders.
+
+Our SLA (Service Level Agreement) sets basic service standards for all vendors, like responding to leads on time, reaching the pickup within the committed window, and handling payments correctly. When these standards are missed repeatedly, the system reduces lead flow or, in some cases, puts the account on temporary hold to protect customer experience.
+
+Let me share the specific orders where issues were logged, so you can see what happened and how to avoid this in future.”
+
+**What to do next (action)**
+
+- Share 1–3 example orders with clear reasons and dates.
+- Explain what improvement is expected (for example: faster response, on-time pickup, correct failure reasons, following payment OTP flow).
+- Document the conversation summary and vendor response in the tracker.
+
+</Expandable>
+
+<Expandable title='2. "What does SLA mean exactly?"'>
+
+**What to check (internal)**
+
+- Confirm that the vendor has active orders and appears in SLA tracking.
+- Review if previous training or explanations have been added in comments.
+
+**What to say (copy-ready)**
+
+“SLA means Service Level Agreement. It is the performance standard that every active Cashkr vendor follows.
+
+This includes things like:
+- Responding to new leads quickly
+- Reaching the customer within the scheduled pickup slot
+- Doing correct inspection and updating the right status
+- Paying the customer fully and confirming via OTP
+- Keeping communication clear and professional
+
+We track these points through the app logs, timelines, and recordings so that every vendor is treated on the same standard.”
+
+**What to do next (action)**
+
+- Ask if any part of the SLA is unclear and address those points.
+- If needed, share or resend any training or documentation links used during onboarding.
+- Note in the tracker that SLA explanation was provided.
+
+</Expandable>
+
+<Expandable title='3. "I did not violate anything. Why am I penalised?"'>
+
+**What to check (internal)**
+
+- Re-validate each violation in the tracker: order ID, timeline, GPS, call logs, failure reasons.
+- Confirm that the violation category and action match [SLA Violations and Escalation Rules](/sla-violations-escalation-rules).
+- Check if any previous appeal or correction was already processed.
+
+**What to say (copy-ready)**
+
+“I understand your concern and I will not assume anything. I have the system logs here which show each SLA issue with order ID and time.
+
+The system tracks things like delayed pickup, no response to a lead, wrong failure reason, or missed payment. Whenever one of these happens, it is recorded as an SLA violation after verification from logs.
+
+Let us go order by order. I will share the specific orders where the issue is shown, and you can tell me your side so that we can update it for review if needed.”
+
+**What to do next (action)**
+
+- Walk through each disputed order and listen to the vendor’s explanation.
+- If their explanation and evidence seem valid, add a clear comment and mark it for Ops Manager review according to [SLA Violation Tracking and Escalations](/sla-violation-tracking-escalations).
+- Do not promise reversal; explain that the internal team will review and update the decision.
+
+</Expandable>
+
+<Expandable title='4. "What actions are taken after violations?"'>
+
+**What to check (internal)**
+
+- Current violation count and severity this week or review period.
+- The exact escalation step applied, based on [SLA Violations and Escalation Rules](/sla-violations-escalation-rules).
+- Whether the case involves behaviour or fraud that touches [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+
+**What to say (copy-ready)**
+
+“Actions depend on how many violations happened and how serious they are.
+
+In many cases the first step is a warning and training so you can correct the issue. If violations continue, the system may reduce your leads or add a strike. When there are repeated or more serious cases, it goes to our Ops Manager for escalation, which can lead to temporary hold, credit penalties, or, in extreme cases, deactivation.
+
+The purpose is not to punish you but to make sure all vendors follow the same standards so that customers get a reliable experience.”
+
+**What to do next (action)**
+
+- State clearly which stage this vendor is currently on (warning, reduced leads, hold, or deactivation).
+- Align your wording with the [Vendor Hold and Deactivation Script](/vendor-hold-/-deactivation-script) if the account is on hold or deactivated.
+- Note that you have explained the ladder and current stage.
+
+</Expandable>
+
+<Expandable title='5. "What exactly counts as an SLA violation for me?"'>
+
+**What to check (internal)**
+
+- List of all violation categories logged for this vendor (pickup, inspection, behaviour, payment, order handling, fraud).
+- Patterns in the last few weeks (for example: repeated delayed pickup, repeated missed payment).
+
+**What to say (copy-ready)**
+
+“For your profile, the system has mainly recorded these types of SLA issues:
+
+- Pickup and response issues (for example: not responding to lead in time, late arrival, or marking visited without going).
+- Inspection or order handling issues (for example: failing an order without valid reason or proof, or not following the standard inspection flow).
+- Payment issues (for example: not completing payment on time or not following the OTP confirmation process).
+- Behaviour issues (for example: rude or unprofessional communication reported by customer or Cashkr team).
+
+Each case is checked using app timelines, call recordings, and other logs before marking as a violation, so the process is consistent for all vendors.”
+
+**What to do next (action)**
+
+- Share concrete examples from their history, not just a list of categories.
+- Emphasise the main 1–2 behaviour changes that will remove most of their issues.
+- Capture any questions they have and update the tracker.
+
+</Expandable>
+
+<Expandable title='6. "Can I get my credits back if I did not violate anything?"'>
+
+**What to check (internal)**
+
+- Identify which orders led to credit deductions.
+- Confirm whether deductions follow current rules for SLA penalties or valid failures.
+- Review any past reversals or special approvals.
+
+**What to say (copy-ready)**
+
+“If, after review, we find that the issue was not because of your mistake, then the penalty linked to that order can be reversed as per policy.
+
+For example, if the customer cancelled on their own or did not cooperate at pickup, and the order is correctly marked with proof, then we treat it as a valid failure and not as an SLA breach.
+
+However, when the logs show a clear SLA violation like delayed pickup, no response, wrong failure reason, or payment issue, then the credit deduction remains as per the standard rules. Our team always checks logs before making that decision.”
+
+**What to do next (action)**
+
+- If the vendor wants a review, collect order IDs and relevant details.
+- Tag the orders for internal review in the tracker and inform the Ops Manager as per [SLA Violation Tracking and Escalations](/sla-violation-tracking-escalations).
+- Avoid any commitment on approval; only confirm that the case will be reviewed.
+
+</Expandable>
+
+<Expandable title='7. "How do I avoid SLA violations going forward?"'>
+
+**What to check (internal)**
+
+- Identify the top 1–2 violation types for this vendor.
+- Check if any prior training or warnings focused on the same pattern.
+
+**What to say (copy-ready)**
+
+“To avoid SLA violations and keep your leads stable or increasing, focus on these points:
+
+- Respond to new leads immediately and update the correct call disposition.
+- Reach the customer within the committed pickup time or proactively reschedule when needed.
+- Follow the correct inspection and order flow and only mark fail when there is a genuine reason with clear proof.
+- Complete payment on the spot and follow the full OTP confirmation process so the customer and system both confirm payment.
+- Maintain professional and polite communication with customers and the Cashkr team at all times.
+
+When these things are consistent, your SLA score improves and it becomes easier for us to keep your account active with healthy lead flow.”
+
+**What to do next (action)**
+
+- Give 1–2 practical suggestions tailored to the vendor’s past issues.
+- If needed, schedule a short training or share relevant SOP links.
+- Record that preventive coaching was provided.
+
+</Expandable>
+
+<Expandable title='8. "How will I know if I violated SLA?"'>
+
+**What to check (internal)**
+
+- Confirm which communication channels are currently used for SLA notifications (in-app, WhatsApp, calls).
+- Check the latest SLA notifications sent to this vendor.
+
+**What to say (copy-ready)**
+
+“Whenever an SLA violation is logged on your account, we send you an update with the order ID and the reason.
+
+You may receive this as an in-app notification, WhatsApp message, or call from our team. In that message, you can see what went wrong and, in some cases, what action has been taken.
+
+If you ever feel something is not clear, you can share the order ID with us and we will check the logs again and explain what is showing in the system.”
+
+**What to do next (action)**
+
+- If the vendor says they did not receive notifications, confirm their registered contact details.
+- Resend or summarise recent SLA notifications where needed.
+- Note any communication gaps in the tracker.
+
+</Expandable>
+
+<Expandable title='9. "Can I appeal against an SLA violation or action?"'>
+
+**What to check (internal)**
+
+- Review existing comments and any past appeals for the vendor.
+- Confirm who the escalation owner is for this case (Ops Manager, BD, Management).
+
+**What to say (copy-ready)**
+
+“Yes, you can share your side for any SLA violation or action you feel is incorrect.
+
+We will need the order IDs and a clear explanation of what happened from your point of view. Our internal team then reviews call recordings, timestamps, customer updates, and app logs to see if the violation is valid.
+
+If the internal review shows that the system marked it incorrectly or there was no mistake from your side, we update the record and, where applicable, adjust the penalty. Timelines can vary depending on how many orders and checks are involved, but every appeal is checked using the same standard process.”
+
+**What to do next (action)**
+
+- Collect order IDs and a short written note from the vendor if possible (WhatsApp or email).
+- Mark the case for review with clear comments in the tracker, linking to [SLA Violation Tracking and Escalations](/sla-violation-tracking-escalations) steps.
+- Inform the vendor that you will update them once the internal review is completed, without promising a specific outcome or date.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Zero-tolerance and critical payment violations
+
+<Callout kind="alert">
+
+For suspected fraud, harassment, theft, serious safety issues, or major payment failures, move directly to escalation. Do not make commitments about reactivation or penalty reversal on the call.
+
+</Callout>
+
+In these cases:
+
+- Follow the fraud and serious-behaviour rules in [SLA Violations and Escalation Rules](/sla-violations-escalation-rules).
+- Apply or confirm holds and deactivation only as described in [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+- For payment integrity issues, confirm whether the [Vendor Payment OTP and Confirmation Flow](/vendor-payment-otp-confirmation-flow) was followed and document any gap.
+- Use the safer, stricter language from [Vendor Hold and Deactivation Script](/vendor-hold-/-deactivation-script) for communication.
+
+If you are unsure whether a case is zero-tolerance, pause the conversation, record the details, and escalate to Ops Manager before committing to any decision.
+
+## Call and WhatsApp templates
+
+Use these templates as a base. Adjust order IDs, dates, and specific violation types, but do not change the core policy language.
+
+<Tabs>
+
+<Tab title="Call script" icon="phone">
+
+“Hello, am I speaking with \[Vendor Name]?
+
+This is \[Your Name] from Cashkr Operations. I am calling regarding your vendor account performance and some recent SLA entries in our system.
+
+Our SLA is the service standard for all vendors, which covers timely response to leads, on-time pickup, correct inspection, and proper payment to customers. When the system detects repeated issues on these points, it may reduce leads or place the account on temporary hold.
+
+I have checked your profile and, in the last \[time period], the system has recorded issues on orders like \[Order ID 1] and \[Order ID 2], for reasons such as \[short reason: delayed pickup / no response / missed payment / improper failure]. These are verified using logs and timelines before they are marked.
+
+Based on the current rules, this has led to \[current action: warning / reduced leads / temporary hold / deactivation] as per our standard escalation ladder.
+
+I want to understand your side as well. Can you walk me through what happened on these orders, so I can record your explanation for internal review and help you avoid similar issues going forward?”
+
+</Tab>
+
+<Tab title="WhatsApp follow-up message" icon="message-square">
+
+“Hi \[Vendor Name],  
+
+This is \[Your Name] from Cashkr Operations.
+
+As discussed, our system has logged SLA issues on your account in recent orders such as \[Order ID 1], \[Order ID 2] for reasons like \[short reason: delayed pickup / no response / missed payment / improper failure].
+
+Based on the standard SLA rules, this has resulted in \[action: warning / reduced leads / temporary hold / deactivation] on your profile.
+
+Please focus on:
+- Responding to new leads quickly
+- Completing pickups in the committed time
+- Marking status and failures correctly with proof
+- Completing payment on time and following the OTP confirmation flow
+
+If you believe any of these violations are incorrect, share the order IDs and your explanation here. Our internal team will review the logs and, if any entry is found to be wrong, we will update it as per policy.”
+
+</Tab>
+
+</Tabs>
+
+## Appeals and review: how to handle safely
+
+When a vendor requests an appeal or review:
+
+- **Acknowledge** their concern and confirm you will record their explanation.
+- **Collect clear details**: order IDs, date/time, what happened from their perspective, and any proof they have.
+- **Update the tracker** with accurate notes and mark for Ops Manager/BD review as defined in [SLA Violation Tracking and Escalations](/sla-violation-tracking-escalations).
+- **Avoid promises** about outcomes or timelines. Use neutral language such as “the team will review the logs and update the decision as per policy.”
+
+If the appeal relates to a hold or deactivation:
+
+- Align your communication with [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process) and [Vendor Hold and Deactivation Script](/vendor-hold-/-deactivation-script).
+- Do not commit to reactivation on the call; only confirm that the case will be reviewed internally.
+
+By following these steps, you keep the process fair, consistent, and fully aligned with system-logged data and approved policies.

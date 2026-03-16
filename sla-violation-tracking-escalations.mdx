@@ -1,0 +1,321 @@
+---
+title: SLA Violation Tracking & Escalations
+description: Track SLA violations, apply weekly thresholds, and run a consistent escalation flow across CX, Ops, Vendor Ops, BD, and Management.
+---
+
+## Purpose and ownership
+
+Use this SOP to track SLA violations and apply consistent actions across Operations, Vendor Ops, CX, BD, and Management.
+
+SLA violation tracking aims to:
+
+- Ensure timely pickups and order completion
+- Maintain vendor accountability
+- Reduce customer complaints
+- Improve and stabilize order completion rate
+- Provide a clear, shared escalation pathway across teams
+
+## Quick checklist for handling an SLA issue
+
+Use this as your fast path from detection to action:
+
+- **Detect issue** from Admin Panel, customer complaint, CX follow-up, or vendor activity logs.
+- **Identify SLA type** (delay, wrong failure, payment issue, no contact, behaviour, fraud).
+- **CX logs violation** clearly in the Admin Panel with notes and context.
+- **Ops validates** using order timeline, vendor logs, and past violation history.
+- **Vendor Ops contacts vendor** (except direct fraud cases) to understand reason and clarify expectations.
+- **Update SLA tracker** with vendor name, order ID, violation type, reason, and action taken.
+- **Check weekly threshold** and apply the mapped action (warning, coaching, penalty, hold, or deactivation in severe cases).
+- **Inform CX** of final decision so they can update the customer if needed.
+- **BD and Management** review patterns weekly via reports and dashboards.
+
+## What SLA means at Cashkr
+
+Service Level Agreement (SLA) defines the minimum operational standards vendors must follow during pickups. Any failure to meet these is an SLA violation.
+
+Core SLAs for vendors:
+
+- Call the customer within 15–20 minutes of assignment.
+- Reach the pickup location within the scheduled time.
+- Complete the order without unnecessary delay.
+- Communicate politely and professionally at all times.
+- Follow device inspection rules accurately.
+- Avoid fraud or falsifying conditions.
+- Complete payment instantly after OTP confirmation.
+
+## SLA violation categories
+
+There are six primary SLA violation categories. Always tag and track violations using these.
+
+### 1. Delayed pickup
+
+Vendor does not reach on time or delays starting the assignment.
+
+Examples:
+
+- Assigned but no call made to the customer for more than 20 minutes
+- Vendor promises an ETA but does not follow it
+- Vendor takes too long to start the trip after confirmation
+
+### 2. Improper failure or wrong failure reason
+
+Vendor marks the order as failed with an incorrect or unfair reason.
+
+Examples:
+
+- Customer is available but vendor marks status as `Not Available`
+- Vendor does not check the device properly before failing
+- Vendor fails the order to avoid taking low-price devices
+
+### 3. Missed, incorrect, or delayed payment
+
+Vendor does not complete payment correctly or on time.
+
+Examples:
+
+- Payment delay after successful pickup and OTP
+- Vendor leaves the location without completing payment
+- Vendor sends payment to the wrong UPI due to carelessness
+
+### 4. Vendor not contacting customer
+
+Vendor is assigned but does not contact the customer.
+
+Examples:
+
+- No call placed after assignment within SLA time
+- Customer reports no communication from vendor
+- Only missed calls or no genuine attempt to coordinate
+
+### 5. Behaviour or professionalism issues
+
+Vendor behaves in a way that is rude, unprofessional, or against Cashkr standards.
+
+Examples:
+
+- Using abusive or aggressive tone with the customer
+- Forcing the customer to accept a lower price
+- Not being presentable or not wearing ID when required
+
+### 6. Fraud or intentional manipulation
+
+Vendor attempts to cheat, misrepresent, or misuse the system.
+
+<Callout kind="alert">
+
+Treat all fraud or intentional manipulation cases as **critical**. Escalate to Vendor Ops and Management immediately. Deactivation is expected in severe or confirmed cases.
+
+</Callout>
+
+Examples:
+
+- Entering a false device condition to reduce price intentionally
+- Trying to reduce price by misrepresenting issues
+- Misusing OTP or attempting to complete the order without customer consent
+- Sharing fake or edited payment screenshots
+
+## How SLA violations are tracked
+
+Ops, CX, and Vendor Ops track SLA violations through:
+
+- Admin Panel order timeline
+- Vendor activity logs
+- Customer complaints
+- CX follow-up calls
+- Vendor Ops reports
+- BD team city-level performance analysis
+
+In the Admin Panel, use:
+
+- **Orders → SLA Violations List** to see:
+  - Vendor name
+  - Order ID
+  - Violation type
+  - City
+  - Timestamp
+  - Number of violations for that vendor in the current week
+
+## Weekly SLA violation thresholds and actions
+
+Use weekly violation count per vendor to decide the level of action.
+
+| Weekly violation count | Action                           |
+| ---------------------- | -------------------------------- |
+| 1–2                    | Warning message                  |
+| 3–4                    | Vendor Ops call and coaching     |
+| 5                      | Vendor review and potential penalty |
+| 6+                     | Vendor hold until further notice |
+
+## SLA standards for vendor performance
+
+Use these time standards to decide whether an SLA has been breached.
+
+| Activity                        | SLA time                          |
+| ------------------------------ | --------------------------------- |
+| Call customer after assignment | Within 15 minutes                 |
+| Start trip after confirmation  | Within 20 minutes                 |
+| Reach location                 | 0–60 minutes (as per city)        |
+| Inspection completion          | 5–10 minutes                      |
+| Payment completion             | Immediately after OTP confirmation |
+
+Any deviation from these standards is a potential SLA violation and should be logged and reviewed.
+
+## Escalation flow
+
+Use this standard flow from first detection to final action.
+
+<Steps>
+  <Step title="CX identifies issue" icon="alert-triangle">
+
+  - CX identifies a slow or problematic vendor from a customer complaint, call, or Admin Panel.
+  - CX logs the SLA violation in the Admin Panel with a clear note, such as:
+    - `Vendor not calling customer`
+    - `Customer waiting 45 minutes`
+
+  </Step>
+
+  <Step title="Ops validates" icon="settings">
+
+  - Ops reviews the order timeline and vendor activity logs.
+  - Ops checks previous violations for the same vendor.
+  - If confirmed, Ops marks the issue as a valid SLA violation and informs Vendor Ops.
+
+  </Step>
+
+  <Step title="Vendor Ops contacts vendor" icon="phone">
+
+  - Vendor Ops calls the vendor (except in direct fraud cases where immediate escalation may apply).
+  - Understand the vendor's reason and clarify expectations and SLAs.
+  - Warn the vendor where needed and record the explanation.
+
+  </Step>
+
+  <Step title="Update SLA tracker" icon="edit">
+
+  - Add or update an entry in the SLA tracker with:
+    - Vendor name
+    - Order ID
+    - Violation type
+    - Reason given by vendor
+    - Action taken or planned
+
+  </Step>
+
+  <Step title="Apply appropriate action" icon="check-circle">
+
+  - Check the vendor's weekly violation count.
+  - Apply the mapped action:
+    - **Warning (soft action)** for minor delays or first violations.
+    - **Coaching call** where Vendor Ops explains why the violation occurred and how to improve.
+    - **Penalty or credit deduction** for vendors who repeatedly ignore SLAs, including:
+      - Credit deduction (for example, 5–20 credits)
+      - Restricting order unlock limit
+    - **Hold vendor** when:
+      - Weekly violations exceed 5
+      - There are repeated delays or payment issues
+      - There are repeated customer complaints
+    - **Deactivation** in severe cases such as:
+      - Fraud or OTP misuse
+      - Payment misconduct
+      - Harassment or serious behaviour issues
+      - Repetitive violations despite previous actions
+
+  </Step>
+</Steps>
+
+## Team responsibilities
+
+### CX: customer experience protocol for SLA-delayed orders
+
+When an order is delayed or has an SLA issue, CX should:
+
+- Apologize to the customer for the delay or inconvenience.
+- Call the vendor immediately to check status.
+- Share an updated and realistic ETA with the customer.
+- Log the issue clearly in the Admin Panel.
+- Escalate to Ops if the vendor is unresponsive or repeatedly delaying.
+- Trigger reassignment when necessary to protect customer experience.
+
+### BD: responsibilities in SLA violations
+
+BD (Business Development and Area Management) focuses on preventing SLA issues by improving coverage and supply, not by disciplining vendors.
+
+BD responsibilities:
+
+- Ensure adequate vendor coverage per pincode.
+- Identify areas with repeated SLA failures or poor coverage.
+- Highlight operational bottlenecks causing delays or failures.
+- Coordinate with Vendor Ops to bring new vendors into weak areas.
+- Improve vendor distribution in high-order or high-complaint zones.
+
+### Management: reporting and dashboards
+
+Management reviews SLA performance to make scaling and pruning decisions.
+
+Key reports and dashboards:
+
+- Weekly SLA violation report
+- City-level SLA heat map
+- Vendor-level SLA performance and rankings
+- List of repeat offenders
+- SLA performance vs order completion rate
+
+Use these insights to adjust vendor base, city strategies, and training focus.
+
+## Communication templates
+
+Use these standard messages for consistent communication.
+
+<Tabs>
+  <Tab title="Vendor messages" icon="users">
+
+  **Warning to vendor**
+
+  > Please ensure timely pickups. We recorded a delay in Order ID \_\_\_\_\_\_\_\_. Kindly follow SLA guidelines.
+
+  **Hold notification**
+
+  > Your account is temporarily on hold due to repeated SLA violations. You will be contacted by Vendor Ops for review.
+
+  </Tab>
+
+  <Tab title="Customer messages" icon="message-square">
+
+  **Customer message for delay**
+
+  > We are coordinating with your pickup partner. They will reach you shortly. Sorry for the delay.
+
+  </Tab>
+</Tabs>
+
+## One-page quick summary
+
+Use this as your training and reference snapshot.
+
+**SLA violations include:**
+
+- Delayed pickup or no customer call
+- Wrong failure or misreported reason
+- Miscommunication or wrong inspection
+- Payment issues (missed, delayed, or wrong UPI)
+- Vendor behaviour or professionalism issues
+- Fraud or intentional manipulation
+
+**Weekly thresholds and actions:**
+
+- 1–2 violations: warning
+- 3–4 violations: Vendor Ops call and coaching
+- 5 violations: vendor review and potential penalty
+- 6+ violations: vendor hold until further notice
+
+**Escalation chain:**
+
+- CX → Identify issue and log violation
+- Ops → Validate using logs and history
+- Vendor Ops → Contact vendor and take action
+- BD → Improve area and vendor availability
+- Management → Review reports and approve major actions
+
+**Action ladder:**
+
+- Warning → Coaching → Penalty → Hold → Deactivate (for severe or repeated cases)

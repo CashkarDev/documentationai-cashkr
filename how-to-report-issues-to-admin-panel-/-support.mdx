@@ -1,0 +1,603 @@
+---
+title: How to Report Issues to Admin Panel / Support
+description: Standard process to classify severity, log clear Admin Panel notes, and raise support tickets for product and ops issues at Cashkr.
+---
+
+## Purpose of this SOP
+
+Use this SOP whenever you see a live problem in Cashkr (customer/vendor complaint, app bug, data mismatch, payment issue) and need to report it so Ops and Tech can act quickly.
+
+Your goals:
+
+- Classify the **severity** correctly.
+- Log a **clean trail** in the Admin Panel.
+- Raise a **reproducible ticket** in the ticket tool or support channel.
+- Escalate to the **right team** without breaking any risk or data rules.
+
+---
+
+## Before you report: quick checklist
+
+Confirm these basics before you open a ticket or ping any channel.
+
+- You understand **what exactly is wrong**, in simple language.
+- You know **who is impacted** (customer, vendor, store, internal).
+- You have opened the **right record in Admin Panel**:
+  - Orders module for order/flow issues.
+  - Payments module for wallet/credits/refunds.
+  - Support and Complaints for existing complaints.
+  - Settings for configuration issues (pincode, serviceability, pricing toggles).
+- You have collected:
+  - Order ID or lead ID (if any).
+  - User ID and/or vendor ID.
+  - Pincode, city, and device details if relevant.
+  - Screenshots or screen recordings if possible.
+  - Exact timestamps and steps to reproduce.
+
+<Callout kind="tip">
+
+If you are in doubt between multiple issues, start with **one clean ticket per user or per order**. Do not mix unrelated problems in a single report.
+
+</Callout>
+
+---
+
+## Severity levels (P0–P3)
+
+Use these guidelines to choose the right priority. If two levels seem possible, pick the **higher** one and justify it in the ticket.
+
+### P0 – Critical / system down
+
+Entire flows are blocked or money is at risk right now.
+
+Examples:
+
+- All or most orders are **stuck in one status** (for example, cannot move from created to out for pickup).
+- OTP for vendor payment or order confirmation **fails for majority of users/vendors**.
+- Payment success on gateway but **no order created** or **wallet/credits not updated** for many users.
+- Serviceability logic broken: **non‑serviceable pincodes showing as serviceable** or vice versa for large areas (city‑wide).
+- Any live issue that can cause **large financial loss** or **legal/compliance exposure** if not fixed immediately.
+
+### P1 – High impact but not system‑wide
+
+Many users/vendors are affected, but core flows still work for others.
+
+Examples:
+
+- Orders from certain **pincodes or cities** are failing or stuck.
+- Specific **device category** or brand not moving ahead in the flow.
+- Multiple vendors reporting **OTP delays** or occasional failures.
+- Repeated **payment mismatch** for a specific payment mode or bank.
+- Customer or vendor complaints are increasing on the same bug in one region.
+
+### P2 – Medium impact / recurring bug
+
+Single‑user or low volume issues that recur and need a fix, but not urgent fire.
+
+Examples:
+
+- Individual order stuck due to **edge‑case status** or rare combination.
+- One vendor’s **credit balance** incorrect compared to transactions.
+- UI bug in app or website that **does not block** the flow but confuses users.
+- Minor serviceability mismatch for few pincodes.
+
+### P3 – Low impact / improvement request
+
+Nice‑to‑have changes, content issues, or one‑off cases that can be handled manually.
+
+Examples:
+
+- Text changes, spelling errors, or unclear labels.
+- Request to adjust **copy, tooltips, or help text**.
+- Single historical data correction with no pattern.
+- Suggestions to improve a flow based on feedback.
+
+<Callout kind="info">
+
+Severity is about **impact and urgency**, not about who reported it. Even a founder‑reported issue can be P2 if it affects one case only.
+
+</Callout>
+
+---
+
+## Where to log in the Admin Panel
+
+Always log the issue first in the Admin Panel. Admin Panel is the **source of truth** for what happened and when.
+
+### Core modules to use
+
+- **Orders**  
+  For anything related to order creation, status, pickup, reschedule, pricing, vendor assignment.
+
+- **Payments (Wallet and Credits)**  
+  For wallet balance mismatches, vendor credits, refunds, reversals, payout issues.
+
+- **Support and Complaints**  
+  For formal customer/vendor complaints, SLA breaches, and escalations.
+
+- **Logs and Audit Trail**  
+  For checking who changed what and when. Use this to reconstruct timeline and support your ticket.
+
+- **Settings**  
+  For pincode serviceability, pricing configs, toggles that may cause or solve the issue. Do not change settings without approval.
+
+### How to add internal notes correctly
+
+1. Open the **exact record**:
+   - Order detail page in Orders.
+   - Wallet/credit transaction or vendor account in Payments.
+   - Complaint ticket in Support and Complaints.
+
+2. Add an **internal note** that is:
+   - Time‑bound: mention when the issue was reported and when it started (if known).
+   - Clear: one note per topic; avoid long story‑telling.
+   - Actionable: state what you observed and what you did (if anything).
+
+<Callout kind="alert">
+
+Always add an internal note for every **meaningful change** or escalation. Do not adjust order status, payments, refunds, deactivation, or reassignment without following the **approval hierarchy**.
+
+</Callout>
+
+**Example internal note:**
+
+> 2024‑06‑21 15:32 – Customer says payment success but order not visible in app. Razorpay shows success for Rs 7,500 at 15:20. Checked Admin Panel → no order created for this mobile. Marking as P1 payment mismatch and raising ticket. No manual refund triggered yet.
+
+---
+
+## Standard issue reporting workflow
+
+Follow these steps every time, from first observation to final ticket.
+
+<Steps>
+
+<Step title="Stabilize the user/vendor conversation" icon="help-circle">
+
+- Acknowledge the issue and stay calm.
+- Do **not** promise a specific outcome (refund, extra payment, incentive) until Ops or Finance confirms.
+- Give a realistic expectation: for example, "I am logging this for our Ops/Tech team right now. We will update you as soon as we identify the issue or need more details."
+
+</Step>
+
+<Step title="Collect minimum required information" icon="list-ordered">
+
+Capture these data points while you still have the user/vendor in contact:
+
+- Order ID or lead ID (if created).
+- User ID and phone number (and email if relevant).
+- Vendor ID and store name (for vendor issues).
+- Pincode and city.
+- Device details (brand, model, storage, condition) if order‑related.
+- Timestamps:
+  - When the issue happened (time and timezone).
+  - When the user/vendor tried each action (for example, clicked Pay Now at 15:20).
+- Technical context:
+  - Whether they used app or website, and which OS (Android/iOS) if known.
+  - Network type (Wi‑Fi or mobile data) if mentioned.
+
+Ask for:
+
+- Screenshots of error messages.
+- Screen recording if the issue is in the flow (optional but very useful).
+
+</Step>
+
+<Step title="Check Admin Panel and logs" icon="monitor">
+
+- Open the **Orders** module using the Order ID or lead ID.
+- Confirm current **order status** and recent actions.
+- Check **Payments (Wallet and Credits)** for:
+  - Wallet or credit deductions.
+  - Refunds or reversals.
+- Use **Logs and Audit Trail** to:
+  - See which user or system changed statuses and when.
+  - Confirm if any manual override already happened.
+
+Add a short internal note summarizing what you found.
+
+</Step>
+
+<Step title="Decide severity and owner" icon="alert-triangle">
+
+- Use the P0–P3 rules above to set **severity**.
+- Identify **primary owner**:
+  - Ops (order flow, vendor assignment, SLA).
+  - Finance (wallet/credits/payout/refund mismatch).
+  - Tech (bugs, errors, system behaviour, OTP not working).
+  - Compliance (fraud, suspicious patterns, legal risk).
+
+Mention both in your note and in the ticket: `Severity: P1, Owner: Tech + Ops`.
+
+</Step>
+
+<Step title="Log a clean Admin Panel note" icon="edit">
+
+- Go back to the relevant record (order, complaint, payment).
+- Add an internal note that covers:
+
+  - Summary in one line.
+  - Severity and owner.
+  - Facts (what happened, when, for whom).
+  - Any manual workaround you already did or will do.
+
+Success signal: the note is clear enough that **another team member can understand the case without calling you**.
+
+</Step>
+
+<Step title="Create or update the support ticket" icon="package">
+
+- Go to the agreed **ticket tool or support channel**.
+- Use the **ticket template** below and fill every required field.
+- Attach screenshots, links to Admin Panel record, and logs if available.
+- Link the ticket ID back in the **Admin Panel note** so the loop is clear.
+
+Success signal: the ticket has:
+
+- Clear title and severity.
+- Exact steps to reproduce.
+- One or more specific examples (Order IDs, timestamps).
+- Admin Panel link and screenshot.
+
+</Step>
+
+<Step title="Monitor and escalate if needed" icon="bar-chart">
+
+- Track the ticket until you get a response or fix.
+- If the issue is P0 or P1 and **no update** within the expected SLA, follow the escalation guidelines below.
+- Once the issue is resolved, add a **closing note** in the Admin Panel:
+  - What fix was applied (config change, code fix, manual adjustment).
+  - Whether any **refunds or adjustments** were done.
+  - Any follow‑up to prevent repeat.
+
+</Step>
+
+</Steps>
+
+---
+
+## Ticket template and example
+
+Use these tabs to copy a standard template and see a filled sample.
+
+<Tabs>
+
+<Tab title="Ticket template (copy/paste)" icon="file-text">
+
+Copy this into your ticket tool or support channel and fill all placeholders.
+
+```text
+Title: [Severity P0/P1/P2/P3] Short summary of issue
+
+Severity: P0 / P1 / P2 / P3
+Primary owner: Ops / Finance / Tech / Compliance
+Secondary owner (if any): Ops / Finance / Tech / Compliance
+
+Impact:
+- Who is affected (customer/vendor/store/region)?
+- Scope (single user, few users, many users, all users)?
+- Which city/pincode(s) or device types (if relevant)?
+
+Examples (must include at least one):
+- Order ID(s):
+- User ID(s):
+- Vendor ID(s) / Store name(s):
+- Timestamps (when issue happened):
+
+Current behaviour:
+- Step-by-step what the user/vendor did
+- What they expected
+- What actually happened (include error text if any)
+
+Expected behaviour:
+- What should have happened in this scenario?
+
+Admin Panel details:
+- Module and links (Orders / Payments / Support and Complaints / Settings)
+- Current order/payment/complaint status
+- Key entries from Logs and Audit Trail (who changed what and when)
+
+Attachments:
+- Screenshots / screen recordings
+- Any related communication (email/WhatsApp/SMS snapshot – remove sensitive data)
+
+Notes and actions taken:
+- Any manual workaround already applied?
+- Any communication committed to user/vendor (no refunds promised)?
+```
+
+</Tab>
+
+<Tab title="Example (filled)" icon="check-circle">
+
+```text
+Title: [P1] Payment success but order not created for multiple customers
+
+Severity: P1
+Primary owner: Tech
+Secondary owner: Finance
+
+Impact:
+- Who is affected: retail customers on website checkout
+- Scope: 5 customers reported in last 2 hours, all on website
+- Region: Mixed pincodes (400067, 400092, 410210)
+
+Examples:
+- Order ID(s): Not generated (payment success but no orders)
+- User ID(s): usr_a7g52, usr_b3831, usr_c9011
+- Timestamps:
+  - usr_a7g52 → 2024-06-21 15:18–15:22
+  - usr_b3831 → 2024-06-21 15:30
+  - usr_c9011 → 2024-06-21 15:42
+
+Current behaviour:
+- Customer selects device and confirms quote.
+- On payment page, they pay via UPI.
+- Payment gateway shows "Payment successful", amount debited.
+- Customer is redirected to homepage instead of order confirmation.
+- No order visible in "Track Orders" and no order in Admin Panel Orders module.
+
+Expected behaviour:
+- After payment success, system should create an order with status "Created".
+- Customer should see order confirmation with Order ID.
+- Order should appear in Orders module with correct device and price.
+
+Admin Panel details:
+- Orders module: No order found for these users after payment time.
+- Payments (Wallet and Credits): No wallet/credit changes for these users.
+- Logs and Audit Trail: No entries for order creation or payment callbacks around those timestamps.
+
+Attachments:
+- Screenshots from customers of payment success page.
+- Screen recording from test user replicating flow (ends at homepage).
+- Export from payment gateway dashboard for 3 successful UPI payments.
+
+Notes and actions taken:
+- Marked severity as P1 because issue affects multiple customers but flows are not fully down.
+- Informed customers that we have their payment reference and are checking with Tech/Finance.
+- Did not trigger any manual refunds yet; waiting for confirmation from Finance.
+- Logged internal notes on each affected user profile with timestamps and this ticket ID.
+```
+
+</Tab>
+
+</Tabs>
+
+---
+
+## Common issue categories and required evidence
+
+Use these expandable sections to know what to collect for typical Cashkr issues.
+
+<ExpandableGroup>
+
+<Expandable title="Orders stuck or incorrect status" default-open="true">
+
+Applies when orders are stuck (for example, in created, out for pickup, in progress) or show unexpected status transitions.
+
+Collect:
+
+- Order ID(s) and user ID(s).
+- Current status and **expected next status**.
+- Timestamps of last status change.
+- Vendor ID(s) involved (if any).
+- Screenshots of:
+  - Order tracking screen (customer app or website).
+  - Order view in Admin Panel Orders module.
+- Logs and Audit Trail entries for:
+  - Status changes.
+  - Vendor assignment or reassignment.
+  - Manual overrides by agents.
+
+Key questions to answer:
+
+- Is this affecting one order, multiple orders, or a pattern (for example, specific city/vendor)?
+- Was there any **manual status edit** before it got stuck?
+- Any recent config change in **Settings** (for example, SLA or flow rules)?
+
+</Expandable>
+
+<Expandable title="OTP failures (customer or vendor)" default-open="false">
+
+Covers OTP issues for login, order confirmation, or vendor payment OTP.
+
+Collect:
+
+- Phone number and user ID or vendor ID.
+- Which OTP flow failed:
+  - Customer login/registration.
+  - Order confirmation.
+  - Vendor login.
+  - Vendor payment OTP.
+- Timestamps of OTP attempts (with timezone).
+- Exact message on screen:
+  - Error text.
+  - Whether "OTP sent" message appeared.
+- Screenshots from device:
+  - OTP screen.
+  - Error messages or loading states.
+- Check Admin Panel:
+  - Any failed login or attempt logs in Logs and Audit Trail.
+  - Any account block or restriction for that user/vendor.
+
+Key questions to answer:
+
+- Is OTP not received at all, or received late, or marked invalid?
+- Does this happen across multiple carriers/networks or just one?
+- Can you reproduce on your own test device?
+
+</Expandable>
+
+<Expandable title="Payment and refund mismatches" default-open="false">
+
+Includes wallet/credits not updating, vendor payouts, double charges, or refunds not reflected.
+
+Collect:
+
+- Order ID, user ID, and vendor ID if vendor is involved.
+- Payment reference (transaction ID from gateway or bank).
+- Amount, payment mode, and bank/wallet details (without full card numbers).
+- Timestamps of payment, refund, or reversal attempts.
+- Screenshots:
+  - Payment success/failure pages.
+  - Wallet or credits balance screen.
+  - Bank SMS or app snapshot (mask sensitive details).
+- Check Admin Panel:
+  - Payments (Wallet and Credits) for all related entries.
+  - Orders module for order status vs payment status.
+  - Logs and Audit Trail for:
+    - Manual refunds or reversals.
+    - Changes in wallet/credit balances.
+
+Key questions to answer:
+
+- Did system **deduct money but not create order**?
+- Did system **create order but not deduct or credit money correctly**?
+- Has any manual refund already been processed?
+
+</Expandable>
+
+<Expandable title="Pincode serviceability mismatches" default-open="false">
+
+For cases where customer sees wrong serviceability info (serviceable vs non‑serviceable) or cannot proceed due to pincode rules.
+
+Collect:
+
+- Pincode(s) and city.
+- User ID and device type being sold.
+- Flow where issue appears:
+  - Address entry.
+  - Pincode check on homepage.
+  - During order scheduling.
+- Screenshots of:
+  - Error message or serviceable/non‑serviceable state.
+  - Any conflicting information (for example, website says serviceable, app says not).
+- Check Admin Panel:
+  - **Settings** module for current pincode config.
+  - Any recent changes logged in Logs and Audit Trail.
+
+Key questions to answer:
+
+- Is pincode incorrectly marked **non‑serviceable** when it should be serviceable, or opposite?
+- Is this issue limited to specific devices or all devices?
+- Has any Ops or BD member recently requested a change for this area?
+
+</Expandable>
+
+<Expandable title="Vendor ops issues (credits, access, SLA)" default-open="false">
+
+For vendor credit balance issues, access problems, or SLA-related disputes.
+
+Collect:
+
+- Vendor ID and store name.
+- Type of issue:
+  - Credit balance mismatch.
+  - Unable to unlock leads or accept orders.
+  - SLA breach or penalty dispute.
+- Screenshots:
+  - Vendor app screens.
+  - Vendor summary and credit details in Admin Panel.
+- Check Admin Panel:
+  - Payments (Wallet and Credits) for vendor entries.
+  - Orders module for vendor’s recent orders and statuses.
+  - Logs and Audit Trail for:
+    - Vendor hold/deactivation/reactivation.
+    - Manual credit additions or deductions.
+
+Key questions to answer:
+
+- Is this a **single mistake** or a pattern across multiple orders?
+- Has vendor been **recently held or deactivated**?
+- Are there any **existing tickets** or complaints linked to this vendor?
+
+</Expandable>
+
+</ExpandableGroup>
+
+---
+
+## Minimum information to include in every ticket
+
+Even for small issues, include at least:
+
+- **Identifiers**
+  - Order ID or lead ID (if applies).
+  - User ID and phone number.
+  - Vendor ID and store name (if vendor‑related).
+- **Context**
+  - Device details (brand/model/storage) if order‑related.
+  - Pincode and city.
+  - App vs website, Android vs iOS (if known).
+- **Evidence**
+  - Screenshots or screen recordings.
+  - Error message text (copy exact wording).
+  - Logs and Audit Trail summary.
+- **Timeline**
+  - When the user/vendor started the action.
+  - When each issue step occurred (for example, OTP requested at 10:05, OTP screen error at 10:06).
+- **Reproduction steps**
+  - Step‑by‑step actions someone else can follow.
+  - Mention if you reproduced it yourself or if it only happens to specific users.
+
+If any of these are missing, mention why (for example, "Customer disconnected before sharing screenshot").
+
+---
+
+## Escalation and do/don’t rules
+
+### Who to escalate to
+
+- **Ops**  
+  - Order flow issues, SLA breaches, vendor assignment, reschedules, stuck orders.
+- **Finance**  
+  - Wallet and credits mismatches, vendor payouts, refunds, reversals, double charges.
+- **Tech**  
+  - Bugs, crashes, UI/UX glitches, OTP delivery or validation problems, performance issues.
+- **Compliance/Risk**  
+  - Suspected fraud, KYC issues, repeated chargebacks, legal notices, misuse of referral or coupon systems.
+
+When in doubt, tag **Ops + Tech** first and mention that Finance/Compliance may be required.
+
+### Strict do/don’t rules
+
+<Callout kind="alert">
+
+- Never **share OTPs**, passwords, or full card/bank details in tickets or Admin Panel notes.
+- Never **promise refunds, extra payments, or incentives** without approval from Finance or the designated approver.
+- Never **edit order statuses, payments, refunds, deactivations, or vendor reassignment** without following the defined approval hierarchy in Admin Panel.
+- Avoid sharing **PII** (full card numbers, full bank account numbers, Aadhaar, PAN, etc.) in screenshots or text. Mask sensitive parts if you must share.
+- Do not open multiple tickets for the **exact same root cause**; link all related examples to one master ticket.
+
+</Callout>
+
+### Escalation timing
+
+- **P0**  
+  - Immediately escalate through the fastest support channel plus a ticket.
+  - Keep updating Admin Panel notes every time there is a new development.
+
+- **P1**  
+  - Raise ticket within **30 minutes** of confirmation.
+  - Escalate in support channel if no response within agreed SLA (for example, a few working hours).
+
+- **P2**  
+  - Create ticket on the same day with 1–2 strong examples.
+  - Bundle similar cases together (do not spam with one ticket per identical bug).
+
+- **P3**  
+  - Log as part of backlog or improvement list.
+  - Attach at least one use case or feedback quote to justify the change.
+
+---
+
+## What good reporting looks like
+
+A good issue report:
+
+- Is **specific**: one problem per ticket.
+- Is **traceable**: Admin Panel notes, logs, and ticket are linked.
+- Is **reproducible**: someone else can follow steps and see the same issue.
+- Is **safe**: no risky promises or sensitive data mishandling.
+- Respects **approval hierarchy** for high‑risk actions like refunds and deactivation.
+
+Use this page as your checklist whenever you are about to say, "I will raise this with our team."

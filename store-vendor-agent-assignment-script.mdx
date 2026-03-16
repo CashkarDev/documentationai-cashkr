@@ -1,0 +1,433 @@
+---
+title: Store Vendor Agent Assignment Script
+description: Internal SOP for assigning, managing, and replacing store pickup agents under vendor accounts, with scripts, checks, and escalation rules.
+---
+
+## Purpose and scope
+
+Used by: Store Partnerships and Vendor Management teams.
+
+Train internal teams on how pickup agents are assigned to store vendors, how daily coordination works inside the Cashkr system, and what to do during reassignment, absence, or operational handover.
+
+## Key definitions
+
+**Vendor (primary)**  
+The main store vendor account holder in the Store Vendor App. The vendor is mapped to one or more stores and is financially and operationally responsible for all orders from those stores.
+
+**Associate or agent (sub-agent)**  
+A pickup associate added under the vendor account through the Vendor App Add Agents screen. The agent inspects devices, handles OTP and ID verification, and completes orders at the store on behalf of the vendor. All activity is logged under the vendor.
+
+**Backup coverage (temporary)**  
+Short-term coverage arranged when the primary agent or vendor is unavailable. This can be:
+- Another associate added under the same vendor account, or
+- A temporary backup agent assigned by Ops, with clear start and end dates and proper communication to store and vendor.
+
+Assignment always means the person is visible under the vendor account and their activity is traceable in the system.
+
+## Strict rules and risk controls
+
+<Callout kind="alert">
+
+- Accountability always stays with the vendor. All agent actions, orders, and payments are under the vendor account.
+- Do not allow credential sharing. Each associate must have their own login via the Add Agents flow. Do not share vendor OTP or device.
+- Enforce OTP and ID checks on every order. For in-store orders, insist on both OTP verification and ID upload for safety and audit.
+- Protect customer and vendor data. Never share screenshots, IDs, or order details outside approved channels.
+- Suspend or remove an agent immediately if you see serious misconduct, fraud risk, or repeated ID/OTP violations, and inform Ops for further action.
+
+</Callout>
+
+## How agent assignment works in the vendor app
+
+Agent assignment uses the same underlying mechanism as the Add Agents screen in the Vendor App.
+
+- Agents are registered under a vendor account on the Add Agents screen.
+- Required agent fields:
+  - Name
+  - Phone number
+  - Gmail or email
+- The app validates required fields and checks phone and email format.
+- The system runs duplicate checks: you cannot add the same phone or email twice under the same vendor.
+- Once added, the agent appears as a linked associate under that vendor in both the Vendor App and Admin Panel vendor details.
+
+Operationally, assignment means:
+- Orders from the vendor’s mapped stores are visible to both the vendor and their agents.
+- All inspections, photos, ID uploads, and OTP validations done by agents are logged as activity under that vendor.
+- Vendor Management can see which agents are linked to which vendors and stores, and can coordinate replacements or suspensions without breaking accountability.
+
+## End-to-end agent assignment workflow
+
+Use this workflow whenever you onboard a new store vendor, add a new associate, or change coverage.
+
+<Steps>
+
+<Step title="Decide when and why to assign an agent" icon="settings">
+
+- Confirm the store’s operating model: will the vendor personally sit in the store, or will they use a dedicated pickup associate.
+- Use an associate when the vendor handles multiple stores, cannot be present full-time, or wants field staff to manage walk-in customers.
+- Clarify responsibilities: whoever is assigned must be present during store hours, manage inspections in the app, and follow all OTP and ID rules.
+
+</Step>
+
+<Step title="Confirm prerequisites with vendor" icon="check-circle">
+
+- Vendor account must be active and mapped to the store in the system.
+- Vendor must agree that all agent actions are under their account and that they remain fully responsible.
+- Collect accurate agent details from the vendor:
+  - Full name as per ID
+  - Phone number used for OTP
+  - Gmail or email used for communication and login
+- Explain that duplicate phone or email cannot be re-used for another agent under the same vendor.
+
+</Step>
+
+<Step title="Add or assign the agent in the Vendor App" icon="terminal">
+
+Guide the vendor (or handle over call while they share screen) using the Add Agents flow:
+
+- Go to the Vendor App Add Agents screen (check the Add Agents documentation for exact navigation).
+- Enter:
+  - Agent name
+  - Agent phone number
+  - Agent Gmail or email
+- Ask the vendor to double-check:
+  - Phone number matches the agent’s device.
+  - Email is spelled correctly and belongs to the agent.
+- Save or submit the form.
+- If the app shows a duplicate phone or email error, handle it using the edge cases section below.
+
+Success signal: the new agent appears in the vendor’s agents list in the Vendor App.
+
+</Step>
+
+<Step title="Grant login access and verify OTP" icon="lock">
+
+- Ensure the agent has access to the phone number added in the previous step.
+- Ask the vendor to have the agent log in using OTP:
+  - Agent opens the Vendor App or Store Vendor App interface used for associates.
+  - Agent enters their registered phone number.
+  - Agent enters the OTP received on that number.
+- Confirm that:
+  - OTP is received on the correct phone.
+  - Login succeeds and the agent can see the relevant store orders.
+
+Success signal: agent can open an available or in-progress order and reach the inspection screen (without actually changing any live order during training).
+
+</Step>
+
+<Step title="Confirm store coverage and responsibilities" icon="users">
+
+- Align on store-level expectations:
+  - Which store or stores the agent will sit at.
+  - Start date for active coverage.
+  - Standard store timing and when the agent must be present.
+- Reiterate that:
+  - All inspections, ID uploads, and OTP steps must happen inside the store.
+  - Agents must not process orders outside the designated store location.
+  - Every order must have clear ID and OTP verification in the app before device collection.
+
+Success signal: vendor can clearly name their active representative for each store.
+
+</Step>
+
+<Step title="Monitor daily activity and quality" icon="bar-chart">
+
+- Use the dashboard and reports to review:
+  - Attendance signals: regular logins, orders handled during store hours.
+  - Order handling: inspections completed, orders moved to correct statuses, no unexplained gaps.
+  - Documentation quality: clear photos, legible IDs, OTP recorded.
+  - Customer experience: low number of escalations or complaints about behavior or delays.
+- Discuss observations with the vendor in weekly or fortnightly check-ins, especially for new stores.
+
+</Step>
+
+<Step title="Handle reassignment or removal" icon="edit">
+
+When an agent needs to be changed:
+
+- Agree with the vendor on the reason:
+  - Unavailability, higher volume, performance or behavior concerns.
+- Ask the vendor to:
+  - Remove or deactivate the current agent from the Add Agents list, as per product capability.
+  - Add a new agent using the same Add Agents flow (name, phone, email).
+- For short-term gaps:
+  - Set up backup coverage (another associate or Ops-assigned backup) with clear dates.
+- Update your internal tracker so the current store representative is always documented.
+
+</Step>
+
+<Step title="Escalate serious issues" icon="alert-triangle">
+
+Escalate to Ops or Vendor Management leadership when you see:
+
+- Repeated violation of OTP or ID rules.
+- Suspected fraud or device swapping.
+- Pattern of customer complaints about behavior, miscommunication, or collection issues.
+- Vendor disagreement on accountability for agent actions.
+
+In such cases:
+
+- Temporarily suspend the agent’s access where possible.
+- Align with the Store Vendor Hold and Deactivation policies if vendor-level action is required.
+- Document the incident, including order IDs, dates, and screenshots if needed.
+
+</Step>
+
+</Steps>
+
+## Internal training script (English and Hinglish)
+
+Use these talking points in training calls or role-plays with Vendor Managers. Adapt examples to the specific store or city.
+
+<Tabs>
+
+<Tab title="English (internal)" icon="book-open">
+
+- In the store vendor model, each store must always have one active representative: either the vendor personally, or an authorized pickup associate under their account.
+- Our goal is uninterrupted store service. Customers should always find someone who can inspect the device, verify ID and OTP, and complete the order in the app.
+- When we assign an agent, we are not creating an independent account. We are adding that person as an associate under the vendor account using the Add Agents screen.
+- All transactions, credits, and payouts stay under the vendor. The agent is an extension of the vendor, not a separate partner.
+- Every pickup agent or associate must:
+  - Stay present at the assigned store during operating hours.
+  - Handle inspections directly in the app, with proper photos and device details.
+  - Complete both ID verification and OTP validation for every order.
+  - Never process orders outside the store or on a personal, unregistered flow.
+  - Collect verified devices before end of day and keep them secure as per vendor policy.
+  - Report any issue or delay in the app and to the vendor.
+- Agents cannot change prices or give manual discounts. They follow the app price and flows only. If the customer disputes the amount, they must escalate to the vendor or Cashkr support.
+- Vendors can add, replace, or remove agents anytime via their app. We guide them on this, and we always keep an audit trail of who is active at each store.
+- When an agent is inactive, on leave, or under performance review, we ensure there is backup coverage so the store does not go unattended.
+- For serious issues like fraud risk, repeated ID/OTP violations, or store complaints, we suspend the agent, inform the vendor, and follow escalation rules.
+
+</Tab>
+
+<Tab title="Hinglish (talking points)" icon="users">
+
+- Hamara store model simple hai: har store par ek responsible banda hona chahiye, ya to vendor khud baithega ya uska pickup associate.
+- Target yeh hai ki store kabhi blank na rahe. Jo bhi customer chale aaye, agent turant device check kare, ID verify kare, OTP dale aur order app me complete kare.
+- Jab hum agent assign karte hain, hum uske naam se alag account nahi bana rahe. Hum usko vendor ke account ke andar Add Agents screen se associate bana rahe hain.
+- Saare order, payment aur credit vendor ke naam se hi jate hain. Agent sirf vendor ka extension hai, alag partner nahi.
+- Har pickup agent ko:
+  - Store ki timing ke hisaab se store par present rehna hai.
+  - Inspection poora app se karna hai, sahi photos aur device details ke saath.
+  - Har order par ID upload aur OTP verification proper karna hai.
+  - Store ke bahar ya offline kisi tareeke se order process nahi karna.
+  - Jo device verify ho gaya hai, usko din ke end tak collect karke safe rakhna hai.
+  - Koi issue ho to turant app me remark daalna hai aur vendor ko bataana hai.
+- Agent price change nahi kar sakta, extra discount nahi de sakta. Jo app me price aa raha hai, wahi follow karna hai. Customer argue kare to vendor ya Cashkr support ko escalate kare.
+- Vendor kabhi bhi agent add, replace ya remove kar sakta hai apne app se. Hum unko flow samjhate hain aur har store ke active representative ka record maintain karte hain.
+- Agar agent absent ho, leave par ho, ya performance issue ho, to hum backup coverage set karte hain taki store band na pade.
+- Agar kabhi fraud ka doubt ho, OTP/ID rule tod raha ho, ya store se complaint aaye, to hum turant agent access rok kar vendor ko inform karte hain aur escalation process follow karte hain.
+
+</Tab>
+
+</Tabs>
+
+## What to check in the Admin Panel
+
+When a vendor adds or changes an agent, verify the mapping in the Admin Panel to avoid confusion at the store.
+
+Use this checklist:
+
+- Open the vendor details page in the Admin Panel.
+- Confirm:
+  - Vendor status is active and not on hold.
+  - Mapped store or stores match what the Store Partnerships team has documented.
+  - Linked agents list shows:
+    - Each agent’s name.
+    - Phone number.
+    - Email or Gmail.
+- Check that the newly added agent appears under the correct vendor, with no obvious duplicates.
+- If the vendor reported a removal:
+  - Confirm the removed agent no longer has active access or is marked as inactive.
+- Note any discrepancy (wrong number, duplicate email, wrong vendor) and coordinate with Tech or Ops to correct it before confirming to the store.
+
+## Edge cases and troubleshooting
+
+Use these patterns when something goes wrong with agent assignment or access.
+
+<ExpandableGroup>
+
+<Expandable title="Agent not receiving OTP or unable to log in" default-open="false">
+
+- Confirm the phone number:
+  - Check that the number entered in the Add Agents screen matches the SIM in the agent’s phone.
+  - Confirm country code or formatting is as expected for the app.
+- Ask the agent to:
+  - Check network coverage and restart the app.
+  - Wait a short time before resending OTP to avoid rate limits.
+- In Admin Panel:
+  - Verify that the agent is correctly linked to the vendor and not blocked.
+- If OTP issues continue across multiple attempts:
+  - Escalate to Tech or Support with:
+    - Vendor ID
+    - Agent phone number
+    - Timestamp and screenshots if available
+  - Consider temporary backup coverage so store operations are not impacted.
+
+</Expandable>
+
+<Expandable title="Duplicate agent error (phone or email already used)" default-open="false">
+
+- Explain to the vendor that:
+  - The system does not allow the same phone or email to be added twice under the same vendor, to prevent confusion and shared credentials.
+- Check:
+  - Whether the agent is already present in the vendor’s agent list with that phone or email.
+  - Whether the vendor tried to add the same person twice with slight name variations.
+- Resolution options:
+  - If the older entry is correct, reuse that profile and do not create a new one.
+  - If the older entry has a typo, request an edit via the support or admin flow instead of creating a duplicate.
+- If the phone or email seems linked to another vendor by mistake:
+  - Flag it to Ops or Tech for cleanup before proceeding.
+
+</Expandable>
+
+<Expandable title="Agent absent or repeatedly inactive" default-open="false">
+
+- Confirm with the vendor:
+  - Is the absence planned (leave, travel) or unplanned?
+  - How long will the agent be unavailable?
+- For short, planned absences:
+  - Ask vendor to nominate another associate and add them via Add Agents.
+  - Set expectations on start and end date for temporary coverage.
+- For repeated inactivity or unplanned absences:
+  - Recommend permanent replacement of the agent.
+  - Update internal notes on why the change was made.
+- Always ensure the store has an active representative documented by name and phone.
+
+</Expandable>
+
+<Expandable title="Misconduct, SLA breaches, or quality issues" default-open="false">
+
+- Examples:
+  - Rude behavior with customers.
+  - Skipping ID or OTP steps.
+  - Mishandling devices or delaying pickups without updating the app.
+- Immediate actions:
+  - Collect specific examples: order IDs, dates, and what happened.
+  - Discuss with the vendor, emphasizing that accountability is with them.
+  - For serious or repeated issues, recommend removing or suspending the agent.
+- System actions:
+  - Request agent access suspension or deactivation according to policy.
+  - Monitor future orders from that store and vendor more closely.
+- Escalate:
+  - Loop in Ops and, if needed, apply vendor-level SLA rules as per Store Vendor SLA and Violation policies.
+
+</Expandable>
+
+<Expandable title="Store complains about no pickup or inconsistent presence" default-open="false">
+
+- Validate the complaint:
+  - Check recent orders and agent activity timestamps for that store.
+  - Call the vendor and ask who is currently responsible for that store.
+- If there is no clear active agent:
+  - Ask the vendor to immediately assign or reassign an associate via Add Agents.
+  - Confirm coverage days and timings with both vendor and store.
+- If an agent is assigned but not present:
+  - Treat as an SLA and performance issue.
+  - Coach the vendor on expectations and, if needed, suggest changing the agent.
+- Confirm back to the store:
+  - Share the new or confirmed agent name and from when they will be regularly present.
+
+</Expandable>
+
+<Expandable title="Vendor account on hold or deactivated" default-open="false">
+
+- When a vendor account is placed on hold or deactivated:
+  - All associated agents under that vendor automatically lose access or become inactive as per system design.
+- If a store or vendor complains that agents cannot log in:
+  - Check vendor status in the Admin Panel.
+  - If the vendor is on hold, explain that operations at that store are paused from Cashkr’s side.
+- Next steps:
+  - Follow the Vendor Hold and Reactivation SOPs to resolve vendor-level issues.
+  - Only after the vendor is reactivated should agents be allowed to resume activity.
+  - Reconfirm active agents once the account status changes back to active.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Communication templates
+
+Use these templates and adapt names, dates, and context. Keep records of all communications in the relevant internal tools.
+
+### To store: agent reassignment notice
+
+Subject: Change in Cashkr pickup representative for your store
+
+Body:
+
+> Hi [Store Name],
+>
+> This is to inform you that your Cashkr pickup representative has been updated.
+>
+> New representative: [Agent Name]  
+> Effective from: [Date]
+>
+> All existing orders and credits will continue under the same vendor account.  
+> The new representative will handle inspections, ID and OTP verification, and device collection at your store.
+>
+> If you notice any issue with pickups or behavior, reach out to your Cashkr contact or reply to this email.
+
+### To vendor: agent added or removed confirmation
+
+Subject: Agent assignment update under your Cashkr vendor account
+
+Body (agent added):
+
+> Hi [Vendor Name],
+>
+> Your pickup associate [Agent Name] has been successfully added under your Cashkr vendor account.
+>
+> They can now log in using their registered phone number and OTP to manage store inspections and orders on your behalf.
+>
+> Remind them to:
+> - Be present at the assigned store during agreed hours.  
+> - Complete ID upload and OTP validation for every order.  
+> - Follow all pricing, documentation, and collection guidelines mentioned during training.
+>
+> You remain responsible for all orders and payments handled by this associate.
+
+Body (agent removed or replaced):
+
+> Hi [Vendor Name],
+>
+> We have updated the pickup associate mapping under your Cashkr vendor account.
+>
+> Removed associate: [Old Agent Name]  
+> New active associate (if applicable): [New Agent Name]  
+> Effective from: [Date]
+>
+> All existing orders and credits remain under your vendor account.  
+> Ensure your active agent is aware of store timings, ID and OTP rules, and your own internal policies.
+>
+> If this change was not requested by you, inform your Cashkr contact immediately.
+
+## Daily and weekly monitoring checklist
+
+Use this as an internal review guide for Store Partnerships and Vendor Management.
+
+**Daily checks**
+
+- Agent attendance and presence
+  - Are agents or vendors logging in and handling orders during store hours.
+  - Any stores with no orders or activity despite being operational.
+- Order handling
+  - Orders moving smoothly from creation to completion without unexplained delays.
+  - Correct use of order statuses and remarks in the app.
+- Documentation and compliance
+  - ID photos are clear and match the customer.
+  - OTP validation is present for each completed order.
+
+**Weekly checks**
+
+- Activity spread by agent
+  - Which agents are handling most of the orders.
+  - Any agents with consistently low activity compared to store potential.
+- Quality and complaints
+  - Patterns in complaints from stores or customers about specific agents or vendors.
+  - Any recurring issues in inspection quality, missing photos, or ID/OTP gaps.
+- Exceptions and escalations
+  - List of stores or vendors where backup coverage, reassignment, or suspension was needed.
+  - Follow-up status on open issues with Ops or Tech.
+
+Use these checks to spot risk early, coach vendors, and keep store-level operations stable and compliant.

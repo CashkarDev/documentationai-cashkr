@@ -1,0 +1,493 @@
+---
+title: Vendor Refund Dispute Resolution Script
+description: Call and chat script for Vendor Support to handle refund, credit reversal, and wallet adjustment disputes with correct checks, expectations, and escalations.
+---
+
+## Purpose of this script
+
+Handle vendor disputes about refunds, credit reversals, or wallet adjustments in a consistent way, while staying within Cashkr policies and approval rules.
+
+Use this script whenever a vendor says money or credits are missing, delayed, or wrongly deducted.
+
+<Callout kind="alert">
+
+- Do not promise refunds or credit reversals for successfully completed orders.
+- Process refunds or reversals only for verified cases as per policy and approval matrix.
+- Escalate suspicious or inconsistent cases; do not process anything that looks like fraud.
+
+</Callout>
+
+## Quick classification: what type of dispute is this?
+
+Use this to quickly identify what the vendor is talking about before you go deep.
+
+- **Vendor credit reversal dispute**
+  - Vendor says: *"Mere credits cut ho gaye, lead fail kiya tha, wapas nahi aaye"* or *"Unlock kiya, pickup nahi hua, credits refund karo."*
+  - You see credits deducted when order was unlocked.
+  - Vendor expects credits back after order is marked `To Be Failed` and verified.
+
+- **Vendor wallet refund dispute**
+  - Vendor says: *"Mere wallet se paise kata, order cancel ho gaya, paisa nahi aaya"* or *"Wrong/duplicate payment ho gaya."*
+  - You see a wallet debit or payout issue in transaction history.
+  - Refund needs Ops/Finance approval as per approval matrix.
+
+- **Other / not eligible**
+  - Order completed successfully and credits were used as intended.
+  - Vendor fault or SLA violation (late pickup, no-show, wrong quoting, etc.).
+  - In these cases, credits are non-refundable and refunds are usually not allowed.
+
+## Before you respond: checklist
+
+Confirm the facts in the Admin Panel and transaction history **before** you commit anything on the call/chat.
+
+<Steps>
+
+<Step title="Identify the order and vendor" icon="search">
+
+- Open Admin Panel and search by **Order ID** or **Vendor ID**.
+- Confirm:
+  - Order status (`InProgress`, `To Be Failed`, `Failed`, `Complete`, etc.).
+  - Vendor details (tier, active/inactive, recent behavior flags if any).
+
+</Step>
+
+<Step title="Check credit movement (for unlock/lead disputes)" icon="database">
+
+- Open the **credit ledger** for the vendor.
+- Confirm:
+  - When credits were deducted (unlock time, amount).
+  - Whether a **credit reversal** is already processed or pending.
+  - If order is marked **`To Be Failed`** and reason code is correct.
+
+</Step>
+
+<Step title="Check wallet and payout history (for money disputes)" icon="wallet">
+
+- Open the **vendor wallet / transaction history**.
+- Confirm:
+  - Payment type (UPI, bank transfer, other).
+  - Debit/credit entries related to the order or disputed amount.
+  - Any **refund transactions** already processed or failed.
+
+</Step>
+
+<Step title="Check policy fit and previous communication" icon="file-text">
+
+- Look at:
+  - Previous tickets or notes on the same order/vendor.
+  - Any earlier explanation of **credits, refunds & reversals** already given.
+  - Whether the case matches **system error / duplicate payment / ops‑approved return** patterns.
+
+</Step>
+
+<Step title="Decide the classification" icon="check-circle">
+
+- Tag the case mentally as:
+  - **Credit reversal case**, or
+  - **Wallet refund case**, or
+  - **Not eligible / policy case**.
+- Once you are clear, move to the script section below.
+
+</Step>
+
+</Steps>
+
+## Information to collect from the vendor
+
+Collect all needed identifiers early so you do not have to go back and forth.
+
+- **Order ID** and **Vendor ID** (or registered mobile number).
+- **Payment reference**:
+  - UTR/transaction reference if available.
+  - Payment mode (UPI, bank, wallet transfer, etc.).
+- **Dates and amounts**:
+  - Date and time when the issue happened.
+  - Exact amount vendor is claiming.
+- **Screenshots or proof**:
+  - Payment success screenshot.
+  - Wallet statement/bank statement (if vendor can share via approved channel).
+- **What vendor expected**:
+  - Credits back to account, or
+  - Money refund to wallet/bank, or
+  - Adjustment against future orders.
+
+<Callout kind="info">
+
+Always confirm the amount and expectation verbally: *"You are expecting a refund/credit of ₹X for order Y, correct?"* This reduces confusion later.
+
+</Callout>
+
+## End‑to‑end dispute handling flow
+
+Use this flow on every refund/credit dispute. Follow the steps in order.
+
+<Steps>
+
+<Step title="Acknowledge and calm the vendor" icon="users">
+
+- Start by acknowledging the concern.
+- Avoid blaming or using policy language in the first sentence.
+- Promise a **check**, not a **refund**.
+
+</Step>
+
+<Step title="Clarify type of issue (credits vs wallet money)" icon="help-circle">
+
+- Ask probing questions to understand if this is about:
+  - Credits used for unlocking a lead/order, or
+  - Money refunded to vendor wallet/bank.
+- Repeat back what you understood and get a **yes** from the vendor.
+
+</Step>
+
+<Step title="Verify details in Admin Panel" icon="monitor">
+
+- While keeping the vendor on call/chat, quickly check:
+  - Order status and timelines.
+  - Credit ledger and wallet transactions.
+- If something is not visible or unclear, do not guess. Move to **"Escalate for manual review"** later.
+
+</Step>
+
+<Step title="Apply policy and decide the path" icon="settings">
+
+- If it is a **credit reversal** case:
+  - Check if order is already marked **`To Be Failed`** with correct reason.
+  - Check if verification is done or pending.
+- If it is a **wallet refund** case:
+  - Check if refund is already initiated or approved.
+  - If not initiated, check if case fits verified categories (system error, wrong/duplicate payment, ops‑approved return, etc.).
+- If the order is **successfully completed** or clearly **vendor fault**, prepare to explain that a refund/credit is **not applicable**.
+
+</Step>
+
+<Step title="Set expectations and give a clear answer" icon="info">
+
+- Share timelines:
+  - For eligible **credit reversals**: typically within **24–48 hours after verification**.
+  - For eligible **wallet refunds**: as per **approval matrix and Finance processing timelines**.
+- If not eligible, be polite but firm and explain **why** with reference to order status and policy.
+
+</Step>
+
+<Step title="Handle objections and pushback" icon="alert-triangle">
+
+- Listen fully, avoid interrupting.
+- Use the objection handling lines in the section below.
+- If vendor continues to argue after explanation, move to **escalation guidelines** and create a proper ticket with all details.
+
+</Step>
+
+<Step title="Close the conversation professionally" icon="check-circle">
+
+- Summarize what will happen next and by when.
+- Share ticket ID or reference number if created.
+- Thank the vendor for their patience and partnership.
+
+</Step>
+
+</Steps>
+
+## Talk tracks: English and Hinglish
+
+Use these as copy‑ready lines. Adapt names and order details, but keep the structure.
+
+<Tabs>
+
+<Tab title="English (official script)" icon="book-open">
+
+### Opening and acknowledgement
+
+> "Hi \[Vendor Name], I understand you are concerned about a refund/credit on order \[Order ID]. Let me first quickly check the details at my end so I can give you a clear update."
+
+If the vendor is angry:
+
+> "I get that this is frustrating when money or credits are involved. I will recheck the order, credits, and wallet history now and then explain what is possible."
+
+### Clarifying the issue
+
+> "Just to confirm, is your concern about:
+> 1) Credits deducted when you unlocked the order, or  
+> 2) Money that was debited from your wallet/bank and not received back?"
+
+If vendor says **credits**:
+
+> "Got it, so this is about credits used to unlock order \[Order ID] and you are expecting a credit reversal. I will check the order status and verification and then update you."
+
+If vendor says **wallet money**:
+
+> "Understood, this is about an amount of ₹\[X] that you paid and you are expecting a refund to your wallet/bank. I will check the transaction and refund status now."
+
+### Explaining credit reversal logic (eligible case)
+
+> "For this order, I can see that your credits were deducted when you unlocked the lead. The order is currently marked as `To Be Failed` with the correct reason, and the case is under verification."
+
+> "As per our policy, credits are reversed only after the `To Be Failed` case is verified. This usually happens within 24 to 48 hours after verification. Once verified, the credits will automatically be added back to your account."
+
+If verification is already done and reversal is visible:
+
+> "The verification is already completed and I can see the credit reversal entry in your account. Your available credits now are \[Credits]. You can use these for unlocking new orders."
+
+### Explaining why credits cannot be reversed (completed/vendor‑fault case)
+
+<Callout kind="alert">
+
+Use this section when the order is successfully completed or clearly vendor fault/SLA violation. Do not commit any reversal.
+
+</Callout>
+
+> "I have checked the order details. This order was successfully completed, and the credits were used for a completed pickup and payment. As per policy, credits are non‑refundable once the order is successfully completed."
+
+If vendor insists *"Customer ne device sell nahi kiya"* but order shows complete and payment done:
+
+> "On our system, this order shows as completed with payment confirmed to the customer. In such completed cases, we are not allowed to reverse credits. That is as per the approved vendor credit policy."
+
+If vendor fault/SLA violation:
+
+> "For this order, the failure reason is linked to pickup delay/SLA violation from the vendor side. In such cases, the credits are not eligible for reversal. We can only process reversals for verified cases where the issue is on the system side or as per approved Ops decision."
+
+### Explaining wallet refunds (eligible case)
+
+> "I can see your payment of ₹\[X] on \[Date] with reference \[UTR/Ref]. This has been identified as a verified case for refund (for example, duplicate payment/system error/approved return)."
+
+> "As per our refund process, this goes through the approval matrix and Finance processing. Once approved, the refund is usually processed within the standard Finance timelines. You will see it either in your Cashkr wallet or in your bank/UPI account depending on how the original payment was made."
+
+If refund already processed:
+
+> "The refund for ₹\[X] was processed on \[Date]. You should see this entry as `Refund` in your Cashkr wallet / `Credit` in your bank/UPI statement. If you want, I can share the reference number for your bank."
+
+### Explaining why wallet refund is not possible (not eligible)
+
+> "I have rechecked the transaction and order details. For this case, the payment was used for a successfully completed order and there is no system error or duplicate debit. As per our Finance and Ops policy, this type of payment is not eligible for refund."
+
+If vendor asks you to "adjust in future orders":
+
+> "At the moment we are not allowed to manually adjust completed payments against future orders outside the system. Any adjustment or refund has to follow the approval matrix and must be visible in your wallet/statement. For this case, the policy does not allow a refund or adjustment."
+
+### Setting expectations and timelines
+
+For **credit reversals (eligible)**:
+
+> "Your case is eligible for credit reversal after verification. The usual timeline is 24 to 48 hours after the `To Be Failed` case is verified. If it is not reversed even after that, you can contact us with this order ID and we will recheck with Ops."
+
+For **wallet refunds (eligible)**:
+
+> "Your refund request fits the verified categories and I will log it as per the approval matrix. After Ops and Finance approval, the refund will be processed as per Finance timelines. You will receive a confirmation once it is done."
+
+### Closing the conversation
+
+If action is pending:
+
+> "To summarize, I have checked order \[Order ID], classified it as a \[credit reversal/wallet refund] case, and raised it for verification/approval. The expected timeline is \[X]. If there is any delay or update, we will inform you on your registered number."
+
+If no action possible:
+
+> "I understand this is not the outcome you were hoping for. However, based on the order status and our approved policy, I am not allowed to process a refund or reversal for this case. I have noted your feedback and behavior for future reviews as well."
+
+</Tab>
+
+<Tab title="Hinglish (real conversations)" icon="users">
+
+### Opening and acknowledgement
+
+> "Namaste \[Vendor Name], mujhe samajh aa raha hai ki aapko refund/credits ke issue ki tension ho rahi hai for order \[Order ID]. Main abhi turant system me check karta/karti hoon, phir aapko clear update deta/deti hoon."
+
+If vendor is angry:
+
+> "Main samajh sakta/sakti hoon jab paise ya credits ka issue hota hai toh gussa aata hai. Main aapka order, credits aur wallet history dubara check kar raha/rahi hoon, fir calmly aapko bataunga/bataungi kya possible hai."
+
+### Clarifying the issue
+
+> "Ek baar confirm karna chahta/chahti hoon — aapka issue:
+> 1) Unlock karte time jo credits cut hue woh wapas chahiye, ya  
+> 2) Jo amount wallet/bank se kata hai woh refund chahiye?"
+
+If vendor says **credits**:
+
+> "Theek hai, toh yeh credits ka matter hai. Aapne order \[Order ID] unlock kiya tha aur aap expect kar rahe ho ki credits wapas aaye. Main abhi order status aur verification check karta/karti hoon."
+
+If vendor says **wallet money**:
+
+> "Samajh gaya/gayi, yeh wallet/bank ke paise ka issue hai, amount ₹\[X]. Main abhi transaction aur refund status check kar raha/rahi hoon."
+
+### Explaining credit reversal logic (eligible case)
+
+> "Is order me dekh raha/rahi hoon ki aapke credits unlock karte time cut hue the. Abhi order `To Be Failed` status me hai, sahi reason ke saath, aur verification process me hai."
+
+> "Policy ke hisaab se credits tabhi reverse hote hain jab `To Be Failed` case verify ho jata hai. Usually verification ke 24–48 hours ke andar credits automatic aapke account me wapas aa jate hain."
+
+If reversal already done:
+
+> "Yahan pe verification complete ho chuka hai aur system me credit reversal ka entry dikh raha hai. Abhi aapke available credits \[Credits] hai, jo aap new orders unlock karne ke liye use kar sakte ho."
+
+### Explain why credits cannot be reversed (completed/vendor‑fault case)
+
+<Callout kind="alert">
+
+Use this when order complete hai ya vendor side se fault/SLA issue hai. Yahan koi refund commitment mat do.
+
+</Callout>
+
+> "Maine order detail proper check kiya hai. Yeh order successfully complete hai, pickup aur customer payment dono ho chuke hain. Aise complete orders ke liye policy ke mutabik credits refundable nahi hote."
+
+If vendor says *"Customer ne device sell hi nahi kiya"* but order shows complete:
+
+> "System me yeh order completed dikh raha hai, customer ko payment bhi confirm hai. Aise cases me hum credits reverse nahi kar sakte, kyunki policy me completed orders ke credits wapas dene ki permission nahi hai."
+
+If vendor fault/SLA violation:
+
+> "Is order ka failure reason vendor side pickup delay/SLA violation dikh raha hai. Aise cases me credits reversal allowed nahi hota. Hum sirf wahi cases reverse karte hain jahan system side issue ho, ya Ops se specifically approval mila ho."
+
+### Explaining wallet refunds (eligible case)
+
+> "Yahan pe main dekh raha/rahi hoon ki ₹\[X] ka payment \[Date] ko aapke account se gaya tha, reference \[UTR/Ref]. Yeh case verified hai refund ke liye (jaise duplicate payment/system error/approved return)."
+
+> "Aise cases me pehle Ops approval, phir Finance approval lagta hai, jo approval matrix ke hisaab se hota hai. Approval ke baad refund Finance standard timelines ke andar process ho jata hai. Aapko amount ya toh Cashkr wallet me dikhega ya directly bank/UPI me credit hoga, jis tarah se aapne payment kiya tha."
+
+If refund already processed:
+
+> "Iska refund ₹\[X] ka \[Date] ko process ho chuka hai. Aapko Cashkr wallet me `Refund` entry dikhegi, ya bank/UPI statement me `Credit` dikhega. Zarurat ho toh main aapko reference number bhi de sakta/sakti hoon."
+
+### Explaining why wallet refund nahi ho sakta (not eligible)
+
+> "Maine transaction aur order dono recheck kiya hai. Is case me payment successfully use hua hai completed order ke liye, aur koi system error ya duplicate debit nahi hai. Finance aur Ops policy ke hisaab se aise payment ka refund allowed nahi hai."
+
+If vendor says *"Chalo next order me adjust kar do"*:
+
+> "Abhi hum manual adjustment future orders ke against nahi kar sakte. Jo bhi refund ya adjustment hota hai, woh approval matrix ke through hota hai aur wallet/bank statement me clearly dikhta hai. Is specific case me policy refund ya adjustment allow nahi karti."
+
+### Setting expectations and timelines
+
+For **credit reversals (eligible)**:
+
+> "Aapka case credit reversal ke liye eligible hai, verification ke baad. Jab `To Be Failed` verification complete ho jata hai, uske 24–48 hours ke andar credits normally wapas aa jate hain. Agar itne time ke baad bhi nahi aata, toh aap yahi order ID ke saath hume contact kar sakte ho, hum Ops se dubara check kara denge."
+
+For **wallet refunds (eligible)**:
+
+> "Yeh refund request verified category me aati hai, main isko approval matrix ke hisaab se log kar raha/rahi hoon. Ops aur Finance approve karne ke baad refund Finance timelines ke hisaab se process ho jayega. Kaam hote hi aapko confirmation mil jayega."
+
+### Closing the conversation
+
+If action pending:
+
+> "Toh short me — maine order \[Order ID] check karke isko \[credit reversal/wallet refund] type case ke jaise mark kiya hai aur verification/approval ke liye daal diya hai. Expected timeline \[X] hai. Agar koi delay ya extra information hogi, hum aapko aapke registered number par update kar denge."
+
+If no action possible:
+
+> "Mujhe pata hai aapko yeh decision pasand nahi aa raha hoga, par jo order status aur policy dikh rahi hai uske hisaab se main is case me refund ya reversal process nahi kar sakta/sakti. Main aapka feedback note kar raha/rahi hoon, aur aapke behavior ko future review ke liye bhi consider karenge."
+
+</Tab>
+
+</Tabs>
+
+## Common objections and how to respond
+
+Use these ready responses when vendors push back after you share the decision.
+
+<ExpandableGroup>
+
+<Expandable title="“Dusre vendor ko toh refund mil gaya, mujhe kyu nahi?”" default-open="true">
+
+> "Har case ka order status, reason aur history alag hota hai. Jaha policy ke hisaab se reversal ya refund allowed hota hai, waha hum process karte hain. Aapke specific order me status completed/vendor fault dikh raha hai, isliye isme reversal/refund policy ke bahar ho jayega. Main aapka concern note kar raha/rahi hoon, lekin main policy violate karke approval ke bina refund nahi kar sakta/sakti."
+
+</Expandable>
+
+<Expandable title="“24 ghanta ho gaya, abhi tak credits wapas nahi aaye”">
+
+> "Aapka frustration samajh me aa raha hai. Credit reversal normally `To Be Failed` verification ke 24–48 hours ke andar ho jata hai. Main abhi status dubara check karta/karti hoon.  
+> - Agar verification pending hai: *'Abhi verification pending dikh raha hai, jaisi hi verify hota hai, uske 24–48 hours me credits reverse ho jayenge.'*  
+> - Agar timeline cross ho chuki hai: *'Timeline cross ho gayi hai, main isko manual review ke liye Ops team ko escalate kar raha/rahi hoon. Jaise hi unka response aata hai, hum aapko update karenge.'*"
+
+</Expandable>
+
+<Expandable title="“Maine customer ko device ke paise wapas kar diye, ab mera refund karo”">
+
+> "System me order complete dikh raha hai aur customer ko payment confirm hai. Agar aapne customer ke saath offline adjustment kiya hai, woh Cashkr system se bahar ka arrangement hai. Policy ke hisaab se completed orders ke credits ya payments hum reverse nahi kar sakte, chahe aapne offline customer ko kitna bhi adjust kiya ho. Isliye main is case me refund ya credit reversal commit nahi kar sakta/sakti."
+
+</Expandable>
+
+<Expandable title="“Agar refund nahi diya toh main Cashkr band kar dunga”">
+
+> "Mujhe bura lag raha hai ki aapko aisa lag raha hai. Hum aapke saare genuine issues policy ke andar resolve karne ke liye committed hain. Lekin refund/credits ke matter me hume approved policy aur Finance/Ops matrix follow karna zaroori hai. Main aapka feedback senior team tak pahucha raha/rahi hoon, lekin bina eligibility ke main system me refund pass nahi kar sakta/sakti."
+
+</Expandable>
+
+<Expandable title="“Tum log fraud kar rahe ho, mere paise kha liye”">
+
+> "Main aapko assure karta/karti hoon ki Cashkr me saare transactions system se track hote hain — har credit, debit aur refund ka entry hota hai. Aapka case agar verified refund/reversal category me aata hai toh woh process hota hai, warna policy ke mutabik reject hota hai. Main abhi aapka transaction reference note karke, agar zaroorat hui toh Ops/Compliance team ke saath share karunga/karungi taaki aapko transparent update mil sake."
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Non‑negotiable rules you must follow
+
+<Callout kind="alert">
+
+- Do not:
+  - Promise **any** refund or credit reversal before checking eligibility and approvals.
+  - Commit refunds for **completed orders** or **vendor‑fault/SLA violation** cases.
+  - Bypass the **approval matrix** for wallet refunds or manual adjustments.
+  - Ignore **fraud indicators** (mismatched details, repeated disputes, inconsistent stories).
+
+</Callout>
+
+If you are unsure, **pause the commitment and escalate**.
+
+## Escalation guidelines (Ops, Finance, Compliance)
+
+Escalate early when the case is not clear, timelines are breached, or you see risk.
+
+### When to escalate to Ops
+
+Escalate to Ops when:
+
+- Order status, `To Be Failed` reason, or verification seems incorrect or missing.
+- Vendor claims **operational error** (wrong assignment, duplicate unlock, system bug).
+- Credit reversal is delayed **beyond 48 hours after verification**.
+- You need a one‑time exception based on **field realities**.
+
+What to send to Ops:
+
+- Order ID, Vendor ID, and dates.
+- Screenshots from Admin Panel (order timeline, credits ledger).
+- Short summary of vendor side story and what they are expecting.
+- Your recommendation: *"Requesting Ops to verify To Be Failed and approve/reject credit reversal."*
+
+### When to escalate to Finance
+
+Escalate to Finance when:
+
+- It is a **wallet refund** case that fits verified categories:
+  - System error / duplicate payment.
+  - Ops‑approved return flow.
+  - Wrong debit clearly visible in wallet/bank mapping.
+- Refund is **approved** but **not yet visible** in vendor wallet/bank after expected Finance timelines.
+- You need clarification on **where** the refund landed (wallet vs bank/UPI).
+
+What to send to Finance:
+
+- Transaction reference (UTR, payment ID), amount, date/time.
+- Vendor banking/UPI details on file.
+- Screenshot of wallet/transaction history.
+- Ops approval reference (if any) as per **approval matrix**.
+
+### When to escalate to Compliance / Risk
+
+Escalate to Compliance or Risk when you see possible fraud:
+
+- Multiple disputes from same vendor with mismatched details.
+- Vendor sharing **edited or suspicious screenshots**.
+- Story changes significantly across calls/chats.
+- Evidence of **chargeback abuse** or **coordinated fraud** with customers.
+
+What to send to Compliance:
+
+- Detailed notes of all conversations and claims.
+- All screenshots provided by vendor.
+- Internal transaction logs, order history, and any previous blocks/warnings.
+- Your observation: *"Suspicious pattern, requesting Compliance review before any refund or credit decision."*
+
+---
+
+Use this script as your base. Adapt your tone to the vendor, but do not change the **policy lines, timelines, or approval requirements**.

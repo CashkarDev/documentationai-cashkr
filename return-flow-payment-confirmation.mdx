@@ -1,0 +1,375 @@
+---
+title: Return Flow & Payment Confirmation
+description: SOP for handling device returns and payment confirmation across CX, Vendor Ops, Finance, Support, and Admin with clear rules and steps.
+---
+
+# Return Flow & Payment Confirmation
+
+For CX, Vendor Ops, Finance, Support, and Admin teams.
+
+## Quick summary
+
+- Process returns only for vendor or system faults (inspection error, wrong payment, IMEI mismatch, internal correction).
+- Do not process returns for customer change-of-mind or regret after OTP payment.
+- Confirm payment status first in every case; no payment means no return flow.
+- Ops Manager must approve all returns; Finance approves reversals when payment is already made.
+- Vendor Ops executes physical return; Admin and Finance handle wallet, credits, and order status updates.
+- CX owns communication with customer and vendor and closes the ticket after confirmation.
+
+## Purpose of this SOP
+
+Use this SOP to know when a device return is valid, how to confirm payment, how to reverse wrong transactions, and how to communicate clearly with customers and vendors.
+
+Main goals:
+
+- Zero confusion between teams.
+- Accurate tracking and audit trail.
+- Faster resolution for customers and vendors.
+- No financial errors or duplicate payouts.
+
+## When is a return allowed?
+
+A device return is initiated only in the following cases.
+
+### A. Wrong inspection by vendor
+
+Typical reasons:
+
+- Vendor selected incorrect condition.
+- Wrong model entered.
+- IMEI mismatch.
+- Incomplete or careless inspection.
+
+### B. Order completed but issue discovered later
+
+Typical reasons:
+
+- Wrong payment amount.
+- Item dead on arrival or misclassified.
+- Fraud suspicion that requires verification.
+
+### C. Payment problem during pickup
+
+Typical reasons:
+
+- Vendor completed order but payment not received by customer.
+- Vendor entered wrong customer number.
+
+### D. Internal operations correction (rare)
+
+Typical reasons:
+
+- Device belongs to a different order.
+- Duplicate processing.
+- Return mandated by Ops Manager after QA check.
+
+<Callout kind="alert">
+
+Never process a return for customer change-of-mind or regret after OTP payment.
+
+</Callout>
+
+## Key ownership rule (post-OTP)
+
+Once the customer enters the OTP and payment is made, ownership of the device shifts to Cashkr.
+
+Return is allowed only when Ops confirms a vendor fault or system fault (including payment or inspection errors).
+
+## Complete return flow (step-by-step)
+
+Use this flow whenever a valid return case is identified.
+
+<Steps>
+  <Step title="Step 1 — Issue reported" icon="info">
+    The issue can be reported by vendor, customer, QC team, Finance, or CX team.
+
+    CX must log at minimum:
+
+    - Order ID
+    - Issue type
+    - Payment status (known / unknown)
+    - Vendor explanation
+    - Customer explanation
+    - Photos or attachments if required (device, screen, SMS, etc.)
+  </Step>
+
+  <Step title="Step 2 — Verify payment status" icon="database">
+    Before any action, CX or Finance must confirm if payment was actually made.
+
+    Check:
+
+    - Vendor wallet transaction
+    - Bank payout logs
+    - Payment timestamp
+    - Customer SMS or bank app screenshot
+    - UPI reference ID or transaction ID
+
+    If needed, Finance must cross-check:
+
+    - Vendor screenshots
+    - Bank statement
+    - Admin Panel entry
+
+    <Callout kind="alert">
+
+    No payment means no return. Resolve the payment issue first before starting any return flow.
+
+    </Callout>
+  </Step>
+
+  <Step title="Step 3 — Ops validates inspection error" icon="search">
+    Vendor Ops reviews all inspection-related information.
+
+    Check:
+
+    - Inspection photos
+    - Device condition
+    - IMEI match
+    - Notes captured during completion
+    - Pricing logic applied
+    - Any customer or vendor voice notes
+
+    If vendor fault is confirmed, move to return approval.
+
+    If customer fault is confirmed, do not start return flow.
+
+    If unclear, escalate to Ops Manager for decision.
+  </Step>
+
+  <Step title="Step 4 — Return approval" icon="check-circle">
+    Only Ops Manager can approve a return.
+
+    - Ops Manager approval is mandatory.
+    - Finance approval is required if any payment reversal is needed.
+
+    Document approvals as internal notes in the Admin Panel so the audit trail is clear.
+  </Step>
+
+  <Step title="Step 5 — Schedule device return to customer" icon="truck">
+    Vendor Ops arranges the device return:
+
+    - Assign either the same vendor or a new vendor (if the earlier vendor made a mistake).
+    - Vendor receives a Return Pickup assignment.
+
+    Vendor must:
+
+    - Call the customer.
+    - Visit for delivery.
+    - Return the device.
+    - Take acknowledgement (photo or signature as per process).
+  </Step>
+
+  <Step title="Step 6 — Adjustments in Admin Panel" icon="settings">
+    Admin team updates the system for final resolution.
+
+    - Reverse order status from Completed to Returned or Reversed.
+    - Reverse vendor credits:
+      - If vendor at fault, apply the deduction as per policy.
+      - If customer at fault, refund credits fully.
+      - If Ops or system fault, adjust as per case and internal rules.
+    - Reverse wallet deduction or handle payment reversal (if needed):
+      - From vendor wallet.
+      - From Cashkr internal wallet.
+      - Using future settlement offset.
+
+    Ensure all changes are traceable for audit.
+  </Step>
+
+  <Step title="Step 7 — Customer and vendor confirmation" icon="check">
+    After the device is returned:
+
+    - Confirm with customer that they received the device back.
+    - Confirm with vendor that handover is completed.
+    - CX closes the ticket after both confirmations.
+
+    If payment reversal was applied:
+
+    - Finance confirms refund completion.
+    - Customer receives SMS for refund (or bank confirmation).
+    - CX sends final confirmation message to close the case.
+  </Step>
+</Steps>
+
+## Payment confirmation (standalone SOP)
+
+Use this section whenever a payment-related issue is reported, even if return is not yet confirmed.
+
+<Tabs>
+  <Tab title="Customer says: I did not receive payment" icon="users">
+
+    When a customer claims they have not received payment, keep them informed while you verify.
+
+    - Inform the customer you need 2–5 minutes to verify.
+    - Check vendor wallet deduction.
+    - Check payout logs.
+    - Validate the UPI ID or contact number used.
+    - Ask the customer to check:
+      - SMS inbox.
+      - Bank app.
+      - UPI app.
+      - Spam or promotional SMS folders.
+
+    If the customer still does not see the payment after checks:
+
+    - Escalate to Finance with order ID, transaction details, and screenshots.
+    - Wait for Finance confirmation before committing any refund or return.
+
+    Recommended script:
+
+    > Payment sometimes takes 1–5 minutes. I am verifying the transaction from our side right now.
+
+  </Tab>
+
+  <Tab title="Vendor says: Payment failed" icon="terminal">
+
+    When a vendor reports that payment failed or did not go through:
+
+    - Ask vendor for an error screenshot.
+    - Ask vendor to check:
+      - Wallet balance.
+      - Network connectivity.
+      - Payment status in the Admin Panel.
+
+    Based on the checks:
+
+    - If there is a wallet deduction but no payout, Finance must resolve from the backend.
+    - If payout shows as completed but customer has no credit, treat it as a customer bank delay and inform CX accordingly.
+
+    Keep both vendor and CX updated so communication with the customer stays consistent.
+
+  </Tab>
+
+  <Tab title="Wrong customer number entered" icon="alert-triangle">
+
+    When payment is sent to the wrong customer number:
+
+    - Confirm the transaction ID and recipient details.
+    - If payment went to the wrong number, get Ops Manager approval for correction.
+    - Finance reverses or adjusts the amount internally as per process.
+    - After correction is confirmed, initiate payment again to the correct customer UPI or bank details.
+
+    Do not promise instant money recovery to the customer; align expectations based on Finance and Ops inputs.
+
+  </Tab>
+</Tabs>
+
+## Rules for vendor responsibility (vendor fault)
+
+Vendor is responsible when any of these apply:
+
+- Wrong inspection (condition or device details).
+- Wrong IMEI captured.
+- Wrong customer number entered for payment.
+- Payment not triggered correctly due to vendor error.
+- Rude behaviour that causes escalation.
+- Taking device before payment confirmation.
+- Miscommunication that leads to dispute.
+
+Possible actions:
+
+- Credit deduction.
+- SLA strike.
+- Hold or deactivation based on severity.
+- Mandatory retraining.
+
+## Rules for customer responsibility (customer fault)
+
+Customer is responsible when any of these apply:
+
+- Gave wrong device information.
+- Provided wrong UPI number.
+- Provided wrong model details.
+- Demands return after OTP completion when there is no inspection or technical error.
+- Changes mind after pickup without any vendor or system fault.
+
+<Callout kind="alert">
+
+Do not process returns when only the customer changed their mind or regrets the price after OTP confirmation.
+
+</Callout>
+
+Actions in customer fault cases:
+
+- No return.
+- CX explains the policy clearly.
+- No refund unless an internal fault is identified.
+
+## Communication templates for CX
+
+Use these as base scripts and adapt details to the specific case.
+
+### A. Return approved
+
+Use when Ops Manager has approved the return and Vendor Ops is arranging pickup.
+
+> We are arranging your device return. Our partner will contact you shortly for the handover.
+
+### B. Return not eligible
+
+Use when the customer is asking for a return that does not meet the rules.
+
+> Once the payment is completed using OTP, the order cannot be reversed unless there was an inspection or technical error. In this case, the device is not eligible for return.
+
+### C. Payment under review
+
+Use while Finance is checking payment status.
+
+> We are verifying the transaction details with our finance team. Please give us 1–2 hours while we complete the check.
+
+### D. Final resolution message
+
+Use when the case is fully closed.
+
+> Your case is now closed. Please let us know if you need any further assistance.
+
+## Internal SLA for return resolution
+
+Use these SLAs to track and escalate if timelines slip.
+
+| Task                         | Owner       | SLA             |
+| ---------------------------- | ----------- | --------------- |
+| Payment verification         | Finance     | 1–2 hours       |
+| Vendor inspection review     | Ops         | 2 hours         |
+| Return approval              | Ops Manager | Within 12 hours |
+| Vendor assignment for return | Ops         | Same day        |
+| Device returned              | Vendor      | 24–48 hours     |
+| Admin Panel updates          | CX or Ops   | Same day        |
+
+## One-page summary (training card)
+
+### When does a return happen?
+
+Return happens only when:
+
+- Vendor fault (wrong inspection, wrong IMEI, wrong number, behaviour issue).
+- System or process fault.
+- Wrong inspection leading to customer or pricing issues.
+- Wrong payment or payment sent to wrong account.
+- IMEI mismatch or device mapped to wrong order.
+
+### When is return not allowed?
+
+Return does not happen for:
+
+- Customer changed mind.
+- Customer regret after OTP payment.
+- Price dissatisfaction without any inspection or system error.
+- Any case clearly caused by customer fault.
+
+### Payment confirmation checks
+
+Always verify payment status using:
+
+- Vendor wallet transactions.
+- Payout logs.
+- Bank or UPI SMS.
+- Transaction ID or UPI reference.
+- Admin Panel payment status.
+
+### Teams involved and roles
+
+- **CX** — Logs issue, owns communication with customer and vendor, closes ticket.
+- **Ops** — Reviews inspection and confirms fault, assigns vendor for return.
+- **Finance** — Confirms payment status, handles reversals and internal adjustments.
+- **Vendor Ops / Vendor** — Executes physical device return and captures proof.
+- **Admin** — Updates order status, vendor credits, and wallet or internal balances.

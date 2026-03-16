@@ -1,0 +1,311 @@
+---
+title: Using the Vendor App (Login, Dashboard, Order Unlocking)
+description: Standard operating procedure for Cashkr vendors and internal ops to log in, use the dashboard, unlock orders, complete pickups, and handle payments correctly.
+---
+
+## Overview
+
+Use this SOP to log in to the Cashkr Partner App, understand the dashboard, unlock orders, complete pickups, and process payments via wallet OTP.
+
+End-to-end flow: **Login → Dashboard → Available Orders → Unlock → Customer Details → Pickup → Inspect → Pay (OTP) → Complete Order.**
+
+## Key concepts
+
+Understand Wallet vs Credits before unlocking any order:
+
+- **Wallet balance (₹)** — Real money used to pay customers. Maintain enough balance to cover final device price.
+- **Credits balance** — Virtual points required to unlock orders. The app deducts credits immediately when an order is unlocked.
+- **Active orders** — Orders you have already unlocked and are currently handling.
+- **Available orders** — Orders you can unlock based on your area and pincode access.
+
+<Callout kind="alert">
+
+Credits get deducted from your balance immediately when you unlock an order, even if the order later fails or is cancelled.
+
+</Callout>
+
+## Dashboard overview
+
+After login, the Dashboard shows the key sections vendors and ops must monitor.
+
+### Main dashboard sections
+
+- **Wallet balance (₹)**  
+  Shows real money available to pay customers. Keep this sufficient for expected payouts.
+
+- **Credits balance**  
+  Shows available credits for unlocking orders. The system deducts credits instantly when you unlock.
+
+- **Active orders**  
+  Lists all orders you are currently handling.
+
+- **Available orders**  
+  Lists orders you can unlock based on your location, pincode, and access rules.
+
+- **Completed orders**  
+  History of all successfully closed orders.
+
+- **Failed / returned orders**  
+  Orders cancelled due to:
+  - Wrong inspection
+  - Device mismatch
+  - Customer denial
+  - Vendor error
+  - Order reversal
+
+### App sections explained
+
+Use this as a quick reference for training and audits.
+
+| Section           | Meaning                              |
+| ----------------- | ------------------------------------ |
+| Dashboard         | Wallet, credits, and order overview |
+| Available Orders  | Orders ready to unlock              |
+| Active Orders     | Orders already unlocked             |
+| Completed Orders  | Successfully completed pickups      |
+| Failed Orders     | Cancelled or returned orders        |
+| Profile           | KYC, bank details, app settings     |
+| Support           | Chat/Call support for issues        |
+
+## Login process
+
+Only registered and approved vendors can access the Cashkr Vendor App.
+
+<Steps>
+  <Step title="Open the app and request OTP" icon="play-circle">
+
+  - Open the Cashkr Vendor App on your phone.
+  - Enter your **registered mobile number**.
+  - Tap **Get OTP**.
+
+  </Step>
+
+  <Step title="Enter OTP and access dashboard" icon="check-circle">
+
+  - Enter the **6-digit OTP** received via SMS.
+  - The app verifies the OTP and redirects you to the **Dashboard** after successful verification.
+
+  </Step>
+
+  <Step title="Login rules to follow" icon="info">
+
+  - Log in only with the **registered and approved** vendor mobile number.
+  - Ensure the OTP matches the registered phone number.
+  - If OTP is not received:
+    - Check network connectivity.
+    - Retry after 30 seconds.
+    - Contact Vendor Support if it still fails.
+
+  </Step>
+</Steps>
+
+### When login fails
+
+Use this table to diagnose and resolve common login failures.
+
+| Issue          | Reason                    | Solution                |
+| -------------- | ------------------------- | ----------------------- |
+| OTP not coming | Network or SIM issue      | Retry / restart phone   |
+| Account not found | Vendor not approved yet | Contact Ops Team        |
+| App crash      | Old app version           | Update the app          |
+| Incorrect OTP  | Wrong OTP entered         | Re-enter and retry      |
+
+## How order unlocking works
+
+Order unlocking controls which vendor gets customer details and the right to process the order.
+
+### Unlock flow summary
+
+1. Vendor sees an **Available Order**.
+2. Vendor checks **credits required**.
+3. System checks vendor **credits** and **wallet balance**, pincode access, hold status, and daily limits.
+4. If all checks pass, unlock is allowed and credits are deducted at once.
+5. Vendor receives full customer details.
+6. Vendor calls customer and schedules pickup.
+7. Vendor inspects the device at customer location.
+8. Vendor pays customer via wallet OTP.
+9. Vendor collects device and marks order as **Completed**.
+
+<Callout kind="alert">
+
+Unlock happens only when credits and wallet balance are sufficient and access checks pass. Credits are **deducted immediately** at unlock and are not dependent on order completion.
+
+</Callout>
+
+## Unlocking an order
+
+Use these steps every time you unlock an order from the Vendor App.
+
+<Steps>
+  <Step title="Open Available Orders" icon="monitor">
+
+  - Go to the **Available Orders** tab on the Dashboard.
+  - Review the list of orders shown for your area and pincode.
+
+  </Step>
+
+  <Step title="Review order details" icon="info">
+
+  For each order card, check:
+
+  - Device model
+  - Expected device condition
+  - Expected price
+  - Credits required to unlock
+  - Pickup pincode
+
+  </Step>
+
+  <Step title="Tap Unlock Order" icon="play-circle">
+
+  - Choose a suitable order.
+  - Tap **Unlock Order** to request access.
+
+  </Step>
+
+  <Step title="System auto-checks before unlock" icon="settings">
+
+  The system runs these checks automatically:
+
+  - Credits balance is **greater than or equal to** required credits.
+  - Wallet balance is **enough to pay** the customer.
+  - Vendor has access for the **pickup pincode**.
+  - Vendor is **not on temporary hold**.
+  - Vendor has **not exceeded daily limit** for unlocks.
+
+  If all checks pass, unlock is successful and **credits are deducted immediately**.
+
+  </Step>
+</Steps>
+
+### What vendor gets after unlocking
+
+Once an order is successfully unlocked, the app shows:
+
+- Customer full name
+- Address and Google Map location
+- Selected condition
+- Expected price
+- Order ID
+- Device details
+
+Vendor must **call the customer within 10 minutes** of unlocking to schedule pickup.
+
+<Callout kind="alert">
+
+If you delay contacting the customer after unlocking, it increases the chance of order cancellation, disputes, or SLA issues for the vendor.
+
+</Callout>
+
+## Pickup, inspection, and payment flow
+
+Follow this standard sequence at customer location for every unlocked order.
+
+<Steps>
+  <Step title="Call, reach, and inspect" icon="phone">
+
+  - Call the customer and confirm **address and time**.
+  - Reach the customer location on time.
+  - Inspect the device **physically** in front of the customer.
+
+  </Step>
+
+  <Step title="Update condition and confirm price" icon="edit">
+
+  - Update the **device condition** in the app as per actual inspection.
+  - The app calculates the **final price** based on updated condition.
+  - Confirm the final price with the customer before proceeding.
+
+  </Step>
+
+  <Step title="Pay customer using wallet OTP" icon="wallet">
+
+  - Tap **Pay to Customer** or **Pay Now** in the app.
+  - The final price appears on screen.
+  - Customer receives an **OTP on their phone**.
+  - Ask the customer to **read the OTP**.
+  - Enter the OTP in the app to complete payment.
+
+  </Step>
+
+  <Step title="Collect device and complete order" icon="check-circle">
+
+  - Once OTP is verified, payment is sent from your Wallet to the customer bank account.
+  - Collect the device from the customer.
+  - Mark the order as **Completed** in the app.
+
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+
+- Use **only Wallet balance** for payments. **No cash** is allowed.  
+- OTP must **come from the customer's phone**; do not create or guess it.  
+- Never take the device **before OTP is confirmed and payment is successful**.
+
+</Callout>
+
+## Wallet payment rules
+
+Keep these points in mind whenever you pay a customer via the Vendor App:
+
+- Payment uses only **Wallet balance**, not cash.
+- Customer receives an OTP on their mobile number.
+- Vendor enters OTP in the app to trigger payment from Wallet to customer bank account.
+- Vendor must **never ask for customer PIN or banking credentials**.
+- Vendor must not collect extra charges from the customer outside the app.
+
+## Common issues during order unlocking
+
+Use this table to troubleshoot unlock failures and guide vendors.
+
+| Issue                        | Cause                         | Solution                        |
+| --------------------------- | ----------------------------- | ------------------------------- |
+| Cannot unlock order         | Low credits                   | Add credits or contact support  |
+| Cannot unlock order         | Low wallet balance            | Refill wallet                   |
+| Order already unlocked      | Another vendor was faster     | Move to the next available order |
+| You are on hold message     | SLA issues or manual hold     | Contact Ops                     |
+| Pickup pincode blocked      | No coverage for that vendor   | Request new coverage approval   |
+
+## Vendor best practices
+
+Use these as training checkpoints for vendors and as review criteria for internal ops.
+
+<Callout kind="tip">
+
+- Call customers quickly after unlock (within 10 minutes).  
+- Maintain polite, professional communication at all times.  
+- Reach pickup location on time.  
+- Pay instantly via wallet once inspection is done.  
+- Upload correct, honest inspection results in the app.  
+- Avoid any fraud such as IMEI mismatch or price manipulation.
+
+</Callout>
+
+<Callout kind="alert">
+
+- Do not collect extra charges from customers.  
+- Do not delay payment after agreeing on the final price.  
+- Do not force customers to accept a price.  
+- Do not take the device before OTP confirmation and successful payment.
+
+</Callout>
+
+## Internal team responsibility
+
+Use this section for internal training and assigning ownership.
+
+- **Vendor Management Team**
+  - Monitor unlock issues and vendor performance.
+  - Manage pincode access and coverage.
+  - Take action on SLA breaches and vendor errors.
+
+- **Vendor Support**
+  - Train vendors on wallet and credits usage.
+  - Solve unlock errors and login issues.
+  - Guide vendors on inspection rules and correct app usage.
+
+- **CX Team**
+  - Handle customer complaints and disputes.
+  - Resolve payment-related doubts.
+  - Educate customers about OTP and payment flow to reduce confusion.

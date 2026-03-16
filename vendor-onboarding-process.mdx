@@ -1,0 +1,535 @@
+---
+title: Vendor Onboarding Process
+description: End-to-end vendor onboarding SOP for internal teams, from lead and screening call to registration, verification, approval, activation, training, and early monitoring.
+---
+
+## Purpose and scope
+
+Use this SOP to take a vendor from first interest to fully active pickup partner in a controlled, compliant way. Follow these steps to reduce fraud, ensure SLA discipline, and prepare vendors before they touch live orders.
+
+This process is for **Vendor Onboarding Associates, Verification Team, Ops Managers, CX, and Finance**.
+
+<Callout kind="alert">
+
+Never activate or allow vendor login before Admin Panel approval. Block login for pending, rejected, or inactive vendors even if OTP is correct, as defined in [Vendor Registration and Login](/vendor-registration-login).
+
+</Callout>
+
+## End-to-end onboarding pipeline
+
+The onboarding pipeline covers the full lifecycle: lead received → screening call → registration and documents → verification → approvals → activation → training → early monitoring.
+
+<Steps>
+
+<Step title="Receive lead and assign owner" icon="users">
+
+- Record the vendor lead from form, referral, or outbound source.
+- Assign an **Onboarding Associate** as owner in the Admin Panel or CRM.
+- Check if the vendor already exists or is blocked to avoid duplicate onboarding.
+
+</Step>
+
+<Step title="Run screening call" icon="phone">
+
+- Onboarding Associate calls the vendor within a reasonable time window.
+- Use the screening script (English or Hinglish) to:
+  - Confirm interest and availability.
+  - Check area coverage, device capability, transport, and professionalism.
+  - Give a short, clear explanation of the Cashkr partner model.
+- Decide whether to move the vendor to registration or to close the lead.
+
+</Step>
+
+<Step title="Guide registration and document upload" icon="edit">
+
+- If the vendor qualifies on call, guide them to register using the vendor app or registration link as per [Vendor Registration and Login](/vendor-registration-login).
+- Ask the vendor to:
+  - Complete basic profile details.
+  - Verify phone via OTP.
+  - Upload KYC and business documents that are typically required.
+- Confirm that the registration shows in the Admin Panel with **Pending approval** status.
+
+</Step>
+
+<Step title="Post-registration verification call" icon="check-circle">
+
+- Verification Team or Onboarding Associate runs the structured verification call using the flow in [Vendor Verification Script (Post Registration and KYC Confirmation)](/vendor-verification-script-post-registration-kyc-confirmation).
+- Re-verify key identity and capability details.
+- Explain Wallet, Credits, and basic usage expectations.
+- Note any missing or unclear documents and share how the vendor should fix them.
+
+</Step>
+
+<Step title="Document, area, and risk checks" icon="shield">
+
+- Verification Team validates:
+  - KYC documents and business proof.
+  - Bank details and payout readiness.
+  - Area coverage and competition density.
+  - Any internal fraud or SLA history.
+- If information is incomplete or risky, request corrections or escalate to Ops Manager.
+
+</Step>
+
+<Step title="Admin Panel approvals and vendor type" icon="settings">
+
+- Ops Manager and Admin Panel Team:
+  - Approve or reject registration after verification.
+  - Assign **vendor type** as per [Vendor Types (1 to 3)](/vendor-types-1-5).
+  - Set initial unlock and SLA limits according to risk and experience.
+- If rejected or held, document clear reasons and next steps.
+
+</Step>
+
+<Step title="Credits, wallet, and optional agents" icon="credit-card">
+
+- Finance and Ops ensure:
+  - Wallet account is configured for payouts and collections.
+  - Credits are assigned or vendor is guided to **Buy Credits** as per [Buy Credits](/buy-credits).
+- If vendor operates with agents, guide them to [Add Agents](/add-agents) after activation; ensure proper mapping and audit readiness.
+
+</Step>
+
+<Step title="Training and go-live activation" icon="play-circle">
+
+- Onboarding/CX teams deliver training:
+  - App basics and login as per [Using the Vendor App (Login, Dashboard, Order Unlocking)](/using-the-vendor-app-login-dashboard-order-unlocking).
+  - Full order handling flow as per [Order Flow – Unlock → Pickup → Payment](/order-flow-unlock-pickup-payment).
+- After mandatory training:
+  - Confirm Admin Panel status is **Active**.
+  - Communicate clear expectations and support channels to the vendor.
+
+</Step>
+
+<Step title="Early monitoring and feedback" icon="bar-chart">
+
+- Ops and CX monitor the vendor during the early monitoring period for:
+  - Pickup timeliness and SLA adherence.
+  - Customer feedback and behaviour.
+  - Payment and OTP integrity.
+- Increase, maintain, or reduce limits based on performance and escalate serious issues as per hold/deactivation policies.
+
+</Step>
+
+</Steps>
+
+## Key definitions for onboarding conversations
+
+<Callout kind="info">
+
+**Wallet vs Credits (for vendor partners)**
+
+- **Wallet**: Money balance the vendor uses to pay customers during pickups. Linked to the vendor's bank or settlement account, managed by Finance.
+- **Credits**: Non-cash units required to unlock orders. Each lead unlock reduces credits according to the [Credit System](/credit-system) and vendor type.
+
+To handle live orders, a vendor generally needs **both**:
+- Sufficient **wallet** balance to pay customers.
+- Sufficient **credits** to unlock relevant orders.
+
+Explain that vendors can buy credits from the **Buy Credits** section in the app and that credits become usable only after Admin Panel approval of the payment proof, as documented in [Buy Credits](/buy-credits).
+
+</Callout>
+
+Set the correct expectation that **registration alone does not mean activation**. Vendors move from **Registered → Verified → Approved → Active** only after all checks and training are complete.
+
+## Roles and responsibilities by stage
+
+### Summary of ownership
+
+- **Vendor Onboarding Associate**
+  - Owns lead from first contact until registration and initial screening decision.
+  - Conducts screening call and short app demo if needed.
+  - Ensures vendor understands high-level model, Wallet, and Credits basics.
+
+- **Verification Team**
+  - Validates documents, identity, and business details.
+  - Runs structured verification call using the KYC confirmation script.
+  - Confirms area, device capability, and operational readiness.
+  - Documents risk notes and recommendations for Ops Manager.
+
+- **Ops Manager / Admin Panel Team**
+  - Reviews verification outcome and approves or rejects vendor.
+  - Assigns vendor type and initial limits.
+  - Decides on any trial or watch mode based on risk.
+  - Coordinates with CX for training requirements.
+
+- **Finance Team**
+  - Verifies bank and payout details.
+  - Enables wallet or related financial accounts.
+  - Reviews and approves QR payments for credits.
+  - Tracks vendor top-ups and reconciles payouts.
+
+- **CX / Training Team**
+  - Delivers app usage and order flow training.
+  - Handles early-stage questions on wallet, credits, and OTP.
+  - Monitors early vendor feedback and escalates patterns to Ops.
+
+## Screening call: scripts and expectations
+
+Use a short, structured script to qualify the vendor and set expectations. Adapt tone to the vendor, but keep the core questions and explanation consistent.
+
+<Tabs>
+
+<Tab title="Screening call (English)" icon="phone">
+
+**Opening and permission**
+
+"Hello, I am calling from Cashkr regarding your interest in becoming a pickup partner. Is this a good time to talk for a few minutes?"
+
+**Qualification questions**
+
+- "Are you planning to work as a full-time partner or part-time along with other work?"
+- "Which city and which areas or pincodes can you cover for pickups?"
+- "Which device types are you comfortable handling? For example, phones, laptops, Mac devices, tablets."
+- "Do you have reliable transport for pickups, like a bike or similar?"
+- "Are you comfortable paying customers on the spot through the Cashkr partner app, not in cash directly?"
+- "Do you understand that the final price depends on the physical inspection of the device?"
+- "Do you have valid ID proof, address proof, and a bank account for payments?"
+- "Are you comfortable following daily SLAs like timely pickup, accurate inspection, and professional behaviour?"
+
+**Short model explanation**
+
+"Cashkr sends you orders in the partner app. You unlock the order using credits, call the customer, visit the location, inspect the device, and then pay the customer using the app wallet. After payment and confirmation, the order is completed and settled."
+
+**Close**
+
+- If suitable: "Based on this, we can move you to the next step. I will guide you to complete the registration and document upload, and then our team will verify and approve your account."
+- If not suitable: "Right now, you do not match our current requirements, so we will not proceed with the onboarding. Thank you for your interest."
+
+</Tab>
+
+<Tab title="Screening call (Hinglish)" icon="phone">
+
+**Opening and permission**
+
+"Namaste, main Cashkr se bol raha hoon. Aapne pickup partner banne ke liye interest dikhaya tha. Kya abhi 2–3 minute baat karne ke liye theek time hai?"
+
+**Qualification questions**
+
+- "Aap yeh kaam full-time karna chahte ho ya part-time, kisi aur kaam ke saath?"
+- "Aap kaunse city aur kaunse area ya pincode cover kar sakte ho pickup ke liye?"
+- "Kaunse devices handle karne mein aap comfortable ho? Jaise phones, laptops, Mac devices, tablets."
+- "Kya aapke paas pickup ke liye bike ya koi reliable transport hai?"
+- "Customer ko payment app ke through, wallet se deni hoti hai. Kya aap is tarah se payment karne mein comfortable ho? Direct cash allowed nahi hai."
+- "Final price device ki physical inspection ke baad decide hota hai. Kya aap yeh samajhte ho aur accept ho?"
+- "Kya aapke paas valid ID proof, address proof aur bank account hai jisme payment aa sake?"
+- "Daily SLA follow karna hota hai, jaise time par pickup, sahi inspection aur professional behaviour. Kya aap yeh sab follow kar paoge?"
+
+**Short model explanation**
+
+"Cashkr aapko app mein orders bhejta hai. Aap credits se order unlock karte ho, customer ko call karte ho, location par jaa kar device inspect karte ho, phir app wallet se customer ko payment karte ho. OTP aur confirmation ke baad order complete ho jata hai."
+
+**Close**
+
+- If suitable: "Aap profile ke hisaab se theek lag rahe ho, hum aapko next step mein le jaa sakte hain. Main ab aapko registration aur document upload ka process bataunga, uske baad team verification karke account approve karegi."
+- If not suitable: "Abhi ke liye aap hamare current requirement se match nahi karte, isliye hum onboarding aage nahi badha payenge. Aapke time ke liye dhanyavaad."
+
+</Tab>
+
+</Tabs>
+
+<Callout kind="alert">
+
+During the screening call:
+- Do not promise any fixed earning, fixed number of leads, or guaranteed coverage.
+- Do not skip questions about transport, ID proof, or comfort with OTP and wallet payments.
+- If the vendor does not accept OTP and app-based payment flow, do not move ahead.
+
+</Callout>
+
+## What to verify before moving to verification stage
+
+Use this checklist during or immediately after the screening call. If critical gaps exist, close the lead or clearly mark as high risk before investing further effort.
+
+### Vendor capability and seriousness
+
+- **Identity basics**: Confirm full name, primary phone number, and WhatsApp availability.
+- **Work intent**: Understand if the vendor has time and focus to meet daily SLA.
+- **Professionalism**: Observe politeness, clarity of communication, and responsiveness.
+
+### Operational readiness
+
+- **Area coverage**: Confirm city, main areas, and realistic travel radius.
+- **Transport**: Ensure the vendor has reliable transport suitable for city conditions.
+- **Device capability**: Clarify which device categories they can inspect confidently.
+- **Availability window**: Check typical working hours and days.
+
+### Financial and app readiness
+
+- **Comfort with app payments**: Vendor must be comfortable paying via wallet and OTP flow, not offline cash.
+- **Bank / UPI presence**: Confirm that the vendor has at least one valid bank account or UPI linked to their name.
+- **Smartphone readiness**: Ensure they have a compatible smartphone with stable data to run the vendor app.
+
+If the vendor meets these criteria, guide them to register and upload documents. If not, close the lead with a clear internal remark.
+
+## Registration, documents, and KYC
+
+### Registration and approval gating
+
+Follow the rules in [Vendor Registration and Login](/vendor-registration-login):
+
+- Vendor registers in the app with required details and document uploads.
+- Vendor verifies phone via OTP, but **cannot log in** until an Admin Panel user approves the account.
+- Vendor type is set in the Admin Panel; vendors do not choose their own type.
+- Block login attempts for vendors in **Pending, Rejected, or Inactive** status.
+
+### Documents typically required
+
+Treat the below list as standard expectations. If local regulation or policy requires more or fewer items, follow the latest compliance guidance.
+
+- Government ID proof (for example Aadhaar, PAN).
+- Address proof (for example, utility bill, rent agreement, shop registration).
+- Bank account details for settlements.
+- Business registration where applicable (for example, Gumasta, Aadhaar Udyog, GST certificate).
+- Shop photo and basic branding, if applicable.
+- Profile photo or selfie for use in the app.
+
+Verification Team must confirm that:
+
+- Names are consistent across key documents and registration details.
+- Document images are clear and readable.
+- Bank details appear valid and belong to the same person or business.
+- No major mismatch in address or identity that would increase fraud risk.
+
+<Callout kind="alert">
+
+If you detect any serious mismatch in name, ID, bank account, or address:
+- Do not approve the account.
+- Escalate to Ops Manager for final decision.
+- Record clear notes in the Admin Panel for audit and future reference.
+
+</Callout>
+
+## Verification call and checks
+
+Use the detailed flow in [Vendor Verification Script (Post Registration and KYC Confirmation)](/vendor-verification-script-post-registration-kyc-confirmation) as the primary script. At a high level, Verification Team should:
+
+- Re-confirm:
+  - Vendor name and contact details.
+  - WhatsApp number and communication preference.
+  - Pincode and city of primary operation.
+  - Device category focus and experience level.
+- Identify missing information or documents and:
+  - State exactly what is missing.
+  - Explain how to submit or correct it inside the app or via approved channels.
+- Explain:
+  - That vendors must maintain sufficient **Credits** to unlock leads and that credits require payment and admin approval.
+  - That vendors need sufficient **Wallet** balance to pay customers.
+  - That all pickups, inspections, and payments must follow the OTP-based flow described in [Vendor Payment OTP and Confirmation Flow](/vendor-payment-otp-confirmation-flow).
+
+## Admin approvals, vendor type, and limits
+
+### Vendor type assignment
+
+Ops Manager assigns vendor type in the Admin Panel as per [Vendor Types (1 → 3)](/vendor-types-1-5). Vendor type controls:
+
+- Which device tiers and categories they can unlock.
+- Any extra credit charges or restrictions on specific models.
+- How quickly their limits can grow over time.
+
+Do not allow vendors to self-select or request a specific type without a documented review.
+
+### Initial limits and monitoring
+
+When approving a new vendor, Ops Manager should:
+
+- Set **initial unlock limits** that match vendor experience and risk level.
+- Mark the vendor as being in an **early monitoring period** for SLA and behaviour.
+- Define whether the vendor starts in any kind of trial or watch mode.
+
+Avoid hard-coded numbers in this SOP; follow current Ops policies for precise limits and thresholds.
+
+### Wallet, credits, and finance checks
+
+Finance Team and Ops must coordinate to ensure that:
+
+- Bank account details are verified and saved.
+- Wallet or equivalent payout mechanism is active.
+- Any initial credit allocations are added as per [Credit System](/credit-system).
+- For vendors who need to buy credits:
+  - Guide them to the **Buy Credits** flow in the app.
+  - Ensure the vendor understands that credits remain **Pending** until Admin Panel approves the payment proof, as in [Buy Credits](/buy-credits).
+
+<Callout kind="alert">
+
+Do not allow a vendor to start unlocking real orders if:
+- Credits are in **Pending** status or not yet visible in the app.
+- Wallet is not active or bank details are unverified.
+- Admin Panel status is anything other than **Active**.
+
+</Callout>
+
+## Training and go-live
+
+Before marking a vendor ready for live orders, ensure they complete mandatory training.
+
+### Core training modules
+
+Share and walk through:
+
+- [Using the Vendor App (Login, Dashboard, Order Unlocking)](/using-the-vendor-app-login-dashboard-order-unlocking)
+  - Login with OTP once approved.
+  - Dashboard overview and order listing.
+  - Unlock rules and checks before committing credits.
+- [Order Flow – Unlock → Pickup → Payment](/order-flow-unlock-pickup-payment)
+  - Calling the customer and confirming details.
+  - Moving orders to Out for Pickup or failing when needed.
+  - On-site inspection rules and no manual pricing.
+  - Payment OTP flow and strict ban on offline or partial cash deals.
+
+Confirm that the vendor:
+
+- Can open the app, view available orders, and read order details correctly.
+- Understands when to unlock, when to skip, and when to fail.
+- Can explain the OTP and payment process back to the trainer in simple words.
+
+### What the vendor should expect
+
+<Callout kind="info">
+
+Set clear expectations during training:
+
+- Orders will be available based on area, time, vendor type, and current policy; there is no guarantee of a fixed volume.
+- Performance, customer feedback, and SLA adherence directly impact how many and which orders they see.
+- Wallet balance and credits are the vendor's responsibility; Cashkr provides visibility but does not auto-top-up.
+- Repeated SLA violations, fraud risk, or process bypass can lead to hold, deactivation, or permanent block as per [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+
+</Callout>
+
+## Early monitoring and performance review
+
+Once the vendor is active and has completed training:
+
+- **Ops and CX** should track:
+  - Pickup delays or repeated reschedules.
+  - Customer complaints or negative feedback.
+  - Any deviations from OTP payment and inspection rules.
+- **Ops Manager** reviews performance at regular intervals during the early monitoring period to decide whether to:
+  - Increase limits and relax trial conditions.
+  - Maintain current limits and extend monitoring.
+  - Place the vendor on hold or deactivate as per [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process).
+
+Record all significant decisions and reasons in the Admin Panel to maintain an audit trail.
+
+## What to log in the Admin Panel
+
+At every major stage, add structured notes and status updates:
+
+- **After screening call**
+  - Short summary of capability, areas, device focus, and professionalism.
+  - Decision: move to registration, keep on follow-up, or close.
+- **After document and verification checks**
+  - Document status: complete, partially complete, or issues found.
+  - Any risk notes about identity, area, or history.
+  - Clear list of pending items communicated to the vendor.
+- **At approval decision**
+  - Final decision: approved, rejected, or kept on hold.
+  - Assigned vendor type and initial limits.
+  - Any special conditions (trial mode, restricted categories, etc.).
+- **At training completion**
+  - Date and trainer name (Onboarding or CX).
+  - Key modules covered.
+  - Vendor's readiness and any concerns.
+- **During early monitoring**
+  - SLA violations, major complaints, or significant positive feedback.
+  - Any changes in limits, holds, or deactivations and the reason.
+
+Consistent logging helps in dispute resolution, internal audits, and future reactivation decisions.
+
+## Common rejections and edge cases
+
+Use this section as guidance when you encounter issues. Always record the chosen action and reasoning in the Admin Panel.
+
+<ExpandableGroup>
+
+<Expandable title="Missing or inadequate documents" default-open="true">
+
+Vendors sometimes register without uploading all required documents or upload unclear images.
+
+- Clearly list missing items (for example, address proof, bank statement, business registration).
+- Share instructions on how to upload or re-upload within the app.
+- Keep the account in **Pending** or **On Hold** until documents meet the standard.
+- If the vendor cannot provide basic mandatory KYC within a reasonable time, reject the application with clear internal notes.
+
+</Expandable>
+
+<Expandable title="Bank or UPI issues">
+
+If bank details or UPI seem invalid, mismatched, or risky:
+
+- Do not enable payouts or wallet usage until verified.
+- Ask for corrected details or a different account that matches the KYC name or approved business entity.
+- Coordinate with Finance for any additional checks.
+- If the vendor cannot provide a suitable account, reject or keep on hold rather than forcing a workaround.
+
+</Expandable>
+
+<Expandable title="Vendor not comfortable with OTP or app-based payments">
+
+Some vendors may prefer direct cash or offline payments and resist OTP-based flows.
+
+- Re-explain the complete OTP and app-based payment process and why Cashkr needs it for customer safety and audit.
+- Make it clear that **offline payments and manual pricing are not allowed**.
+- If the vendor still refuses or appears unlikely to follow the flow, stop onboarding and mark the lead as not suitable.
+
+</Expandable>
+
+<Expandable title="Coverage saturation or non-serviceable area">
+
+When an area already has sufficient vendors or is outside serviceable zones:
+
+- Check the latest [Serviceable Area and Pincode Management](/serviceable-area-pincode-management) and [City and Pincode Availability (Serviceable Areas)](/city-pincode-availability-serviceable-areas) documentation.
+- If area is currently not open:
+  - Explain politely that there is limited or no requirement in that area right now.
+  - Keep the vendor on waitlist if policy allows, or close the lead.
+- Do not approve purely based on vendor insistence when there is no operational need.
+
+</Expandable>
+
+<Expandable title="Suspected fraud or conflicting history">
+
+If internal checks show past fraud, major SLA abuse, or account blocks on Cashkr or similar platforms:
+
+- Escalate to Ops Manager with all supporting details.
+- Do not approve or activate until Ops Manager explicitly clears or decides the case.
+- If rejected, document the risk reasons and any cross-reference IDs or accounts.
+
+</Expandable>
+
+<Expandable title="Vendor wants to start without credits">
+
+Sometimes vendors ask to start unlocking orders without buying or having credits.
+
+- Explain again how credits work as per [Credit System](/credit-system) and [Buy Credits](/buy-credits).
+- Clarify that unlocking leads consumes credits and that the system will not bypass this requirement.
+- If Ops has a specific policy for promotional or trial credits, follow that process; do not promise or manually override beyond policy.
+- If the vendor is unwilling to buy credits or wait for any approved trial arrangement, onboarding may be paused or closed.
+
+</Expandable>
+
+<Expandable title="Vendor wants to add agents during or right after onboarding">
+
+If the vendor plans to operate with multiple agents or pickup staff:
+
+- First complete vendor's own activation and training.
+- Then guide them to [Add Agents](/add-agents) from inside the vendor app:
+  - Ensure each agent has a unique name, phone, and email.
+  - Avoid duplicates and confirm vendor-agent mapping is visible in the Admin Panel.
+- Remind the vendor that they are responsible for agent behaviour and that all SLA and fraud rules still apply.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Related training and SOPs
+
+For detailed scripts and flows used inside this onboarding process, refer to:
+
+- [Vendor Registration and Login](/vendor-registration-login)
+- [Vendor Verification Script (Post Registration and KYC Confirmation)](/vendor-verification-script-post-registration-kyc-confirmation)
+- [Vendor Types (1 → 3)](/vendor-types-1-5)
+- [Buy Credits](/buy-credits)
+- [Add Agents](/add-agents)
+- [Using the Vendor App (Login, Dashboard, Order Unlocking)](/using-the-vendor-app-login-dashboard-order-unlocking)
+- [Order Flow – Unlock → Pickup → Payment](/order-flow-unlock-pickup-payment)
+- [Vendor Hold and Deactivation Process](/vendor-hold-deactivation-process)

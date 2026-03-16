@@ -1,0 +1,638 @@
+---
+title: Handling Customer Issues During Pickup
+description: Live-call playbook to classify pickup issues, guide vendors correctly, choose Reschedule vs Requote vs Fail, and escalate with the right proofs.
+---
+
+## Purpose and when to use this playbook
+
+Use this playbook when a pickup is already `In Progress`, `Out for Pickup`, or `Inspection Started` and the customer or vendor reports an issue. It helps you classify the situation quickly, guide the vendor on the right action (Reschedule, proceed, Requote, Fail, Fail After Requote), collect proofs, and decide escalation.
+
+<Callout kind="alert">
+
+Never ask vendors to bypass OTP, skip inspection, or change prices outside approved flows. Always use the correct status flows: `Out for Pickup`, `Requote`, `Fail`, `Fail After Requote`, or `Reschedule` in the Vendor App.
+
+</Callout>
+
+---
+
+## Quick classification checklist
+
+Use this to decide which path to follow while you are on the call or chat.
+
+- **Customer not available**  
+  - Vendor reached address, called, customer not picking or not at home.
+- **Customer wants reschedule**  
+  - Customer asks to change pickup date/time now that order is `In Progress`.
+- **Address issue**  
+  - Wrong address, difficult-to-find location, gated society, access restriction.
+- **Price dispute at doorstep**  
+  - Customer disagrees with live price or revised price after inspection.
+- **OTP or inspection issue**  
+  - Customer did not receive OTP, OTP not working, cannot start or complete inspection.
+- **Customer cancellation or refusal**  
+  - Customer clearly refuses to sell, does not agree to base quote, or wants to cancel.
+
+Once you identify the bucket, jump to the relevant scenario in the expandable list below and then use the script tabs.
+
+---
+
+## Core live-handling flow (end-to-end)
+
+Follow these steps in every pickup issue case, regardless of the scenario.
+
+<Steps>
+
+<Step title="Confirm order and status" icon="check-circle">
+
+- Ask vendor or customer for **Order ID / Lead ID**, registered **phone number**, and **device model**.
+- Check current status in systems: `In Progress`, `Out for Pickup`, or `Inspection Started`.
+- Confirm scheduled **pickup slot** and vendor name with the customer.
+
+**Success signal:** You and the customer agree on which order and which pickup attempt you are talking about.
+
+</Step>
+
+<Step title="Classify the issue type" icon="settings">
+
+- Ask a short open question:  
+  - "What is the exact issue at the pickup right now?"
+- Map it to one of the quick classification buckets:
+  
+  - Customer not available  
+  - Wants reschedule  
+  - Address issue  
+  - Price dispute at doorstep  
+  - OTP/inspection issue  
+  - Cancellation/refusal
+
+**Success signal:** You can clearly say the scenario in one line, for example, "Customer wants to reschedule same-day slot" or "Customer refusing revised price after Requote."
+
+</Step>
+
+<Step title="Decide action: proceed vs reschedule vs requote vs fail" icon="arrow-right">
+
+- If **customer is available and agrees to base price**:
+  
+  - Guide vendor to proceed with normal flow:
+    - `Out for Pickup` → OTP verification → inspection → `Complete`.
+
+- If **pickup time or availability is the issue**:
+  
+  - Use **Reschedule** from `In Progress` in Vendor App if vendor and customer agree on a new slot.  
+  - If Vendor App cannot support requested change, add **Admin Panel notes** and **escalate to Ops**.
+
+- If **condition-based price change is needed after inspection**:
+  
+  - Ensure:
+    - Status is `Out for Pickup` or `Inspection Started`.
+    - Vendor has completed inspection with customer present.
+    - OTP is verified.  
+  - Ask vendor to use **`Requote`**.  
+  - If customer accepts revised price: vendor should **Complete** the order.  
+  - If customer rejects: vendor should use **`Fail After Requote`** with correct reason.
+
+- If **customer is refusing without Requote**:
+  
+  - Vendor should use **`Fail`** from the appropriate screen as per [`Out for Pickup or Fail`](/out-for-pickup-or-fail).
+
+**Success signal:** You know the exact action you want the vendor to take and have checked that it is allowed from the current status.
+
+</Step>
+
+<Step title="Collect required information and proofs" icon="database">
+
+- Collect standard details for every case:
+  
+  - Order ID / Lead ID  
+  - Customer name and contact number  
+  - Vendor name / store name  
+  - Current status (`In Progress`, `Out for Pickup`, `Inspection Started`)  
+  - Scheduled pickup date and time
+
+- Collect additional proofs based on scenario (see "Information to collect" section below).
+
+**Success signal:** If this case is reviewed later, other teams can clearly understand what happened from your notes.
+
+</Step>
+
+<Step title="Log notes and guide the vendor" icon="terminal">
+
+- Ask vendor to take the correct in-app action:
+  
+  - `Reschedule` for slot changes from `In Progress`.  
+  - `Requote` followed by `Complete` or `Fail After Requote` for price changes.  
+  - `Fail` if pickup is not possible and no Requote was needed.
+
+- Add clear **Admin Panel notes** summarizing:
+  
+  - Scenario and key reason  
+  - Customer decision  
+  - Action taken (`Reschedule`, `Requote`, `Fail`, `Fail After Requote`)
+
+**Success signal:** If the customer or vendor calls again, any agent can see your notes and continue smoothly.
+
+</Step>
+
+<Step title="Check if escalation is needed" icon="alert-triangle">
+
+- Verify if this case needs escalation:
+  
+  - Multiple failed pickups or SLA risk  
+  - System or OTP failures  
+  - Compliance or fraud suspicion  
+  - High-value order with price dispute
+
+- If yes, follow the **Escalation guidelines** section:
+  
+  - Tag Ops, Tech, or Compliance as appropriate.  
+  - Attach proofs and summary.
+
+**Success signal:** You have either fully closed the case in the correct status or raised a complete escalation with all context.
+
+</Step>
+
+</Steps>
+
+---
+
+## Common scenarios and objection handling
+
+Use these ready-made playbooks for specific situations. Each scenario includes what action to guide and which proofs to collect.
+
+<ExpandableGroup>
+
+<Expandable title="Customer not available at address">
+
+Customer is unreachable, not at home, or delayed beyond slot window while order is `Out for Pickup` or vendor is on-site.
+
+**What you should do**
+
+- Confirm:
+  
+  - Order ID and pickup slot.  
+  - How long the vendor has been waiting and how many call attempts were made.
+
+- Guide vendor:
+  
+  - If customer says they will come within a **reasonable wait time** and vendor agrees:  
+    - Ask vendor to wait and update disposition in Vendor App appropriately.  
+  - If customer will not be available today:
+    - Use **Reschedule** from `In Progress` if pickup is not yet `Out for Pickup` and vendor app allows it.  
+    - If already `Out for Pickup` and vendor cannot reschedule:
+      - Suggest vendor mark **`Fail`** with correct reason after reasonable attempts.  
+      - Add Admin Panel notes and escalate to Ops if multiple fails are happening for the same customer.
+
+**Proofs to collect**
+
+- Number of call attempts and timestamps.  
+- Vendor comment on waiting time.  
+- If customer spoke and refused to come, short summary of reason.
+
+</Expandable>
+
+<Expandable title="Customer wants to reschedule pickup">
+
+Customer agrees to sell but wants a different time or date and order is already `In Progress` or `Out for Pickup`.
+
+**What you should do**
+
+- Confirm:
+  
+  - Current slot and preferred new slot.  
+  - Whether vendor can cover the new time.
+
+- If status is `In Progress`:
+  
+  - Ask vendor to use **`Reschedule`** in Vendor App as described in [`Reschedule`](/reschedule).  
+  - Confirm that new date/time show correctly in Admin Panel and Customer App.
+
+- If status is `Out for Pickup` or vendor is already on-site:
+  
+  - If vendor and customer agree on a same-day window that vendor can manage:
+    - Vendor can try **Reschedule** if allowed; else contact Ops to adjust routing and add Admin Panel notes.
+  - If customer wants another day:
+    - Vendor should not hold the order indefinitely.  
+    - Either:
+      - Use **Reschedule** from the `In Progress` screen (if still applicable), or  
+      - Mark **`Fail`** with correct reason and let customer place a fresh order later, based on internal policy.
+
+**Proofs to collect**
+
+- Customer statement that they still want to sell but need different timing.  
+- Agreed new slot window.  
+- If vendor cannot accommodate, brief note on capacity constraint.
+
+</Expandable>
+
+<Expandable title="Address issues or access problems">
+
+Vendor cannot find the address, building security is not allowing entry, or location is outside practical reach although pincode is serviceable.
+
+**What you should do**
+
+- Confirm:
+  
+  - Full address from the order and actual location vendor has reached.  
+  - Any gate, security, or society rules blocking entry.  
+  - Whether customer can come to the main gate or a nearby landmark.
+
+- Guide vendor:
+  
+  - If issue is about **navigation only**:
+    - Ask customer to share clear landmark directions with vendor.  
+    - Vendor should update notes and proceed if reachable.
+  - If **access is blocked** (no entry for delivery agents, ID issues, etc.):
+    - Ask customer to coordinate with security if possible.  
+    - If still blocked, vendor may need to **Fail** with `Access issue` type reason.  
+    - Add Admin Panel notes and escalate to Ops if this is a repeated pattern for that society or pincode.
+
+**Proofs to collect**
+
+- Short vendor note on society name and gate issue.  
+- Screenshots or photos if vendor is comfortable sharing (for internal use).  
+- Any message from customer confirming access problem.
+
+</Expandable>
+
+<Expandable title="Price dispute at doorstep (before or after Requote)">
+
+Customer is unhappy with the price when vendor is at doorstep. This may be:
+
+- Difference between **online shown price vs live price**.  
+- **Condition mismatch** after inspection leading to lower price (Requote case).
+
+**What you should do**
+
+- First, identify type:
+
+  - If **no Requote yet** and price difference is small or due to time gap/dynamic pricing:
+    - Use the standard **Price Change Explanation Script** patterns from [`Price Change Explanation Script`](/price-change-explanation-script).  
+  - If vendor has already inspected the device and shared a **Requote**:
+    - This is a **condition mismatch** case. Make sure:
+      - Status is `Out for Pickup` or `Inspection Started`.  
+      - OTP is verified.  
+      - Vendor has correctly marked issues in the inspection.
+
+- Guide vendor:
+  
+  - If customer accepts the revised amount:
+    - Vendor should **Complete** the order as per [`Requote Order`](/requote-order).  
+  - If customer rejects revised price:
+    - Vendor must use **`Fail After Requote`** with appropriate reason and amounts, as described in [`Fail After Requote`](/fail-after-requote).  
+  - If customer disputes inspection findings:
+    - Suggest vendor raises a **Recheck Request** style note for internal review (use Admin Panel notes and attach photos where possible).  
+    - Do not change price manually outside the pricing system.
+
+**Proofs to collect**
+
+- Screenshots or notes of:
+  
+  - Online quoted price and live price.  
+  - Requoted amount, expected amount, and reasons.  
+  - Photos from inspection (screen, back panel, body damage) when available.  
+  - Short customer statement: accepted vs rejected and reason.
+
+</Expandable>
+
+<Expandable title="OTP not received or inspection cannot start">
+
+Customer says OTP not received, OTP is invalid, or vendor cannot proceed with inspection due to technical issue.
+
+**What you should do**
+
+- Confirm:
+  
+  - Correct phone number on order.  
+  - Whether customer has network coverage and SMS enabled.  
+  - Whether vendor is triggering OTP from the correct screen as per [`Out for Pickup or Fail`](/out-for-pickup-or-fail).
+
+- For **OTP not received**:
+  
+  - Ask customer to:
+    - Check network, toggle airplane mode, and wait a minute.  
+    - Check SMS inbox and spam folder.  
+  - If still not received:
+    - Ask vendor to try sending again after some time, within allowed limits.  
+    - If system still fails, log detailed notes and **escalate to Tech**.
+
+- For **OTP invalid or expired**:
+  
+  - Confirm customer is entering the **latest OTP**.  
+  - Ask vendor to resend, then retry.  
+  - If repeated failures:
+    - Treat as technical issue and **escalate to Tech**, with timestamps and screenshots from vendor.
+
+<Callout kind="alert">
+
+Never suggest bypassing OTP or completing inspection/payment without proper OTP verification. OTP is mandatory for security and customer consent.
+
+</Callout>
+
+**Proofs to collect**
+
+- Exact error message or behaviour seen in Vendor App.  
+- Timestamps for OTP attempts.  
+- Screenshot from vendor device if possible.  
+- Customer confirmation of network status and number.
+
+</Expandable>
+
+<Expandable title="Customer wants to cancel / does not want to sell anymore">
+
+Customer clearly says they no longer want to sell or are not comfortable proceeding even at base quote.
+
+**What you should do**
+
+- Confirm:
+  
+  - Customer understands that cancelling at this stage may affect vendor credits and internal performance metrics.  
+  - There is no pending Requote acceptance.
+
+- Guide vendor:
+  
+  - If no Requote was done:
+    - Vendor should mark **`Fail`** with correct reason in the Vendor App from `Out for Pickup` or the relevant screen.  
+  - If Requote was done and customer is rejecting it:
+    - Vendor must use **`Fail After Requote`** so that system captures reason, final amount, and expected amount correctly.
+
+- Communicate to customer politely:
+  
+  - Acknowledge their choice.  
+  - Inform them they can always place a new order later if they change their mind, as per current business rules.
+
+**Proofs to collect**
+
+- One-line note: "Customer refused to sell, no price negotiation" or "Customer refused revised price after Requote of X amount."  
+- If needed, audio disposition tag or note in Admin Panel confirming customer decision.
+
+</Expandable>
+
+<Expandable title="Vendor behaviour / customer safety / fraud concerns">
+
+Customer reports misbehaviour, safety concern, or something that looks like fraud; or vendor reports suspicious customer activity.
+
+**What you should do**
+
+- Treat this as **high priority**.
+
+- With customer:
+  
+  - Listen fully without interrupting.  
+  - Thank them for sharing and assure that the concern will be reviewed.  
+  - Avoid blaming language or promising specific outcomes before internal review.
+
+- With vendor:
+  
+  - Collect neutral facts: what was said, done, and at what time.  
+  - Do not take sides on the call.
+
+- Immediately:
+
+  - Add detailed Admin Panel notes.  
+  - Mark status appropriately (`Fail` or `Fail After Requote` if pickup is being stopped).  
+  - **Escalate to Compliance / Ops** with all proofs.
+
+**Proofs to collect**
+
+- Call summary including exact phrases used if serious.  
+- Any messages, photos, or other evidence.  
+- Timeline of events (who called whom, when, and what happened).
+
+</Expandable>
+
+</ExpandableGroup>
+
+---
+
+## Information to collect on every pickup issue
+
+Use this mini checklist while talking to vendor or customer so your notes are complete.
+
+- **Order and contact details**
+  - Order ID / Lead ID  
+  - Customer name and phone number  
+  - Vendor name, store name, and contact number
+
+- **Order and pickup status**
+  - Current status: `In Progress`, `Out for Pickup`, `Inspection Started`  
+  - Scheduled pickup date and time  
+  - Whether this is **first attempt** or a **repeat attempt**
+
+- **Issue details**
+  - Quick issue type: not available, reschedule, address, price dispute, OTP, refusal, safety/fraud.  
+  - Exact words customer used for the main objection.  
+  - Vendor perspective: what they have already tried (calls, waiting, inspection steps).
+
+- **Proofs and attachments (when relevant)**
+  - Photos of device condition for price disputes.  
+  - Screenshots of app screens or errors (OTP, inspection).  
+  - Chat messages (if customer shared address or reschedule over text).  
+  - Any internal ticket IDs created.
+
+Document this in Admin Panel notes so Ops, Finance, Tech, or Compliance can review without calling back multiple times.
+
+---
+
+## Live call scripts
+
+Use these scripts during calls or chats. The left tab is the official English version; the right tab matches how customers actually speak (Hinglish).
+
+<Tabs>
+
+<Tab title="English (official script)" icon="book-open">
+
+**Opening and verification**
+
+- "Hi, this is [Your Name] calling from Cashkr support. Am I speaking with [Customer Name]?"  
+- "I am calling about your device pickup for [Device Model] scheduled for today. Is this a good time to talk?"  
+- "Let me quickly confirm your order ID and pickup time so I look at the right details."
+
+**General empathy and control**
+
+- "I understand there is an issue at the pickup. I will first understand what is happening and then guide the vendor on the correct next step."  
+- "Can you tell me in your own words what is happening right now at the pickup?"
+
+**If customer not available**
+
+- "Our partner has reached your address for the pickup and has been trying to contact you."  
+- "Are you nearby and able to reach the location in the next few minutes?"  
+- "If today is not possible, we can look at a different time. In that case, the current attempt may be marked as a failed pickup as per our process, and we can schedule a new attempt."
+
+**If customer wants reschedule**
+
+- "No problem, we can adjust the pickup timing."  
+- "Which date and time would work better for you?"  
+- "I will check with the pickup partner if that slot is possible and update your order accordingly."
+
+**If price dispute (before Requote)**
+
+- "I can see the price you saw on the website and the current price shared at pickup."  
+- "Our prices are dynamic and can change based on market rates and time. Also, the final amount depends on the actual device condition at pickup."  
+- "Let me explain how we calculate the price and what has changed compared to your original quote."
+
+**If price dispute after Requote**
+
+- "After checking your device in front of you, our partner has found some condition issues, which is why the price is revised."  
+- "The new price after inspection is [Requote Amount] compared to the earlier [Expected Amount]."  
+- "If you are comfortable with this revised amount, we will complete the pickup. If not, we will stop the process and mark this order as not completed under 'Fail After Requote'."
+
+**If OTP or inspection issue**
+
+- "To protect your account, we always use an OTP before inspection and completion."  
+- "Can you confirm the last 4 digits of your phone number where you should receive the OTP?"  
+- "I will ask our partner to resend the OTP. Once you receive it, please read it out exactly as it appears in the message."  
+- "If you still do not receive the OTP, I will log this as a technical issue and have our team review it."
+
+**If customer wants to cancel**
+
+- "I understand you do not want to sell the device anymore. Thank you for informing us."  
+- "I will ask our partner to close this attempt as a failed pickup with the correct reason."  
+- "If you change your mind later, you can always create a fresh order on the app or website."
+
+**If safety or behaviour complaint**
+
+- "I am really sorry you had this experience. Thank you for telling us."  
+- "Your safety and comfort are very important to us. I will document this in detail and raise it with our internal team for review."  
+- "For now, we will stop this pickup attempt. You do not need to proceed further with this partner."
+
+**Closing the call**
+
+- "To summarise, we will [action: reschedule / complete with revised price / mark as failed / raise a technical ticket]."  
+- "You will see the update reflected in your order details shortly."  
+- "Is there anything else you would like me to check or clarify about this order?"
+
+</Tab>
+
+<Tab title="Hinglish (real conversations)" icon="users">
+
+**Opening and verification**
+
+- "Hi, main Cashkr se [Aapka Naam] bol raha hoon. Kya main [Customer Name] se baat kar raha hoon?"  
+- "Aapka jo [Device Model] ka pickup aaj ke liye book tha, usi ke baare mein call kiya hai. Baat karne ke liye yeh time theek hai?"  
+- "Main bas order ID aur pickup time confirm kar leta hoon, taaki main sahi order dekh sakun."
+
+**General empathy and control**
+
+- "Mujhe pata chala ki pickup pe thoda issue aa raha hai. Pehle main exactly samajh leta hoon kya ho raha hai, fir main vendor ko next step guide karunga."  
+- "Aap simple words mein bata sakte ho, abhi pickup pe kya situation hai?"
+
+**If customer not available**
+
+- "Hamare partner aapke address pe pahunch gaye hain aur aapko call kar rahe hain, par connect nahi ho paa raha."  
+- "Kya aap paas mein ho, 5–10 minute mein location pe aa sakte ho?"  
+- "Agar aaj possible nahi hai, to hum doosre time slot ke liye plan kar sakte hain. Is attempt ko process ke hisaab se fail mark karna padega, fir hum naya attempt schedule karenge."
+
+**If customer wants reschedule**
+
+- "Theek hai, timing adjust kar sakte hain."  
+- "Aapko kaunsa din aur kaunsa time slot zyada convenient rahega?"  
+- "Main pickup partner se check karke aapka order usi hisaab se update karwa deta hoon."
+
+**If price dispute (before Requote)**
+
+- "Mujhe screen pe woh price dikh raha hai jo aapne app pe dekha tha aur jo abhi partner ne bataya hai."  
+- "Hamare prices thode dynamic hote hain, market rate aur time ke hisaab se change ho sakte hain. Final amount device ki actual condition pe depend karta hai jab partner inspect karta hai."  
+- "Main aapko short mein bata deta hoon ki price kaise calculate hota hai aur iss case mein kya change hua hai."
+
+**If price dispute after Requote**
+
+- "Partner ne aapke saamne device check kiya aur kuch condition issues mile, isliye price revise hua hai."  
+- "Abhi inspection ke baad jo naya amount hai woh [Requote Amount] hai, pehle wala amount [Expected Amount] tha."  
+- "Agar aapko yeh revised amount theek lagta hai, to hum pickup complete kar denge. Agar aap comfortable nahi ho, to hum process yahin stop karenge aur order ko 'Fail After Requote' ke under close karenge."
+
+**If OTP or inspection issue**
+
+- "Security ke liye hum hamesha OTP use karte hain, tabhi inspection aur payment aage badhta hai."  
+- "Aap mujhe woh number confirm kar do jiske upar OTP aana chahiye, last 4 digits bata do."  
+- "Main partner ko bolta hoon OTP dobara send kare. Jab SMS aaye, please jaisa likha hai waisa hi OTP batana."  
+- "Agar fir bhi OTP nahi aa raha ya error aa raha hai, to main isko technical issue ke jaise note karke hamari Tech team ko forward karunga."
+
+**If customer wants to cancel**
+
+- "Theek hai, agar aap abhi device sell nahi karna chahte to koi problem nahi."  
+- "Main partner ko bolunga ki yeh attempt ko fail reason ke saath close kare."  
+- "Future mein agar aapka mind change hota hai, to aap app ya website se naya order create kar sakte ho."
+
+**If safety or behaviour complaint**
+
+- "Mujhe bahut afsos hai ki aapko aisa experience hua. Aapne hume bataya, uske liye thanks."  
+- "Aapka safety aur comfort hamare liye important hai. Main poori detail mein yeh case note karke hamari internal team ko escalate kar raha hoon."  
+- "Abhi ke liye aapko is partner ke saath pickup continue nahi karna hai. Hum iss attempt ko yahin stop kar denge."
+
+**Closing the call**
+
+- "Main quickly recap kar deta hoon: hum ab [action: reschedule / revised price pe complete / order fail / technical ticket raise] kar rahe hain."  
+- "Thodi der mein aapko app ya website pe updated status dikh jayega."  
+- "Kya is order ke baare mein aur kuch check karwana hai ya koi doubt hai?"
+
+</Tab>
+
+</Tabs>
+
+---
+
+## Escalation guidelines
+
+Use this as a quick reference to decide when and where to escalate after you have guided the vendor on immediate action.
+
+### Escalate to Ops (Operations)
+
+Escalate to Ops when:
+
+- Multiple **failed pickups** for the same order or customer.  
+- **Reschedule** is needed but Vendor App or routing constraints make it complex.  
+- Repeated **address or access issues** for the same society, pincode, or partner.  
+- Vendor capacity or coverage problems are impacting SLAs.
+
+What to include:
+
+- Order ID and current status.  
+- Number of attempts and outcomes so far.  
+- Clear summary of issue (1–2 lines).  
+- Proposed action (e.g. assign different partner, change slot pattern, block certain address).  
+- Any supporting screenshots or vendor comments.
+
+### Escalate to Tech / Engineering
+
+Escalate to Tech when:
+
+- Repeated **OTP sending or validation failures** across multiple attempts.  
+- **Inspection or Vendor App crashes** that block pickup completion.  
+- Status not updating correctly after actions like `Reschedule`, `Requote`, `Fail`, or `Fail After Requote`.
+
+What to include:
+
+- Order ID and user/vendor IDs if available.  
+- Exact error messages, screens, and timestamps.  
+- Device and OS details from vendor if relevant.  
+- Steps to reproduce as described by vendor.
+
+### Escalate to Compliance / Risk
+
+Escalate to Compliance when:
+
+- Allegations of **vendor misbehaviour**, harassment, or safety concerns.  
+- Potential **fraud**, such as mismatch between device shown and device picked, or suspicious payment behaviour.  
+- Customer or vendor complaints that may require **legal or policy review**.
+
+What to include:
+
+- Detailed narrative of events in neutral language.  
+- Any audio, chat logs, or image proofs attached as per process.  
+- Status you set on the order (`Fail`, `Fail After Requote`) and why.  
+- Whether customer requested any specific action (vendor change, blacklisting, etc.).
+
+---
+
+## Strict do and do not rules
+
+<Callout kind="alert">
+
+- Do **not** ask vendors to complete pickups without OTP or inspection.  
+- Do **not** promise fixed prices or overrides outside the pricing and `Requote` system.  
+- Do **not** force customers to sell; if they refuse, use the correct `Fail` or `Fail After Requote` path.  
+- Do **not** change notes later to hide genuine issues; always record what actually happened.  
+- Do **guide** vendors to use `Reschedule`, `Requote`, `Fail`, and `Fail After Requote` exactly as defined in Vendor App and related SOPs.  
+- Do **escalate** early for safety, fraud, or repeated technical issues.
+
+</Callout>
