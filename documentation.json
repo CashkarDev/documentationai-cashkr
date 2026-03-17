@@ -762,56 +762,69 @@
             "group": "SOPs & Processes",
             "pages": [
               {
-                "title": "How to Write Captions",
-                "path": "how-to-write-captions"
-              },
-              {
                 "title": "Reporting & Review Rhythm",
-                "path": "reporting-review-rhythm"
-              },
-              {
-                "title": "Data Quality & Reconciliation",
-                "path": "data-quality-reconciliation"
-              },
-              {
-                "title": "How to Create Office Fun Reels for Social Media",
-                "path": "how-to-create-office-fun-reels-for-social-media"
-              },
-              {
-                "title": "How to Create Captions for Festive and Event Posts",
-                "path": "how-to-create-captions-for-festive-and-event-posts"
-              },
-              {
-                "title": "How to Launch a Social Media Giveaway or Contest",
-                "path": "how-to-launch-a-social-media-giveaway-or-contest"
-              },
-              {
-                "title": "Post-Publishing Activities on Social Media",
-                "path": "post-publishing-activities-on-social-media"
+                "path": "reporting-review-rhythm",
+                "badge": "Data Analyst"
               },
               {
                 "title": "Dashboard Design & Maintenance",
-                "path": "dashboard-design-maintenance"
+                "path": "dashboard-design-maintenance",
+                "badge": "Data Analyst"
+              },
+              {
+                "title": "Data Quality & Reconciliation",
+                "path": "data-quality-reconciliation",
+                "badge": "Data Analyst"
               },
               {
                 "title": "Data Pipeline & Source Integration for Looker Studio",
-                "path": "data-pipeline-source-integration-for-looker-studio"
+                "path": "data-pipeline-source-integration-for-looker-studio",
+                "badge": "Data Analyst"
               },
               {
                 "title": "Experiment & A/B Testing Measurement",
-                "path": "experiment-a/b-testing-measurement"
-              },
-              {
-                "title": "How to Schedule Festive and Event Posts Through Robin Reach",
-                "path": "how-to-schedule-festive-and-event-posts-through-robin-reach"
-              },
-              {
-                "title": "How to Schedule Social Media Content Through Robin Reach",
-                "path": "how-to-schedule-social-media-content-through-robin-reach"
+                "path": "experiment-ab-testing-measurement",
+                "badge": "Data Analyst"
               },
               {
                 "title": "Event & Tracking Taxonomy SOP",
-                "path": "event-tracking-taxonomy-sop"
+                "path": "event-tracking-taxonomy-sop",
+                "badge": "Data Analyst"
+              },
+              {
+                "title": "How to Write Captions",
+                "path": "how-to-write-captions",
+                "badge": "Marketing"
+              },
+              {
+                "title": "How to Create Office Fun Reels for Social Media",
+                "path": "how-to-create-office-fun-reels-for-social-media",
+                "badge": "Marketing"
+              },
+              {
+                "title": "How to Create Captions for Festive and Event Posts",
+                "path": "how-to-create-captions-for-festive-and-event-posts",
+                "badge": "Marketing"
+              },
+              {
+                "title": "How to Launch a Social Media Giveaway or Contest",
+                "path": "how-to-launch-a-social-media-giveaway-or-contest",
+                "badge": "Marketing"
+              },
+              {
+                "title": "Post-Publishing Activities on Social Media",
+                "path": "post-publishing-activities-on-social-media",
+                "badge": "Marketing"
+              },
+              {
+                "title": "How to Schedule Festive and Event Posts Through Robin Reach",
+                "path": "how-to-schedule-festive-and-event-posts-through-robin-reach",
+                "badge": "Marketing"
+              },
+              {
+                "title": "How to Schedule Social Media Content Through Robin Reach",
+                "path": "how-to-schedule-social-media-content-through-robin-reach",
+                "badge": "Marketing"
               }
             ]
           },
