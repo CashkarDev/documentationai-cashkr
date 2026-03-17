@@ -953,6 +953,10 @@
             "group": "Training",
             "pages": [
               {
+                "title": "Scripts Master Sheet",
+                "path": "scripts-master-sheet"
+              },
+              {
                 "title": "Closure Script (Corporate Buyback)",
                 "path": "closure-script-corporate-buyback"
               },
