@@ -1,0 +1,412 @@
+---
+title: Vendor Deactivation & Hold Flow
+description: Operational rules for when to place vendors on hold or permanently deactivate them, including triggers, approval hierarchy, flows, and communication templates.
+---
+
+## Overview
+
+**Used by:** Cashkr Ops, Vendor Management, CX, and Support teams  
+**Purpose:** Standardize when to place a vendor on Hold vs permanently Deactivate, how to investigate cases, and how to document and communicate decisions.
+
+This SOP protects customer safety, prevents fraud, and enforces SLA and policy compliance across all vendor operations.
+
+## Key definitions
+
+<Callout kind="info">
+
+**Hold (temporary block)**
+
+- Vendor cannot unlock new orders but can complete existing ones.  
+- Use Hold for moderate, correctable violations or when retraining is required.  
+
+**Deactivation (permanent block)**
+
+- Vendor is fully removed from the Cashkr system and cannot access orders.  
+- Use Deactivation for severe misconduct, fraud, customer safety issues, or repeated violations after Hold and training.
+
+</Callout>
+
+## When to put a vendor on Hold
+
+Use Hold for correctable issues where fraud is not yet proven, and the vendor can potentially be retrained.
+
+<ExpandableGroup>
+
+<Expandable title="Performance-related holds" default-open="true">
+
+Use a Hold when performance breaches cross thresholds or show clear negative patterns, including:
+
+- More than 5 SLA violations in a week.
+- Frequent delayed pickups.
+- Too many To Be Failed orders due to vendor actions.
+- Low completion rate over a meaningful sample.
+- Wrong inspection steps repeated across orders.
+- High number of customer complaints linked to the same vendor.
+
+</Expandable>
+
+<Expandable title="Behaviour-related holds">
+
+Use a Hold when vendor behaviour is unacceptable but not yet at the level of permanent removal:
+
+- Rude or disrespectful behaviour with customers.  
+- Arguments or aggressive communication on calls or at pickup.  
+- Not following pickup etiquette (dress, language, basic conduct).  
+- Unprofessional conduct during visits.  
+- Complaining about or abusing Cashkr policies in front of customers.
+
+</Expandable>
+
+<Expandable title="Process violations">
+
+Use a Hold when vendors do not follow defined Cashkr processes:
+
+- Attempting offline payment (for example, UPI, cash) instead of following Cashkr payment flow.  
+- Entering payment OTP without explicit customer permission.  
+- Not following app inspection instructions or skipping mandatory checks.  
+- Not calling the customer after unlocking the order when required.
+
+</Expandable>
+
+<Expandable title="Suspicious activity (not yet proven fraud)">
+
+Use a Hold while Ops investigates suspicious or inconsistent activity:
+
+- Customer reports discomfort with vendor conduct, presence, or behaviour.  
+- Vendor marking fake statuses in the app.  
+- False Customer Not Available updates.  
+- Device discrepancies between customer description, inspection, and final status that require verification.
+
+Keep the vendor on Hold until Ops completes verification and decides on reactivation or deactivation.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Hold flow (how Hold works)
+
+<Steps>
+
+<Step title="Identify the issue" icon="alert-triangle">
+
+Identify the trigger through one or more of:
+
+- SLA tracking dashboards.  
+- Customer complaint or escalation.  
+- Routine Ops review or audits.  
+- Payment irregularities.  
+- App or system audit logs.
+
+Success signal: You have at least one clear incident or pattern linked to a specific vendor and order IDs.
+
+</Step>
+
+<Step title="Review vendor activity" icon="search">
+
+Ops reviews all available data for the affected orders:
+
+- Order timeline and status history.  
+- Vendor behaviour notes.  
+- App logs and action history.  
+- Call recordings or call logs.  
+- GPS logs where available.  
+- Complaint details and supporting evidence.
+
+Success signal: You have a documented view of what happened and can classify the issue under performance, behaviour, process, or suspicious activity.
+
+</Step>
+
+<Step title="Apply Hold in Admin Panel" icon="settings">
+
+- In the Admin Panel, select the relevant vendor profile.  
+- Apply Hold status using the Hold control.  
+- Confirm that the vendor no longer receives new orders but can complete existing ones.
+
+Success signal: Vendor shows as on Hold in Admin Panel and stops receiving new unlocks.
+
+</Step>
+
+<Step title="Notify the vendor" icon="send">
+
+Send a Hold notification via WhatsApp or SMS using the standard template in the Communication section.
+
+Include:
+
+- Reason category (SLA, behaviour, process, or policy violation).  
+- Instruction to contact support for mandatory retraining.
+
+Success signal: Vendor has received confirmation that the account is on Hold and next steps are clear.
+
+</Step>
+
+<Step title="Complete mandatory retraining" icon="book-open">
+
+Before considering reactivation:
+
+- Explain the exact violation to the vendor.  
+- Assign and track completion of the relevant retraining module.  
+- Capture explicit acknowledgement from the vendor that they understand the policy and consequences of repeat issues.  
+- Monitor short-term behaviour where relevant.
+
+Success signal: Vendor has completed training and acknowledged the violation in a traceable way.
+
+</Step>
+
+<Step title="Decide on reactivation vs escalation" icon="check-circle">
+
+Based on severity, frequency, and training outcome:
+
+- If the issue is resolved and behaviour/performance is acceptable, reactivate the vendor.  
+- If issues continue or evidence escalates, extend the Hold or escalate to Deactivation following the rules in this SOP.
+
+Success signal: Admin Panel reflects the final decision (Hold extended, removed, or vendor deactivated), and notes are updated.
+
+</Step>
+
+</Steps>
+
+## When to permanently deactivate a vendor
+
+Use Deactivation for zero tolerance violations and for repeated serious issues after Hold and training.
+
+<ExpandableGroup>
+
+<Expandable title="Fraud or criminal behaviour" default-open="true">
+
+<Callout kind="alert">
+
+Treat all fraud and criminal scenarios as zero tolerance. Apply permanent deactivation and consider legal escalation as required.
+
+</Callout>
+
+Fraud and criminal triggers include:
+
+- Taking any customer device without completing valid payment through Cashkr systems.  
+- Tampering with the device to alter condition or value.  
+- Manipulating IMEI or device identifiers.  
+- Deliberately faking inspection results to change the quoted value.  
+- Forging screenshots, payment proofs, IDs, or any supporting documents.  
+- Any attempted theft or scam involving customer property, money, or Cashkr systems.
+
+These cases require immediate review for permanent deactivation.
+
+</Expandable>
+
+<Expandable title="Financial misconduct">
+
+Financial misconduct directly affects customer trust and Cashkr revenue. Triggers include:
+
+- Intentionally collecting offline payment instead of following the Cashkr payment process.  
+- Asking the customer to pay any extra charges beyond what the app shows.  
+- Refusing to complete payment through the OTP-based system.  
+- Taking any payment outside the Cashkr system flow.
+
+Where intent and pattern are clear, move to permanent deactivation.
+
+</Expandable>
+
+<Expandable title="Customer safety risks">
+
+<Callout kind="alert">
+
+Customer safety risks are zero tolerance. Prioritize customer safety over vendor retention in all such cases.
+
+</Callout>
+
+Deactivation triggers related to customer safety include:
+
+- Threatening or intimidating the customer in any way.  
+- Physical misbehaviour or contact beyond what is necessary for pickup.  
+- Harassment, abusive language, or intimidation at any point.  
+- Entering the customer’s home or private premises without explicit permission.  
+- Any unsafe action reported by the customer that makes them feel at risk.
+
+</Expandable>
+
+<Expandable title="Repeated high violations after Hold">
+
+Deactivate vendors who continue to violate policies despite Holds and training:
+
+- More than 3 Holds in 30 days.  
+- More than 10 SLA violations per week on a consistent basis.  
+- Poor performance for 4 consecutive weeks with no sustained improvement.  
+- Repeated behaviour issues even after documented training and warnings.
+
+In these cases, permanent deactivation protects platform quality and customer experience.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Deactivation flow
+
+<Steps>
+
+<Step title="Flag a major violation" icon="alert-triangle">
+
+Identify a serious violation through:
+
+- Customer complaint or escalation.  
+- Ops audit or case review.  
+- Payment discrepancy detected by systems or finance.  
+- Safety flags raised by CX or on-ground teams.  
+- Fraud detection alerts from internal checks.
+
+Success signal: The case is clearly classified under fraud/criminal, financial misconduct, customer safety, or repeated high violations.
+
+</Step>
+
+<Step title="Ops Manager review" icon="search">
+
+Ops Manager performs a high-level but thorough investigation:
+
+- Check all relevant order and vendor logs.  
+- Verify customer reports and match with system data.  
+- Review vendor history, including prior Holds, SLAs, and complaints.  
+- Look for repeat patterns or prior warnings.
+
+Success signal: Ops Manager has a documented recommendation on whether to proceed with immediate deactivation or Hold plus further investigation.
+
+</Step>
+
+<Step title="Decide immediate block vs Hold plus deeper check" icon="settings">
+
+- For severe fraud, criminal behaviour, or clear safety risk, move to immediate permanent block.  
+- For medium severity or where more evidence is required, place the vendor on Hold while running a deeper check.
+
+Success signal: Decision is recorded in internal notes, including rationale for immediate block or temporary Hold.
+
+</Step>
+
+<Step title="Deactivate vendor in Admin Panel" icon="x-circle">
+
+- In the Admin Panel, select the vendor profile.  
+- Apply Deactivate status using the Deactivate control.  
+- Confirm that the vendor can no longer access orders or unlock new leads, including existing ones if policy requires.
+
+Success signal: Vendor shows as Deactivated in Admin Panel and loses access to operational functions.
+
+</Step>
+
+<Step title="Notify the vendor" icon="send">
+
+Send a deactivation message using the standard template in the Communication section:
+
+- Clearly state that the account has been permanently deactivated.  
+- Reference serious violation of Cashkr policy without sharing internal investigation details.  
+- Make it explicit that the decision is final.
+
+Success signal: Vendor has been formally informed, and a record of the message is stored.
+
+</Step>
+
+<Step title="Add vendor to fraud and block lists" icon="shield">
+
+- Flag the vendor in the fraud or blocked database to prevent re-onboarding.  
+- Ensure linked IDs, numbers, and documents are tagged as blocked, as per internal tools and processes.
+
+Success signal: Vendor details appear in fraud or block listings, preventing future sign-ups or activation.
+
+</Step>
+
+</Steps>
+
+## Reactivation rules (after Hold only)
+
+<Callout kind="tip">
+
+Reactivation is only possible after a Hold and only when all reactivation conditions below are met. Deactivated vendors remain permanently blocked.
+
+</Callout>
+
+A vendor can be reactivated only when:
+
+- The issue is minor and does not involve fraud, criminal behaviour, or major safety risk.  
+- The vendor completes mandatory training relevant to the violation.  
+- The vendor explicitly accepts the mistake and agrees to corrective behaviour going forward.  
+- There is no fraud or confirmed malicious intent in the case.  
+- Ops Manager reviews the case and approves reactivation.
+
+<Callout kind="alert">
+
+No reactivation is allowed after Deactivation. All deactivated vendors remain permanently blocked and are recorded in the fraud or blocked database.
+
+</Callout>
+
+## Approval hierarchy
+
+Maintain the following approval levels for Hold and Deactivation actions:
+
+- **Who can put a vendor on Hold:**  
+  - Ops Associate  
+  - Vendor Support Team  
+  - Ops Manager  
+
+- **Who can remove Hold:**  
+  - Ops Manager only  
+
+- **Who can deactivate a vendor:**  
+  - Ops Manager with CEO approval  
+
+- **High severity fraud cases:**  
+  - CEO direct approval required for deactivation and any related escalations.
+
+## Vendor communication templates
+
+Use these templates for vendor-facing communication. Customize only the specific reason or case references; keep the structure and tone consistent.
+
+<Tabs>
+
+<Tab title="Hold notification" icon="info">
+
+> Your Cashkr vendor account has been placed on HOLD due to SLA or behaviour issues.  
+> Contact support to complete the required retraining and review your account.
+
+</Tab>
+
+<Tab title="Pre-deactivation warning" icon="alert-triangle">
+
+> Your recent performance and/or behaviour shows repeated violations of Cashkr policies.  
+> If this continues, your account may be permanently deactivated and you will lose access to Cashkr orders.
+
+</Tab>
+
+<Tab title="Deactivation message" icon="x-circle">
+
+> Your Cashkr vendor account has been permanently deactivated due to serious violation of company policies.  
+> This decision is final and you will not be reactivated on the platform.
+
+</Tab>
+
+</Tabs>
+
+## Admin Panel notes and audit checklist
+
+When placing a vendor on Hold or permanently Deactivating, record complete notes so every action is auditable:
+
+- Violation type (performance, behaviour, process, suspicious, fraud, safety, financial misconduct, repeated violations).  
+- Order ID or multiple order IDs linked to the case.  
+- Evidence references (screenshots, app logs, call recordings, GPS logs, complaint tickets).  
+- Short explanation of what happened and why the chosen action (Hold or Deactivate) is appropriate.  
+- Any training modules assigned or completed.  
+- Final decision and status (Hold applied, Hold removed, Deactivated).  
+- Reviewer name and role.  
+- Date and time of action.
+
+## Quick summary (for vendor training)
+
+Use this section as a high-level card during vendor or internal training.
+
+- **Hold = Temporary pause**  
+  - Used for moderate violations and correctable issues.  
+  - Requires retraining and acknowledgement.  
+  - Can be reactivated if behaviour and performance improve.
+
+- **Deactivation = Permanent block**  
+  - Used for fraud, threats, offline payments, device theft, or repeated serious violations.  
+  - No reactivation after deactivation.  
+  - Vendor is logged in the fraud or blocked database.
+
+- **Threshold cues:**  
+  - 5 or more weekly SLA violations from the same vendor → move to Hold and training.  
+  - Any confirmed fraud or serious safety issue → immediate deactivation review and permanent block once confirmed.

@@ -966,132 +966,224 @@
             "group": "Training",
             "pages": [
               {
+                "title": "Return / Payment Confirmation Script",
+                "path": "return-/-payment-confirmation-script",
+                "badge": "Script Library"
+              },
+              {
+                "title": "Vendor Onboarding Script (Partner Introduction & Process)",
+                "path": "vendor-onboarding-script-partner-introduction-process",
+                "badge": "Script Library"
+              },
+              {
+                "title": "Connected vs. Not Connected Dispositions",
+                "path": "connected-vs-not-connected-dispositions",
+                "badge": "Sales & Leads Conversion Modules"
+              },
+              {
+                "title": "Vendor Behavior & Pickup Guidelines",
+                "path": "vendor-behavior-pickup-guidelines",
+                "badge": "Script Library"
+              },
+              {
+                "title": "Store Vendor Incentive & Referral Program Script",
+                "path": "store-vendor-incentive-referral-program-script",
+                "badge": "Script Library"
+              },
+              {
+                "title": "Customer Objection Handling (Price, Pickup Delay, Competitor Offers)",
+                "path": "customer-objection-handling-price-pickup-delay-competitor-offers",
+                "badge": "Sales & Leads Conversion Modules"
+              },
+              {
+                "title": "Common User Issues & Support Resolutions",
+                "path": "common-user-issues-support-resolutions",
+                "badge": "Customer App & Website Modules"
+              },
+              {
+                "title": "Vendor Deactivation & Hold Flow",
+                "path": "vendor-deactivation-hold-flow",
+                "badge": "Vendor App & Onboarding Modules"
+              },
+              {
+                "title": "Agent Assignment Script (Explaining Pickup Agent Flow)",
+                "path": "agent-assignment-script-explaining-pickup-agent-flow",
+                "badge": "Script Library"
+              },
+              {
+                "title": "How Device Valuation Works  (Model → Condition → Pricing Logic)",
+                "path": "how-device-valuation-works-model-condition-pricing-logic",
+                "badge": "Customer App & Website Modules"
+              },
+              {
+                "title": "Creating & Assigning Orders to Vendors",
+                "path": "creating-assigning-orders-to-vendors",
+                "badge": "Admin Panel & Operations Modules"
+              },
+              {
+                "title": "Store Vendor Communication & Customer Interaction Script",
+                "path": "store-vendor-communication-customer-interaction-script",
+                "badge": "Sales & Leads Conversion Modules"
+              },
+              {
                 "title": "Understanding Vendor Credits and Wallet System",
-                "path": "understanding-vendor-credits-and-wallet-system"
+                "path": "understanding-vendor-credits-and-wallet-system",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Scripts Master Sheet",
-                "path": "scripts-master-sheet"
+                "path": "scripts-master-sheet",
+                "badge": "Script Library"
               },
               {
                 "title": "Closure Script (Corporate Buyback)",
-                "path": "closure-script-corporate-buyback"
+                "path": "closure-script-corporate-buyback",
+                "badge": "Script Library"
               },
               {
                 "title": "Full Calling Script (First Call, Callback, Follow-Up)",
-                "path": "full-calling-script-first-call-callback-follow-up"
+                "path": "full-calling-script-first-call-callback-follow-up",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Vendor Behavior Guidelines (Do’s & Don’ts at Pickup)",
-                "path": "vendor-behavior-guidelines-dos-donts-at-pickup"
+                "path": "vendor-behavior-guidelines-dos-donts-at-pickup",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Vendor SLA & Violation Policy Script",
-                "path": "vendor-sla-violation-policy-script"
+                "path": "vendor-sla-violation-policy-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Vendor Onboarding Process",
-                "path": "vendor-onboarding-process"
+                "path": "vendor-onboarding-process",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Order Flow – Unlock → Pickup → Payment",
-                "path": "order-flow-unlock-pickup-payment"
+                "path": "order-flow-unlock-pickup-payment",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Pickup Communication Best Practices",
-                "path": "pickup-communication-best-practices"
+                "path": "pickup-communication-best-practices",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Store Vendor Reactivation Script",
-                "path": "store-vendor-reactivation-script"
+                "path": "store-vendor-reactivation-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Vendor Agent Assignment Script",
-                "path": "store-vendor-agent-assignment-script"
+                "path": "store-vendor-agent-assignment-script",
+                "badge": "Script Library"
               },
               {
                 "title": "General Support Greeting & Identification Script",
-                "path": "general-support-greeting-identification-script"
+                "path": "general-support-greeting-identification-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Referral & Coupon Application Process",
-                "path": "referral-coupon-application-process"
+                "path": "referral-coupon-application-process",
+                "badge": "Customer App & Website Modules"
               },
               {
                 "title": "How to Report Issues to Admin Panel / Support",
-                "path": "how-to-report-issues-to-admin-panel-/-support"
+                "path": "how-to-report-issues-to-admin-panel-/-support",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "City & Pincode Availability (Serviceable Areas)",
-                "path": "city-pincode-availability-serviceable-areas"
+                "path": "city-pincode-availability-serviceable-areas",
+                "badge": "Customer App & Website Modules"
               },
               {
                 "title": "Handling Customer Issues During Pickup",
-                "path": "handling-customer-issues-during-pickup"
+                "path": "handling-customer-issues-during-pickup",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Vendor Refund Dispute Resolution Script",
-                "path": "vendor-refund-dispute-resolution-script"
+                "path": "vendor-refund-dispute-resolution-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Understanding Dispositions (Connected, Not Connected, Create Order)",
-                "path": "understanding-dispositions-connected-not-connected-create-order"
+                "path": "understanding-dispositions-connected-not-connected-create-order",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Requirement Gathering Script",
-                "path": "requirement-gathering-script"
+                "path": "requirement-gathering-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Onboarding Script (In-Store Buyback Model)",
-                "path": "store-onboarding-script-in-store-buyback-model"
+                "path": "store-onboarding-script-in-store-buyback-model",
+                "badge": "Script Library"
               },
               {
                 "title": "Complaint / Escalation Acknowledgement Script",
-                "path": "escalation-acknowledgement-script"
+                "path": "escalation-acknowledgement-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Serviceable Area & Pincode Management",
-                "path": "serviceable-area-pincode-management"
+                "path": "serviceable-area-pincode-management",
+                "badge": "Admin Panel & Operations Modules"
               },
               {
                 "title": "SLA Violation Tracking & Escalations",
-                "path": "sla-violation-tracking-escalations"
+                "path": "sla-violation-tracking-escalations",
+                "badge": "Admin Panel & Operations Modules"
               },
               {
                 "title": "Follow-Up / Callback Script",
-                "path": "follow-up/-callback-script"
+                "path": "follow-up/-callback-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Using the Vendor App (Login, Dashboard, Order Unlocking)",
-                "path": "using-the-vendor-app-login-dashboard-order-unlocking"
+                "path": "using-the-vendor-app-login-dashboard-order-unlocking",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Pickup Not Available Script",
-                "path": "pickup-not-available-script"
+                "path": "pickup-not-available-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Vendor App Usage Script",
-                "path": "store-vendor-app-usage-script"
+                "path": "store-vendor-app-usage-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Offers & Promotion Script",
-                "path": "store-offers-promotion-script"
+                "path": "store-offers-promotion-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Using Data to Improve Conversion %",
-                "path": "using-data-to-improve-conversion"
+                "path": "using-data-to-improve-conversion",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Return Flow & Payment Confirmation",
-                "path": "return-flow-payment-confirmation"
+                "path": "return-flow-payment-confirmation",
+                "badge": "Customer App & Website Modules"
               },
               {
                 "title": "Customer Will Place Order / Already Ordered – Handling",
-                "path": "already-ordered-handling"
+                "path": "already-ordered-handling",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Vendor Verification Script (Post Registration & KYC Confirmation)",
-                "path": "vendor-verification-script-post-registration-kyc-confirmation"
+                "path": "vendor-verification-script-post-registration-kyc-confirmation",
+                "badge": "Script Library"
               },
               {
                 "title": "Cashkr Training Module List",
@@ -1099,135 +1191,168 @@
               },
               {
                 "title": "Order Tracking & Customer Notifications",
-                "path": "order-tracking-customer-notifications"
+                "path": "order-tracking-customer-notifications",
+                "badge": "Customer App & Website Modules"
               },
               {
                 "title": "Store Training Script",
-                "path": "store-training-script"
+                "path": "store-training-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Price Change Explanation Script",
-                "path": "price-change-explanation-script"
+                "path": "price-change-explanation-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Creating an Order – Step-by-Step Flow",
-                "path": "creating-an-order-step-by-step-flow"
+                "path": "creating-an-order-step-by-step-flow",
+                "badge": "Customer App & Website Modules"
               },
               {
                 "title": "“To Be Failed” Orders & Credit Deduction Logic",
-                "path": "to-be-failed-orders-credit-deduction-logic"
+                "path": "to-be-failed-orders-credit-deduction-logic",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Store Vendor Hold / Deactivation Script",
-                "path": "store-vendor-hold-/-deactivation-script"
+                "path": "store-vendor-hold-/-deactivation-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Vendor Credits, Refunds & Reversals Explanation",
-                "path": "vendor-credits-refunds-reversals-explanation"
+                "path": "vendor-credits-refunds-reversals-explanation",
+                "badge": "Script Library"
               },
               {
                 "title": "Price Match / Objection Handling Script",
-                "path": "price-match-/-objection-handling-script"
+                "path": "price-match-/-objection-handling-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Vendor SLA & Violation Policy Script",
-                "path": "store-vendor-sla-violation-policy-script"
+                "path": "store-vendor-sla-violation-policy-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Handling Refunds (Wallet & Credits Reversal Flow)",
-                "path": "handling-refunds-wallet-credits-reversal-flow"
+                "path": "handling-refunds-wallet-credits-reversal-flow",
+                "badge": "Admin Panel & Operations Modules"
               },
               {
                 "title": "Feedback & Review Collection Process",
-                "path": "feedback-review-collection-process"
+                "path": "feedback-review-collection-process",
+                "badge": "Customer Apps & Website Modules"
               },
               {
                 "title": "Referral & Offer Communication Script",
-                "path": "referral-offer-communication-script"
+                "path": "referral-offer-communication-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Lead to Order Conversion Script",
-                "path": "lead-to-order-conversion-script"
+                "path": "lead-to-order-conversion-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Lead Handling in Admin Panel (Lead → Order Flow)",
-                "path": "lead-handling-in-admin-panel-lead-order-flow"
+                "path": "lead-handling-in-admin-panel-lead-order-flow",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Creating Orders Manually for Customers",
-                "path": "creating-orders-manually-for-customers"
+                "path": "creating-orders-manually-for-customers",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Vendor Hold / Deactivation Script",
-                "path": "vendor-hold-/-deactivation-script"
+                "path": "vendor-hold-/-deactivation-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Reactivation Script",
-                "path": "store-reactivation-script"
+                "path": "store-reactivation-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Exporting Data & Reports for Analysis",
-                "path": "exporting-data-reports-for-analysis"
+                "path": "exporting-data-reports-for-analysis",
+                "badge": "Admin Panel & Operations Modules"
               },
               {
                 "title": "Daily Reporting & KPI Expectations",
-                "path": "daily-reporting-kpi-expectations"
+                "path": "daily-reporting-kpi-expectations",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "Store Follow-Up Script",
-                "path": "store-follow-up-script"
+                "path": "store-follow-up-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Admin Panel Overview",
-                "path": "admin-panel-overview"
+                "path": "admin-panel-overview",
+                "badge": "Admin Panel & Operations Modules"
               },
               {
                 "title": "Escalation Flow for Lead Issues",
-                "path": "escalation-flow-for-lead-issues"
+                "path": "escalation-flow-for-lead-issues",
+                "badge": "Sales & Leads Conversion Modules"
               },
               {
                 "title": "SLA Violations & Escalation Rules",
-                "path": "sla-violations-escalation-rules"
+                "path": "sla-violations-escalation-rules",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Review Request Script",
-                "path": "review-request-script"
+                "path": "review-request-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Vendor Payment & Pickup Process Script",
-                "path": "store-vendor-payment-pickup-process-script"
+                "path": "store-vendor-payment-pickup-process-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Vendor Reporting & SLA Compliance Script",
-                "path": "store-vendor-reporting-sla-compliance-script"
+                "path": "store-vendor-reporting-sla-compliance-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Requirement Gathering Script (Corporate Buyback)",
-                "path": "requirement-gathering-script-corporate-buyback"
+                "path": "requirement-gathering-script-corporate-buyback",
+                "badge": "Script Library"
               },
               {
                 "title": "Store Vendor Onboarding Script",
-                "path": "store-vendor-onboarding-script"
+                "path": "store-vendor-onboarding-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Adding/Editing Device Models & Pricing Updates",
-                "path": "adding/editing-device-models-pricing-updates"
+                "path": "adding/editing-device-models-pricing-updates",
+                "badge": "Admin Panel & Operations Modules"
               },
               {
                 "title": "Vendor Payment OTP & Confirmation Flow",
-                "path": "vendor-payment-otp-confirmation-flow"
+                "path": "vendor-payment-otp-confirmation-flow",
+                "badge": "Vendor App & Onboarding Modules"
               },
               {
                 "title": "Vendor Credits, Refunds & Reversals Script",
-                "path": "vendor-credits-refunds-reversals-script"
+                "path": "vendor-credits-refunds-reversals-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Vendor Reactivation Script",
-                "path": "vendor-reactivation-script"
+                "path": "vendor-reactivation-script",
+                "badge": "Script Library"
               },
               {
                 "title": "Vendor Hold & Deactivation Process",
-                "path": "vendor-hold-deactivation-process"
+                "path": "vendor-hold-deactivation-process",
+                "badge": "Admin Panel & Operations Modules"
               }
             ]
           }

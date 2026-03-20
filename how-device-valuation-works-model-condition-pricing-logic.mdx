@@ -1,0 +1,521 @@
+---
+title: How Device Valuation Works  (Model → Condition → Pricing Logic)
+description: Understand how Cashkr calculates device value using model value, condition, and market logic, with scripts and examples for Sales, CX, Marketing and Vendor teams.
+---
+
+## Overview
+
+**Used by:** Sales, Customer Experience, Marketing, Vendor Teams  
+**Purpose:** Help internal teams explain price changes, handle objections, and build trust using one clear pricing logic.
+
+<Callout kind="info">
+
+Cashkr calculates every device value using three parts: **Model Value (base price)**, **Condition Value (selected and verified)**, and **Market Algorithms (dynamic pricing logic)**. All teams must use this as the single source of truth.
+
+</Callout>
+
+---
+
+## End-to-end valuation flow
+
+Use this flow to explain how any device moves from estimate to final price.
+
+<Steps>
+
+  <Step title="Model identified → base price set" icon="database">
+
+  - Customer selects brand, model, and variant.
+  - Pricing engine picks the **Model Value (Base Price)** created by the Pricing team.
+  - This base price is the starting point for all further changes.
+
+  </Step>
+
+  <Step title="Customer answers condition questions" icon="users">
+
+  - Customer selects answers for screen, body, battery, camera and other fields.
+  - System calculates an **estimated value** using base price minus condition deductions.
+  - Customer sees this estimate in the app or on the website.
+
+  </Step>
+
+  <Step title="Estimate shown to customer" icon="monitor">
+
+  - The price on the screen is an **estimate**, not a locked final price.
+  - Estimate already includes normal market logic and the customer’s self-declared condition.
+  - Order is created based on this estimated value.
+
+  </Step>
+
+  <Step title="Vendor inspects device at pickup" icon="settings">
+
+  - Vendor checks the actual physical and functional condition for all fields.
+  - Vendor updates any mismatched answers in the app.
+  - System recalculates value based on **actual condition**.
+
+  </Step>
+
+  <Step title="Final price after condition + market logic" icon="check-circle">
+
+  - Final device value is calculated as: `Base Price – Condition Deductions – Market Adjustments + Bonuses (if any)`.
+  - Final price can be **lower** if more issues are found, or **higher** if the device is better than selected.
+  - Vendor and CX communicate this final value clearly to the customer.
+
+  </Step>
+
+</Steps>
+
+<Callout kind="alert">
+
+The price on the app is always an **estimate until vendor inspection**. Final price is confirmed only after the vendor verifies the actual condition during pickup.
+
+</Callout>
+
+> “The price you see is estimated based on your selections. The final price may change after the vendor checks the actual condition of the device.”
+
+---
+
+## Component 1: Model value (base price)
+
+Model value is the **starting price** for each device before condition and market deductions.
+
+<Callout kind="tip">
+
+Base price is set centrally by the **Pricing Team (Mohsin Surya)** and updates with the market. It is **not manually editable** by Sales, CX, Marketing, or Vendors.
+
+</Callout>
+
+Model value depends on:
+
+- **Market resale value** and recent selling prices.
+- **Refurbisher and dealer buying prices.**
+- **Brand depreciation rate** and perception.
+- **Age of the device** and launch cycle.
+- **Variant details** like storage, RAM, and processor.
+- **Brand hierarchy** (for example, Apple generally holds higher value than mid-range Androids).
+
+Example base values (illustrative):
+
+- iPhone 13 (128 GB): **₹32,000**
+- Samsung S21 FE: **₹16,000**
+- OnePlus Nord: **₹6,500**
+- MacBook Air M1: **₹35,000–₹45,000**
+- Dell i5 8 GB laptop: **₹12,000**
+
+Sales and CX should always treat this as the **fixed market-driven starting point**, not something they can change for individual customers.
+
+---
+
+## Component 2: Condition value (customer-selected → vendor-verified)
+
+Condition impacts **10% to 70%** of the device value. Small differences in condition can mean large differences in resale value.
+
+There are two stages:
+
+- **Customer-selected condition** in the app or website.
+- **Vendor-verified condition** during physical inspection.
+
+If both match, price usually stays close to the estimate.  
+If they differ, the system adjusts the value automatically.
+
+### Condition questions by device type
+
+Use this section to remember what the customer is asked and what the vendor must verify.
+
+<Tabs>
+
+  <Tab title="Phones (including iPhone & Android)" icon="smartphone">
+
+  For phones, customer and vendor answer questions on:
+
+  - **Screen condition**
+    - Cracked glass
+    - Scratches or spots
+    - Green line or dead pixels
+  - **Body condition**
+    - Dents or bends
+    - Frame or back damage
+  - **Battery health and performance**
+    - Battery health percentage (where available)
+    - Fast draining or heating
+  - **Camera**
+    - Front or rear camera faults
+    - Focus or blur issues
+  - **Face ID / Touch ID**
+    - Working or not working
+  - **Charging and ports**
+    - Charging issues
+    - Port or speaker problems
+
+  Vendor must check every field. Any mismatch with customer answers changes the condition deductions and the price.
+
+  </Tab>
+
+  <Tab title="Laptops & MacBooks" icon="monitor">
+
+  For laptops and MacBooks, customer and vendor answer questions on:
+
+  - **Display**
+    - Lines or spots on the screen
+    - Cracks or major scratches
+  - **Keyboard**
+    - Non-working keys
+    - Missing keys
+  - **Trackpad**
+    - Not working or lagging
+  - **Battery backup**
+    - Approximate backup time in hours
+    - Very low backup (for example, under 1 hour)
+  - **Hinges and body**
+    - Loose or broken hinges
+    - Dents, cracks or damaged body
+  - **Charger**
+    - Original charger available
+    - No charger or non-original charger
+
+  Vendor verifies all these fields on-site. Any mismatch with customer selections updates the deductions and final payout value.
+
+  </Tab>
+
+</Tabs>
+
+---
+
+## How condition deductions work
+
+Each issue has a **pre-set deduction** in the system. Deductions may be a **fixed rupee amount** or a **percentage of base price** depending on the type and severity of the issue.
+
+Condition impacts can range from **10%** (minor cosmetic issue) to **70%** (major functional or multiple issues).
+
+### Phone deduction examples
+
+<Tabs>
+
+  <Tab title="Phone issues → typical ranges" icon="smartphone">
+
+  Examples below are for a phone like **iPhone 13** (for understanding ranges):
+
+  - **Cracked screen**
+    - Approx. **–₹5,000 to –₹9,000**
+  - **Green line or display spot**
+    - Approx. **–₹2,500 to –₹5,000**
+  - **Low battery health (below 80%)**
+    - Approx. **–₹1,000 to –₹2,000**
+  - **Body dents**
+    - Approx. **–₹500 to –₹1,500**
+  - **Face ID not working**
+    - Approx. **–₹3,000 to –₹6,000**
+  - **Camera fault**
+    - Approx. **–₹800 to –₹1,200**
+
+  When multiple issues exist, the system combines deductions based on internal rules and market feasibility.
+
+  </Tab>
+
+  <Tab title="Laptop issues → typical ranges" icon="monitor">
+
+  Examples below are for a laptop like an **HP or Dell i5**:
+
+  - **Screen line / display issue**
+    - Approx. **–₹3,000 to –₹6,000**
+  - **Keyboard not working**
+    - Approx. **–₹1,000 to –₹2,000**
+  - **Battery backup under 1 hour**
+    - Approx. **–₹1,500 to –₹3,000**
+  - **Cracked or damaged body**
+    - Approx. **–₹500 to –₹2,000**
+  - **No charger**
+    - Approx. **–₹500 to –₹1,000**
+
+  Exact deductions depend on model, age and live refurbisher demand.
+
+  </Tab>
+
+</Tabs>
+
+CX and Sales explanation line for deductions:
+
+> “The price changes because each issue reduces the actual market resale value. Our system adjusts automatically for things like screen, battery, camera and body condition.”
+
+---
+
+## Component 3: Market algorithms (dynamic pricing logic)
+
+Market algorithms fine-tune prices so Cashkr stays aligned with **real market trends**. These adjustments sit on top of base price and condition deductions.
+
+Key market factors:
+
+- **Market demand**
+  - iPhones and some premium models have strong resale demand → higher base prices.
+  - Budget Android models may have lower demand → lower prices and higher depreciation.
+- **Seasonal trends**
+  - Prices can drop after new model launches.
+  - Prices can rise during festivals or when supply is short.
+- **Spare parts cost and repair feasibility**
+  - If spare parts cost is high compared to resale value, deductions for those faults increase.
+- **Age of the device**
+  - Devices older than 3–4 years usually lose value faster.
+- **Refurbisher and dealer buying price**
+  - If refurbishers reduce buying prices, Cashkr must adjust offers to stay profitable.
+- **Competition benchmark**
+  - Trends from Cashify, Yaantra, OLX and others are taken into account, while still focusing on sustainable and fair pricing.
+
+<Callout kind="info">
+
+Market logic refreshes regularly. Internal pricing values are reviewed **weekly or on-demand** by the Pricing team. These updates happen centrally; Sales, CX, Marketing and Vendors do not control them directly.
+
+</Callout>
+
+---
+
+## Complete pricing formula (internal view)
+
+Internally, you should think of the final price as:
+
+`Final Device Value = Base Price – Condition Deductions ± Market Adjustments`
+
+Then Cashkr may apply:
+
+- **Seasonal offers**
+- **Referral bonuses**
+- **Special campaign boosts**
+
+These bonuses can increase what the customer receives, but they do not change the **underlying valuation logic**.
+
+<Callout kind="tip">
+
+Use condition and market logic together when explaining any price change. Customers understand better when they hear both: **“your device’s condition” + “today’s market value.”**
+
+</Callout>
+
+---
+
+## Unified customer-facing explanation
+
+Every Sales, CX, Vendor and Marketing team member must use the **same core lines** when talking about valuation and price changes.
+
+### Estimate vs final price after inspection
+
+Core line:
+
+> “The price you see is estimated based on your selections. The final price may change after the vendor checks the actual condition of the device.”
+
+Why price can reduce:
+
+> “Small issues like scratches, battery, or camera faults reduce the resale value. The app automatically adjusts the price based on condition.”
+
+### Cashkr vs competitors
+
+When a customer compares with other platforms:
+
+> “Every brand and model has different resale demand. Cashkr gives the highest possible price based on real market value and device condition.”
+
+You can add:
+
+- Mention **transparent logic** (base price, condition, market).
+- Highlight that **final quote is after inspection**, not just a high number on the screen.
+
+---
+
+## Worked examples (internal understanding)
+
+Use these examples during training or coaching to build confidence in explaining price changes.
+
+<ExpandableGroup>
+
+  <Expandable title="Example 1: iPhone 11 Pro – deductions after inspection" default-open="true">
+
+  Internal breakdown:
+
+  - **Base price:** ₹18,000
+  - **Issues found by vendor:**
+    - Battery at 76% → approx. **–₹1,000**
+    - Face ID faulty → approx. **–₹3,000**
+  - **Final price to customer:** ₹14,000
+
+  How to explain to customer:
+
+  > “Your iPhone 11 Pro’s starting value is around ₹18,000 in today’s market. After checking the battery health and Face ID, the app reduced the price for those issues, so your final value is ₹14,000.”
+
+  </Expandable>
+
+  <Expandable title="Example 2: HP laptop – deductions after inspection">
+
+  Internal breakdown:
+
+  - **Base price:** ₹13,000
+  - **Issues found:**
+    - No charger → approx. **–₹700**
+    - Screen spot → approx. **–₹2,000**
+  - **Final price to customer:** ₹10,300
+
+  How to explain to customer:
+
+  > “Your HP laptop’s market value is around ₹13,000. Because the charger is missing and the display has a spot, the system reduced the price for those parts, so your final offer comes to ₹10,300.”
+
+  </Expandable>
+
+  <Expandable title="Example 3: Customer overestimates condition">
+
+  Scenario:
+
+  - Customer selects **“Excellent”** condition.
+  - Vendor finds **dead pixel** plus **camera issue** during inspection.
+  - System adds deductions for display and camera faults.
+  - Final price is **lower than the estimate**.
+
+  How to explain to customer:
+
+  > “On the app, the price was calculated assuming your device had no display or camera issues. During inspection, we found a screen pixel issue and a camera fault, which reduce its resale value. The app has recalculated the price based on the actual condition.”
+
+  </Expandable>
+
+</ExpandableGroup>
+
+---
+
+## When price increases after inspection
+
+Sometimes, inspection can **improve** the price.
+
+Common cases:
+
+- Customer **forgets to mention** the original charger.
+- Customer selects a **worse condition** than actual (for example, chooses “screen scratch” but screen is clean).
+- Device has **fewer dents or issues** than assumed.
+
+Example scenario:
+
+- Customer selects “screen scratch”.
+- Vendor checks and finds **no major scratches**.
+- System **removes the scratch deduction** and **price goes up** accordingly.
+
+How to explain to customer:
+
+> “Good news — your device is in better shape than what was selected in the app. After verifying there is no major screen scratch and you have the original charger, the app has increased your price.”
+
+---
+
+## Objection handling (scripts for Sales, CX and Vendor teams)
+
+Use the following scripts whenever customers question the offered price. Keep your tone calm, respectful and focused on **condition + market logic**.
+
+<ExpandableGroup>
+
+  <Expandable title="Objection 1: “Price is too low.”" default-open="true">
+
+  Goal: Reassure customer that the price is fair and based on clear logic.
+
+  Recommended response:
+
+  > “Based on the actual condition and today’s market value, the app has calculated a fair price. We do not reduce it manually — it is based on live resale demand, spare parts cost, and your device’s condition.”
+
+  You can add:
+
+  - Emphasize that **both condition and market** are included.
+  - Remind that **dealers or other platforms** may show higher numbers but with hidden deductions later.
+
+  </Expandable>
+
+  <Expandable title="Objection 2: “Your competitor is offering more.”">
+
+  Goal: Invite proof and position Cashkr as fair and transparent.
+
+  Recommended response:
+
+  > “Please share their final quote screenshot — including condition details and after inspection — and we will try to match the highest possible price that is realistic for your device.”
+
+  You can add:
+
+  - Stress on **final quote after inspection**, not only pre-inspection numbers.
+  - Highlight that Cashkr aims to give a **high but sustainable** price.
+
+  </Expandable>
+
+  <Expandable title="Objection 3: “Why can’t you lock the price?”">
+
+  Goal: Make the customer understand why inspection is necessary.
+
+  Recommended response:
+
+  > “Condition changes the value a lot. Two phones of the same model can have very different resale prices because of screen, battery, and other issues. Once the vendor verifies your device, the updated price is final and transparent.”
+
+  You can add:
+
+  - Mention that locking a price without inspection can lead to **unfair experiences** for both customer and vendor.
+  - Reinforce that **transparent post-inspection pricing** protects everyone.
+
+  </Expandable>
+
+  <Expandable title="Objection 4: “Why did the vendor reduce the price?”">
+
+  Goal: Shift focus from vendor’s decision to system logic.
+
+  Recommended response:
+
+  > “The vendor has only updated the actual condition in the app. Each issue like battery, screen, dents or camera changes the resale value. The app calculates everything automatically — the vendor cannot change the price manually.”
+
+  You can add:
+
+  - Offer to **walk through the condition details** line by line.
+  - Remind them that if the device was in better condition, the same app would show a **higher price**.
+
+  </Expandable>
+
+</ExpandableGroup>
+
+---
+
+## Key talking points for Marketing
+
+Marketing should use consistent, trust-building language in campaigns, creatives and landing pages.
+
+Highlight:
+
+- **“Price based on actual device condition.”**
+- **“Transparent pricing — no hidden deductions at pickup.”**
+- **“Instant valuation using smart algorithm.”**
+- **“Better price than offline dealers, aligned with real resale value.”**
+- **“Price match support available when you share final competitor quotes.”**
+
+<Callout kind="tip">
+
+Whenever you create marketing copy about pricing, connect **“smart algorithm”** to the three parts: **model value, condition, and market trends.**
+
+</Callout>
+
+---
+
+## 1-page training card summary
+
+Use this section for quick refreshers or when onboarding new team members.
+
+### What price depends on
+
+- **Device model and variant**
+- **Physical and functional condition**
+- **Current market demand and trends**
+
+### Why price changes
+
+- Battery health and backup
+- Screen cracks, lines, spots or scratches
+- Camera faults and Face ID / Touch ID issues
+- Body dents, hinges or structural damage
+- Missing accessories (for example, charger)
+- Changes in market demand or spare parts cost
+
+### How to explain to customers
+
+Core line:
+
+> “The price is estimated based on what you selected. The final price is confirmed after our vendor inspects your device’s actual condition.”
+
+Always combine:
+
+- **Condition logic:** screen, battery, camera, body, accessories.
+- **Market logic:** today’s resale demand and repair cost.
+
+### Golden rule for Sales and CX
+
+- Always explain using **both**: **device condition** + **market value**.
+- Use the scripts and examples above so that **every customer** hears the **same, consistent explanation** across Cashkr.

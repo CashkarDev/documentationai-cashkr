@@ -1,0 +1,710 @@
+---
+title: Common User Issues & Support Resolutions
+description: Playbook for Cashkr support and ops teams to triage common user issues, give correct guidance, and know when and where to escalate.
+---
+
+## Used by and purpose
+
+**Used by:** Cashkr CX / Support agents and Operations team  
+**Purpose:** Standard playbook to handle the most common Website + Customer App user issues in a consistent, policy-aligned way.
+
+<Callout kind="info">
+
+Always check the actual flow documentation linked in each issue before promising anything to the customer. This page is a shortcut, not a replacement for detailed docs.
+
+</Callout>
+
+---
+
+## Universal triage flow
+
+Use this same flow for almost every inbound ticket or call. Move through it quickly but do not skip steps.
+
+<Steps>
+
+  <Step title="Collect identifiers and context" icon="users">
+
+  - Confirm **user identity**: name, phone number used to log in, and (if relevant) email.
+  - Collect **order identifiers** when relevant: order ID, device model, approx. order date.
+  - Ask **where the issue appears**: Website or Customer App (or both).
+  - Ask for **exact error message** or screenshot description.
+
+  **Success signal:** You have phone + any relevant order ID and a clear, one-line summary of the problem.
+
+  </Step>
+
+  <Step title="Check status in Admin / relevant panel" icon="monitor">
+
+  - Open the Admin Panel or relevant dashboard.
+  - Search by **phone number** first, then by order ID if needed.
+  - Note **current order status** (Generated, Assigned, Out for Pickup, In Progress, Completed, Failed).
+  - Check for **recent actions**: reschedule, payment detail changes, cancellations.
+
+  **Success signal:** You see the same or later status compared to what the user reports. If not, note the mismatch for potential escalation.
+
+  </Step>
+
+  <Step title="Classify the issue" icon="settings">
+
+  - Map the complaint to one of the **issue types** in the library below:
+    - Login / OTP
+    - Coupon application
+    - Order not visible or wrong status
+    - Pickup / OTP at doorstep
+    - Payment details and payout doubts
+    - Account deletion and logout
+  - If multiple things are broken, start with **the earliest step in the flow** (for example, order visibility before reschedule).
+
+  **Success signal:** You can say out loud which issue card from the library you are following.
+
+  </Step>
+
+  <Step title="Resolve using the relevant SOP or escalate" icon="check-circle">
+
+  - Follow the **Resolution** section of the matching issue.
+  - If resolution depends on a rule, follow the **linked SOP or feature doc**.
+  - If the case meets the **Escalate when** criteria, capture details and escalate using your team escalation flow (for example, to Ops or Tech).
+
+  **Success signal:** You have either:
+  
+  - Resolved the issue and explained the next steps, or  
+  - Logged and escalated the issue with all required context.
+
+  </Step>
+
+  <Step title="Document notes clearly" icon="edit">
+
+  - Add a short internal note with:
+    - Issue type and channel (Website / App / Both).
+    - Key identifiers (phone, order ID).
+    - What you checked and what you found.
+    - What you communicated to the user.
+    - If escalated: who, when, and ticket/reference ID.
+
+  **Success signal:** Another agent can open the ticket and understand exactly what happened without calling the user again.
+
+  </Step>
+
+</Steps>
+
+---
+
+## Key rules you must never break
+
+<Callout kind="alert">
+
+**Never bypass OTP anywhere in the flow.**  
+For login, lead verification, or **vendor payment OTP**, you must follow the documented OTP steps. No manual adjustments, no cash/UPI workarounds.
+
+</Callout>
+
+<Callout kind="info">
+
+**Reschedule gating:** Users can only reschedule a pickup when the order status is **Generated** and no vendor is assigned. After vendor assignment, the reschedule option disappears and you must follow escalation rules.
+
+</Callout>
+
+<Callout kind="tip">
+
+**Account deletion:** The Customer App only starts deletion. Actual deletion and anonymization happen on the website with phone + OTP verification.
+
+</Callout>
+
+Refer to:
+
+- Website login and OTP: [Login and Registration](/login-registration)
+- Customer App login and OTP: [Customer App Login and Registration](/customer-app-login-registration)
+- Coupon logic: [Apply Coupon](/apply-coupon)
+- Reschedule: [Reschedule Pickup](/reschedule-pickup) and [Reschedule Pickup - SOPs](/reschedule-pickup---sops)
+- Order tracking: [Track Orders](/track-orders) and [Order Confirmation and Tracking](/order-confirmation-tracking)
+- Payment details: [Payment](/payment) and [Payment Method](/payment-method)
+- Pickup stage issues: [Out for Pickup or Fail](/out-for-pickup-or-fail) and [Handling Customer Issues During Pickup](/handling-customer-issues-during-pickup)
+- Vendor payment OTP: [Vendor Payment OTP and Confirmation Flow](/vendor-payment-otp-confirmation-flow)
+- Account deletion: [Delete Account](/delete-account) and [Logout and Account deletion](/logout-and-account-deletion)
+
+---
+
+## Issue library (by topic)
+
+Use this section as your quick reference library.  
+Each card includes symptoms, checks, resolution, escalation rules, and ready-to-use scripts.
+
+<ExpandableGroup>
+
+  <Expandable title="1. Login / OTP issues (Website + Customer App)" default-open="true">
+
+  **Typical symptoms**
+
+  - User cannot log in with phone number.
+  - OTP not received, incorrect, or expired.
+  - Error about invalid phone or too many attempts.
+
+  **What to check**
+
+  - Confirm the **phone number** the user is entering.
+  - Ask if they see **any specific error message** (invalid phone, incorrect OTP, expired, too many attempts).
+  - Confirm if issue is on **Website** or **Customer App** (both use the same auth service).
+  - Check for:
+    - Rate-limit or too many OTP attempts flags in Admin (if visible to you).
+    - Recent successful login from that number.
+
+  Refer to:
+
+  - Website: [Login and Registration](/login-registration)
+  - Customer App: [Customer App Login and Registration](/customer-app-login-registration)
+
+  **Resolution**
+
+  - For **invalid phone** errors:
+    - Confirm 10-digit Indian mobile format with no country code if required by UI.
+    - Ask the user to retry after correcting the number.
+  - For **OTP not received**:
+    - Ask user to check network and SMS inbox, including blocked/spam.
+    - Ask them to use **Resend OTP** once.
+    - If they are roaming or on DND, advise them to temporarily ensure SMS delivery from transactional senders.
+  - For **incorrect or expired OTP**:
+    - Remind them OTP is time-bound and one-time use.
+    - Ask them to request a **fresh OTP** and enter it quickly without sharing it with anyone.
+  - For **too many attempts**:
+    - Inform user they tried multiple times in a short period.
+    - Ask them to wait for the cooldown indicated on-screen before trying again.
+
+  **Escalate when**
+
+  - User does not receive OTP after multiple resend attempts **over a reasonable period** and there is no SMS outage mentioned internally.
+  - OTP appears correct and within time, but system still shows incorrect/expired.
+  - Any mismatch between Admin logs and what user reports (for example, Admin shows successful login but user still stuck).
+
+  Escalate via your standard flow to **Tech / Infra** with:
+
+  - Phone number, platform (Web/App), time window, screenshots or exact errors.
+
+  **User-facing scripts**
+
+  <Tabs>
+
+    <Tab title="English" icon="book-open">
+
+    **Login / OTP – English**
+
+    - **When OTP not received:**
+
+      "I have checked your number and the system. Our OTPs are sent by SMS to this mobile. Sometimes network or DND settings can delay them. I will request you to wait for a minute and then tap on Resend OTP once. Keep your network on and check your SMS inbox, including any blocked or spam folders."
+
+    - **When OTP is incorrect or expired:**
+
+      "Our OTP is time-bound and works only once. It looks like the previous code has expired or was entered incorrectly. I will request you to tap on Resend OTP, and as soon as you get the new SMS, enter the code exactly as shown without sharing it with anyone."
+
+    - **When too many attempts:**
+
+      "The system is showing too many OTP attempts in a short time, so it has temporarily blocked new codes for your safety. You will see a timer on the screen. Once that timer ends, you can try again with the correct phone number and a fresh OTP."
+
+    </Tab>
+
+    <Tab title="Hinglish" icon="book-open">
+
+    **Login / OTP – Hinglish**
+
+    - **When OTP not received:**
+
+      "Maine aapka number system mein check kiya hai. OTP SMS ke through aapke iss number par hi aata hai. Kabhi-kabhi network ya DND ki wajah se delay ho jata hai. Aap ek minute ruk ke ek baar Resend OTP par click kijiye, aur SMS inbox mein, spam ya blocked messages mein bhi check kijiye."
+
+    - **When OTP is incorrect or expired:**
+
+      "Hamari OTP time-bound hoti hai aur sirf ek baar kaam karti hai. Ho sakta hai pehle wali OTP expire ho gayi ho ya galat type ho gayi ho. Aap ek baar Resend OTP dabaiye, naya SMS aane ke baad jo code aaye wahi same type kijiye, kisi ke saath share mat kijiye."
+
+    - **When too many attempts:**
+
+      "System dikha raha hai ki aapne thodi der mein bahut baar OTP try kiya hai, isliye safety ke liye temporary block lag gaya hai. Screen par jo timer dikh raha hai, uske khatam hone ka wait kijiye. Fir sahi number daal ke nayi OTP se login try kijiye."
+
+    </Tab>
+
+  </Tabs>
+
+  </Expandable>
+
+  <Expandable title="2. Coupon not applying on quote screen">
+
+  **Typical symptoms**
+
+  - User adds coupon on quote screen in Customer App but:
+    - Sees error (invalid, expired, not eligible, device mismatch, network).
+    - Discount not showing in the device value.
+  - User insists coupon should work on their device or account.
+
+  **What to check**
+
+  - Confirm **coupon code** and **device model** from the user.
+  - Confirm they are on **quote screen** before order confirmation.
+  - Check coupon configuration and eligibility in your internal coupon system (if you have access) or ask Ops.
+  - Validate:
+    - Platform targeting: Mobile / Web / Both.
+    - User eligibility: first-time user vs all users.
+    - Device type compatibility.
+    - Expiry date and total usage limit.
+    - Any network or backend errors reported.
+
+  Refer to:
+
+  - Customer App coupon rules: [Apply Coupon](/apply-coupon)
+  - Additional coupon SOP: [Coupon Application](/coupon-application) and [How Coupon system works](/how-coupon-system-works)
+
+  **Resolution**
+
+  - If **platform mismatch** (for example, web-only coupon but used in app):
+    - Inform user that the coupon is valid only on the specified platform and guide them accordingly.
+  - If **user is not eligible** (for example, first-time user coupon but they have used Cashkr before):
+    - Explain that the coupon is restricted to first-time users as per campaign rules.
+  - If **device mismatch**:
+    - Clarify that the coupon is targeted only to specific device types or models.
+  - If **coupon expired or usage limit reached**:
+    - Communicate clearly that the offer has ended as per the configured validity.
+  - If **network error** during apply:
+    - Ask user to check connectivity and retry once, potentially after closing and reopening the app.
+
+  **Escalate when**
+
+  - Coupon should be valid according to the documentation and active campaigns but still fails.
+  - Discount applies for some users/devices but not for others with identical conditions.
+  - There is a mismatch between Admin/marketing dashboard config and front-end behavior.
+
+  Escalate to **Marketing / Tech** with:
+
+  - Coupon code, user phone, device model, platform, screenshots, timestamps.
+
+  **User-facing scripts**
+
+  <Tabs>
+
+    <Tab title="English" icon="book-open">
+
+    **Coupon – English**
+
+    - **When coupon is not eligible / wrong user:**
+
+      "I have checked your coupon and account. This offer is configured only for specific users, for example first-time Cashkr users. Based on your account history, the system is correctly marking this coupon as not eligible for this order."
+
+    - **When coupon is platform or device specific:**
+
+      "This coupon is linked to specific devices or platforms. For your current device / platform, the system is not applying it because it is outside the allowed list. That is why you are seeing this error."
+
+    - **When coupon is expired or usage limit reached:**
+
+      "I checked the coupon configuration. The validity or usage limit for this code is already over, so the system will not apply any more discounts with it. That is why the discount is not showing on your quote."
+
+    </Tab>
+
+    <Tab title="Hinglish" icon="book-open">
+
+    **Coupon – Hinglish**
+
+    - **When coupon is not eligible / wrong user:**
+
+      "Maine aapka coupon aur account history check kiya hai. Ye offer sirf kuch specific users ke liye set hai, jaise first-time Cashkr users. Aapke account ke hisaab se system sahi se dikha raha hai ki ye coupon is order ke liye eligible nahi hai."
+
+    - **When coupon is platform or device specific:**
+
+      "Ye coupon sirf kuch particular devices ya platform par hi kaam karta hai. Aap jis device / platform se try kar rahe hain, wo allowed list mein nahi hai, isliye system coupon apply nahi kar raha."
+
+    - **When coupon is expired or usage limit reached:**
+
+      "Maine coupon ki settings check ki hai. Iska validity period ya total usage limit khatam ho chuka hai, isliye ab ye discount apply nahi hoga. Isi wajah se aapko quote screen par discount nahi dikh raha."
+
+    </Tab>
+
+  </Tabs>
+
+  </Expandable>
+
+  <Expandable title="3. Order not visible or status mismatch (Website + Customer App)">
+
+  **Typical symptoms**
+
+  - User says they **confirmed order**, but:
+    - Order not visible in Customer App or Website.
+    - Status on app and website do not match.
+    - Actions like **Reschedule** or **Call Agent** missing.
+  - User says they did not receive order confirmation WhatsApp lead OTP.
+
+  **What to check**
+
+  - Search in Admin using **phone number** and **approximate order time**.
+  - Confirm if an **order ID** exists and current **order status**.
+  - Check if lead OTP was triggered for WhatsApp after order confirmation.
+  - Check if status is consistent with:
+
+    - Website: [Track Orders](/track-orders)
+    - Customer App: [Order Confirmation and Tracking](/order-confirmation-tracking)
+    - Core order status flow: [Order Status](/order-status) and [Order Tracking and Customer Notifications](/order-tracking-customer-notifications)
+
+  - Verify that:
+    - Newly created order should show as **Generated**.
+    - Status then flows: Generated → Assigned → Out for Pickup → In Progress → Completed / Failed.
+    - **Reschedule** is only available while **Generated** and **no vendor assigned**.
+    - **Call Agent** appears only after vendor is **Assigned**.
+
+  **Resolution**
+
+  - If order exists in Admin with **Generated** status:
+    - Ask user to refresh the app/website or log out and log in again.
+    - Confirm they are checking under the same phone number used to create the order.
+  - If status is more advanced in Admin than on user side:
+    - Inform user of the latest status as per Admin.
+    - Ask them to restart the app or refresh the page.
+  - If **Reschedule** or **Call Agent** not showing but Admin status matches gating rules:
+    - Explain the gating rule (for example, reschedule only before assignment).
+    - If still inconsistent, mark for escalation.
+
+  **Escalate when**
+
+  - Order is visible in Admin but never appears on both Website and Customer App for a long period.
+  - Status differences persist across systems (Admin shows one state, user sees another) with no temporary sync explanation.
+  - Buttons like Reschedule or Call Agent clearly violate gating rules.
+
+  Escalate to **Tech / Ops** with:
+
+  - Order ID, phone number, screenshots from user if available, and your Admin screenshots.
+
+  **User-facing scripts**
+
+  <Tabs>
+
+    <Tab title="English" icon="book-open">
+
+    **Order visibility / status – English**
+
+    - **When order exists as Generated but user cannot see it:**
+
+      "I can see your order in our system with status Generated. Sometimes the app or website view takes a moment to refresh. Please log out and log back in, or refresh the Track Orders screen once. Make sure you are logged in with the same mobile number on which you placed this order."
+
+    - **When reschedule is not available because vendor is assigned:**
+
+      "Your order is already assigned to a pickup partner, so the reschedule option is disabled as per our process. If you need to change the timing now, I will record your request and share it with the operations team to see what can be arranged."
+
+    - **When status in app is behind Admin but you know the real status:**
+
+      "In our system your order is already at the next stage. You might still be seeing the older status due to sync delay. The actual status right now is [Assigned / Out for Pickup / In Progress / Completed / Failed]. You can continue to track from the app; it should update shortly."
+
+    </Tab>
+
+    <Tab title="Hinglish" icon="book-open">
+
+    **Order visibility / status – Hinglish**
+
+    - **When order exists as Generated but user cannot see it:**
+
+      "System mein aapka order Generated status ke saath dikh raha hai. Kabhi-kabhi app ya website ko refresh hone mein thoda time lagta hai. Aap ek baar logout karke dubara login kijiye, ya Track Orders screen ko refresh kijiye. Dhyan rakhiye ki aap wahi mobile number se login ho jisse order place kiya tha."
+
+    - **When reschedule is not available because vendor is assigned:**
+
+      "Aapka order abhi pickup partner ko assign ho chuka hai, isliye process ke hisaab se reschedule option band ho jata hai. Agar aapko timing change karni hai, to main aapka request note karke operations team ko forward kar raha hoon, wo check karenge kya possible hai."
+
+    - **When status in app is behind Admin but you know the real status:**
+
+      "Hamare system mein aapka order next stage par pahunch chuka hai. App par thoda sync delay ki wajah se purana status dikh sakta hai. Abhi real status [Assigned / Out for Pickup / In Progress / Completed / Failed] hai. App thodi der mein update ho jayega."
+
+    </Tab>
+
+  </Tabs>
+
+  </Expandable>
+
+  <Expandable title="4. Pickup stage issues (Out for Pickup, door-step OTP, price disputes)">
+
+  **Typical symptoms**
+
+  - Customer says:
+    - Agent came but cannot start inspection because OTP not working.
+    - Did not receive email after order marked **Out for Pickup**.
+    - Vendor asking to skip OTP or take cash/UPI directly.
+    - Confusion or dispute about price at pickup.
+
+  **What to check**
+
+  - In Admin / Vendor App logs, check:
+
+    - Call disposition and whether vendor selected **Out for Pickup** or **Fail**.
+    - Whether **Out for Pickup** triggered customer email.
+    - Whether vendor attempted to start inspection and entered lead OTP.
+
+  - Confirm order status and any notes from vendor.
+
+  Refer to:
+
+  - Vendor flow: [Out for Pickup or Fail](/out-for-pickup-or-fail)
+  - Pickup issue playbook: [Handling Customer Issues During Pickup](/handling-customer-issues-during-pickup)
+  - Overall order flow: [Order Flow – Unlock → Pickup → Payment](/order-flow-unlock-pickup-payment)
+  - Vendor behavior rules: [Vendor Behavior Guidelines (Do’s and Don’ts at Pickup)](/vendor-behavior-guidelines-dos-donts-at-pickup)
+
+  <Callout kind="alert">
+
+  At pickup, vendor must not bypass lead OTP or change agreed prices outside approved flows. Any request to skip OTP or take cash/UPI directly is a compliance risk and must be escalated.
+
+  </Callout>
+
+  **Resolution**
+
+  - For **lead OTP not received / invalid at doorstep**:
+    - Confirm the phone number on which OTP is expected.
+    - Ask customer to stay near good network and keep SMS/WhatsApp accessible (depending on channel used for OTP/lead confirmation).
+    - If OTP expired, have vendor trigger resend from their app, then ask customer to read the latest OTP only.
+  - For **email not received after Out for Pickup**:
+    - Verify that Out for Pickup status is set.
+    - Ask customer to check **spam/junk** and promotions folders.
+    - If still missing, reassure them that order is active as per system and the agent will proceed as per schedule.
+  - For **vendor asking to skip OTP or take cash/UPI**:
+    - Clearly tell customer not to share OTP or money outside the official flow.
+    - Inform them that payment must follow Cashkr wallet and OTP-based confirmation only.
+    - Capture vendor details and escalate to Vendor Ops / Compliance.
+
+  **Escalate when**
+
+  - Vendor repeatedly fails OTP entry despite correct OTP and network.
+  - Email or notification triggers fail consistently for many leads.
+  - Any report of vendor:
+
+    - Asking to bypass OTP.
+    - Asking for cash or direct UPI instead of wallet → OTP → bank flow.
+    - Misbehaving or pressuring customer at pickup.
+
+  Use [Handling Customer Issues During Pickup](/handling-customer-issues-during-pickup) to classify and escalate.
+
+  **User-facing scripts**
+
+  <Tabs>
+
+    <Tab title="English" icon="book-open">
+
+    **Pickup stage – English**
+
+    - **When OTP not working at doorstep:**
+
+      "For your safety, the agent can start the inspection only after entering the correct OTP. I will request you to wait while the agent triggers a fresh OTP and then read out only the latest code you receive. Do not share this OTP with anyone else or on any other call."
+
+    - **When vendor asks to skip OTP or pay in cash/UPI:**
+
+      "As per Cashkr policy, your payment is processed only through our official flow. The vendor must complete OTP verification and follow wallet and bank transfer steps. Please do not hand over cash or pay via personal UPI. I am logging this and sharing it with our operations team right away."
+
+    - **When Out for Pickup email not received but status is correct:**
+
+      "Our system shows your order as Out for Pickup and assigned to an agent. Sometimes the email can land in spam or get delayed. Please check your spam or promotions folder once. Even if the email is delayed, your pickup is still active in our system."
+
+    </Tab>
+
+    <Tab title="Hinglish" icon="book-open">
+
+    **Pickup stage – Hinglish**
+
+    - **When OTP not working at doorstep:**
+
+      "Aapki safety ke liye agent sirf sahi OTP ke baad hi inspection start kar sakta hai. Main request karunga ki aap thodi der ruk jaiye, agent nayi OTP trigger karega, uske baad jo latest code aapko aaye wahi code unhe bataye. Ye OTP kisi aur ke saath share mat kijiye."
+
+    - **When vendor asks to skip OTP or pay in cash/UPI:**
+
+      "Cashkr ki policy ke hisaab se aapka payment sirf official process se hi hota hai. Vendor ko OTP verify karke wallet aur bank transfer steps follow karne hote hain. Aap cash ya personal UPI par payment mat kijiye. Main ye issue abhi operations team ko forward kar raha hoon."
+
+    - **When Out for Pickup email not received but status is correct:**
+
+      "System mein aapka order Out for Pickup aur agent ko assign dikh raha hai. Kabhi-kabhi email spam ya promotions folder mein chala jata hai ya thoda late aata hai. Aap ek baar spam/promotions folder check kijiye. Email delay hone ke baad bhi aapki pickup hamare system mein active hai."
+
+    </Tab>
+
+  </Tabs>
+
+  </Expandable>
+
+  <Expandable title="5. Payment details and payout doubts">
+
+  **Typical symptoms**
+
+  - User worried about **where money will be credited** after order completion.
+  - User wants to **change bank account or UPI ID**.
+  - Confusion about whether changes apply to current or future payouts.
+  - Complaints that payout did not reach expected account (post-completion).
+
+  **What to check**
+
+  - Open the user profile in the system and confirm:
+
+    - Saved **bank details**.
+    - Saved **UPI ID**.
+    - Last updated timestamp for payout details.
+
+  - Confirm current order status (especially if payout should already be triggered).
+  - Ensure payout details are synced across:
+
+    - Website: [Payment](/payment)
+    - Customer App: [Payment Method](/payment-method)
+    - Admin Panel profile.
+
+  **Resolution**
+
+  - Clarify that **Payment screen on Website** and **Payment Method screen on Customer App** store payout details on user profile.
+  - Explain:
+
+    - These details are used when order is **Completed** and payout is processed.
+    - Changes affect **future payouts**; they do not retroactively change where a completed payout already went.
+  - If user requests **change of details before completion**:
+    - Guide them to update bank/UPI details on the relevant Payment screen.
+    - Confirm back what is currently saved in system.
+  - If payout shows as processed in system but user claims non-receipt:
+    - Document details and treat as a payout investigation case via finance / accounts.
+    - Do not promise reversals or instant re-sends without following [Handling Refunds (Wallet and Credits Reversal Flow)](/handling-refunds-wallet-credits-reversal-flow) and internal finance SOP.
+
+  **Escalate when**
+
+  - Payout is marked as completed in system but user has no credit in bank/UPI after the normal banking window.
+  - Bank or UPI details appear corrupted or not syncing across Website, App, and Admin.
+  - Any mismatch between vendor payment OTP flow and customer-facing payout status.
+
+  Also cross-check with:
+
+  - [Return Flow and Payment Confirmation](/return-flow-payment-confirmation)
+  - [Vendor Payment OTP and Confirmation Flow](/vendor-payment-otp-confirmation-flow)
+
+  **User-facing scripts**
+
+  <Tabs>
+
+    <Tab title="English" icon="book-open">
+
+    **Payment details – English**
+
+    - **When user wants to confirm payout account:**
+
+      "On your profile we have saved the payout details you entered on the Payment / Payment Method screen. Once your order is completed, the amount will be sent to these bank / UPI details. If you want to change them for future payouts, you can update them before the order is completed."
+
+    - **When user asks if change will affect existing payout:**
+
+      "Any change you make now will apply to future payouts. If a payout is already processed for a completed order, it will go to the account that was saved at that time. For this order, I will check the status and share the expected payout timeline with you."
+
+    - **When payout marked completed but user does not see money:**
+
+      "Our system shows that the payout has been processed. Sometimes banks can take some time to reflect the credit. If you still do not see it after the usual banking time, I will log this for our accounts team to investigate with the transaction reference."
+
+    </Tab>
+
+    <Tab title="Hinglish" icon="book-open">
+
+    **Payment details – Hinglish**
+
+    - **When user wants to confirm payout account:**
+
+      "Aapke profile mein woh payout details saved hain jo aapne Payment / Payment Method screen par daali thi. Order complete hone ke baad amount isi bank account ya UPI ID par bheja jayega. Agar aap future payout ke liye details change karna chahte hain, to order complete hone se pehle update kar sakte hain."
+
+    - **When user asks if change will affect existing payout:**
+
+      "Jo changes aap ab karenge wo sirf future payouts par apply honge. Agar kisi completed order ka payout pehle hi process ho chuka hai, to wo usi account par gaya hoga jo us time saved tha. Main aapke current order ka status check karke aapko payout timeline bata deta hoon."
+
+    - **When payout marked completed but user does not see money:**
+
+      "Hamare system ke hisaab se payout process ho chuka hai. Kabhi-kabhi bank side se credit reflect hone mein thoda time lag sakta hai. Agar normal banking time ke baad bhi amount nahi aata, to main isko hamari accounts team ko transaction reference ke saath escalate karunga."
+
+    </Tab>
+
+  </Tabs>
+
+  </Expandable>
+
+  <Expandable title="6. Account deletion and logout issues">
+
+  **Typical symptoms**
+
+  - User cannot find delete account option or says delete did not complete.
+  - Customer App shows delete flow but account still active.
+  - Website deletion OTP not received or fails.
+  - User confused between **logout** and **delete account**.
+
+  **What to check**
+
+  - Confirm if user tried from **Customer App** or **Website**.
+  - Check if there is any **ongoing order** or block that might delay or affect deletion (cross-check with [Customer Account Blocking Feature](/customer-account-blocking-feature) if relevant).
+  - Review recent login and deletion attempts around the time user reports.
+
+  Refer to:
+
+  - Customer App: [Delete Account](/delete-account) and [Logout](/logout)
+  - Website: [Logout and Account deletion](/logout-and-account-deletion) and [Logout and Delete Account](/logout-and-delete-account)
+
+  **Key behaviors**
+
+  - Customer App **initiates** deletion but hands off to Website through email or deep link.
+  - Website handles actual deletion after **phone + OTP verification**.
+  - Once deletion completes, user cannot log in with that account and data is deleted/anonymized across systems.
+  - Logout only clears the session token and redirects to home; it does not delete the account.
+
+  **Resolution**
+
+  - For **Customer App delete started but not finished**:
+    - Explain that actual deletion happens on the Website after OTP verification.
+    - Guide user to open the link sent via email or to open Website and use delete account option there.
+  - For **no mail app / deep link not opening**:
+    - Ask user to open the Website in a browser, log in with the same phone and use the Website delete option directly as per [Logout and Account deletion](/logout-and-account-deletion).
+  - For **OTP not received on Website during deletion**:
+    - Handle similar to login OTP: check phone number, ask them to use resend, and wait for the SMS.
+  - For **logout confusion**:
+    - Clarify difference: logout only signs them out; account remains active.
+
+  **Escalate when**
+
+  - User has completed Website deletion flow (including OTP) but account still appears active and allows login.
+  - Deletion requests repeatedly fail due to backend errors or mismatched status across systems.
+  - Any data retention or privacy concern beyond normal deletion behavior.
+
+  **User-facing scripts**
+
+  <Tabs>
+
+    <Tab title="English" icon="book-open">
+
+    **Account deletion / logout – English**
+
+    - **When user started delete from app but account not deleted:**
+
+      "In the app we only start the delete process. Actual account deletion happens on our Website after we verify your phone with an OTP. You will need to open the link from your email or directly log in to our Website with the same number and follow the delete account option there."
+
+    - **When deep link or email does not work:**
+
+      "If the mail app or link is not opening, you can open the Cashkr website in your browser, log in with your phone number, and then use the account deletion option from there. The Website will verify with OTP and then complete the deletion."
+
+    - **When user only wants to log out:**
+
+      "If you simply want to sign out from this device, you can use the Logout option. That will clear your session and take you back to the home screen, but your account will remain active and you can log in again anytime."
+
+    </Tab>
+
+    <Tab title="Hinglish" icon="book-open">
+
+    **Account deletion / logout – Hinglish**
+
+    - **When user started delete from app but account not deleted:**
+
+      "Customer App mein hum sirf delete process start karte hain. Actual account deletion hamari Website par hota hai, jahan phone number ke OTP se verify kara jata hai. Aapko email ka link open karna hoga ya directly browser mein Cashkr website par jaa kar same number se login karke delete account option follow karna hoga."
+
+    - **When deep link or email does not work:**
+
+      "Agar mail app ya link open nahi ho raha, to aap browser mein Cashkr website khol ke phone number se login kijiye, phir wahan se account deletion option use kijiye. Website OTP se verify karegi aur fir deletion complete ho jayega."
+
+    - **When user only wants to log out:**
+
+      "Agar aapko sirf sign out karna hai, to Logout option use kijiye. Isse aapka session clear ho jayega aur aap home screen par aa jayenge, lekin aapka account active rahega aur aap dobara kabhi bhi login kar sakte hain."
+
+    </Tab>
+
+  </Tabs>
+
+  </Expandable>
+
+</ExpandableGroup>
+
+---
+
+## What to do after resolving or escalating
+
+Once you finish a call or ticket:
+
+- Confirm with the user:
+  - What will happen next.
+  - Approximate next visible change (for example, status change, email, payout).
+- Add clear internal notes using the structure from the triage **Step 5**.
+- If the issue type is new or not covered above, flag it for documentation improvement so this playbook stays up to date.

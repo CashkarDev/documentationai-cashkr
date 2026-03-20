@@ -1,0 +1,430 @@
+---
+title: Creating & Assigning Orders to Vendors
+description: End-to-end SOP for creating customer orders, assigning vendors, handling reassignments, and meeting SLAs across Ops, CX, Vendor Ops, and BD.
+---
+
+**Used by:** Operations, CX, Vendor Ops, Business Development  
+**Purpose:** Standardize how orders are created, vendors are assigned or reassigned, and SLAs are maintained for smooth pickups.
+
+<Callout kind="info">
+
+Fast and accurate vendor assignment is critical for pickup speed, order completion rate, and customer satisfaction. Follow this module as the single source of truth.
+
+</Callout>
+
+## 1. Module goals
+
+You use this module to align all teams on how orders move from creation to successful vendor pickup.
+
+Key outcomes:
+
+- Faster pickups and fewer delays
+- Accurate vendor assignment based on coverage, wallet, credits, and performance
+- Higher order completion and lower cancellation rates
+- Clear ownership across CX, Ops, Vendor Ops, and BD
+
+## 2. How orders are created
+
+Orders enter the system in two ways: directly by customers or manually by internal teams.
+
+<Tabs>
+
+<Tab title="Customer self-creation" icon="users">
+
+Customers create most orders themselves via the website or app.
+
+The customer:
+
+- Selects the device
+- Selects the device condition
+- Views the offered price
+- Enters personal details
+- Enters address and pincode
+- Confirms the order
+
+After confirmation:
+
+- The order appears in the Admin Panel under `Orders → Pending Vendor Assignment`.
+
+</Tab>
+
+<Tab title="Manual creation (Admin Panel)" icon="terminal">
+
+Sales and CX teams create orders manually when customers need help.
+
+Use manual creation when:
+
+- Customer calls and needs assistance placing an order
+- Customer cannot complete checkout on their own
+- Customer needs manual support to confirm details
+- Lead conversion requires admin-side order creation
+
+<Steps>
+
+<Step title="Open order creation in Admin Panel" icon="monitor">
+
+- Go to `Orders → Create Order` in the Admin Panel.
+
+</Step>
+
+<Step title="Capture customer and device details" icon="edit">
+
+- Enter customer details.
+- Select the device and model.
+- Select the correct device condition.
+
+</Step>
+
+<Step title="Add address and confirm" icon="map">
+
+- Enter the full address and pincode.
+- Review the price with the customer.
+- Confirm the order.
+
+</Step>
+
+<Step title="Verify order status" icon="check-circle">
+
+- Confirm that the order appears under `Orders → Pending Vendor Assignment`.
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+<Callout kind="tip">
+
+Always confirm the final price and pickup pincode with the customer before creating or confirming any order.
+
+</Callout>
+
+## 3. Vendor assignment process
+
+Once an order is in `Pending Vendor Assignment`, a vendor must be assigned either by the system or by Ops.
+
+<Tabs>
+
+<Tab title="Auto-assignment (default)" icon="zap">
+
+The system auto-assigns vendors whenever possible. This is the default and preferred method.
+
+The system selects a vendor based on:
+
+- Pincode match with the order address
+- Device type support (phone, tablet, laptop, Mac)
+- Vendor wallet and credits balance
+- Vendor SLA score and performance
+- Distance and current availability
+- Past performance and reliability
+
+When auto-assignment succeeds:
+
+- The selected vendor sees the order and can unlock it if they meet the unlock conditions.
+- Once unlocked, the vendor is officially assigned and notifications are triggered.
+
+</Tab>
+
+<Tab title="Manual assignment (Ops / Vendor Ops)" icon="settings">
+
+Ops or Vendor Ops assign vendors manually when system auto-assignment is not enough.
+
+Use manual assignment when:
+
+- No vendor is available automatically
+- Assigned vendor is unresponsive
+- Vendor needs replacement
+- Order is high-value or urgent
+- Customer has a special request that needs a specific vendor
+
+<Steps>
+
+<Step title="Open pending orders" icon="folder">
+
+- Go to `Orders → Pending Assignment`.
+
+</Step>
+
+<Step title="Start vendor assignment" icon="plus">
+
+- Select the target order.
+- Click `Assign Vendor`.
+
+</Step>
+
+<Step title="Review eligible vendors" icon="bar-chart">
+
+- View the list of eligible vendors.
+- Check each vendor’s SLA score, credits, wallet balance, and device coverage.
+
+</Step>
+
+<Step title="Assign the best vendor" icon="check-circle">
+
+- Select the vendor best suited for the order.
+- Confirm the assignment and monitor vendor acceptance within SLA.
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## 4. Vendor unlock logic
+
+A vendor must meet specific conditions before unlocking and accepting an order.
+
+Before accepting an order, the vendor must:
+
+- Maintain the minimum wallet balance needed to pay the customer
+- Have sufficient credits to unlock the order
+- Cover the requested device type (phone, laptop, tablet, Mac, and so on)
+- Be within the serviceable area range for the customer address
+
+Only when all conditions are satisfied:
+
+- The vendor can unlock the order.
+- Once unlocked, the vendor is officially assigned.
+- Both the customer and the vendor receive notifications about the assignment.
+
+<Callout kind="info">
+
+If a vendor fails unlock conditions due to wallet or credits, treat it as a supply or readiness issue and coordinate with Vendor Ops and BD as needed.
+
+</Callout>
+
+## 5. Reassignment rules
+
+Reassignment ensures the customer is not stuck when the current vendor fails to progress.
+
+Trigger reassignment when any of these apply:
+
+- **Vendor not responding**
+  - No call made to the customer within the acceptance SLA time (15 minutes)
+  - Vendor is unreachable or phone is switched off
+- **Vendor declines pickup**
+  - Vendor is not available
+  - Vendor does not support the device type
+  - Vendor raises consistent delay issues
+- **Customer requests a different time**
+  - Current vendor is not available at the new time
+  - You need to assign a new vendor who can meet the updated schedule
+- **Vendor violates behaviour rules**
+  - CX reports misbehaviour or policy violation
+  - Ops must reassign immediately and flag the vendor
+- **Vendor lacks wallet or credits**
+  - Vendor does not have enough balance or credits to continue
+  - Order must be moved to another eligible vendor
+
+<Callout kind="alert">
+
+Reassign within the SLA window to protect customer experience. Do not wait for the vendor to come back if they are clearly non-responsive or non-compliant.
+
+</Callout>
+
+## 6. Reassignment procedure (Ops / CX)
+
+Use this standard flow whenever you reassign an order from one vendor to another.
+
+<Steps>
+
+<Step title="Check current vendor status" icon="info">
+
+- Review the current vendor’s activity and timeline on the order.
+- Confirm the actual reason for delay or failure (no call, unreachable, decline, behaviour issue, or low wallet or credits).
+
+</Step>
+
+<Step title="Document the reason" icon="edit">
+
+- Add a clear internal note explaining the reason for reassignment.
+- Mention any customer communication and vendor response (or lack of response).
+
+</Step>
+
+<Step title="Initiate reassignment" icon="settings">
+
+- Click `Reassign Vendor` on the order.
+- Open the list of eligible replacement vendors.
+
+</Step>
+
+<Step title="Select the next best vendor" icon="users">
+
+- Choose the next best eligible vendor based on:
+  - SLA score and performance
+  - Credits and wallet balance
+  - Device coverage and service area
+
+</Step>
+
+<Step title="Notify the customer" icon="phone">
+
+- Inform the customer about the vendor change.
+- Share updated expectations for call and pickup timing.
+
+</Step>
+
+<Step title="Monitor the new vendor" icon="check-circle">
+
+- Track the new vendor’s response and actions.
+- Ensure they accept, call, and reach the customer within SLA.
+
+</Step>
+
+</Steps>
+
+## 7. SLA standards for vendor assignment and pickup
+
+Use these SLAs as hard timelines for tracking vendor performance and deciding when to intervene.
+
+- **Vendor acceptance after assignment:** within 15 minutes  
+  Vendor must accept the order after assignment or unlocking within 15 minutes.
+
+- **Vendor calling the customer:** within 20 minutes  
+  After accepting the order, the vendor must call the customer within 20 minutes.
+
+- **Vendor reaching the customer:**
+  - Within the scheduled appointment time, or
+  - Within 60 minutes if the customer selected ASAP pickup
+
+- **Reassignment when vendor fails:**
+  - Start reassignment within 10 minutes after detecting SLA failure or non-response
+
+<Callout kind="tip">
+
+CX and Ops should monitor these four checkpoints: assignment, acceptance, first call, and reach time. Escalate or reassign as soon as any SLA is missed.
+
+</Callout>
+
+## 8. Team responsibilities
+
+Clear ownership across teams prevents orders from getting stuck.
+
+<Tabs>
+
+<Tab title="CX" icon="users">
+
+CX owns customer communication and first-line monitoring.
+
+CX must:
+
+- Monitor order tracking for all active orders
+- Ensure vendor calls the customer within the defined SLA
+- Contact the vendor if there is no update or missed call SLA
+- Communicate ETA and updates clearly to the customer
+- Trigger reassignment if the vendor is unresponsive or non-compliant
+- Add internal notes for every action and conversation
+- Update the customer on vendor details, changes, and next steps
+
+</Tab>
+
+<Tab title="Operations" icon="settings">
+
+Ops owns assignment logic, escalations, and overall flow.
+
+Ops must:
+
+- Monitor all pending and assigned orders in the system
+- Ensure timely vendor acceptance and response
+- Approve or execute vendor reassignment when needed
+- Support CX in escalated or complex issues
+- Coordinate with Vendor Ops when there are vendor shortages or repeated SLA issues
+
+</Tab>
+
+<Tab title="Vendor Ops" icon="database">
+
+Vendor Ops owns vendor supply, quality, and readiness.
+
+Vendor Ops must:
+
+- Ensure enough active vendors across all areas
+- Monitor vendor availability per city and device type
+- Support reassignment when local supply is low
+- Handle vendors who repeatedly miss orders, SLAs, or behaviour standards
+
+</Tab>
+
+<Tab title="Business Development" icon="bar-chart">
+
+BD ensures overall serviceability so that incoming orders always have vendor coverage.
+
+BD must:
+
+- Identify pincode gaps where orders are created but no vendors are available
+- Coordinate with Vendor Ops to onboard vendors for uncovered or weak areas
+- Track high-value areas that need more vendor supply
+- Share weekly coverage reports with Ops and management
+- Support expansion into new cities to avoid unassigned orders
+
+</Tab>
+
+</Tabs>
+
+## 9. Notifications during assignment
+
+Timely notifications keep both customer and vendor aligned on the order status.
+
+### Customer notifications
+
+The customer receives:
+
+- **Order created:** confirmation that the order is placed and under processing
+- **Vendor assigned:** once a vendor unlocks and accepts the order
+- **Vendor en route:** when the vendor taps `Start Trip` in the app
+
+Clear and prompt communication builds trust and improves conversion to successful pickup.
+
+### Vendor notifications
+
+The vendor receives:
+
+- **New order available:** when the system or Ops routes an order to the vendor
+- **Unlock requirements:** wallet and credits conditions, device type, and other criteria
+- **Customer details after unlock:** contact information and address after successful unlock
+- **Route navigation:** access to the route and location for pickup
+- **Payment process guidelines:** clear guidance on how to complete payment at pickup
+
+## 10. One-page summary (training card)
+
+Use this as a quick recap during training or daily stand-up.
+
+**Order creation**
+
+- Customer self-creates via website or app  
+- CX or Sales creates manually in Admin Panel when needed  
+- All new orders move to `Pending Vendor Assignment`
+
+**Vendor assignment**
+
+- Default: system auto-assignment based on pincode, device, wallet, credits, SLA score, distance, and performance  
+- Manual: Ops or Vendor Ops assign when auto-assignment fails or special handling is required  
+- Vendor must have enough wallet balance and credits and must cover the device type  
+- Vendor unlocks the order, becomes officially assigned, and notifications go out
+
+**Reassignment**
+
+- Trigger reassignment when vendor is:
+  - Unresponsive or not calling within SLA
+  - Not available or not supporting device type
+  - Violating SLA or behaviour rules
+  - Out of coverage or lacking wallet or credits
+- Follow the reassignment procedure and always log internal notes
+
+**Team roles**
+
+- **CX:** tracking orders and handling all customer communication
+- **Ops:** assignment, reassignment, and escalation management
+- **Vendor Ops:** vendor supply, quality control, and compliance
+- **BD:** pincode coverage, vendor onboarding, and expansion planning
+
+<Callout kind="info">
+
+If you are unsure whether to wait longer or reassign, default to protecting the customer experience: check SLAs, document the situation, and escalate to Ops or Vendor Ops.
+
+</Callout>

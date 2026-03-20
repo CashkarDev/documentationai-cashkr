@@ -1,0 +1,262 @@
+---
+title: Agent Assignment Script (Explaining Pickup Agent Flow)
+description: Training script for explaining how pickup agents are auto-assigned after unlock, how tracking, failures, payments, and escalations work, and how vendor credits stay safe.
+---
+
+**Used by:** Vendor Management / Operations Team  
+**Purpose:** Explain the pickup agent assignment and visit flow clearly to vendors, reduce confusion, and protect trust around credits and payments.
+
+## Key rules to remember
+
+<Callout kind="info">
+
+Pickup agents are assigned automatically by the system after the vendor unlocks an order. Vendors do not choose or assign pickup agents manually.
+
+</Callout>
+
+<Callout kind="alert">
+
+Only Cashkr-authorized pickup agents can complete pickups. Do not commit or encourage any personal or third-party pickup outside the Cashkr network.
+
+</Callout>
+
+<Callout kind="tip">
+
+Reassure vendors that their credits and payouts stay safe when issues are due to agent error or system-level problems. Always mention logs, photos, and timestamps.
+
+</Callout>
+
+<Callout kind="info">
+
+For delays or missed pickups beyond the standard time window, check the assigned agent status, then trigger escalation or reassignment as per SLA.
+
+</Callout>
+
+## What happens after vendor unlocks an order
+
+Use this mental model to explain the flow confidently in your own words.
+
+<Steps>
+
+<Step title="Order unlock and credit deduction" icon="check-circle">
+
+- Vendor unlocks the order in the Vendor App.
+- The system deducts the required credits from the vendor wallet instantly.
+- The order moves into pickup processing.
+
+</Step>
+
+<Step title="Automatic pickup agent assignment" icon="users">
+
+- System auto-assigns a verified Cashkr pickup agent based on the customer pincode and vendor coverage.
+- Assignment usually completes within 10 minutes.
+- The agent receives customer and device details directly in the pickup app.
+
+</Step>
+
+<Step title="Pickup visit and inspection" icon="monitor">
+
+- The assigned agent visits the customer within the scheduled time slot.
+- During the visit, the agent verifies device condition, captures photos, and logs GPS/timestamp proof.
+- The agent updates the pickup status in the system from their app.
+
+</Step>
+
+<Step title="Payment and wallet deduction" icon="payment">
+
+- After successful inspection, the agent confirms the final payment in the Cashkr app.
+- The system deducts the payout amount from the vendor wallet and pays the customer.
+- The vendor can see this under `Transactions → Customer Payouts` in the Vendor App.
+
+</Step>
+
+<Step title="Order completion or fail" icon="check">
+
+- If everything is valid, the order moves to completed status with all proofs logged.
+- If the pickup fails (customer unavailable, mismatch, refusal, or agent error), the agent selects the fail reason with notes and proof.
+- The system and Ops team review fail reasons within 24 hours.
+
+</Step>
+
+<Step title="Reassignment or escalation (if delayed or failed)" icon="alert-triangle">
+
+- If the first agent is delayed beyond TAT or marks an incorrect status, Ops verifies logs and can reassign the order to another available agent.
+- For valid failures not caused by the vendor, credits are reversed as per policy, usually within 24 hours.
+- Keep the vendor informed that escalations are handled by the Ops and logistics teams.
+
+</Step>
+
+</Steps>
+
+## Script library: common vendor questions
+
+Use these expandable sections during training or as a quick-search script library.  
+Each response is written so you can read it out or paste it into chat directly.
+
+<ExpandableGroup>
+
+<Expandable title='1. "Who will go for the pickup once I unlock the order?"' default-open="true">
+
+> Once you unlock an order, a Cashkr pickup agent is automatically assigned to that order based on the customer pincode and your area coverage.  
+>  
+> The assignment happens through our internal system, so you do not need to manually assign or contact anyone.  
+>  
+> The pickup agent gets all customer and device details instantly in their app and is responsible for completing the visit within the scheduled time.
+
+</Expandable>
+
+<Expandable title='2. "Do I have to assign the pickup person myself?"'>
+
+> No, you do not need to assign anyone manually.  
+>  
+> Our system automatically links your order with a verified Cashkr pickup partner who is active in that pincode.  
+>  
+> Once assigned, the agent gets a notification in their app and is required to visit the customer within the committed time window.
+
+</Expandable>
+
+<Expandable title='3. "It has been a while – the pickup agent has not come yet."'>
+
+> I understand your concern. Sometimes there can be short delays due to traffic, previous appointments, or clustering in that area.  
+>  
+> I will first check which pickup partner is assigned to your order and see their latest status update.  
+>  
+> If the visit is delayed beyond the standard time, I will raise this with our logistics team and request either a status update or reassignment so the pickup is completed as soon as possible.  
+>  
+> You will receive the updated status in your app once the agent is reassigned or the visit is confirmed.
+
+If the delay is verified beyond TAT, use this follow-up line:
+
+> Thank you for your patience. I have reported the delay to our logistics team. They are reassigning this order to another available agent right now. You will see the updated agent details and status in your app shortly.
+
+</Expandable>
+
+<Expandable title='4. "How will I know the pickup agent details?"'>
+
+> You can see the assigned pickup agent details directly in your Vendor App.  
+>  
+> Open the specific order and scroll down to the `Pickup Details` section. There you will see the agent name, contact number, and pickup schedule.  
+>  
+> The agent will also call you before starting the pickup to coordinate if needed.
+
+</Expandable>
+
+<Expandable title='5. "What if the pickup agent fails or marks a wrong status?"'>
+
+> Every pickup is tracked through the system and verified with photo, timestamp, and GPS proof.  
+>  
+> If you feel an agent has wrongly marked the order as failed or incomplete, you can immediately raise it with us through support.  
+>  
+> Our team will check the backend logs and the agent’s visit proof. If we confirm that the failure was due to agent error or incorrect marking, we will correct the order status and reverse your credits as per policy.  
+>  
+> Your credits remain safe in cases where the issue is on the agent or system side.
+
+</Expandable>
+
+<Expandable title='6. "Customer says no one came for pickup."'>
+
+> Let me check that for you right away.  
+>  
+> Our agents always log their visit attempts with timestamp and GPS location. It is also possible that the customer may have missed the call or was unavailable during the slot.  
+>  
+> I will review the agent’s visit logs and confirm whether a visit was made, and at what time.  
+>  
+> If we see that the customer was not available or the slot was missed, we can help you reschedule the pickup to a new time that works for the customer.
+
+</Expandable>
+
+<Expandable title='7. "Can I assign my own person for pickup?"'>
+
+> Currently, all pickups are handled only by Cashkr-authorized agents. This is important for quality, safety, and payment verification.  
+>  
+> Personal staff or third-party pickups are not allowed. This ensures a standard process, correct device checks, and secure payout tracking for every customer.  
+>  
+> If you have any issues with pickup coverage in your area, you can let us know and we will check what options are available from our side.
+
+</Expandable>
+
+<Expandable title='8. "How do I know if payment is done after pickup?"'>
+
+> Once the pickup agent completes the inspection and confirms the final value, they will mark the payment as completed in the Cashkr app.  
+>  
+> The customer payment amount is then automatically deducted from your Wallet balance.  
+>  
+> You will receive an instant notification, and you can always see the entry in your Vendor App under `Transactions → Customer Payouts`.  
+>  
+> You do not need to do any manual payment confirmation from your side.
+
+</Expandable>
+
+<Expandable title='9. "Can I talk directly to the pickup agent?"'>
+
+> Yes, you can contact the assigned pickup agent using the mobile number shown inside the order details in your app.  
+>  
+> For any change in pickup time, route issues, or disputes, request the agent to update the same in the app and also inform us through support.  
+>  
+> Keeping all changes and issues recorded in the app helps us track responsibility clearly and protect your credits.
+
+</Expandable>
+
+<Expandable title='10. "What happens if the agent marks the pickup failed?"'>
+
+> When an agent marks a pickup as failed, the system captures the fail reason along with the visit proof.  
+>  
+> If the failure reason is valid, like the customer being unavailable, the device not matching details, or the customer refusing, the order will close automatically and your credits will be reversed within 24 hours as per policy.  
+>  
+> If we find that the failure is due to an agent-side issue or incorrect marking, we will reopen the order and can assign another pickup agent.  
+>  
+> In both cases, your credits remain protected when the problem is not from your side.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Internal quick reference: stages and SLAs
+
+Use this section as an internal cheat sheet when handling escalations or explaining timelines.
+
+### Stage 1: Order unlocked
+
+- **Action:** Vendor unlocks the order; required credits are deducted from the vendor wallet.
+- **Owner:** Vendor.
+- **SLA:** Instant.
+
+### Stage 2: Pickup assigned
+
+- **Action:** System auto-assigns the nearest verified pickup agent based on pincode and coverage.
+- **Owner:** System.
+- **SLA:** Within 10 minutes of unlock.
+
+### Stage 3: Pickup visit and inspection
+
+- **Action:** Agent visits the customer location, verifies device, captures photos, and logs GPS/timestamp.
+- **Owner:** Pickup agent.
+- **SLA:** Within the scheduled pickup slot.
+
+### Stage 4: Payment and wallet deduction
+
+- **Action:** Agent completes inspection and confirms payment in the app; wallet debits and customer payout are processed automatically.
+- **Owner:** System.
+- **SLA:** Instant after successful pickup completion.
+
+### Stage 5: Order completion or fail review
+
+- **Action:** System and Ops validate proofs for completed and failed pickups, then finalize status and credit treatment.
+- **Owner:** System + Ops team.
+- **SLA:** Within 24 hours.
+
+### Stage 6: Reassignment or escalation
+
+- **Action:** For delays beyond SLA or disputed failures, Ops checks logs and, if needed, reassigns the pickup to another agent or escalates to logistics.
+- **Owner:** Ops team.
+- **SLA:** Within 2 hours from identifying the delay or escalation.
+
+## Key tone phrases (use these to keep trust)
+
+Use these lines across conversations to reinforce process, safety, and transparency.
+
+- "The pickup agent gets the details automatically, you do not need to assign anyone manually."
+- "Your credits remain safe; we will verify the agent logs and visit proof."
+- "All pickups are verified with timestamp, photo, and location proof from the agent app."
+- "We will make sure your pickup is completed smoothly and within the committed time."
+- "You can always track your pickup and agent details directly in the Vendor App."
