@@ -1,0 +1,363 @@
+---
+title: Understanding Vendor Credits & Wallet System
+description: Learn how the vendor wallet and credits work together for order unlock, customer payment via OTP, and how refunds and reversals are handled in admin.
+---
+
+## Overview
+
+Vendor Operations and Support teams work with two separate balances in the Cashkr Vendor App: a **wallet** with real money for customer payments and **credits** as virtual commission points for unlocking orders.
+
+Both systems work together so that vendors can pay customers at pickup while Cashkr collects commission upfront through credits. Unlocking an order always depends on both balances.
+
+<Callout kind="info">
+
+**Who is this for:** Vendor Operations, Vendor Support, Finance, and Product teams handling vendor queries, training, or refunds related to wallet and credits.
+
+</Callout>
+
+---
+
+## Wallet: real money balance
+
+### What the wallet is
+
+The wallet is a real-money balance linked to a virtual bank account in Cashkr’s banking setup.
+
+- Each vendor has a mapped **virtual account**.
+- When the vendor deposits money, the bank sends an **auto-update**.
+- The wallet balance in the Vendor App updates almost instantly based on this bank notification.
+
+### How the wallet is funded
+
+Vendors add money to the wallet by depositing into their assigned virtual account.
+
+<Callout kind="tip">
+
+Treat the wallet as **pre-loaded payout money**. Vendors must keep enough balance here to pay customers when orders complete successfully.
+
+</Callout>
+
+Key points about funding:
+
+- Top-ups happen via **bank deposit into the virtual account**.
+- There is **no manual admin action** needed to reflect the top-up once the bank reports it.
+- Cashkr does **not charge extra fees** for adding money to the wallet.
+
+If you need to refer to any minimum or recommended top-up levels in training, align with the latest internal policy rather than quoting fixed numbers here.
+
+### What the wallet is used for
+
+The wallet is used only for **paying customers** when an order is successfully picked up and closed.
+
+The system checks or uses wallet balance in three main moments:
+
+- When the vendor tries to **unlock an order** (to confirm they can afford the payout).
+- When the vendor **pays the customer** at pickup via OTP.
+- When **admin processes a wallet refund or adjustment** after order failures or corrections.
+
+### Key wallet rules
+
+<Callout kind="alert">
+
+- Wallet balance is **real money** belonging to the vendor.
+- Vendors **cannot withdraw** wallet balance themselves. Withdrawal is allowed **only during account closure** and is handled by admin.
+- Use wallet **only** to pay customers for Cashkr orders, not for any other transfers.
+
+</Callout>
+
+---
+
+## Credits: virtual commission points
+
+### What credits are
+
+Credits are **non-money digital points** that vendors spend to unlock order details in the Cashkr Partner Portal.
+
+- Credits represent the **commission paid by the vendor to Cashkr** for taking that order.
+- Credits are **deducted**, not earned. Vendors spend them to unlock orders.
+
+### How credits are added
+
+Credits are added to the vendor account through the usual **Buy Credits** flow in the Vendor App.
+
+At any point:
+
+- The current credit balance is **stored on the vendor account**.
+- Vendors can **view credits in the app**.
+- Internal teams can review balances through the admin panel.
+
+### What credits are used for
+
+Vendors use credits to **unlock order details** such as:
+
+- Customer name and contact details.
+- Device model and configuration.
+- Offered price and inspection checklist.
+- Pickup address and time window.
+
+Once an order is unlocked:
+
+- Credits are **deducted instantly**.
+- Only **one vendor** gets the unlock (first come, first served).
+
+### Key credit rules
+
+<Callout kind="info">
+
+- Vendors **do not earn** credits from completing orders; they **only spend** credits to unlock them.
+- Credits **cannot be transferred** between vendor accounts.
+- Credits are **not convertible to cash or wallet balance**.
+
+</Callout>
+
+Credits are typically tied to order type and value. For example:
+
+- Higher-value devices (e.g., recent iPhones or MacBooks) generally require **more credits**.
+- Lower-value or budget devices require **fewer credits**.
+
+Exact credit values per device are managed by the **Pricing team** and may change.
+
+---
+
+## How unlock eligibility is checked
+
+When a vendor taps **Unlock** on an order, the system validates both credits and wallet before granting access.
+
+<Steps>
+
+  <Step title="Check credits" icon="info">
+
+  - System checks whether the vendor has **enough credits** required for that specific order.
+  - If credits are **insufficient**, the unlock fails and the vendor must **buy more credits** or choose a different order.
+
+  </Step>
+
+  <Step title="Deduct credits" icon="minus">
+
+  - If credits are sufficient, the system **immediately deducts** the required credits from the vendor account.
+  - This deduction happens **before** vendor sees full customer details.
+
+  </Step>
+
+  <Step title="Check wallet balance" icon="info">
+
+  - After credit deduction, the system checks the vendor’s **wallet balance**.
+  - Wallet must be high enough to cover the **expected customer payout** after inspection.
+  - If wallet is **insufficient**, the unlock attempt fails, and the system does **not** proceed to full unlock.
+
+  </Step>
+
+  <Step title="Unlock successful" icon="check-circle">
+
+  - If both credits and wallet pass checks, the order is **unlocked** for that vendor.
+  - Vendor now sees **customer details, device model, quoted price, address, and inspection checklist**.
+  - Only **one vendor** can unlock a given order. Once unlocked, it is no longer available to others.
+
+  </Step>
+
+</Steps>
+
+<Callout kind="tip">
+
+When a vendor cannot unlock, always check **both**: credit balance and wallet balance, and whether the vendor is on hold or blocked.
+
+</Callout>
+
+---
+
+## Customer payment flow (wallet → OTP)
+
+Customer payments flow from the vendor wallet to the customer’s bank account using an OTP verification step.
+
+<Steps>
+
+  <Step title="Inspect device and finalize price" icon="info">
+
+  - Vendor visits the customer and **inspects the device** using the app checklist.
+  - The app shows the **final price** after any requote or condition updates.
+
+  </Step>
+
+  <Step title="Initiate payment from wallet" icon="play-circle">
+
+  - Vendor taps **Pay Now** in the Vendor App.
+  - The system prepares a **wallet → customer bank** transfer for the final price amount.
+
+  </Step>
+
+  <Step title="OTP sent to customer" icon="terminal">
+
+  - Customer receives an **OTP via SMS** on the registered mobile number.
+  - Vendor must ask the customer to **share the OTP** only after confirming the amount shown.
+
+  </Step>
+
+  <Step title="Vendor enters OTP and confirms" icon="keyboard">
+
+  - Vendor enters the OTP into the app.
+  - On correct OTP entry, the system triggers the **wallet debit** and payment to the customer’s bank account.
+
+  </Step>
+
+  <Step title="Payment completion and traceability" icon="check-circle">
+
+  - Payment is processed instantly **from wallet to customer bank**.
+  - The transaction is **logged in vendor app, admin panel, and bank virtual account**.
+  - Support and finance teams can use these logs to investigate any disputes.
+
+  </Step>
+
+</Steps>
+
+<Callout kind="alert">
+
+- **No manual approval** is needed once OTP is verified.
+- Always confirm that the OTP is **received by and shared from the customer** only.
+- If the order still shows pending after payment, use logs in the **admin panel** and bank statements to confirm the transaction.
+
+</Callout>
+
+---
+
+## Refunds and reversals (admin-handled)
+
+Refunds and balance corrections for vendors are handled **inside the Cashkr admin panel**, not by sending money back from the bank to the vendor directly.
+
+Two main components can be adjusted:
+
+- **Credits** that were deducted to unlock the order.
+- **Wallet** amounts that were debited to pay the customer.
+
+### Wallet refunds (vendor wallet refunds)
+
+Vendor wallet refunds apply when **vendors paid customers from their wallet** but the order is later **reversed or corrected** and the vendor balance must be restored.
+
+Typical triggers for wallet refunds:
+
+- Order failed after payment due to **quality issues, documentation problems, or system errors**.
+- Payment went through, but the order needed to be **cancelled or rolled back** by Cashkr.
+- Any mischarge or duplicate debit that needs correction.
+
+When you process a wallet refund from admin:
+
+- Cashkr adjusts the **wallet balance back up**.
+- There is **no direct bank transfer** back to the vendor for this; it is an in-system wallet correction.
+
+### Credit reversals (vendor credit reversals)
+
+Vendor credit reversals apply when **credits were deducted to unlock an order** and those credits must be returned.
+
+Typical triggers for credit reversals:
+
+- Order could not proceed **for reasons not under vendor control** (system issue, wrong listing, customer unavailability at the start).
+- Order was mistakenly unlocked due to **internal error** and quickly cancelled from the Cashkr side.
+- Any training or test case where vendor credits should not be consumed.
+
+When you process a credit reversal from admin:
+
+- Credits are **added back** to the vendor’s credit balance.
+- No wallet or bank movement is involved.
+
+### Combined refunds (credits + wallet)
+
+In many failure or cancellation scenarios, you may need to restore **both** credits and wallet.
+
+Typical combined case:
+
+- Vendor unlocked an order (**credits deducted**).
+- Vendor visited and paid the customer (**wallet debited**).
+- Order was later **failed or cancelled** due to process, pricing, or system reasons where vendor should not lose either commission or payout.
+
+In such cases, an admin should:
+
+1. Review order timeline and logs (unlock, OTP payment, status changes).
+2. Decide whether to apply:
+   - **Only credit reversal**, or
+   - **Only wallet refund**, or
+   - **Both** credit reversal and wallet refund.
+3. Apply the necessary adjustments in the **admin panel** for that order.
+
+<Callout kind="info">
+
+Always document the **reason** for any refund or reversal in the admin notes. This helps with audits and handling future vendor disputes.
+
+</Callout>
+
+---
+
+## Common scenarios (support checklist)
+
+Use this section as a quick checklist when handling vendor tickets or calls.
+
+### Scenario 1: Vendor says “Credits deducted but order failed”
+
+- Check the **order history and status** in admin.
+- Confirm whether the vendor **unlocked only**, or also **paid the customer**.
+- Decide refund type:
+  - If only unlock happened → **credit reversal**.
+  - If unlock + payment happened and order was reversed → **credit reversal + wallet refund** as per policy.
+- Process the necessary refund(s) in admin.
+- Update the vendor with:
+  - What was reversed (credits, wallet, or both).
+  - Approximate time for balances to reflect in their app.
+
+### Scenario 2: Vendor cannot unlock an order
+
+- Check **credit balance**.
+- Check **wallet balance** against expected customer payout.
+- Check if vendor is **blocked, on hold, or limited** in any way.
+- If balances are low:
+  - Ask vendor to **buy credits** if credits are insufficient.
+  - Ask vendor to **top up wallet** if wallet is insufficient.
+- If balances and status look fine, flag to tech/product as a potential **system issue**.
+
+### Scenario 3: Vendor paid customer but order still shows pending
+
+- Ask vendor to confirm:
+  - **OTP was received by the customer**.
+  - **Correct OTP** was entered.
+  - Any **error message** seen on the app.
+- In admin panel:
+  - Check **wallet transaction logs** for that order.
+  - Confirm whether the **wallet debit** occurred.
+- If wallet was debited and customer received money but order status did not update:
+  - Manually **update order status** as per policy.
+  - Ensure future issues are flagged to tech for **status sync checks**.
+
+### Scenario 4: Vendor wants to withdraw wallet money
+
+- Explain that:
+  - Wallet money is meant for **customer payouts only**.
+  - Vendors **cannot withdraw** wallet balance on demand.
+- If the vendor wants to stop working with Cashkr:
+  - Inform them that withdrawal or settlement can happen **only during account closure**.
+  - Escalate to **Vendor Operations / Finance** to manage the closure and settlement.
+
+---
+
+## Quick recap for training
+
+Use this as a summary slide or closing script during vendor or internal training.
+
+- **Wallet (real money):**
+  - Used to **pay customers**.
+  - Funded via **bank deposit into virtual account**.
+  - **No self-withdrawal**; settlement only at account closure.
+  - Checked during **unlock eligibility** and at **payment via OTP**.
+
+- **Credits (virtual points):**
+  - Used to **unlock orders**.
+  - **Deducted instantly** when unlocking.
+  - **Not transferable**, not convertible to cash.
+  - Can be **reversed by admin** when orders fail for valid reasons.
+
+- **Unlock requirement:**
+  - Vendor needs **enough credits + enough wallet** to unlock.
+
+- **Payment flow:**
+  - Vendor inspects device → taps Pay Now → customer receives OTP → vendor enters OTP → **wallet → customer bank**.
+
+- **Refund logic:**
+  - Use **credit reversals** when unlock credits should be returned.
+  - Use **wallet refunds** when payout from wallet must be restored.
+  - Use **both** when vendor should not lose either credits or payout for a failed/cancelled order.

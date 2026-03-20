@@ -966,6 +966,10 @@
             "group": "Training",
             "pages": [
               {
+                "title": "Understanding Vendor Credits and Wallet System",
+                "path": "understanding-vendor-credits-and-wallet-system"
+              },
+              {
                 "title": "Scripts Master Sheet",
                 "path": "scripts-master-sheet"
               },
