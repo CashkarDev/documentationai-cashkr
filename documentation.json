@@ -832,6 +832,10 @@
             "group": "Roles Tasks",
             "pages": [
               {
+                "title": "CRM Expert",
+                "path": "crm-expert"
+              },
+              {
                 "title": "Shahid Shaikh",
                 "path": "shahid-shaikh"
               },
@@ -850,10 +854,6 @@
               {
                 "title": "Accounts Associate",
                 "path": "accounts-associate"
-              },
-              {
-                "title": "CRM Expert / Lifecycle Marketing Specialist",
-                "path": "crm-expert-/-lifecycle-marketing-specialist"
               },
               {
                 "title": "Umair Kherade",
