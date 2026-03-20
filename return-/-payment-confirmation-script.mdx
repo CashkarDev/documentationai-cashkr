@@ -1,417 +1,377 @@
 ---
 title: Return / Payment Confirmation Script
-description: Handle payment confirmation and return requests calmly while following OTP payment, verification, and approval rules.
+description: >-
+  Handle payment confirmation and return requests calmly while following OTP
+  payment, verification, and approval rules.
 ---
+<Callout kind="info" collapsed="false">
+  **Used by:** CX, Support, Vendor Ops, Finance (calls, WhatsApp, email, in‑app chat)
 
-<Callout kind="info">
+  **When to use:**
 
-**Used by:** CX, Support, Vendor Ops, Finance (calls, WhatsApp, email, in‑app chat)  
+  - Customer says payment not received after pickup
 
-**When to use:**  
-- Customer says payment not received after pickup  
-- Customer asks for return or refund after OTP payment  
-- Vendor or internal team raises payment/return confusion  
+  - Customer asks for return or refund after OTP payment
 
-**Goal:**  
-Keep the customer calm, confirm real payment status, and follow return and refund SOPs without making wrong promises.
+  - Vendor or internal team raises payment/return confusion
 
+  **Goal:**\
+  Keep the customer calm, confirm real payment status, and follow return and refund SOPs without making wrong promises.
 </Callout>
 
-<Callout kind="alert">
+<Callout kind="alert" collapsed="false">
+  **Non‑negotiable rules**
 
-**Non‑negotiable rules**
+  - Always **verify payment status** in system and logs before committing anything.
 
-- Always **verify payment status** in system and logs before committing anything.  
-- **Do not promise instant refund or return.** Say you will verify with Ops/Finance.  
-- **No return** if customer has **already confirmed OTP and payment is successful** and it is just a change-of-mind.  
-- Payment must be through **wallet → OTP → bank transfer inside app** only. No cash, UPI, or offline transfers.
+  - **Do not promise instant refund or return.** Say you will verify with Ops/Finance.
 
+  - **No return** if customer has **already confirmed OTP and payment is successful** and it is just a change-of-mind.
+
+  - Payment must be through **wallet → OTP → bank transfer inside app** only. No cash, UPI, or offline transfers.
 </Callout>
 
 ## Before you speak (internal checklist)
 
 <Steps>
+  <Step title="Stay calm and open tools" icon="terminal" title-type="p">
+    - Take a breath before responding.
 
-  <Step title="Stay calm and open tools" icon="terminal">
+    - Open Admin, Vendor App, and any relevant dashboards.
 
-  - Take a breath before responding.  
-  - Open Admin, Vendor App, and any relevant dashboards.  
-  - Keep Slack/WhatsApp internal channels ready for Ops/Finance escalation.
-
+    - Keep Slack/WhatsApp internal channels ready for Ops/Finance escalation.
   </Step>
 
-  <Step title="Identify the caller and context" icon="users">
+  <Step title="Identify the caller and context" icon="users" title-type="p">
+    - Confirm customer or vendor name and mobile number.
 
-  - Confirm customer or vendor name and mobile number.  
-  - Ask for order ID or registered number used on Cashkr.  
-  - Check if this is about **payment not received** or **return/refund**.
+    - Ask for order ID or registered number used on Cashkr.
 
+    - Check if this is about **payment not received** or **return/refund**.
   </Step>
 
-  <Step title="Verify payment status first" icon="database">
+  <Step title="Verify payment status first" icon="database" title-type="p">
+    - Check vendor wallet deduction and payout logs.
 
-  - Check vendor wallet deduction and payout logs.  
-  - Check payment timestamp, transaction ID, and status.  
-  - Confirm if bank transfer shows as successful or still pending.  
-  - If no valid payment found, treat as **no payment**. No return flow.
+    - Check payment timestamp, transaction ID, and status.
 
+    - Confirm if bank transfer shows as successful or still pending.
+
+    - If no valid payment found, treat as **no payment**. No return flow.
   </Step>
 
-  <Step title="Check return eligibility (only if payment confirmed)" icon="shield">
+  <Step title="Check return eligibility (only if payment confirmed)" icon="shield" title-type="p">
+    - Confirm reason for return; check if it is **system/vendor fault** or **customer regret**.
 
-  - Confirm reason for return; check if it is **system/vendor fault** or **customer regret**.  
-  - Remember: **no return** for change-of-mind or regret after correct OTP payment.  
-  - Follow `/return-flow-payment-confirmation` SOP for eligibility rules.
+    - Remember: **no return** for change-of-mind or regret after correct OTP payment.
 
+    - Follow `/return-flow-payment-confirmation` SOP for eligibility rules.
   </Step>
 
-  <Step title="Plan your answer before speaking" icon="settings">
+  <Step title="Plan your answer before speaking" icon="settings" title-type="p">
+    - Decide which script path:
 
-  - Decide which script path:  
-    - Payment not received (under verification)  
-    - Payment confirmed but not yet credited  
-    - Return not eligible  
-    - Return under review or approved  
-  - Keep your language simple, slow, and reassuring.
+      - Payment not received (under verification)
 
+      - Payment confirmed but not yet credited
+
+      - Return not eligible
+
+      - Return under review or approved
+
+    - Keep your language simple, slow, and reassuring.
   </Step>
-
 </Steps>
 
 ## Live call flow (high-level)
 
 <Steps>
+  <Step title="Greet and acknowledge concern" icon="phone" title-type="p">
+    - Use standard greeting + name.
 
-  <Step title="Greet and acknowledge concern" icon="phone">
+    - Acknowledge the issue: payment or return concern.
 
-  - Use standard greeting + name.  
-  - Acknowledge the issue: payment or return concern.  
-  - Example: "I understand you are worried about your payment; I will check this for you."
-
+    - Example: "I understand you are worried about your payment; I will check this for you."
   </Step>
 
-  <Step title="Clarify and collect details" icon="edit">
+  <Step title="Clarify and collect details" icon="edit" title-type="p">
+    - Ask: "Is this about payment not received, or you want to return after payment?"
 
-  - Ask: "Is this about payment not received, or you want to return after payment?"  
-  - Collect: order ID, mobile number, payment time, amount, and bank name.  
-  - If return request, ask for clear reason and any issue with device or service.
+    - Collect: order ID, mobile number, payment time, amount, and bank name.
 
+    - If return request, ask for clear reason and any issue with device or service.
   </Step>
 
-  <Step title="Inform customer you are checking" icon="info">
+  <Step title="Inform customer you are checking" icon="info" title-type="p">
+    - Tell them you are checking system and bank logs.
 
-  - Tell them you are checking system and bank logs.  
-  - Avoid silence: give a short holding line.  
-  - If chat/WhatsApp, send a quick "Checking your payment details now" message.
+    - Avoid silence: give a short holding line.
 
+    - If chat/WhatsApp, send a quick "Checking your payment details now" message.
   </Step>
 
-  <Step title="Verify and choose resolution path" icon="database">
+  <Step title="Verify and choose resolution path" icon="database" title-type="p">
+    - If **no payment**: explain that system shows no successful payment.
 
-  - If **no payment**: explain that system shows no successful payment.  
-  - If **payment successful**: check if credited to customer bank; if not, mark for Finance verification.  
-  - If **return request**: check eligibility and approvals needed (Ops Manager, then Finance if reversal).
+    - If **payment successful**: check if credited to customer bank; if not, mark for Finance verification.
 
+    - If **return request**: check eligibility and approvals needed (Ops Manager, then Finance if reversal).
   </Step>
 
-  <Step title="Communicate clear next steps" icon="arrow-right">
+  <Step title="Communicate clear next steps" icon="arrow-right" title-type="p">
+    - Do **not** say "refund will definitely happen."
 
-  - Do **not** say "refund will definitely happen."  
-  - Say: "We will verify with our Finance team and update you."  
-  - Give realistic expectation for update and channel (call/SMS/WhatsApp).  
-  - Confirm customer mobile number for follow-up.
+    - Say: "We will verify with our Finance team and update you."
 
+    - Give realistic expectation for update and channel (call/SMS/WhatsApp).
+
+    - Confirm customer mobile number for follow-up.
   </Step>
 
-  <Step title="Close the call politely" icon="check-circle">
+  <Step title="Close the call politely" icon="check-circle" title-type="p">
+    - Summarize: what you checked + what will happen next.
 
-  - Summarize: what you checked + what will happen next.  
-  - Reassure: "We have logged your case; we will keep you informed."  
-  - Thank them for patience.
+    - Reassure: "We have logged your case; we will keep you informed."
 
+    - Thank them for patience.
   </Step>
-
 </Steps>
 
 ## Copy-ready scripts
 
 <Tabs>
-
   <Tab title="English" icon="book-open">
+    ### A. Payment not received
 
-  ### A. Payment not received
+    **1) First response**
 
-  **1) First response**
+    "Hi \[Name], you are speaking with \[Your Name] from Cashkr. I understand you are worried because the payment has not reached your account yet. Let me first verify the payment status in our system and with our Finance logs for you."
 
-  "Hi [Name], you are speaking with [Your Name] from Cashkr. I understand you are worried because the payment has not reached your account yet. Let me first verify the payment status in our system and with our Finance logs for you."
+    **2) While checking**
 
-  **2) While checking**
+    "I am checking your order and payment details in our system right now. This will take a minute because I need to confirm the wallet deduction, OTP payment status, and bank transfer logs. Stay on the line; I will update you shortly."
 
-  "I am checking your order and payment details in our system right now. This will take a minute because I need to confirm the wallet deduction, OTP payment status, and bank transfer logs. Stay on the line; I will update you shortly."
+    **3) Path 1: No payment found in system**
 
-  **3) Path 1: No payment found in system**
+    "I have checked your order, vendor wallet, and payment logs. As of now, our system is not showing any successful payment for this order.
 
-  "I have checked your order, vendor wallet, and payment logs. As of now, our system is not showing any successful payment for this order.  
+    Payment on Cashkr always happens only through our app flow using OTP, not through cash or UPI outside the app.
 
-  Payment on Cashkr always happens only through our app flow using OTP, not through cash or UPI outside the app.  
+    For now, we will treat this as **no payment received in system**. We will still log your concern and verify once more internally. You will get an update from us after we check with the Finance and Ops team."
 
-  For now, we will treat this as **no payment received in system**. We will still log your concern and verify once more internally. You will get an update from us after we check with the Finance and Ops team."
+    **4) Path 2: Payment successful, but customer not credited**
 
-  **4) Path 2: Payment successful, but customer not credited**
+    "Thank you for waiting. Our system shows that the OTP payment is successful and the payout is initiated to your bank account. Sometimes, banks can take some time to reflect the amount.
 
-  "Thank you for waiting. Our system shows that the OTP payment is successful and the payout is initiated to your bank account. Sometimes, banks can take some time to reflect the amount.  
+    I will now raise this to our Finance team with your order ID, payment time, and transaction details. They will verify the payout with the bank and confirm whether the amount is already credited or still in process.
 
-  I will now raise this to our Finance team with your order ID, payment time, and transaction details. They will verify the payout with the bank and confirm whether the amount is already credited or still in process.  
+    I cannot promise an instant refund or reversal, but we will verify this and share a clear update with you. You will receive an update on this number."
 
-  I cannot promise an instant refund or reversal, but we will verify this and share a clear update with you. You will receive an update on this number."
+    ### B. Return request after payment
 
-  ### B. Return request after payment
+    **1) Eligibility check (first response)**
 
-  **1) Eligibility check (first response)**
+    "I understand you want to return the device or stop the order even after the payment OTP is confirmed. I will first check if this case is eligible for a return as per our policy.
 
-  "I understand you want to return the device or stop the order even after the payment OTP is confirmed. I will first check if this case is eligible for a return as per our policy.  
+    Returns are only allowed in specific cases like system or vendor fault. They are not allowed for change-of-mind after a correct OTP payment. Let me check your order notes and details."
 
-  Returns are only allowed in specific cases like system or vendor fault. They are not allowed for change-of-mind after a correct OTP payment. Let me check your order notes and details."
+    **2) Not eligible (change-of-mind / regret)**
 
-  **2) Not eligible (change-of-mind / regret)**
+    "I have checked your order and there is no issue recorded with the device condition or our process. The payment was done correctly through OTP and confirmed on your side as well.
 
-  "I have checked your order and there is no issue recorded with the device condition or our process. The payment was done correctly through OTP and confirmed on your side as well.  
+    As per our policy, we are not allowed to process returns or refunds for change-of-mind after a successful OTP payment.
 
-  As per our policy, we are not allowed to process returns or refunds for change-of-mind after a successful OTP payment.  
+    I understand this may not be the answer you were hoping for, but we need to follow the same rules for every customer to keep the system fair."
 
-  I understand this may not be the answer you were hoping for, but we need to follow the same rules for every customer to keep the system fair."
+    **3) Eligible and under review (Ops/Finance)**
 
-  **3) Eligible and under review (Ops/Finance)**
+    "Based on the details, your case **may be eligible** for a return because of \[brief reason: for example, wrong device received or confirmed vendor fault]. For any return or payment reversal, we need approval from our Operations Manager and then verification from Finance.
 
-  "Based on the details, your case **may be eligible** for a return because of [brief reason: for example, wrong device received or confirmed vendor fault]. For any return or payment reversal, we need approval from our Operations Manager and then verification from Finance.  
+    I will log your case now with all details and proofs. Once Ops and Finance complete their checks, we will inform you about the final decision and next steps. I cannot promise a refund right now, but I confirm that your case is under review."
 
-  I will log your case now with all details and proofs. Once Ops and Finance complete their checks, we will inform you about the final decision and next steps. I cannot promise a refund right now, but I confirm that your case is under review."
+    **4) Eligible and approved (next steps)**
 
-  **4) Eligible and approved (next steps)**
+    "Your return request has been approved by our Operations Manager and verified by Finance.
 
-  "Your return request has been approved by our Operations Manager and verified by Finance.  
+    Next, we will coordinate the handover of the device and confirm the final payment status as per the approval. We will share the exact instructions and timelines with you on this number or WhatsApp.
 
-  Next, we will coordinate the handover of the device and confirm the final payment status as per the approval. We will share the exact instructions and timelines with you on this number or WhatsApp.  
-
-  After completion, you will receive a final confirmation message from our side."
-
+    After completion, you will receive a final confirmation message from our side."
   </Tab>
 
   <Tab title="Hinglish" icon="book-open">
+    ### A. Payment not received
 
-  ### A. Payment not received
+    **1) First response**
 
-  **1) First response**
+    "Namaste \[Name], main \[Your Name] Cashkr se bol raha/rahi hoon. Mujhe samajh aa raha hai ki aap tension mein ho kyunki payment aapke account mein nahi aaya. Main abhi aapka payment status system mein properly check karta/karti hoon."
 
-  "Namaste [Name], main [Your Name] Cashkr se bol raha/rahi hoon. Mujhe samajh aa raha hai ki aap tension mein ho kyunki payment aapke account mein nahi aaya. Main abhi aapka payment status system mein properly check karta/karti hoon."
+    **2) While checking**
 
-  **2) While checking**
+    "Main abhi aapka order, vendor wallet aur payment details system mein check kar raha/rahi hoon. Isme ek do minute lag sakte hain kyunki mujhe OTP payment status aur bank transfer logs bhi verify karne hain. Aap line pe hi rahiye, main aapko update deta/deti hoon."
 
-  "Main abhi aapka order, vendor wallet aur payment details system mein check kar raha/rahi hoon. Isme ek do minute lag sakte hain kyunki mujhe OTP payment status aur bank transfer logs bhi verify karne hain. Aap line pe hi rahiye, main aapko update deta/deti hoon."
+    **3) Path 1: No payment found in system**
 
-  **3) Path 1: No payment found in system**
+    "Maine aapka order, vendor wallet aur payment logs check kar liye hain. Abhi ke hisaab se hamare system mein is order ke liye koi successful payment show nahi ho raha.
 
-  "Maine aapka order, vendor wallet aur payment logs check kar liye hain. Abhi ke hisaab se hamare system mein is order ke liye koi successful payment show nahi ho raha.  
+    Cashkr par payment sirf app ke through OTP se hota hai, cash ya UPI se bahar payment allow nahi hai.
 
-  Cashkr par payment sirf app ke through OTP se hota hai, cash ya UPI se bahar payment allow nahi hai.  
+    Abhi ke liye hum isko **payment system mein receive nahi hua** maan rahe hain. Phir bhi main aapki concern ko log kar raha/rahi hoon aur Finance aur Ops team se dobara cross check karwaunga/karwaungi. Verification ke baad hum aapko is number par update denge."
 
-  Abhi ke liye hum isko **payment system mein receive nahi hua** maan rahe hain. Phir bhi main aapki concern ko log kar raha/rahi hoon aur Finance aur Ops team se dobara cross check karwaunga/karwaungi. Verification ke baad hum aapko is number par update denge."
+    **4) Path 2: Payment successful, but customer not credited**
 
-  **4) Path 2: Payment successful, but customer not credited**
+    "Shukriya hold pe rehne ke liye. Hamare system mein OTP payment successful dikh raha hai aur payout aapke bank ke liye initiate ho chuka hai. Kabhi kabhi bank side se amount reflect hone mein time lag sakta hai.
 
-  "Shukriya hold pe rehne ke liye. Hamare system mein OTP payment successful dikh raha hai aur payout aapke bank ke liye initiate ho chuka hai. Kabhi kabhi bank side se amount reflect hone mein time lag sakta hai.  
+    Ab main ye case hamari Finance team ko forward karunga/karungi. Woh transaction details aur bank ke sath verify karenge ki amount credit ho chuka hai ya abhi process mein hai.
 
-  Ab main ye case hamari Finance team ko forward karunga/karungi. Woh transaction details aur bank ke sath verify karenge ki amount credit ho chuka hai ya abhi process mein hai.  
+    Main abhi turant refund ya reversal ka promise nahi kar sakta/sakti, lekin hum zaroor verify karke aapko clear update denge. Aapko isi number par update milega."
 
-  Main abhi turant refund ya reversal ka promise nahi kar sakta/sakti, lekin hum zaroor verify karke aapko clear update denge. Aapko isi number par update milega."
+    ### B. Return request after payment
 
-  ### B. Return request after payment
+    **1) Eligibility check (first response)**
 
-  **1) Eligibility check (first response)**
+    "Mujhe samajh aa raha hai ki aap payment OTP ke baad order cancel karna ya device wapas dena chahte ho. Main pehle check karunga/karungi ki hamari policy ke hisaab se ye case return ke liye eligible hai ya nahi.
 
-  "Mujhe samajh aa raha hai ki aap payment OTP ke baad order cancel karna ya device wapas dena chahte ho. Main pehle check karunga/karungi ki hamari policy ke hisaab se ye case return ke liye eligible hai ya nahi.  
+    Hamari policy mein sirf kuch special cases mein hi return allow hota hai, jaise system error ya vendor ki galti. Sirf soch badal jane ya opinion change hone par, OTP payment ke baad return allow nahi hai. Main abhi aapka order detail check karta/karti hoon."
 
-  Hamari policy mein sirf kuch special cases mein hi return allow hota hai, jaise system error ya vendor ki galti. Sirf soch badal jane ya opinion change hone par, OTP payment ke baad return allow nahi hai. Main abhi aapka order detail check karta/karti hoon."
+    **2) Not eligible (change-of-mind / regret)**
 
-  **2) Not eligible (change-of-mind / regret)**
+    "Maine aapka order check kiya. Device condition ya process ke regarding koi issue record nahi hai, aur payment aapne OTP se confirm bhi kiya tha.
 
-  "Maine aapka order check kiya. Device condition ya process ke regarding koi issue record nahi hai, aur payment aapne OTP se confirm bhi kiya tha.  
+    Policy ke hisaab se, successful OTP payment ke baad sirf change-of-mind ya regret ke reason se hum return ya refund process nahi kar sakte.
 
-  Policy ke hisaab se, successful OTP payment ke baad sirf change-of-mind ya regret ke reason se hum return ya refund process nahi kar sakte.  
+    Mujhe pata hai ye sun kar aapko accha nahi lagega, lekin humein sab customers ke liye same rule follow karna padta hai, taaki system fair rahe."
 
-  Mujhe pata hai ye sun kar aapko accha nahi lagega, lekin humein sab customers ke liye same rule follow karna padta hai, taaki system fair rahe."
+    **3) Eligible and under review (Ops/Finance)**
 
-  **3) Eligible and under review (Ops/Finance)**
+    "Details dekhne ke baad lag raha hai ki aapka case **return ke liye eligible ho sakta hai**, kyunki \[short reason, jaise wrong device ya confirmed vendor issue]. Aise cases mein hum direct return ya refund promise nahi karte.
 
-  "Details dekhne ke baad lag raha hai ki aapka case **return ke liye eligible ho sakta hai**, kyunki [short reason, jaise wrong device ya confirmed vendor issue]. Aise cases mein hum direct return ya refund promise nahi karte.  
+    Pehle hamare Operations Manager se approval lena hota hai, phir Finance team payment verify karti hai. Main abhi aapka case saare proofs ke sath log kar raha/rahi hoon.
 
-  Pehle hamare Operations Manager se approval lena hota hai, phir Finance team payment verify karti hai. Main abhi aapka case saare proofs ke sath log kar raha/rahi hoon.  
+    Jaise hi Ops aur Finance dono apni verification complete karenge, hum aapko final decision aur next steps bata denge. Abhi ke liye main bas itna hi commit kar sakta/sakti hoon ki aapka case **under review** hai."
 
-  Jaise hi Ops aur Finance dono apni verification complete karenge, hum aapko final decision aur next steps bata denge. Abhi ke liye main bas itna hi commit kar sakta/sakti hoon ki aapka case **under review** hai."
+    **4) Eligible and approved (next steps)**
 
-  **4) Eligible and approved (next steps)**
+    "Aapka return request Operations Manager ne approve kar diya hai aur Finance team ne payment side verify kar liya hai.
 
-  "Aapka return request Operations Manager ne approve kar diya hai aur Finance team ne payment side verify kar liya hai.  
+    Ab next step mein hum device handover aur payment ke final adjustment ke steps follow karenge, jo approval ke hisaab se honge. Hum aapko exact instructions aur timeline isi number ya WhatsApp par bhejenge.
 
-  Ab next step mein hum device handover aur payment ke final adjustment ke steps follow karenge, jo approval ke hisaab se honge. Hum aapko exact instructions aur timeline isi number ya WhatsApp par bhejenge.  
-
-  Process complete hone ke baad aapko hamari taraf se final confirmation message milega."
-
+    Process complete hone ke baad aapko hamari taraf se final confirmation message milega."
   </Tab>
-
 </Tabs>
 
 ## Common scenarios (what to say)
 
 <ExpandableGroup>
+  <Expandable title="Customer says no SMS received for payment" default-open="false">
+    "Thank you for sharing this.
 
-  <Expandable title="Customer says no SMS received for payment">
+    On our side, I will check if any OTP payment or payout is showing against your number and order ID.
 
-  "Thank you for sharing this.  
+    Payment with Cashkr is always through our app using OTP and then bank transfer. If there is no OTP and no SMS from bank, it usually means the payment is not completed.
 
-  On our side, I will check if any OTP payment or payout is showing against your number and order ID.  
-
-  Payment with Cashkr is always through our app using OTP and then bank transfer. If there is no OTP and no SMS from bank, it usually means the payment is not completed.  
-
-  Let me verify this in our system. If there is no payment, we will guide you on the correct process and keep a note of your issue."
-
+    Let me verify this in our system. If there is no payment, we will guide you on the correct process and keep a note of your issue."
   </Expandable>
 
-  <Expandable title="Customer says amount not credited to bank">
+  <Expandable title="Customer says amount not credited to bank" default-open="false">
+    "I understand your concern that the amount has not yet come into your bank account.
 
-  "I understand your concern that the amount has not yet come into your bank account.  
+    I will first confirm in our system whether the vendor wallet was deducted and payout initiated for your order. If payment is successful on our side, sometimes banks take time to show the credit.
 
-  I will first confirm in our system whether the vendor wallet was deducted and payout initiated for your order. If payment is successful on our side, sometimes banks take time to show the credit.  
-
-  I will raise this to Finance with your transaction details. They will verify with payout logs and bank. I cannot confirm a refund right now, but I will ensure the case is tracked and you receive an update."
-
+    I will raise this to Finance with your transaction details. They will verify with payout logs and bank. I cannot confirm a refund right now, but I will ensure the case is tracked and you receive an update."
   </Expandable>
 
-  <Expandable title="Payment shows deducted on vendor side but customer not credited">
+  <Expandable title="Payment shows deducted on vendor side but customer not credited" default-open="false">
+    "You are saying the vendor is showing that amount is deducted from their wallet, but you have not received money yet.
 
-  "You are saying the vendor is showing that amount is deducted from their wallet, but you have not received money yet.  
+    I will double-check vendor wallet logs, payout status, and your order timeline. If vendor wallet is debited and payout is triggered, we will treat this as a **payout verification case** and send it to Finance.
 
-  I will double-check vendor wallet logs, payout status, and your order timeline. If vendor wallet is debited and payout is triggered, we will treat this as a **payout verification case** and send it to Finance.  
-
-  Till Finance confirms from their side, avoid giving any assurance of refund or extra payment to the customer. Keep the communication as: 'We are verifying with our Finance team and will update you.'"
-
+    Till Finance confirms from their side, avoid giving any assurance of refund or extra payment to the customer. Keep the communication as: 'We are verifying with our Finance team and will update you.'"
   </Expandable>
 
-  <Expandable title="Return not eligible (change of mind)">
+  <Expandable title="Return not eligible (change of mind)" default-open="false">
+    "I hear that you want to return the device because you changed your mind.
 
-  "I hear that you want to return the device because you changed your mind.  
+    I have checked your order history and there is no documented issue with device condition, inspection, or process. Payment was done correctly via OTP and confirmed by you at the time of pickup.
 
-  I have checked your order history and there is no documented issue with device condition, inspection, or process. Payment was done correctly via OTP and confirmed by you at the time of pickup.  
+    As per our return SOP, we cannot approve returns when it is only change-of-mind after a successful OTP payment. You can say:
 
-  As per our return SOP, we cannot approve returns when it is only change-of-mind after a successful OTP payment. You can say:  
-
-  'We understand your situation, but as per Cashkr policy, return or refund is not possible in this case because the payment and pickup were completed correctly. We must follow the same rules for everyone.'"
-
+    'We understand your situation, but as per Cashkr policy, return or refund is not possible in this case because the payment and pickup were completed correctly. We must follow the same rules for everyone.'"
   </Expandable>
 
-  <Expandable title="Return under review (Ops/Finance)">
+  <Expandable title="Return under review (Ops/Finance)" default-open="false">
+    "In some cases, return can be considered if there is a clear vendor or system fault.
 
-  "In some cases, return can be considered if there is a clear vendor or system fault.  
+    When such a case comes, log all details with order ID, photos, and chats. Then inform the customer:
 
-  When such a case comes, log all details with order ID, photos, and chats. Then inform the customer:  
-
-  'We have escalated your case to our Operations Manager and Finance team. They will verify the full trail of your order, payment, and pickup. This process is important so that any decision is fair and documented. Once verification is done, we will call or message you with the final outcome. Till then, we cannot promise a refund, but your case is actively under review.'"
-
+    'We have escalated your case to our Operations Manager and Finance team. They will verify the full trail of your order, payment, and pickup. This process is important so that any decision is fair and documented. Once verification is done, we will call or message you with the final outcome. Till then, we cannot promise a refund, but your case is actively under review.'"
   </Expandable>
 
-  <Expandable title="Return approved (handover and confirmation)">
+  <Expandable title="Return approved (handover and confirmation)" default-open="false">
+    "When Ops Manager and Finance both approve a return or reversal, communicate clearly:
 
-  "When Ops Manager and Finance both approve a return or reversal, communicate clearly:  
+    'Your return request has been approved after internal verification. Now we will complete the device handover and payment adjustment as per the approval.
 
-  'Your return request has been approved after internal verification. Now we will complete the device handover and payment adjustment as per the approval.  
-
-  Our team will coordinate the exact steps with you, like who will collect the device and how the final payment or reversal will reflect. After everything is completed, we will send you a final confirmation message so you have it in writing.'"
-
+    Our team will coordinate the exact steps with you, like who will collect the device and how the final payment or reversal will reflect. After everything is completed, we will send you a final confirmation message so you have it in writing.'"
   </Expandable>
-
 </ExpandableGroup>
 
 ## After-call actions (internal)
 
 <Steps>
+  <Step title="Log the case with full identifiers" icon="edit" title-type="p">
+    - Add order ID, customer number, and vendor ID (if relevant).
 
-  <Step title="Log the case with full identifiers" icon="edit">
+    - Note call type: payment not received, return request, or both.
 
-  - Add order ID, customer number, and vendor ID (if relevant).  
-  - Note call type: payment not received, return request, or both.  
-  - Capture whether OTP payment is confirmed or not.
-
+    - Capture whether OTP payment is confirmed or not.
   </Step>
 
-  <Step title="Attach proofs and system checks" icon="database">
+  <Step title="Attach proofs and system checks" icon="database" title-type="p">
+    - Attach screenshots of vendor wallet, payout logs, and payment dashboard.
 
-  - Attach screenshots of vendor wallet, payout logs, and payment dashboard.  
-  - Add customer screenshots: bank SMS, app statement, or WhatsApp messages.  
-  - Include timestamp and transaction ID wherever available.
+    - Add customer screenshots: bank SMS, app statement, or WhatsApp messages.
 
+    - Include timestamp and transaction ID wherever available.
   </Step>
 
-  <Step title="Escalate to Ops / Finance when required" icon="arrow-right">
+  <Step title="Escalate to Ops / Finance when required" icon="arrow-right" title-type="p">
+    - For payment mismatches or suspected reversals, escalate to Finance.
 
-  - For payment mismatches or suspected reversals, escalate to Finance.  
-  - For return eligibility or vendor fault cases, escalate to Ops Manager.  
-  - Use the correct channel and mention clearly: what you checked, what the customer is saying, and what decision you need.
+    - For return eligibility or vendor fault cases, escalate to Ops Manager.
 
+    - Use the correct channel and mention clearly: what you checked, what the customer is saying, and what decision you need.
   </Step>
 
-  <Step title="Maintain audit trail" icon="settings">
+  <Step title="Maintain audit trail" icon="settings" title-type="p">
+    - Write clear notes: what customer requested, what you said, and what next step is.
 
-  - Write clear notes: what customer requested, what you said, and what next step is.  
-  - Avoid vague comments like "issue resolved" without detail.  
-  - Ensure all decisions (approve/deny/under review) are traceable later.
+    - Avoid vague comments like "issue resolved" without detail.
 
+    - Ensure all decisions (approve/deny/under review) are traceable later.
   </Step>
 
-  <Step title="Close the loop with customer" icon="check-circle">
+  <Step title="Close the loop with customer" icon="check-circle" title-type="p">
+    - Once Ops/Finance responds, call or message the customer with the final outcome.
 
-  - Once Ops/Finance responds, call or message the customer with the final outcome.  
-  - Use the approved communication template from the return/payment SOP.  
-  - Mark the ticket or case as closed only after customer has been informed.
+    - Use the approved communication template from the return/payment SOP.
 
+    - Mark the ticket or case as closed only after customer has been informed.
   </Step>
-
 </Steps>
 
 ## Related docs
 
-<Columns cols={3}>
-
-  <Card
-    title="Return flow and payment confirmation SOP"
-    href="/return-flow-payment-confirmation"
-    icon="shield"
-    cta="View SOP"
-  >
-
-  End-to-end rules for when returns are allowed and how to confirm payments before deciding.
-
+<Columns cols="3">
+  <Card title="Return flow and payment confirmation SOP" href="/return-flow-payment-confirmation" icon="shield" cta="View SOP" horizontal="false">
+    End-to-end rules for when returns are allowed and how to confirm payments before deciding.
   </Card>
 
-  <Card
-    title="Vendor payment OTP and confirmation flow"
-    href="/vendor-payment-otp-confirmation-flow"
-    icon="lock"
-    cta="Review flow"
-  >
-
-  Standard wallet → OTP → bank flow for vendor payments; no cash or UPI allowed.
-
+  <Card title="Vendor payment OTP and confirmation flow" href="/vendor-payment-otp-confirmation-flow" icon="lock" cta="Review flow" horizontal="false">
+    Standard wallet → OTP → bank flow for vendor payments; no cash or UPI allowed.
   </Card>
 
-  <Card
-    title="Handling refunds, wallet and credits reversal"
-    href="/handling-refunds-wallet-credits-reversal-flow"
-    icon="database"
-    cta="Read refund rules"
-  >
-
-  Verification and approval steps for any refund or reversal, with audit trail requirements.
-
+  <Card title="Handling refunds, wallet and credits reversal" href="/handling-refunds-wallet-credits-reversal-flow" icon="database" cta="Read refund rules" horizontal="false">
+    Verification and approval steps for any refund or reversal, with audit trail requirements.
   </Card>
-
 </Columns>
+
