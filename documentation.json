@@ -833,99 +833,123 @@
             "pages": [
               {
                 "title": "CRM Expert",
-                "path": "crm-expert"
+                "path": "crm-expert",
+                "badge": "Marketing"
               },
               {
                 "title": "Shahid Shaikh",
-                "path": "shahid-shaikh"
+                "path": "shahid-shaikh",
+                "badge": "Management"
               },
               {
                 "title": "HR Manager",
-                "path": "hr-manager"
+                "path": "hr-manager",
+                "badge": "HR"
               },
               {
                 "title": "Rhea Chheda",
-                "path": "rhea-chheda"
+                "path": "rhea-chheda",
+                "badge": "Marketing"
               },
               {
                 "title": "Nirajan Bohara",
-                "path": "nirajan-bohara"
+                "path": "nirajan-bohara",
+                "badge": "Tech"
               },
               {
                 "title": "Accounts Associate",
-                "path": "accounts-associate"
+                "path": "accounts-associate",
+                "badge": "Finance"
               },
               {
                 "title": "Umair Kherade",
-                "path": "umair-kherade"
+                "path": "umair-kherade",
+                "badge": "Operations"
               },
               {
                 "title": "Marketing Generalist",
-                "path": "marketing-generalist"
+                "path": "marketing-generalist",
+                "badge": "Marketing"
               },
               {
                 "title": "Vishal Joshi, Adnan Shaikh, Aman Surya",
-                "path": "vishal-joshi-adnan-shaikh-aman-surya"
+                "path": "vishal-joshi-adnan-shaikh-aman-surya",
+                "badge": "Operations"
               },
               {
                 "title": "Rabina Khadka",
-                "path": "rabina-khadka"
+                "path": "rabina-khadka",
+                "badge": "Marketing"
               },
               {
                 "title": "Rohit Mane",
-                "path": "rohit-mane"
+                "path": "rohit-mane",
+                "badge": "Operations"
               },
               {
                 "title": "Resham Acharya",
-                "path": "resham-acharya"
+                "path": "resham-acharya",
+                "badge": "Tech"
               },
               {
                 "title": "Suraj Bind",
-                "path": "suraj-bind"
+                "path": "suraj-bind",
+                "badge": "Tech"
               },
               {
                 "title": "Helpdesk Associate – Customer Support",
-                "path": "helpdesk-associate-customer-support"
+                "path": "helpdesk-associate-customer-support",
+                "badge": "Support"
               },
               {
                 "title": "Sham Nadar",
-                "path": "sham-nadar"
+                "path": "sham-nadar",
+                "badge": "Operations"
               },
               {
                 "title": "Yaskar Jung",
-                "path": "yaskar-jung"
+                "path": "yaskar-jung",
+                "badge": "Marketing"
               },
               {
                 "title": "B2C Sales & Lead Conversion Associate",
-                "path": "b2c-sales-lead-conversion-associate"
+                "path": "b2c-sales-lead-conversion-associate",
+                "badge": "Operations"
               },
               {
                 "title": "Kishan Prajapati",
-                "path": "kishan-prajapati"
+                "path": "kishan-prajapati",
+                "badge": "Operations"
               },
               {
                 "title": "Bikesh Bhaila",
-                "path": "bikesh-bhaila"
+                "path": "bikesh-bhaila",
+                "badge": "Tech"
               },
               {
                 "title": "Pranjal Haldankar",
-                "path": "pranjal-haldankar"
+                "path": "pranjal-haldankar",
+                "badge": "Management"
               },
               {
                 "title": "Muzammil Shaikh",
-                "path": "muzammil-shaikh"
+                "path": "muzammil-shaikh",
+                "badge": "Marketing"
               },
               {
                 "title": "Mohsin Surya",
-                "path": "mohsin-surya"
+                "path": "mohsin-surya",
+                "badge": "Management"
               },
               {
                 "title": "Ayaz Alam",
-                "path": "ayaz-alam"
+                "path": "ayaz-alam",
+                "badge": "Tech"
               },
               {
                 "title": "Ashwini Giri",
-                "path": "ashwini-giri"
+                "path": "ashwini-giri",
+                "badge": "Management"
               }
             ]
           },
@@ -1423,6 +1447,19 @@
                 "title": "Vendor Hold & Deactivation Process",
                 "path": "vendor-hold-deactivation-process",
                 "badge": "Admin Panel & Operations Modules"
+              }
+            ]
+          },
+          {
+            "group": "Company & Strategy",
+            "pages": [
+              {
+                "title": "Operating Principles",
+                "path": "operating-principles"
+              },
+              {
+                "title": "Leadership Team",
+                "path": "leadership-team"
               }
             ]
           }
