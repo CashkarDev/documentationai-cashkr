@@ -1,0 +1,375 @@
+---
+title: Coupon Management Flow
+description: End-to-end internal guide for creating, QA-ing, activating, monitoring, and troubleshooting flat-amount coupons in the Cashkr Admin Panel.
+---
+
+## Overview
+
+Coupon Management in Cashkr Admin controls how flat extra amounts are added to a customer’s final device price at checkout. This flow keeps Marketing in control while giving CX, Ops, Finance, and Tech clear visibility into configuration and usage.
+
+<Callout kind="info">
+
+Use this guide when you configure or review coupons in the Admin Panel.  
+Primary users: Marketing (owner), supported by Tech (implementation), CX (support), Ops (process impact), and Finance (budget and audit).
+
+</Callout>
+
+For the underlying data model and validation logic, refer to [How Coupon system works ?](/how-coupon-system-works).
+
+## What a coupon does in Cashkr
+
+A coupon in Cashkr adds a **flat extra amount** to the user’s final device quote when applied on the price summary screen.
+
+- No percentage discounts: all coupons represent a fixed rupee amount added.
+- Validation always runs before applying:
+  - Platform (Web/App/Both) and expiry date are hard constraints.
+  - System also checks device value range, device type, brand, user eligibility, and usage limits.
+- If the coupon passes all checks, the extra amount is added and the final price updates. If not, an inline error appears on the quote screen (see [Apply Coupon](/apply-coupon)).
+
+For CX-facing flows and error states, see [Referral & Coupon Application Process](/referral-coupon-application-process) and [Apply Coupon](/apply-coupon).
+
+## Key coupon fields in Admin
+
+Configure every coupon with a consistent, structured set of fields so that validation and reporting stay reliable. Field names below describe the **intent**; exact labels may vary slightly in Admin UI.
+
+### Basic identity and messaging
+
+- **Coupon code**
+  - Unique, customer-facing code (for example, `CASH200`, `REF100`).
+  - Case and spacing rules should match what is implemented in Tech.
+
+- **Title**
+  - Short internal and customer-facing name that explains the offer.
+  - Example: `Extra 200 on first phone sale`.
+
+- **Description**
+  - Longer internal note or customer-facing text for clarity.
+  - Include campaign name or channel if relevant (for example, `App launch promo – push campaign`).
+
+### Financial impact
+
+- **Extra amount (flat)**
+  - Fixed rupee amount the system adds to the final device price when the coupon is valid.
+  - Keep this aligned with Finance-approved budgets and marketing campaigns.
+
+### Platform and accessibility
+
+- **Platform**
+  - Where the coupon is valid:
+    - Web
+    - App
+    - Both
+  - This is a **hard constraint** in validation. A coupon configured for App will never work on Web and vice versa.
+
+- **Accessibility**
+  - Controls which users can use the coupon:
+    - First-time users only
+    - All users
+  - For detailed referral rules and interactions with referral credits, cross-check [How Cashkr Referral System Works ?](/how-cashkr-referral-system-works).
+
+### Value range and device constraints
+
+- **Minimum device value**
+  - Lowest device price at which the coupon can apply.
+  - Use this to avoid giving extra amount on very low-value devices.
+
+- **Maximum device value**
+  - Highest device price where the coupon is still valid.
+  - Use for mid-range promos where you do not want to incentivize very high-ticket devices.
+
+- **Compatible device types**
+  - Device categories where coupon is valid, for example:
+    - Phone
+    - Laptop
+    - Tablet
+    - Mac
+  - The system blocks coupon usage when the device type does not match.
+
+- **Brand restriction**
+  - Optional filter to allow or restrict specific brands.
+  - Example use cases:
+    - Only for premium brands during a flagship campaign.
+    - Excluding certain brands where margin is low.
+
+### Usage limits and audience size
+
+- **Max usage limit**
+  - Total number of successful redemptions allowed across all users.
+  - Useful for limited-seat campaigns and tightly controlled budgets.
+
+- **All customer vs max user limit**
+  - **All customer**: no explicit cap on unique users (only overall usage and other constraints apply).
+  - **Max user limit**: restricts how many unique customers can claim the coupon (for example, first 1,000 unique users).
+
+### Timing and status
+
+- **Start date**
+  - When the coupon becomes eligible for validation and application.
+
+- **Expiry date**
+  - When the coupon stops working.  
+  - Validation treats expiry as a **hard constraint**; after expiry, the coupon must fail with an `expired` type error message.
+
+- **Status**
+  - Active
+  - Inactive / disabled
+  - Use this to pause or retire coupons without changing core configuration fields.
+
+## End-to-end coupon management flow
+
+Use this operational flow whenever you launch, change, or clean up coupons in Admin. The steps below assume that the underlying logic is already implemented as per [How Coupon system works ?](/how-coupon-system-works).
+
+<Steps>
+
+<Step title="Create and configure a coupon" icon="plus">
+
+- Open the **coupon management** section in the Admin Panel (see [Marketing Dashboard](/marketing-dashboard) and [Admin Panel Overview](/admin-panel-overview) for navigation patterns).
+- Click the option to **create a new coupon**.
+- Fill in the core configuration:
+  - Coupon code, title, description
+  - Extra amount (flat)
+  - Platform (Web/App/Both)
+  - Accessibility (first-time or all users)
+  - Min and max device value
+  - Compatible device types and any brand restriction
+  - Max usage limit and, if needed, max user limit
+  - Start date, expiry date, and initial status set to Inactive or Draft if available
+- Align extra amount and limits with the campaign brief and Finance approvals.
+
+**Success signal:** Coupon appears in the Admin list with correct fields and expected initial status (for example, Inactive).
+
+</Step>
+
+<Step title="QA and dry-run checks" icon="check-circle">
+
+- Share the coupon code and configuration snapshot with Tech and CX for review.
+- Tech to confirm:
+  - Validation covers platform, expiry, device type, brand, value range, and usage limits as configured.
+  - Error messages map to the correct failure reasons (see [Apply Coupon](/apply-coupon)).
+- CX to test on **test devices and test accounts**:
+  - One valid scenario where coupon should apply.
+  - At least two invalid scenarios (for example, wrong device type, after expiry, wrong platform).
+- Marketing to verify that final quote shows the **extra amount added** correctly on the price summary screen.
+
+**Success signal:** Test orders show correct final price adjustment and meaningful error messages when coupon should not apply.
+
+</Step>
+
+<Step title="Activate and communicate the coupon" icon="play-circle">
+
+- Update coupon **status** to Active once QA is complete.
+- Double-check:
+  - Start and expiry dates are correct and match campaign plan.
+  - Platform field matches where you intend to promote (App vs Web vs Both).
+- Share final coupon code and basic rules with:
+  - CX team, for customer support scripting and macros.
+  - Ops team, if higher order volumes or specific device/brand patterns are expected.
+  - Finance, for budget tracking if the offer is significant.
+
+**Success signal:** Customers can successfully apply the coupon on the final quote screen during the active window, and CX knows the rules and common error reasons.
+
+</Step>
+
+<Step title="Monitor performance and health" icon="bar-chart">
+
+- During the campaign, monitor:
+  - Total redemptions and trend vs. plan.
+  - Device type and brand mix impacted by the coupon.
+  - New vs returning user split.
+- Use available reports and exports (see [Exporting Data & Reports for Analysis](/exporting-data-reports-for-analysis)) for deeper checks.
+- CX and Marketing should keep an eye on:
+  - Spike in coupon-related complaints (for example, not working, expired, device mismatch).
+  - Signs of misuse or fraud, such as repeated attempts from the same user or device across multiple accounts.
+
+**Success signal:** Coupon drives the expected uplift in conversions without unusual error spikes or fraud flags.
+
+</Step>
+
+<Step title="Pause, edit, or tighten rules" icon="edit">
+
+- If you see misuse, budget pressure, or misalignment with campaign goals:
+  - **Pause** the coupon by setting status to Inactive.
+  - Adjust fields such as:
+    - Extra amount
+    - Min/max device value
+    - Accessible user type (for example, first-time only)
+    - Compatible devices or brand restriction
+    - Max usage limit or max user limit
+  - Keep expiry date and platform aligned with the updated plan.
+- After edits, **repeat a quick QA**:
+  - Test at least one valid and one invalid scenario after the change.
+  - Confirm error states are consistent with [Apply Coupon](/apply-coupon).
+
+**Success signal:** Updated rules reduce misuse or bring spend back in line, with the coupon still working as intended for the target users.
+
+</Step>
+
+<Step title="Close and clean up after expiry" icon="trash">
+
+- When the campaign ends or the coupon expires:
+  - Confirm expiry date has passed and status is set to Inactive or Archived.
+  - Ensure coupon does not appear in any **ongoing marketing communication** or referral flows.
+- For referral-linked coupons (see [Referral & Coupon Application Process](/referral-coupon-application-process)):
+  - Validate that referral journeys no longer surface expired codes.
+  - Coordinate with Tech and Marketing if any follow-on offers replace the old coupon.
+- Keep configuration in the system for:
+  - Audit and performance analysis.
+  - Reference when designing future campaigns.
+
+**Success signal:** Customers cannot apply the expired coupon, CX has clear messaging for expired codes, and reports still show historical performance.
+
+</Step>
+
+</Steps>
+
+## Validation rules and QA checklist
+
+When a customer enters a coupon on the final quote screen (see [Apply Coupon](/apply-coupon)), the system performs multiple checks before adding the extra amount.
+
+### What the system validates
+
+- **Platform (hard constraint)**
+  - The platform where the user is applying must match the coupon configuration (Web/App/Both).
+- **Expiry date (hard constraint)**
+  - Current date must lie between start and expiry dates.
+- **Device type and brand**
+  - The selected device type must be in the coupon’s compatible list.
+  - If brand restriction is set, the device brand must pass that rule.
+- **Device value range**
+  - Device price must fall between the coupon’s minimum and maximum device value.
+- **User eligibility**
+  - If accessibility is set to first-time users, returning users must fail validation.
+- **Usage limits**
+  - Coupon must not exceed:
+    - Overall max usage limit.
+    - Max user limit (where configured).
+  - Per-user usage rules (for example, one-time use) are enforced as part of user eligibility and usage tracking.
+
+If any rule fails, the system must **not** add the extra amount and should show a clear inline error (invalid code, expired, device not eligible, usage limit reached, or not eligible user type).
+
+### Quick QA checklist before launch
+
+- Coupon applies successfully in:
+  - At least one valid combination of platform, device, value, brand, and user type.
+- Coupon correctly **fails** in each of these scenarios:
+  - Wrong platform (for example, configured for App, tested on Web).
+  - After expiry date.
+  - Incompatible device type or brand.
+  - Device value below minimum or above maximum.
+  - Ineligible user type based on accessibility settings.
+  - After hitting max usage limit or max user count.
+- Final quote always reflects:
+  - Original device valuation.
+  - Extra amount added from coupon when valid.
+  - No double-counting with other price adjustments.
+
+Use [How Coupon system works ?](/how-coupon-system-works) as the technical reference when aligning QA with implementation details.
+
+## Troubleshooting common coupon issues
+
+Use this section when CX or Ops report that a coupon is not working as expected. These checks are for Admin users and Marketing/Tech collaboration.
+
+<ExpandableGroup>
+
+<Expandable title="Coupon shows as invalid or not found" default-open="true">
+
+- Confirm the **exact coupon code** being entered (spacing, case, special characters).
+- In Admin, search for the coupon and verify:
+  - Status is Active.
+  - Start date is in the past and expiry date is in the future.
+  - Platform matches where the user is applying (Web/App/Both).
+- If the coupon does not exist in Admin:
+  - Treat it as a typo or outdated code.
+  - Guide CX to offer an alternative or escalate to Marketing only if the code was part of a recent campaign.
+
+</Expandable>
+
+<Expandable title="Coupon expired or not working after expected date">
+
+- Open the coupon in Admin and verify:
+  - Expiry date and time configuration.
+  - Status (it may have been manually disabled).
+- Compare with the **campaign plan** and marketing communication:
+  - If messages promised a different end date, coordinate with Marketing to:
+    - Either extend the expiry date in Admin, or
+    - Provide a make-good resolution to affected customers.
+- Check for orders created **close to the expiry boundary** to confirm how the system behaves at cut-off time.
+
+</Expandable>
+
+<Expandable title="Device not eligible or wrong device/category error">
+
+- In the user’s order or quote details, confirm:
+  - Device type (phone, laptop, tablet, Mac).
+  - Device brand.
+  - Device valuation at final quote.
+- In the coupon configuration, review:
+  - Compatible device types list.
+  - Brand restriction (if any).
+  - Min and max device value.
+- If rules do not match the intended campaign:
+  - Update compatible devices, brand restriction, or value range.
+  - Re-test a sample order to ensure the coupon now applies where it should.
+
+</Expandable>
+
+<Expandable title="User not eligible or usage limit reached">
+
+- From the customer’s history:
+  - Check whether they already used the coupon in earlier orders.
+  - Confirm if they qualify as first-time or returning user based on the coupon’s accessibility setting.
+- In the coupon’s Admin details:
+  - Review max usage limit and usage counts.
+  - Check if a max user limit is configured and whether it has been reached.
+- If limits are unintentionally restrictive:
+  - Increase max usage or max user limit after alignment with Finance and Marketing.
+  - For referral-linked coupons, also review rules in [Referral & Coupon Application Process](/referral-coupon-application-process).
+
+</Expandable>
+
+<Expandable title="Everything looks correct but coupon still fails">
+
+- Cross-check:
+  - Order or quote details snapshot including platform, device info, user account, and applied coupon attempts.
+  - Logs or flags related to coupon validation if available to Tech.
+- In Admin, re-verify:
+  - Status, dates, platform, accessibility, device/brand, and value range.
+- Coordinate with Tech:
+  - Share sample order IDs and timestamps where the coupon failed.
+  - Ask Tech to review server-side validation logic against [How Coupon system works ?](/how-coupon-system-works).
+- If the issue is systematic:
+  - Pause the coupon until the bug is fixed.
+  - Inform CX about temporary unavailability and suggested responses.
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Roles and responsibilities
+
+Managing coupons in Admin touches multiple teams. Assign clear ownership so campaigns run smoothly and issues are resolved quickly.
+
+- **Marketing**
+  - Own coupon creation, configuration, and campaign alignment.
+  - Coordinate QA, activation, and deactivation.
+  - Monitor performance and propose changes.
+
+- **Tech**
+  - Implement and maintain coupon validation logic.
+  - Investigate issues where configuration and expected behavior do not match.
+  - Ensure consistency with [How Coupon system works ?](/how-coupon-system-works).
+
+- **CX**
+  - Help customers apply coupons on the final quote screen (see [Apply Coupon](/apply-coupon)).
+  - Use clear, accurate explanations for failure reasons.
+  - Escalate suspicious patterns and systemic issues using [How to Report Issues to Admin Panel / Support](/how-to-report-issues-to-admin-panel-/-support).
+
+- **Ops**
+  - Watch for operational impact (order volume spikes, device mix shifts).
+  - Coordinate with vendors and field teams if coupon campaigns change pickup patterns.
+
+- **Finance**
+  - Approve high-value or large-scale coupon campaigns.
+  - Track cost, discount impact, and ROI using exports and dashboards.
+
+By following this flow and alignment, you keep coupons consistent, auditable, and effective across Cashkr Web, App, and referral journeys.

@@ -1,0 +1,303 @@
+---
+title: Store Vendor Credit Refund & Reversal Script
+description: Train store vendor teams to identify valid credit reversal cases, verify requests, communicate decisions, and prevent misuse of the daily credit system.
+---
+
+<Callout kind="info">
+
+**Used by:** Store Partnerships / Vendor Management Team
+
+**Purpose:** Train internal teams on how to handle credit refund and reversal cases for B2Ch Store Vendors where adjustments are needed for cancelled, failed, or wrongly charged orders.
+
+**Objective:** Ensure the Vendor Management Team can:
+- Identify valid reasons for credit reversals
+- Process and verify reversal requests properly
+- Maintain fairness and documentation
+- Prevent misuse or manipulation of the daily credit system
+
+</Callout>
+
+## 1. Credit system overview (training script)
+
+Use this script to explain the credit logic to vendors or new team members.
+
+> In the B2Ch Store Vendor model, every vendor pays Cashkr Credits for each completed store order.  
+> These credits act as Cashkr commission or service fee.
+
+The vendor wallet has two separate flows:
+
+1. Customer payments → direct transfer to customer via wallet  
+2. Credits to Cashkr → deducted once daily based on all successfully completed store orders
+
+**Example script:**
+
+> If a vendor completes 8 store orders today and each order costs 5 credits, a total of 40 credits will be deducted at the end of the day from the wallet balance.
+
+## 2. When credit reversals apply
+
+Use this script to define what a credit reversal means.
+
+> Reversal means returning credits back to a vendor when an order is later found to be cancelled, invalid, duplicate, or wrongly deducted.  
+> This ensures vendors do not lose credits for transactions that did not actually qualify as valid store orders.
+
+### Eligible vs not eligible scenarios
+
+<Tabs>
+  <Tab title="Eligible scenarios">
+
+  - **Cancelled orders**  
+    Order cancelled by store or Cashkr after completion. These orders are eligible for credit reversal.
+
+  - **Duplicate order entry**  
+    Same customer or order counted twice and credits charged twice. Eligible for reversal on the duplicate entry.
+
+  - **Failed verification**  
+    ID proof or system verification failed after payment. The underlying order is not valid, so credits are eligible for reversal.
+
+  - **Technical error**  
+    Order was marked as completed but later failed in system sync or processing. Credits charged due to this technical issue are eligible for reversal.
+
+  </Tab>
+
+  <Tab title="Not eligible scenarios">
+
+  - **SLA violation or late completion**  
+    Order invalidated due to SLA breach. Credits are not eligible for reversal in SLA violation cases.
+
+  - **Customer dispute or fraud linked to vendor**  
+    Order reversed due to vendor fault or confirmed issue from vendor side. Credits are not eligible for reversal.
+
+  - **App misuse or fake entries**  
+    Any manipulation attempt, fake orders, or misuse of the system. Credits are not eligible for reversal.
+
+  </Tab>
+</Tabs>
+
+<Callout kind="alert">
+
+Treat eligibility rules as hard policy:
+- Reverse credits only for cancelled, duplicate, invalid, or technically failed orders.
+- Do not approve reversals for SLA violations, vendor fault, fraud cases, or misuse.
+
+</Callout>
+
+## 3. How vendors can raise a credit refund request
+
+Use this script to guide vendors to the correct channel.
+
+> Refund or reversal requests must be raised only through the Vendor App, under Support → Credit Reversal Request.  
+> Vendors cannot raise these requests verbally or on WhatsApp.
+
+Vendors must submit:
+
+- **Order ID or IDs in question**
+- **Reason for reversal**
+- **Proof, if applicable** such as screenshots or store confirmation
+
+Once submitted, the request appears on the Vendor Management Dashboard for verification.
+
+<Callout kind="alert">
+
+Do not process or commit on any reversal requests received via calls, chats, or WhatsApp.  
+Ask the vendor to raise a formal request through the app with the correct order ID and proof.
+
+</Callout>
+
+## 4. Credit reversal verification workflow
+
+Follow this standard workflow for every reversal request.
+
+<Steps>
+  <Step title="Vendor raises reversal request" icon="download">
+
+  - **Action:** Vendor submits a Credit Reversal Request through the Vendor App with order ID, reason, and proof.  
+  - **Owner:** Vendor
+
+  </Step>
+
+  <Step title="Check basic eligibility" icon="info">
+
+  - **Action:** Verify the order ID, order status, and credit deduction log in the system. Confirm that credits were actually deducted and that the order is within allowed time limits.  
+  - **Owner:** Ops Associate
+
+  </Step>
+
+  <Step title="Validate the reason and proof" icon="search">
+
+  - **Action:** Cross-check the vendor reason against store logs, order timeline, and any attached documentation or screenshots. Confirm if the case matches an eligible scenario.  
+  - **Owner:** Vendor Manager
+
+  </Step>
+
+  <Step title="Take decision on approval or rejection" icon="check-circle">
+
+  - **Action:** Decide whether to approve or reject the reversal based on eligibility criteria and verification outcome. Document the reason for decision in the tracker or dashboard.  
+  - **Owner:** Ops Manager
+
+  </Step>
+
+  <Step title="Execute credit adjustment" icon="zap">
+
+  - **Action:** On approval, restore credits to the vendor credit balance. The system posts a `+ Credit Adjustment` entry in the Credits tab within 24 hours.  
+  - **Owner:** System auto credit (post approval)
+
+  </Step>
+</Steps>
+
+**Success signal:** Approved reversals show in the vendor Credits tab as `+ Credit Adjustment` within 24 hours of approval.
+
+<Callout kind="alert">
+
+Do not leave any approved reversal unapplied in the system.  
+If the `+ Credit Adjustment` does not appear within 24 hours, escalate to the Ops Manager and log the case in the tracker.
+
+</Callout>
+
+## 5. Communication templates (vendor-facing)
+
+Use these templates when updating vendors about reversal outcomes.
+
+<Tabs>
+  <Tab title="Approved message">
+
+  ```text
+  Hi [Vendor Name],
+
+  Your credit reversal for Order ID [####] has been approved.
+
+  The deducted credits have been restored to your account.
+  You can verify this in the Credits tab.
+
+  — Cashkr Vendor Support
+  ```
+
+  </Tab>
+
+  <Tab title="Rejected message">
+
+  ```text
+  Hi [Vendor Name],
+
+  Your credit reversal request for Order ID [####] has been reviewed and cannot be approved due to [reason: SLA violation / invalid documentation / not eligible].
+
+  You may reopen with valid proof within 48 hours if required.
+
+  — Cashkr Vendor Support
+  ```
+
+  </Tab>
+</Tabs>
+
+## 6. Turnaround time (TAT) expectations
+
+Align case handling to these timelines.
+
+- **Simple cases (cancelled or duplicate orders)**  
+  - TAT: 24 hours  
+  - Handling: Auto reversal after basic checks
+
+- **Verification pending (store logs or extra checks)**  
+  - TAT: 48 hours  
+  - Handling: Manual review by Ops and Vendor Manager
+
+- **Escalated or fraud-linked cases**  
+  - TAT: 72 hours  
+  - Handling: Ops Manager review and deeper audit
+
+<Callout kind="alert">
+
+No reversal should remain pending beyond 72 hours from request submission.  
+If a case is still open at 72 hours, escalate to Ops Head with reasons and next steps.
+
+</Callout>
+
+## 7. Reopening policy
+
+Use this script when explaining or handling reopened cases.
+
+> If a vendor disagrees with a reversal rejection, they can reopen the case once only, within 48 hours.  
+> They must attach new supporting proof such as store communication, duplicate order evidence, or Cashkr backend confirmation.
+
+Cases reopened without any new proof are automatically closed and should not be reconsidered again.
+
+## 8. Fraud and misuse handling
+
+Use this script to set expectations with vendors and internally.
+
+> Cashkr strictly monitors misuse of credit reversal requests. Vendors submitting 3 or more false or repetitive reversal requests in a 30-day period will be added to the Reversal Watchlist.
+
+Penalties can include:
+
+- Temporary hold on new orders
+- Suspension of reversal rights
+- Escalation to Ops Head for audit
+
+<Callout kind="alert">
+
+Track repeat false or abusive reversal requests and add such vendors to the Reversal Watchlist when they hit the threshold.  
+Always document reasons, evidence, and actions in the Credit Reversal Tracker Sheet.
+
+</Callout>
+
+## 9. Daily and weekly reporting cadence
+
+Ensure every case is traceable and reported.
+
+- **Daily reversal log**  
+  - Owner: Ops Associate  
+  - Frequency: Daily  
+  - Focus: All pending and resolved reversal cases
+
+- **Weekly summary**  
+  - Owner: Vendor Manager  
+  - Frequency: Weekly  
+  - Focus: Total reversals, approval or rejection rate, key reasons
+
+- **Monthly review**  
+  - Owner: Ops Manager  
+  - Frequency: Monthly  
+  - Focus: Fraud analysis, Reversal Watchlist vendors, process improvements
+
+All reversal cases must be logged in the Credit Reversal Tracker Sheet and supported by relevant system screenshots.
+
+## 10. Tone and communication guidelines
+
+Maintain a consistent, neutral tone with vendors.
+
+- Always acknowledge vendor concerns before verification.
+- Never promise approval without backend validation.
+- Keep tone neutral, factual, and non-argumentative.
+- Avoid long back-and-forth conversations; once status is shared, close the loop clearly.
+- Include the relevant **Order ID or ticket ID** in every message for reference.
+
+## 11. Quick reference summary
+
+Use this section as a one-glance refresher during calls.
+
+- **Vendor pays daily credits**  
+  Credits are the fee for all completed store orders and are deducted from the vendor wallet once per day.
+
+- **Refund or reversal applies to**  
+  Invalid, cancelled, duplicate, or technically failed orders where credits were already deducted.
+
+- **Request method**  
+  Vendor App → Support → Credit Reversal Request, with order ID and proof.
+
+- **Processing time**  
+  Typically 24–72 hours depending on case complexity and verification needs.
+
+- **Non-eligible cases**  
+  SLA breaches, fraud or vendor fault, app misuse, and cases without required proof.
+
+- **Outcome on approval**  
+  `+ Credit Adjustment` entry in the Credits tab and credits restored to vendor credit balance.
+
+## 12. Key talking points for vendor management team
+
+Highlight these points in training and vendor conversations.
+
+- **Reversals only apply to credits already paid by the vendor.**
+- **Cashkr restores credits only for cancelled, duplicate, or invalid orders.**
+- **All reversals go directly to the vendor credit balance, not to the wallet balance.**
+- **Requests must come through the app, not calls or chats.**
+- **Transparency and a complete audit trail are mandatory for every reversal.**

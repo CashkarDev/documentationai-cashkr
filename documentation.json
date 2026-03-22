@@ -966,6 +966,41 @@
             "group": "Training",
             "pages": [
               {
+                "title": "Coupon Management Flow",
+                "path": "coupon-management-flow",
+                "badge": "Admin Panel & Operations Modules"
+              },
+              {
+                "title": "Store Vendor Credit Refund & Reversal Script",
+                "path": "store-vendor-credit-refund-reversal-script",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "How To Use Cashkr Website & App",
+                "path": "how-to-use-cashkr-website-app",
+                "badge": "Customer App & Website Module"
+              },
+              {
+                "title": "Store Vendor Feedback Collection & Review Script",
+                "path": "store-vendor-feedback-collection-review-script",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "Lead Management (All Leads, Not Called, Callbacks, High Ends)",
+                "path": "lead-management-all-leads-not-called-callbacks-high-ends",
+                "badge": "Admin Panel & Operations Modules"
+              },
+              {
+                "title": "Proposal / Quotation Follow-Up Script (Corporate Buyback)",
+                "path": "proposal-/-quotation-follow-up-script-corporate-buyback",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "Follow-Up Best Practices & Rebuttal Scenarios",
+                "path": "follow-up-best-practices-rebuttal-scenarios",
+                "badge": "Sales & Leads Conversion Modules"
+              },
+              {
                 "title": "City / Pincode Unavailability Script",
                 "path": "city-/-pincode-unavailability-script",
                 "badge": "Scripts Library"
