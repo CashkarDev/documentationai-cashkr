@@ -1,0 +1,409 @@
+---
+title: Price Change Logic (When and Why It Happens)
+description: Understand when and why Cashkr prices change, how the pricing engine works, and how Sales, CX, Vendor Ops, and Marketing should communicate with customers.
+---
+
+## Who this SOP is for and why it exists
+
+<Callout kind="info">
+
+**Audience:** Sales, CX, Vendor Ops, and Marketing teams who speak to customers or vendors about device pricing.
+
+**Purpose:** Use a single, consistent logic to explain:
+
+- When price can change before or after pickup
+- Why those changes happen
+- How the Cashkr pricing engine decides value
+- How to communicate clearly and avoid confusion or disputes
+
+**Goals:**
+
+- Reduce customer confusion
+- Improve trust and transparency
+- Standardize communication across teams
+- Reduce disputes and escalations
+- Increase conversion from quote to payment
+
+</Callout>
+
+## The three stages of price
+
+Customers see and experience the price in three clear stages. Each stage has its own logic and valid reasons for change.
+
+<Tabs>
+
+<Tab title="Stage 1 – Estimated Price (Before pickup)">
+
+The estimated price appears on the website or app based on customer inputs **before pickup**.
+
+**Inputs that decide the estimated price:**
+
+- Device model
+- Variant (storage, RAM, processor)
+- Selected condition
+- Selected known issues
+- Charger availability
+- Current market pricing for that model
+
+**When can the estimated price change?**
+
+- **Customer changes condition or issues**
+  - Changes from "Excellent" to "Good"
+  - Adds issues like "Screen cracked"
+  - Selects "No charger"
+  - → Price drops or adjusts immediately in the app.
+
+- **Customer changes model or variant**
+  - 128 GB → 64 GB → price reduces
+  - i5 → i7 → price increases
+  - M1 → i3 → price changes significantly
+  - → System recalculates based on actual variant.
+
+- **Market price update (daily/weekly)**
+  - Pricing team updates base prices due to:
+    - Resale demand
+    - Spare parts cost
+    - New model launches
+    - General market drop or increase
+  - → Affects only **future** estimated prices shown before pickup.
+
+</Tab>
+
+<Tab title="Stage 2 – Adjusted Price (After vendor inspection)">
+
+The adjusted price appears **after the vendor physically inspects the device**. This is where the system corrects any mismatch between customer inputs and the real device condition.
+
+**What can change the price at this stage?**
+
+- **A. Device condition differences (wrong inputs earlier)**
+  - Customer selected "No scratches" → vendor finds a cracked screen → deduction applies.
+  - Customer selected "Battery good" → vendor finds battery health under 80% → deduction applies.
+  - Customer selected "All OK" → vendor finds camera not working → deduction applies.
+
+- **B. Hidden or unexpected issues found during inspection**
+  - Green line on display
+  - Camera blur
+  - Dead pixels
+  - Touch issues
+  - Face ID or Touch ID failure
+  - Bent or twisted body
+  - Heating issues
+  - Laptop hinges loose
+  - Laptop battery backup under 1 hour
+  - → These are not visible to the customer without detailed checks, so they are corrected at inspection time.
+
+- **C. Device age and battery cycles (laptop / Mac)**
+  - Older devices get lower value.
+  - Battery with:
+    - Very high cycle count
+    - Poor backup
+    - "Service Recommended" warning
+  - → Pricing engine applies a reduction for necessary battery replacement.
+
+- **D. Accessories missing or not original**
+  - No charger
+  - No cable
+  - Fake or incompatible charger
+  - Very old or corroded charger
+  - → Deduction applies because resale value drops.
+
+- **E. Water damage or physical damage**
+  - Any sign of liquid contact
+  - Internal damage or major body damage
+  - → Leads to a reduced price for repair cost and risk.
+
+</Tab>
+
+<Tab title="Stage 3 – Final Price (Agreed value)">
+
+The final price is the value the customer **accepts and confirms by OTP** after seeing the adjusted price.
+
+**Final price becomes locked when:**
+
+- Vendor completes inspection
+- System generates the updated valuation
+- Customer agrees to the new price
+- Customer shares OTP, which triggers:
+  - Payment
+  - Pickup confirmation
+  - Order completion
+
+If the customer **rejects** the updated price:
+
+- No charge applies
+- Order is closed without pickup
+
+</Tab>
+
+</Tabs>
+
+## Valid reasons for price change
+
+Each stage allows specific, valid reasons for price change. Use this list as your reference when explaining to customers.
+
+### 1. Customer provided wrong or incomplete inputs
+
+- Selected a better condition than actual (for example, "All good" but there are scratches or dents)
+- Missed issues like screen lines, camera problems, or touch issues
+- Entered battery as "good" but actual battery health is low
+
+Result: Pricing engine recalculates after inspection and applies deductions.
+
+### 2. Vendor finds real condition issues
+
+- Physical inspection always reveals the true condition.
+- Any discovered defect that was **not** reflected in the original inputs can reduce the price.
+
+Result: System updates price based on verified device condition.
+
+### 3. Market value drops or changes
+
+- New model launches
+- Change in resale demand
+- Change in spare parts cost
+- General market drop or increase for that category
+
+Result: Base pricing in the engine changes, affecting estimated and later valuations.
+
+### 4. Wrong variant or model selected
+
+- Customer chooses the wrong **variant**:
+  - Selected 256 GB but actual is 128 GB
+  - Selected i7 but actual is i5
+- Customer chooses the wrong **model**:
+  - Very common when customers are unsure or confused
+
+Result: System corrects the price to match the real model and variant.
+
+### 5. Accessories missing or fake
+
+- No charger or cable
+- Fake or non-original charger
+- Very old or damaged charger
+
+Result: Deduction applies because resale value reduces.
+
+### 6. Hidden or technical issues (especially for laptops/Macs)
+
+- Low battery backup (for example, only 30 minutes)
+- High battery cycles
+- Fan noise, heating, or performance issues
+- Display flicker or dead pixels
+- Other internal hardware issues
+
+Result: System applies deductions for repair or replacement cost.
+
+## When price does not change
+
+Price does **not** change for the following reasons. Use this list to confidently reassure customers.
+
+- Customer changes address
+- Customer delays pickup or reschedules
+- Festival sales or promotions
+- Referral code usage (referral adds bonus, it does not change base device price)
+- Vendor personal preference (vendor cannot edit price manually)
+
+## Non‑negotiable rules about price and vendor control
+
+<Callout kind="alert">
+
+**Rule 1 – Vendor cannot edit price manually**
+
+- Vendor cannot type or manually change any price.
+- Vendor only selects condition options in the app.
+- The Cashkr pricing engine calculates and recalculates the price.
+- This ensures full transparency and fairness to customers and vendors.
+
+**Customer-facing line to use:**
+
+"The vendor does not decide the price; the Cashkr app does."
+
+</Callout>
+
+<Callout kind="alert">
+
+**Rule 2 – Sales and CX must not promise fixed price lock**
+
+- Do not guarantee that the online estimated price will remain the same after inspection.
+- Always explain that final price depends on actual device condition at pickup.
+- Never promise that price will increase later.
+- Do not blame the vendor for any change; explain that the system updated the price.
+
+</Callout>
+
+## Customer communication scripts (how to explain price changes)
+
+Use these ready scripts to answer the most common questions and objections.
+
+<ExpandableGroup>
+
+<Expandable title="Customer asks: Why did the price change?">
+
+**Key logic to explain:**
+
+- Actual device condition at pickup may differ from the condition selected earlier.
+- The app updates the price automatically when the vendor enters the real condition and issues.
+
+**Suggested script:**
+
+> "The price changed because the actual condition of the device is different from what was selected earlier. The app automatically updates it based on the inspection details."
+
+</Expandable>
+
+<Expandable title="Customer accuses vendor of cheating">
+
+**Key logic to explain:**
+
+- Vendor has no manual control over pricing.
+- All changes come from the Cashkr system based on inputs.
+
+**Suggested script:**
+
+> "The vendor cannot change the price manually. The Cashkr system adjusts the price based on the actual issues and condition found during inspection."
+
+</Expandable>
+
+<Expandable title="Customer mentions competitor price">
+
+**Key logic to explain:**
+
+- Cashkr is open to matching competitor quotes where possible.
+- You need a proof of the final competitor quote.
+
+**Suggested script:**
+
+> "We match competitor quotes whenever possible. Please share their final quote screenshot, and we will try our best to match it."
+
+</Expandable>
+
+<Expandable title="Customer questions market drop">
+
+**Key logic to explain:**
+
+- Prices depend on current market demand and resale value.
+- When market changes, all similar devices are affected.
+
+**Suggested script:**
+
+> "Prices depend on current market demand. If the market drops this week, the resale values of all similar models also drop, so the price may be lower than before."
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Common scenarios to train teams
+
+Use these scenarios in role-plays and training so agents and vendors practice explaining price changes confidently.
+
+<ExpandableGroup>
+
+<Expandable title="Scenario 1: Customer selected 'All good' but screen has scratch">
+
+- Customer chose "All good" or similar high condition.
+- Vendor finds visible screen scratch during inspection.
+- System applies a deduction for screen damage.
+
+**How to explain:**
+
+> "The online quote was based on 'All good' condition, but the screen has a visible scratch. The system has applied a standard deduction for this issue."
+
+</Expandable>
+
+<Expandable title="Scenario 2: Battery health shows 74%">
+
+- Customer marked battery as "good".
+- Vendor checks and sees battery health at 74%.
+- Engine applies a deduction for required battery replacement.
+
+**How to explain:**
+
+> "The battery health is at 74%, which means it needs replacement sooner. The app automatically reduces the price to adjust for this battery cost."
+
+</Expandable>
+
+<Expandable title="Scenario 3: Laptop backup only 30 minutes">
+
+- Customer did not know exact backup time.
+- Vendor tests and finds backup is only around 30 minutes.
+- System applies a large deduction for laptop battery change.
+
+**How to explain:**
+
+> "Your laptop battery backup is only around 30 minutes, so it needs a new battery. The system has reduced the price to cover this replacement."
+
+</Expandable>
+
+<Expandable title="Scenario 4: Customer has no charger">
+
+- Customer selected or confirms "No charger" at pickup.
+- Resale value drops because device is incomplete.
+- Pricing engine deducts for missing charger.
+
+**How to explain:**
+
+> "The quote with charger and without charger is different. Because the device is without a charger, the app has applied a deduction to match the actual resale value."
+
+</Expandable>
+
+<Expandable title="Scenario 5: Customer selected wrong variant">
+
+- Customer selected a higher variant (for example, 256 GB or i7).
+- Actual device is a lower variant (for example, 128 GB or i5).
+- Price is corrected down to the real variant value.
+
+**How to explain:**
+
+> "The online quote was generated for a higher variant, but your device is the lower variant. The price has been corrected to match the actual model and configuration."
+
+</Expandable>
+
+</ExpandableGroup>
+
+## Rules for Sales and CX teams during calls
+
+These rules keep communication consistent and aligned with the pricing engine.
+
+- **Always explain that price depends on actual condition.**
+  - Mention that the online quote is based on self-declared condition.
+  - Reinforce that inspection confirms the final value.
+
+- **Do not promise price lock.**
+  - Avoid saying "price will not change" before inspection.
+  - Always say "final price depends on actual device condition."
+
+- **Never blame the vendor.**
+  - Explain that the system, not the vendor, updates the price.
+  - Use the line: "The Cashkr app decides the price based on condition."
+
+- **Never promise a price increase.**
+  - Do not suggest that inspection will automatically increase price.
+  - Focus on accurate, fair valuation instead of "better price later."
+
+- **Encourage customers to select the correct condition on the website/app.**
+  - Guide them to be honest about scratches, dents, battery health, and issues.
+  - Explain that accurate inputs reduce surprises at pickup.
+
+- **Always use the standard script.**
+  - Follow the customer communication scripts in this SOP.
+  - Escalate only when there is a genuine issue, not when logic is correct.
+
+## One‑page summary (quick reference)
+
+Use this as a mental checklist during calls or training.
+
+### Price changes because:
+
+- Real condition is found at inspection.
+- Customer selected wrong or incomplete condition earlier.
+- Market prices for that model change.
+- Accessories are missing, fake, or damaged.
+- Hidden or internal issues are detected (battery, display, heating, hinges, etc.).
+- Wrong model or variant was selected initially.
+
+### Price does not change because:
+
+- Vendor personal decision or negotiation.
+- Sales or CX intervention or promise.
+- Random, unexplained change in the system.
+- Customer location, address change, or pickup delay.
+- Festival offers or referral codes (these only affect bonuses, not base price).

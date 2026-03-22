@@ -1,0 +1,331 @@
+---
+title: Vendor Credit Approval (UPI Screenshot Process)
+description: SOP for reviewing vendor UPI payment screenshots, verifying with Finance, detecting fraud, and approving or rejecting credits in the Admin Panel.
+---
+
+## Purpose and scope
+
+Use this module to approve or reject vendor-uploaded UPI payment screenshots before credits are added to a vendor Cashkr account.
+
+This SOP applies to Vendor Operations, Finance, Operations, and Management teams.
+
+The goals are:
+
+- Correct vendor credit management
+- Identify and block fraudulent credit uploads
+- Maintain clear audit trails
+- Ensure vendors receive credits only after genuine payments
+- Support accurate vendor financial records
+
+This SOP governs the approval process for vendor-uploaded UPI payment screenshots used to add credits to a Cashkr account.
+
+## When is this process used?
+
+Vendors upload UPI payment screenshots in these situations:
+
+- They add credits (commission balance)
+- They refill their wallet (if allowed in future updates)
+- They claim pending credit from Cashkr Operations
+- They need adjustment after an order reversal
+
+Use the following Admin Panel section:
+
+- `Vendors` → `Payments` → `Credit Approval Panel`
+
+## Quick checklist (before you review a request)
+
+Use this quick checklist before approving any vendor credit based on a UPI screenshot.
+
+### Vendor and account eligibility
+
+- Vendor status is `ACTIVE`
+- Vendor has valid KYC
+- Vendor is not on `HOLD` or `DEACTIVATED`
+- Vendor balance matches the expected transaction
+
+### Screenshot fields required
+
+Every UPI screenshot must clearly show:
+
+- Transaction ID or UTR
+- Amount paid
+- Time and date
+- Sender UPI ID (must match the vendor registered UPI)
+- Receiver UPI ID (must match the Cashkr bank account UPI ID)
+- Paid to / Paid from details
+- Success confirmation (for example, `Payment Successful` or `Completed`)
+
+If any of the above is missing, reject the request immediately.
+
+<Callout kind="info">
+
+Finance must verify the payment in the bank statement before you approve any credit. Do not approve based only on the screenshot.
+
+</Callout>
+
+## Eligibility for credit approval
+
+Confirm all of these before detailed review:
+
+- Vendor is `ACTIVE`
+- Vendor has valid KYC
+- Vendor is not on `HOLD` or `DEACTIVATED`
+- Vendor balance aligns with the claimed transaction
+- Screenshot follows the required format and contains all required data
+
+If any eligibility condition fails, reject the request and record the reason.
+
+## Required data on UPI screenshots
+
+Check that the uploaded screenshot includes:
+
+- Transaction ID or UTR
+- Amount paid
+- Time and date of payment
+- Sender UPI ID (must match the vendor registered UPI)
+- Receiver UPI ID (must match the Cashkr bank account UPI ID)
+- Paid to / Paid from details
+- Payment status showing success (for example, `Payment Successful` or `Completed`)
+
+If any of these are missing, unclear, or unreadable, reject immediately and instruct the vendor to upload a correct screenshot if payment was genuine.
+
+## Step-by-step approval workflow
+
+Use this workflow for every vendor UPI screenshot request.
+
+<Steps>
+  <Step title="Open the Admin Panel" icon="monitor">
+
+  - Log in to the Admin Panel.
+  - Navigate to `Vendors` → `Payments` → `UPI Screenshot Approvals`.
+
+  </Step>
+
+  <Step title="Select the vendor&apos;s pending request" icon="users">
+
+  - Locate the relevant vendor entry in the UPI Screenshot Approvals list.
+  - Review the summary details:
+    - Vendor name
+    - UPI ID
+    - Amount claimed
+    - Screenshot preview
+    - Timestamp of upload
+
+  </Step>
+
+  <Step title="Verify screenshot authenticity" icon="search">
+
+  Review the screenshot in three parts:
+
+  **A. Transaction details**
+
+  - Match the screenshot amount with the vendor claimed amount.
+  - Confirm the UTR is present and readable.
+  - Check that the payment timestamp is within the last 24–48 hours (as per internal guidelines).
+
+  **B. UPI ID validation**
+
+  - Confirm the sender UPI matches the vendor registered UPI in the system.
+  - Confirm the receiver UPI matches the Cashkr bank UPI.
+
+  **C. Image verification**
+
+  - Check the image for visible editing or manipulation.
+  - Ensure there are no cropped edges hiding important information.
+  - Confirm the screenshot is not reused from past uploads.
+
+  If anything looks suspicious at this stage, escalate to the Vendor Operations Manager before proceeding.
+
+  </Step>
+
+  <Step title="Cross-check payment in bank statement (Finance)" icon="database">
+
+  The Finance team must verify the payment details in the bank statement:
+
+  - Confirm the amount is received.
+  - Match the UTR with the screenshot.
+  - Match the payment timestamp.
+  - Confirm the vendor UPI ID is correct.
+
+  If everything matches, Finance can confirm the payment and you can proceed to the next step.
+
+  If there is any mismatch or the payment is not found, reject the request.
+
+  </Step>
+
+  <Step title="Approve or reject the request" icon="check-circle">
+
+  **Approve**
+
+  - Approve only if:
+    - Vendor eligibility checks are passed.
+    - Screenshot contains all required data.
+    - Screenshot authenticity checks are clean.
+    - Finance has confirmed receipt in the bank statement.
+  - Click `Approve`.
+  - Confirm that:
+    - Credits are added to the vendor account automatically.
+    - The system logs an audit entry.
+    - The vendor receives an SMS or in-app notification that credits are added.
+
+  **Reject**
+
+  - Reject the request if any of the following are true:
+    - Amount on screenshot and claimed amount do not match.
+    - UTR is missing or unreadable.
+    - Sender or receiver UPI ID is wrong.
+    - Screenshot is a duplicate of a previous upload.
+    - Screenshot appears edited or tampered.
+    - Payment is not found in the bank records.
+  - Enter a clear rejection reason in the system when prompted.
+  - Confirm that the vendor receives a notification: `Your credit request was rejected due to incorrect or invalid payment proof.`
+
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+Do not skip Finance verification. No credit approval is allowed based only on screenshots, even if the vendor is trusted.
+
+</Callout>
+
+## Fraud detection rules (zero tolerance)
+
+<Callout kind="alert">
+
+Apply these zero-tolerance rules to protect Cashkr from fraud. Reject such requests immediately and follow escalation rules.
+
+</Callout>
+
+Reject immediately if you see any of the following:
+
+- Screenshot is blurry or intentionally cropped to hide details.
+- Image is repeated from previous uploads by the same vendor.
+- Sender UPI ID does not match the vendor registered UPI.
+- Screenshot shows signs of editing or manipulation.
+- Device time does not match the screenshot timestamp in a plausible way.
+- Transaction ID or UTR is invalid, fake, or not found in bank records.
+
+Apply internal consequences:
+
+- If detected 2 or more times for a vendor: put the vendor account on `HOLD`.
+- If detected 3 or more times: deactivate and permanently block the vendor.
+
+Vendor Operations must add each confirmed case to the Fraud Log inside the Admin Panel.
+
+## Internal approval flow (who does what)
+
+Use this flow to coordinate between teams for credit approvals.
+
+1. **Vendor Operations**
+
+   - Perform the initial screenshot review.
+   - Check eligibility, required fields, and basic authenticity.
+   - Escalate suspicious or high-value cases to the Vendor Operations Manager.
+
+2. **Finance**
+
+   - Cross-check the payment in the bank statement.
+   - Confirm amount, UTR, timestamp, and UPI IDs.
+   - Communicate confirmation or mismatch back to Vendor Operations.
+
+3. **Vendor Operations Manager (for high-value uploads)**
+
+   - Review high-value or flagged uploads.
+   - Decide to approve or reject after Finance confirmation.
+   - Ensure fraud rules are applied consistently.
+
+4. **System**
+
+   - Add credits automatically after approval.
+   - Log audit entries.
+   - Trigger vendor notifications for approval or rejection.
+
+## Communication flow
+
+### Vendor notifications after approval
+
+Vendors receive a confirmation message, for example:
+
+- `Your credits have been successfully added.`
+
+### Vendor notifications after rejection
+
+Vendors receive a rejection message, for example:
+
+- `Your credit request was rejected due to invalid proof. Please upload the correct screenshot.`
+
+### Vendor Operations internal notes
+
+Always document internal notes for each decision:
+
+- Why the request was approved or rejected
+- Whether UTR and key fields were validated
+- Whether Finance cross-check was completed and confirmed
+
+## BD and area management team involvement
+
+Business Development and Area Management teams use approved credits as a signal, but they do not approve credits.
+
+They use credit activity to:
+
+- Monitor vendor activity across areas
+- Track which areas have active versus inactive vendors
+- Identify high-performing vendors versus low-engagement vendors
+- Coordinate with Vendor Operations so vendors in high-demand areas keep credits active
+
+BD and Area Management teams should not interfere with the approval process or override fraud rules.
+
+## Common error scenarios and how to handle them
+
+Use these patterns to handle frequent issues:
+
+- **Vendor uploaded wrong screenshot**
+
+  - Reject the request.
+  - Ask the vendor to upload the correct screenshot with all required details.
+
+- **Vendor paid but screenshot is missing UTR**
+
+  - Reject the request.
+  - Ask the vendor to resend a screenshot where the UTR is clearly visible.
+
+- **Payment not received in bank**
+
+  - Reject the request.
+  - Notify the vendor to check with their bank and upload proof again after resolution.
+
+- **Vendor uploaded the same screenshot twice**
+
+  - Reject the duplicate request.
+  - Mark it internally as a duplicate attempt.
+
+- **Vendor added credits but account is on HOLD**
+
+  - Inform the vendor that credits cannot be added while the account is on `HOLD`.
+  - Redirect the issue to Vendor Operations to review and resolve the account status.
+
+## One-page quick summary (training card)
+
+Use this as a quick reference during training or live operations.
+
+**Credit approval checklist**
+
+- UTR is visible and readable.
+- Amount on screenshot matches the claimed amount.
+- Payment timestamp is reasonable and matches expectations.
+- Sender UPI equals the registered vendor UPI.
+- Receiver UPI equals the Cashkr UPI.
+- Finance has confirmed the payment in the bank statement.
+- Screenshot shows no signs of editing or cropping.
+
+**Outcome rules**
+
+- **Approve** → System adds credits automatically and logs an audit entry; vendor is notified.
+- **Reject** → Enter a clear rejection reason; vendor is notified about invalid or incorrect proof.
+
+<Callout kind="alert">
+
+Do not approve any credit without Finance verification, and do not ignore repeated fake or suspicious screenshots. Apply zero-tolerance fraud rules every time.
+
+</Callout>

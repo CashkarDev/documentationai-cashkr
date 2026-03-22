@@ -966,6 +966,41 @@
             "group": "Training",
             "pages": [
               {
+                "title": "City / Pincode Unavailability Script",
+                "path": "city-/-pincode-unavailability-script",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "Price Change Logic (When and Why It Happens)",
+                "path": "price-change-logic-when-and-why-it-happens",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "Store Verification Script",
+                "path": "store-verification-script",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "Corporate Introduction Script (First Contact)",
+                "path": "corporate-introduction-script-first-contact",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "Vendor App Training Script",
+                "path": "vendor-app-training-script",
+                "badge": "Scripts Library"
+              },
+              {
+                "title": "How To Close a Lead When Pickup Isn’t Available",
+                "path": "how-to-close-a-lead-when-pickup-isnt-available",
+                "badge": "Sales & Leads Conversion Modules"
+              },
+              {
+                "title": "Vendor Credit Approval (UPI Screenshot Process)",
+                "path": "vendor-credit-approval-upi-screenshot-process",
+                "badge": "Admin Panel & Operations Modules"
+              },
+              {
                 "title": "Return / Payment Confirmation Script",
                 "path": "return-/-payment-confirmation-script",
                 "badge": "Script Library"

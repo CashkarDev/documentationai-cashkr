@@ -1,0 +1,431 @@
+---
+title: Vendor App Training Script
+description: Trainer-friendly script and checklist to onboard vendors to the Cashkr Vendor App, covering login, credits vs wallet, order flow, OTP rules, and completion.
+---
+
+## Training outcomes
+
+By the end of this session, the vendor should:
+
+- Log in to the Cashkr Vendor App and find the **Dashboard**, **Available Orders**, **In Progress**, and **Buy Credits** sections.
+- Understand **wallet vs credits** and how money flows from wallet to customer.
+- Unlock an order, call the customer within 10 minutes, and use **Out for Pickup** vs **Fail** correctly.
+- Use both **lead OTP** and **payment OTP** correctly and follow strict OTP rules.
+- Complete an order with all required captures: customer signature, ID photos, IMEI, closing amount, and bill or blank photo.
+
+<Callout kind="alert">
+
+Non-negotiable: Trainer must highlight that credits are deducted immediately on unlock, payment must be online from wallet, OTPs must always come from the customer, and vendor must not take the device before payment success.
+
+</Callout>
+
+## Recommended training session flow
+
+Use this as your high-level agenda while training. Detailed script and vendor actions for each module are below.
+
+<Steps>
+  <Step title="Confirm access and login" icon="lock">
+    Confirm the vendor has app access, explain login, and show where to see the **Dashboard**.
+  </Step>
+  <Step title="Explain wallet vs credits" icon="database">
+    Define **wallet balance** (₹) vs **credits balance**, and how each is used in orders.
+  </Step>
+  <Step title="Walk through Available Orders and unlock" icon="monitor">
+    Show **Available Orders**, how unlock works, credits deduction, and the 10-minute call rule.
+  </Step>
+  <Step title="Explain call disposition and Out for Pickup vs Fail" icon="phone">
+    Practice how to set **call disposition** and when to choose **Out for Pickup** or **Fail**.
+  </Step>
+  <Step title="Teach pickup, lead OTP, and inspection flow" icon="zap">
+    Cover on-site behavior, **lead OTP** usage, assessment, and when **Complete Order** appears.
+  </Step>
+  <Step title="Teach payment OTP and completion checklist" icon="check-circle">
+    Explain **payment OTP**, wallet to customer payout, and all completion captures.
+  </Step>
+  <Step title="Explain Buy Credits and admin approval" icon="plus">
+    Show **Buy Credits** screen and stress that credits are added only after admin approval.
+  </Step>
+  <Step title="Quick recap and questions" icon="info">
+    Reconfirm key rules, OTPs, no cash, and what to do if they are stuck during an order.
+  </Step>
+</Steps>
+
+---
+
+## Module 1: Login and finding key screens
+
+Use this module to ground the vendor on where everything lives in the app.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "First, open the Cashkr Vendor App on your phone."
+  - "Log in using your registered mobile number and OTP."
+  - "Once you log in, you land on the **Dashboard**. This is where you see a summary of your orders and balances."
+  - "At the bottom or top navigation, you will see:
+    - **Dashboard** – overall summary.
+    - **Available Orders** – new orders you can unlock.
+    - **In Progress** – orders you have already unlocked and are working on.
+    - **Buy Credits** – where you request more credits."
+  - "We will go through each of these today so you know exactly where to work."
+
+  <Callout kind="info">
+
+  If the vendor does not see Available Orders or In Progress, confirm they are on the main vendor app home after login, not in any profile/settings screen.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - Open the **Cashkr Vendor App** on the phone.
+  - Log in with registered mobile number and OTP.
+  - On the home screen, identify and say out loud:
+    - "This is the **Dashboard**."
+    - "Here is **Available Orders**."
+    - "Here is **In Progress**."
+    - "Here is **Buy Credits**."
+
+  </Tab>
+</Tabs>
+
+---
+
+## Module 2: Wallet balance vs credits balance
+
+Explain money flow clearly before showing order actions.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "In your app, you will see two important balances: **wallet balance** in rupees and **credits balance**."
+  - "**Wallet balance (₹)** is real money. This is the money that will be paid to customers when you complete orders."
+  - "**Credits balance** is only for unlocking orders. Each order has a credit cost, and that amount is deducted from your credits the moment you unlock the order."
+  - "Credits do **not** go to the customer. Credits only allow you to access the order details and work on that order."
+  - "When you complete an order and pay the customer, the money comes from your **wallet balance** to the customer."
+
+  <Callout kind="alert">
+
+  Vendor must have enough **credits** to unlock orders and enough **wallet balance** to pay customers. If either is low, they cannot work smoothly and should top up before taking more orders.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - On the **Dashboard**, locate:
+    - **Wallet balance** (₹).
+    - **Credits balance**.
+  - Read out both numbers to the trainer.
+  - Confirm understanding verbally: "Wallet is real money to pay customers; credits are for unlocking orders."
+
+  </Tab>
+</Tabs>
+
+---
+
+## Module 3: Available Orders and unlocking a lead
+
+Connect credits to real unlock behavior and the immediate call requirement.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "Next, go to **Available Orders**."
+  - "Here you see a list of customer orders that you can unlock. Each order will show the device, location, and the credit cost to unlock."
+  - "When you tap **Unlock** on an order, the required credits are deducted **immediately** from your credits balance."
+  - "After unlock, the order moves from **Available Orders** to **In Progress** and is now only visible to you."
+  - "Once you unlock an order, you must call the customer within **10 minutes**. This is part of our SLA and is critical for customer experience."
+
+  <Callout kind="alert">
+
+  Credits are deducted immediately when an order is unlocked. There is no refund of credits just because the customer does not pick up or cancels later, unless a separate approved reversal process applies.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - Tap on **Available Orders**.
+  - Scroll and open one sample order (trainer can use a demo order if available).
+  - Identify:
+    - Device details.
+    - Customer area.
+    - Credits required to unlock.
+  - (If a test order is available) Tap **Unlock**:
+    - Observe that credits balance reduces.
+    - Confirm that order is now visible in **In Progress**.
+
+  </Tab>
+</Tabs>
+
+---
+
+## Module 4: In Progress orders and call disposition
+
+Teach how to handle the first call and set the right disposition, leading to Out for Pickup vs Fail.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "Now, go to **In Progress**. This is where all your unlocked orders live."
+  - "Tap on the unlocked order to see full customer details and call options."
+  - "You must call the customer within **10 minutes** of unlocking. Always introduce yourself clearly as Cashkr partner and confirm the device and appointment."
+  - "After the call, you must set the **call disposition** correctly inside the app."
+  - "Based on the call, you will decide between:
+    - **Out for Pickup** – you will go for pickup and inspection.
+    - **Fail** – you will not proceed with this order, and you must select the correct reason."
+  - "When you select **Out for Pickup**, the system sends an Out for Pickup email to the customer, and you will later use the **lead OTP** at the visit to start the inspection."
+  - "When you select **Fail**, the lead is closed and moves to failed. You cannot work on that order further."
+
+  <Callout kind="info">
+
+  Remind the vendor that accurate call disposition and fail reasons help support and quality teams review issues later.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - Tap on **In Progress**.
+  - Open the recently unlocked order.
+  - Use the call button to place a **test call** (if real customer, trainer should supervise).
+  - After the call:
+    - Open the **call disposition** options.
+    - Show where **Out for Pickup** and **Fail** options are.
+    - Select **Out for Pickup** for the training demo (if this is a real test lead).
+    - Observe that the order status updates accordingly.
+
+  </Tab>
+</Tabs>
+
+<Callout kind="alert">
+
+If the vendor chooses **Fail**, the lead flow ends and order moves to failed. Once failed, vendor cannot go back and mark it Out for Pickup on the same order.
+
+</Callout>
+
+---
+
+## Module 5: On-site pickup, lead OTP, and inspection
+
+Focus on vendor behavior at the customer location and correct use of the lead OTP.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "When you go to the customer location after marking Out for Pickup, you must follow proper pickup behavior and respect."
+  - "Before starting inspection, tell the customer: 'I will start the Cashkr verification process. You will get an OTP on your registered number. Do not share this with anyone else.'"
+  - "Inside the app, open the **In Progress** order and tap to start the inspection. The app will ask for the **lead OTP** (also called inspection OTP)."
+  - "Ask the customer to read out the OTP they received. Enter that OTP in the app to start inspection."
+  - "Only after entering the correct **lead OTP** will the inspection screens open and **Complete Order** and **Requote** options become available later."
+
+  <Callout kind="alert">
+
+  Lead OTP is mandatory to start inspection. Never start the inspection flow without lead OTP, never guess the OTP, and never use any OTP that did not come directly from the customer.
+
+  </Callout>
+
+  - "After OTP verification, carefully assess the device condition as per app questions. This decides the final price."
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - At the customer location, open the **In Progress** order.
+  - Confirm order details with the customer.
+  - Tap to start inspection; show the screen where **lead OTP** is required.
+  - Ask the customer to read the OTP they receive.
+  - Enter the OTP and proceed to the assessment questions.
+  - Navigate through a few sample assessment screens so the vendor knows how to answer.
+
+  </Tab>
+</Tabs>
+
+---
+
+## Module 6: Payment OTP and payout from wallet
+
+Make sure vendor understands how money moves and the strict no-cash rule.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "After you finish inspection, the app will show the final price based on the device condition."
+  - "Explain the final amount to the customer and confirm they are ready to sell at that price."
+  - "When the customer agrees, you must pay them using the **payment OTP** flow."
+  - "Inside the app, tap to proceed to payment. The app will trigger a **payment OTP** to the customer's registered number."
+  - "Ask the customer to read the payment OTP, then enter it in the app to confirm the payout."
+  - "Once you enter the correct payment OTP, the payout amount is deducted from your **wallet balance** and sent to the customer's chosen payment method."
+
+  <Callout kind="alert">
+
+  Use only wallet balance for payouts. Do not pay customers in cash or any offline method outside the app. Payment OTP must come from the customer, and you must not guess it or use your own number.
+
+  </Callout>
+
+  - "Tell the customer clearly: 'You will receive the payment in your account; once you confirm you have received it, I will take the device.'"
+
+  <Callout kind="alert">
+
+  Never take the device from the customer **before** the customer confirms payment received. Payment must be successfully completed in the app and customer must confirm before you take the device.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - On the order after inspection:
+    - Review the **final price** on screen.
+    - Show where the action to proceed to **payment** is.
+  - Trigger the **payment OTP** screen (trainer may use demo/test scenario).
+  - Show how payment OTP is entered and where wallet deduction will be reflected.
+  - Confirm understanding:
+    - "Payment moves from wallet to customer after payment OTP."
+    - "Do not pay in cash; always use app flow."
+
+  </Tab>
+</Tabs>
+
+---
+
+## Module 7: Completing an order – mandatory captures
+
+Teach the vendor what is required to fully complete an order after payment.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "After successful payment, you must complete the order with all required details."
+  - "Open the order and tap **Complete Order**."
+  - "The app will ask for:
+    - Customer signature on screen.
+    - Photo of customer ID card **front**.
+    - Photo of customer ID card **back**.
+    - **Closing amount** – the final amount paid to the customer.
+    - **IMEI confirmation** – confirm the device IMEI matches the order.
+    - A **bill photo**. If the customer does not have a bill, you must capture a clear blank photo as per instructions instead."
+  - "Only after you fill all these fields and submit, the order is considered **completed** in the system."
+
+  <Callout kind="info">
+
+  Remind vendor that completion is only available after they have marked Out for Pickup and verified the lead OTP. Without these, Complete Order will not be accessible.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - Open the **In Progress** order that is ready for completion.
+  - Tap **Complete Order** (or show where this button appears).
+  - Walk through each required field:
+    - Practice taking a sample **signature** (on a test order if available).
+    - Show where to capture **ID front** and **ID back** photos.
+    - Show where to enter the **closing amount**.
+    - Show where **IMEI** is confirmed.
+    - Show where to upload **bill photo** or blank photo if bill is not available.
+  - Do a dry run without actually submitting if this is not a real order, but make sure vendor sees every field.
+
+  </Tab>
+</Tabs>
+
+---
+
+## Module 8: Buy Credits and admin approval
+
+Clarify how vendors increase their credit balance and why approval is needed.
+
+<Tabs>
+  <Tab title="Trainer script" icon="book-open">
+
+  - "Now, let us see how you add more **credits**."
+  - "Go to the **Buy Credits** section in your app."
+  - "Here you will see options to:
+    - Scan a QR code to pay using UPI or other supported methods.
+    - Upload a **payment screenshot** as proof."
+  - "After you make the payment and upload the screenshot, you must submit the request for **admin review**."
+
+  <Callout kind="info">
+
+  Admin needs to verify the payment screenshot before approving credits. Until admin approves, your usable credits balance will **not** increase.
+
+  </Callout>
+
+  - "So, when you add credits, do not assume they are available instantly. Wait for admin approval, and then you will see your credits balance updated."
+
+  </Tab>
+
+  <Tab title="Vendor actions in app" icon="monitor">
+
+  - Tap on **Buy Credits**.
+  - Show:
+    - Where the **QR code** is displayed.
+    - Where to **upload payment screenshot**.
+    - Where to **submit** the request.
+  - Confirm understanding verbally:
+    - "Credits increase only after admin approves my request."
+    - "If I do not see credits immediately, I should check the status or contact support, not keep unlocking without enough credits."
+
+  </Tab>
+</Tabs>
+
+---
+
+## Non-negotiable rules checklist (trainer reference)
+
+Use this as a spoken checklist. Verbally confirm each point with the vendor.
+
+- **Credits deduction on unlock**
+  - "Credits are deducted immediately when you unlock an order."
+  - "You understand that unlocking is your decision and credits are not auto-refunded."
+
+- **Call timing**
+  - "You must call the customer within **10 minutes** of unlocking the order."
+
+- **OTP rules**
+  - "There are two OTPs:
+    - **Lead OTP** to start inspection at pickup.
+    - **Payment OTP** to complete payout."
+  - "Both OTPs must come from the customer."
+  - "You will never guess OTPs or ask the customer to share OTPs on any other number."
+
+- **Payment rules**
+  - "You will pay customers only through the app from your **wallet balance**."
+  - "You will **not** pay in cash or any offline method outside the app."
+
+- **Device handover**
+  - "You will take the device only **after** the customer confirms payment received and the order shows successful payment in the app."
+
+<Callout kind="alert">
+
+If the vendor disagrees or hesitates on any of these rules, pause the training and escalate to Vendor Ops before proceeding with full access.
+
+</Callout>
+
+---
+
+## Quick recap (end of session)
+
+Summarize and confirm understanding before closing the training.
+
+- "Where do you see **Dashboard**, **Available Orders**, **In Progress**, and **Buy Credits** in your app?"
+- "Explain in your own words: **wallet balance vs credits balance**."
+- "After you **unlock** an order, what happens to your credits, and when do you need to call the customer?"
+- "At the customer location, when do you use **lead OTP**, and why is it important?"
+- "When and how do you use the **payment OTP**, and where does the payout money come from?"
+- "What are the mandatory items you must capture to **complete** an order?"
+- "How do you **buy credits**, and when do new credits actually become usable?"
+
+If the vendor answers these confidently and can navigate the app on their own, mark the training as successful and share links to supporting SOPs if needed:
+
+<Columns cols={3}>
+  <Card title="Using the Vendor App – Login & Dashboard" href="/using-the-vendor-app-login-dashboard-order-unlocking" icon="monitor" cta="Open SOP" />
+  <Card title="Order Flow – Unlock → Pickup → Payment" href="/order-flow-unlock-pickup-payment" icon="zap" cta="Open SOP" />
+  <Card title="Buy Credits – Admin Approval" href="/buy-credits" icon="database" cta="Open SOP" />
+</Columns>
