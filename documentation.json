@@ -630,7 +630,80 @@
               },
               {
                 "group": "Dashboard",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "CEO Report",
+                    "path": "ceo-report"
+                  },
+                  {
+                    "title": "TV Display",
+                    "path": "tv-display"
+                  },
+                  {
+                    "title": "Overview - Dashboard",
+                    "path": "overview---dashboard"
+                  },
+                  {
+                    "title": "Growth",
+                    "path": "growth"
+                  },
+                  {
+                    "title": "Funnel",
+                    "path": "funnel"
+                  },
+                  {
+                    "title": "Marketing - Dashboard",
+                    "path": "marketing---dashboard"
+                  },
+                  {
+                    "title": "Operations & SLA",
+                    "path": "operations-sla"
+                  },
+                  {
+                    "title": "Expansion",
+                    "path": "expansion"
+                  },
+                  {
+                    "title": "Pricing",
+                    "path": "pricing"
+                  },
+                  {
+                    "title": "Failed Report",
+                    "path": "failed-report"
+                  },
+                  {
+                    "title": "Data Quality",
+                    "path": "data-quality"
+                  },
+                  {
+                    "title": "Reviews & Reputation",
+                    "path": "reviews-reputation"
+                  },
+                  {
+                    "title": "Trust & Safety",
+                    "path": "trust-safety"
+                  },
+                  {
+                    "title": "Sales & Pipelines",
+                    "path": "sales-pipelines"
+                  },
+                  {
+                    "title": "Inventory",
+                    "path": "inventory"
+                  },
+                  {
+                    "title": "Finance - Dashboard",
+                    "path": "finance---dashboard"
+                  },
+                  {
+                    "title": "Coupons",
+                    "path": "coupons"
+                  },
+                  {
+                    "title": "Referrals",
+                    "path": "referrals"
+                  }
+                ]
               },
               {
                 "group": "Inventory",
@@ -643,7 +716,40 @@
               },
               {
                 "group": "Finance",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Credits",
+                    "path": "credits"
+                  },
+                  {
+                    "title": "Device Purchases",
+                    "path": "device-purchases"
+                  },
+                  {
+                    "title": "Device Sales",
+                    "path": "device-sales"
+                  },
+                  {
+                    "title": "B2B",
+                    "path": "b2b"
+                  },
+                  {
+                    "title": "Returns",
+                    "path": "returns"
+                  },
+                  {
+                    "title": "Expenses",
+                    "path": "expenses"
+                  },
+                  {
+                    "title": "Cash In Hand",
+                    "path": "cash-in-hand"
+                  },
+                  {
+                    "title": "Reports - Finance",
+                    "path": "reports---finance"
+                  }
+                ]
               },
               {
                 "group": "Leads",
@@ -660,19 +766,79 @@
               },
               {
                 "group": "Vendors - B2C",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "B2C Vendor Tiers",
+                    "path": "b2c-vendor-tiers"
+                  },
+                  {
+                    "title": "B2C Vendors",
+                    "path": "b2c-vendors"
+                  }
+                ]
               },
               {
                 "group": "Expansion",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Area",
+                    "path": "area"
+                  },
+                  {
+                    "title": "New Vendors - B2C",
+                    "path": "new-vendors---b2c"
+                  },
+                  {
+                    "title": "Onboarding B2C",
+                    "path": "onboarding-b2c"
+                  }
+                ]
               },
               {
                 "group": "Orders -B2C",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "All Orders",
+                    "path": "all-orders"
+                  },
+                  {
+                    "title": "In Progress",
+                    "path": "in-progress"
+                  },
+                  {
+                    "title": "Not Assigned",
+                    "path": "not-assigned"
+                  },
+                  {
+                    "title": "No Action",
+                    "path": "no-action"
+                  },
+                  {
+                    "title": "Delayed",
+                    "path": "delayed"
+                  },
+                  {
+                    "title": "Reserved",
+                    "path": "reserved"
+                  },
+                  {
+                    "title": "Flagged",
+                    "path": "flagged"
+                  }
+                ]
               },
               {
                 "group": "Quality - B2C",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "To Be Failed",
+                    "path": "to-be-failed"
+                  },
+                  {
+                    "title": "Fines",
+                    "path": "fines"
+                  }
+                ]
               },
               {
                 "group": "Store",
@@ -693,39 +859,140 @@
               },
               {
                 "group": "Buyback - B2B",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Deals",
+                    "path": "deals"
+                  },
+                  {
+                    "title": "Leads - Buyback",
+                    "path": "leads---buyback"
+                  },
+                  {
+                    "title": "Clients",
+                    "path": "clients"
+                  },
+                  {
+                    "title": "Inspection",
+                    "path": "inspection"
+                  }
+                ]
               },
               {
-                "group": "Banners",
-                "pages": []
+                "group": "Banners - Marketing",
+                "pages": [
+                  {
+                    "title": "Banner",
+                    "path": "banner"
+                  }
+                ]
               },
               {
-                "group": "Coupons",
-                "pages": []
+                "group": "Coupons - Marketing",
+                "pages": [
+                  {
+                    "title": "Dashboard",
+                    "path": "dashboard"
+                  },
+                  {
+                    "title": "Coupon",
+                    "path": "coupon"
+                  }
+                ]
               },
               {
                 "group": "Referrals",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Programs",
+                    "path": "programs"
+                  },
+                  {
+                    "title": "Transactions",
+                    "path": "transactions"
+                  },
+                  {
+                    "title": "Payouts",
+                    "path": "payouts"
+                  }
+                ]
               },
               {
                 "group": "Push Notifications",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Notifications",
+                    "path": "notifications"
+                  }
+                ]
               },
               {
                 "group": "Platform Reviews",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Reviews",
+                    "path": "reviews"
+                  },
+                  {
+                    "title": "Widgets",
+                    "path": "widgets"
+                  }
+                ]
               },
               {
                 "group": "users",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Cashkr",
+                    "path": "cashkr"
+                  }
+                ]
               },
               {
                 "group": "Devices",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Phone",
+                    "path": "phone"
+                  },
+                  {
+                    "title": "Tablet",
+                    "path": "tablet"
+                  },
+                  {
+                    "title": "Laptop",
+                    "path": "laptop"
+                  },
+                  {
+                    "title": "Mac",
+                    "path": "mac"
+                  }
+                ]
               },
               {
                 "group": "Settings",
-                "pages": []
+                "pages": [
+                  {
+                    "title": "Connections",
+                    "path": "connections"
+                  },
+                  {
+                    "title": "Master Logs",
+                    "path": "master-logs"
+                  },
+                  {
+                    "title": "Admin Users",
+                    "path": "admin-users"
+                  },
+                  {
+                    "title": "Demo Users",
+                    "path": "demo-users"
+                  },
+                  {
+                    "title": "Terms & Conditions",
+                    "path": "terms-conditions"
+                  }
+                ]
               }
             ]
           }
