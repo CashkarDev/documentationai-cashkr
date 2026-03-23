@@ -1491,6 +1491,10 @@
                 "path": "product-knowledge"
               }
             ]
+          },
+          {
+            "group": "People & HR",
+            "pages": []
           }
         ]
       }
