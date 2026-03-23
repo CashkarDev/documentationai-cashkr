@@ -1,0 +1,138 @@
+---
+title: Authentication
+description: Log in securely to the Cashkr Admin Panel, reset forgotten passwords, and understand role-based access and security best practices.
+---
+
+## Overview
+
+The Cashkr Admin Panel uses credential-based authentication to restrict access to authorized internal users only.
+
+<Callout kind="info">
+  Use this login flow only if you have been provisioned with admin credentials for the Cashkr Admin Panel. Share credentials only through approved internal channels.
+</Callout>
+
+## Accessing the login page
+
+Navigate to your admin panel URL in any modern browser. The **Admin Panel** login screen appears before you can access any dashboard features.
+
+## Logging in
+
+<Steps>
+  <Step title="Enter your email address">
+    Type your registered admin email address (for example, `admin@cashkr.com`) into the **Email Address** field.
+  </Step>
+
+  <Step title="Enter your password">
+    Type your password into the **Password** field. Use the visibility toggle icon on the right to show or hide the password as you type.
+  </Step>
+
+  <Step title="Optional: Remember me">
+    Check the **Remember me** checkbox if you want your session to persist across browser closes on a trusted device.
+  </Step>
+
+  <Step title="Sign in">
+    Click the **Sign In** button to authenticate and access the dashboard. You should see the main admin dashboard load without any error messages.
+  </Step>
+</Steps>
+
+## Forgot password
+
+Use the password reset flow when you cannot log in with your current password.
+
+<Steps>
+  <Step title="Start reset from login screen">
+    Click the **Forgot password?** link on the login screen.
+  </Step>
+
+  <Step title="Enter your registered email">
+    Type your registered admin email address and submit the form.
+  </Step>
+
+  <Step title="Check your inbox">
+    Open the password reset email and locate the reset link sent to your registered address.
+  </Step>
+
+  <Step title="Set a new password">
+    Follow the reset link and set a new secure password. Use the new password the next time you sign in to the admin panel.
+  </Step>
+</Steps>
+
+## Access and permissions
+
+Roles control which sections of the admin panel each user can access. The Super Admin defines which modules are visible and editable for every other admin user.
+
+<Tabs>
+<Tab title="Super Admin" icon="shield">
+
+Super Admins have full access across the admin panel and control which modules other admins can use.
+
+- View and manage all modules and data
+- Configure system-level and security settings
+- Create and manage other admin user accounts
+- Grant or revoke access to specific sections/modules for each admin
+
+</Tab>
+
+<Tab title="Operations" icon="settings">
+
+Operations users work with day-to-day order and device workflows, but only in the sections the Super Admin has granted.
+
+- Typical access includes orders and order details
+- May manage pickups and scheduling modules
+- May handle device management workflows
+- May monitor operational status across orders and queues
+
+</Tab>
+
+<Tab title="Finance" icon="bar-chart">
+
+Finance users focus on payment-related data within the boundaries defined by the Super Admin.
+
+- Typical access includes payments and reconciliation views
+- May manage invoices and billing records
+- May access financial reports and summaries
+- May track payment-related exceptions and escalations
+
+</Tab>
+
+<Tab title="Sales" icon="users">
+
+Sales users manage the B2B pipeline and sales documents for the modules assigned by the Super Admin.
+
+- Typical access includes B2B lead and pipeline data
+- May create and manage quotations and proposals
+- May track sales progress and follow-ups
+- May review conversion performance for B2B deals
+
+</Tab>
+</Tabs>
+
+## Security best practices
+
+- Use a strong, unique password for your admin account
+- Avoid using **Remember me** on shared or public devices
+- Log out after each session on non-personal machines
+- Do not share login credentials across team members
+- Contact your system administrator if you suspect unauthorized access
+
+<Callout kind="tip">
+  Treat admin panel access as highly sensitive. Enable device-level security (screen lock, OS password) on any machine you use for admin access, and change your password if you suspect it has been exposed.
+</Callout>
+
+## Troubleshooting login issues
+
+If you cannot log in to the admin panel, run these quick checks:
+
+- **Verify credentials**: Confirm that you are using the correct admin email and password, and that Caps Lock is not affecting input.
+- **Reset your password**: If you are unsure about your password or see an invalid-credentials error, use the **Forgot password?** flow to set a new one.
+- **Try a clean session**: Attempt login in an incognito/private window or after clearing cookies for the admin domain to avoid stale sessions.
+- **Confirm account status**: If you still cannot access the panel or suspect your account is locked or disabled, contact your system administrator for review.
+
+## Login screen
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774249448125-lvpxtdjgvae-adminpanel---login-page.adminpanel - login page?q=85&fm=auto&auto=compress%2Cformat"
+  width="1919"
+  height="825"
+  alt="Cashkr Admin Panel login screen showing email, password, remember me option, and sign in button"
+/>

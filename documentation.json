@@ -62,15 +62,18 @@
               },
               {
                 "title": "Login & Registration",
-                "path": "login-registration"
+                "path": "login-registration",
+                "badge": "Profile"
               },
               {
                 "title": "My Profile",
-                "path": "my-profile"
+                "path": "my-profile",
+                "badge": "Profile"
               },
               {
                 "title": "Address",
-                "path": "address"
+                "path": "address",
+                "badge": "Profile"
               },
               {
                 "title": "Track Orders",
@@ -78,7 +81,8 @@
               },
               {
                 "title": "Payment",
-                "path": "payment"
+                "path": "payment",
+                "badge": "Profile"
               },
               {
                 "title": "Sell Device Flow",
@@ -94,7 +98,8 @@
               },
               {
                 "title": "Device Price Calculator",
-                "path": "device-price-calculator"
+                "path": "device-price-calculator",
+                "badge": "Price Calculator"
               },
               {
                 "title": "Articles",
@@ -114,7 +119,8 @@
               },
               {
                 "title": "Logout and Account deletion",
-                "path": "logout-and-account-deletion"
+                "path": "logout-and-account-deletion",
+                "badge": "Profile"
               }
             ],
             "icon": "file-text"
@@ -615,38 +621,111 @@
             ]
           },
           {
-            "group": "Components",
+            "group": "Admin Panel",
             "icon": "layers",
             "pages": [
               {
-                "title": "Images",
-                "path": "components/images",
-                "icon": "file-text"
+                "title": "Authentication - Admin Panel",
+                "path": "authentication---admin-panel"
               },
               {
-                "title": "Cards",
-                "path": "components/cards",
-                "icon": "file-text"
+                "group": "Dashboard",
+                "pages": []
               },
               {
-                "title": "Code",
-                "path": "components/code",
-                "icon": "code"
+                "group": "Inventory",
+                "pages": [
+                  {
+                    "title": "All Inventory",
+                    "path": "vendors---b2c"
+                  }
+                ]
               },
               {
-                "title": "Callouts",
-                "path": "components/callouts",
-                "icon": "file-text"
+                "group": "Finance",
+                "pages": []
               },
               {
-                "title": "Steps",
-                "path": "components/steps",
-                "icon": "list"
+                "group": "Leads",
+                "pages": [
+                  {
+                    "title": "Callbacks",
+                    "path": "callbacks"
+                  },
+                  {
+                    "title": "New Leads",
+                    "path": "new-leads"
+                  }
+                ]
               },
               {
-                "title": "Tabs",
-                "path": "components/tabs",
-                "icon": "layout"
+                "group": "Vendors - B2C",
+                "pages": []
+              },
+              {
+                "group": "Expansion",
+                "pages": []
+              },
+              {
+                "group": "Orders -B2C",
+                "pages": []
+              },
+              {
+                "group": "Quality - B2C",
+                "pages": []
+              },
+              {
+                "group": "Store",
+                "pages": [
+                  {
+                    "title": "leads - store",
+                    "path": "store"
+                  },
+                  {
+                    "title": "Completed",
+                    "path": "completed"
+                  },
+                  {
+                    "title": "Failed",
+                    "path": "failed"
+                  }
+                ]
+              },
+              {
+                "group": "Buyback - B2B",
+                "pages": []
+              },
+              {
+                "group": "Banners",
+                "pages": []
+              },
+              {
+                "group": "Coupons",
+                "pages": []
+              },
+              {
+                "group": "Referrals",
+                "pages": []
+              },
+              {
+                "group": "Push Notifications",
+                "pages": []
+              },
+              {
+                "group": "Platform Reviews",
+                "pages": []
+              },
+              {
+                "group": "users",
+                "pages": []
+              },
+              {
+                "group": "Devices",
+                "pages": []
+              },
+              {
+                "group": "Settings",
+                "pages": []
               }
             ]
           }
