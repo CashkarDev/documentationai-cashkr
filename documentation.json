@@ -1454,12 +1454,41 @@
             "group": "Company & Strategy",
             "pages": [
               {
+                "title": "Leadership Team",
+                "path": "leadership-team"
+              },
+              {
                 "title": "Operating Principles",
                 "path": "operating-principles"
               },
               {
-                "title": "Leadership Team",
-                "path": "leadership-team"
+                "title": "Culture Code",
+                "path": "culture-code"
+              },
+              {
+                "title": "Team Manifesto",
+                "path": "team-manifesto"
+              },
+              {
+                "title": "Communication Norms",
+                "path": "communication-norms"
+              },
+              {
+                "title": "Goals FY 2025 - 2026",
+                "path": "goals-fy-2025---2026"
+              }
+            ]
+          },
+          {
+            "group": "New Hire Onboarding",
+            "pages": [
+              {
+                "title": "New Hire Orientation",
+                "path": "new-hire-orientation"
+              },
+              {
+                "title": "Product Knowledge",
+                "path": "product-knowledge"
               }
             ]
           }
