@@ -1,0 +1,222 @@
+---
+title: Device Sales
+description: View all sold devices and transaction details across customers and dealers
+---
+
+## Overview
+
+The **Device Sales** page in the **Finance** module shows every device sold from the [All Inventory](/inventory/all-inventory) module, including sale price, margin, GST on margin, and buyer details for both customers and dealers.
+
+<Callout kind="info">
+
+Use Device Sales to reconcile revenue, track per-device margins, and monitor GST on margin for compliance and finance reporting.
+
+</Callout>
+
+---
+
+## What it shows
+
+### Summary cards
+
+At the top of the page, four summary cards display real-time metrics for the currently applied filter or date range.
+
+<ul>
+  <li>
+    <ParamField body="totalSales" param-type="currency" show-location="false">
+      **Total Sales** card showing the total INR value of all devices sold in the current view, based on their final sale prices.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="totalMargin" param-type="currency" show-location="false">
+      **Total Margin** card showing the total profit earned across all displayed sales, calculated as sale price minus cost for each device.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="gstOnMargin" param-type="currency" show-location="false">
+      **GST on Margin** card showing the GST amount applicable on the total margin for the filtered set of sales.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="itemsSold" param-type="integer" show-location="false">
+      **Items Sold** card showing the total number of devices sold in the current filtered view.
+    </ParamField>
+  </li>
+</ul>
+
+### Sales table columns
+
+Each row in the sales table represents one completed device sale, with the following columns.
+
+<ul>
+  <li>
+    <ParamField body="device" param-type="string" show-location="false">
+      **Device** column showing the name and model of the sold device.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="serial" param-type="string" show-location="false">
+      **Serial** column showing the unique serial number of the device.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="cost" param-type="currency" show-location="false">
+      **Cost** column showing the original cost price of the device as recorded in inventory.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="salePrice" param-type="currency" show-location="false">
+      **Sale Price** column showing the price at which the device was sold, highlighted in green.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="margin" param-type="currency" show-location="false">
+      **Margin** column showing the profit on the sale, calculated as sale price minus cost, highlighted in green.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="customer" param-type="string" show-location="false">
+      **Customer** column showing the name of the buyer, which may be a customer or a dealer.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="type" param-type="string" show-location="false">
+      **Type** column showing the buyer type, with values such as **Customer** or **Dealer**.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="payment" param-type="string" show-location="false">
+      **Payment** column showing the payment method used for the sale, such as cash.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="refNo" param-type="string" show-location="false">
+      **Ref No** column showing the payment or transaction reference number, when available.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="date" param-type="datetime" show-location="false">
+      **Date** column showing the date when the sale was completed.
+    </ParamField>
+  </li>
+</ul>
+
+---
+
+## Filters & controls
+
+The summary cards and sales table respond to filters so you can focus on a specific period or subset of sales.
+
+<ul>
+  <li>
+    <ParamField body="dateRangeFilter" param-type="date-range" show-location="false">
+      Adjust the **date range filter** to limit the Device Sales view and summary cards to sales completed within a selected start and end date.
+    </ParamField>
+  </li>
+</ul>
+
+---
+
+## How sales entries are created
+
+Device Sales entries are generated automatically from the All Inventory module when a sale is punched, so you do not need to add rows manually on this page.
+
+```plaintext
+Admin selects device(s) in All Inventory
+        ↓
+Punch Sale confirmed (Dealer / Customer selected)
+        ↓
+Device removed from All Inventory
+        ↓
+New row created in Device Sales
+        ↓
+Summary cards updated (Total Sales, Margin, GST, Items Sold)
+```
+
+---
+
+## Margin & GST calculation
+
+Device Sales calculates per-device profit and the GST on that profit, then aggregates these values in the summary cards.
+
+<ul>
+  <li>
+    <ParamField body="margin" param-type="currency" show-location="false">
+      **Margin** is calculated for each device as sale price minus cost price.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="gstOnMargin" param-type="currency" show-location="false">
+      **GST on Margin** applies an 18 percent GST rate on the margin amount for each sale.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="totalSales" param-type="currency" show-location="false">
+      **Total Sales** is the sum of all sale prices for the device rows in the current filtered view.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="totalMargin" param-type="currency" show-location="false">
+      **Total Margin** is the sum of all per-device margin values in the current filtered view.
+    </ParamField>
+  </li>
+</ul>
+
+---
+
+## Customer types
+
+Buyer information in the sales table distinguishes between individual customers and registered dealers.
+
+<ul>
+  <li>
+    <ParamField body="customerTypeCustomer" param-type="string" show-location="false">
+      **Customer** refers to an individual or walk-in buyer who is not registered as a dealer.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="customerTypeDealer" param-type="string" show-location="false">
+      **Dealer** refers to a registered reseller or bulk buyer whose record comes from the Customers (Dealers) module.
+    </ParamField>
+  </li>
+</ul>
+
+---
+
+## Connections to other modules
+
+Device Sales ties into other Admin Panel modules to keep inventory, cash flow, and reporting aligned.
+
+<ul>
+  <li>
+    <ParamField body="allInventory" param-type="relation" show-location="false">
+      **All Inventory** provides the devices; punching a sale here removes the device from inventory and creates a corresponding entry in Device Sales.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="customersDealers" param-type="relation" show-location="false">
+      **Customers (Dealers)** supplies dealer records that are used as buyers when you punch a sale.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="reportsFinance" param-type="relation" show-location="false">
+      **Reports** uses Device Sales data as an input to finance and performance reports.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="cashInHand" param-type="relation" show-location="false">
+      **Cash In Hand** reflects cash payment sales recorded in Device Sales as part of overall cash flow tracking.
+    </ParamField>
+  </li>
+  <li>
+    <ParamField body="gstFinance" param-type="relation" show-location="false">
+      **GST / Finance** uses the GST on margin amounts from Device Sales for GST compliance and finance reporting.
+    </ParamField>
+  </li>
+</ul>
+
+---
+
+## Snapshot
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774333574298-8fpvs64u25g-device-sales.device sales?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="833" alt="Device Sales page showing summary cards and detailed sales table for sold devices" />
