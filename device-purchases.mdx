@@ -1,0 +1,227 @@
+---
+title: Device Purchases
+description: >-
+  Track all device purchase entries in the Admin Panel Finance module, including
+  automatic vendor orders and manual purchases, for accurate cost and inventory
+  records.
+---
+## Overview
+
+Use the Device Purchases page in Finance to track all device buying costs and maintain a clean audit trail for inventory and accounting.
+
+This includes completed internal vendor orders, manual offline purchases, B2C and B2B deals, and excess stock buys, all in a single table.
+
+<Callout kind="info" collapsed="false">
+  Use Device Purchases alongside **Device Sales**, **B2B**, and **Reports - Finance** to understand margins, reconcile payments, and validate inventory intake against vendor activity.
+</Callout>
+
+---
+
+## What it shows
+
+The page combines summary metrics, purchase types, and a detailed table so you can audit every device-level buy.
+
+### Summary metrics
+
+- The top summary section aggregates the key finance metrics for the current filter selection.
+
+- Sum of the **Purchase Price** for all visible device purchase records. Use this as the total buying cost for the selected period or filters.
+
+- Count of device purchase rows currently visible in the table. Each row represents one purchased device.
+
+### Purchase types
+
+- Use purchase types to split reporting by channel or purpose while keeping all entries in one place.
+
+- Standard customer-facing purchases completed via internal vendors. These typically originate from B2C orders.
+
+- Purchases tied to B2B deals or corporate buyback agreements, often involving bulk quantities or negotiated prices.
+
+- Excess stock purchases made to build inventory beyond immediate order requirements.
+
+### Purchase table columns
+
+Each row in the table represents a single device purchase entry with the following columns.
+
+- Purchase date of the device. For automatic entries, this is the date the internal vendor completed the order.
+
+- Purchase type for tracking: **B2C**, **B2B**, or **Excess**. Use this to split reporting by channel or purpose.
+
+- Name or model of the purchased device. This should match the device record used in inventory.
+
+- Key specifications or description of the device, used for quick identification and quality checks.
+
+- Unique serial number of the purchased device for tracking, warranty, and reconciliation.
+
+- Vendor from whom the device was purchased. This includes internal vendors and direct vendor deals.
+
+- Buying cost of the device. This value feeds into **Total Purchase Value** and downstream finance reports.
+
+---
+
+## Filters available
+
+- Use the filters and controls at the top of the page to narrow down purchases and manage data exports.
+
+- Filter purchases by a custom date range. Updates both the table rows and the summary metrics.
+
+- Filter by purchase type: **All Types**, **B2C**, **B2B**, or **Excess**.
+
+- Filter by vendor: **All Vendors** or a specific vendor name for focused vendor analysis.
+
+- Search within the table by **Device Name** or **Serial Number** to quickly locate a specific purchase.
+
+- Export the current purchase data set for accounting or external analysis. Respects the active filters.
+
+- Reload the latest purchase data, including new automatic entries from internal vendor completions and any new manual entries.
+
+---
+
+## Add Purchase (manual entry)
+
+Use **+ Add Purchase** when you need to record a device purchase that did not come via the standard internal vendor completion flow.
+
+### When to use it
+
+- Device bought offline or outside the platform workflow, but needs to be reflected in finance and inventory.
+
+- Direct deal done with a vendor (for example, bulk or negotiated purchase) that must be captured as a purchase record.
+
+- Correction or adjustment needed in finance records (for example, missing earlier entry).
+
+- Stock correction when inventory count needs to be aligned with actual physical devices purchased.
+
+### Fields required
+
+- The manual purchase form mirrors the columns in the table so that the entry behaves like any other purchase.
+
+- Date of the purchase you are recording. Use the actual buying date, not the entry date.
+
+- Select **B2C**, **B2B**, or **Excess**, based on how this device will be used and reported.
+
+- Device name or model as it should appear in the Device Purchases table and inventory.
+
+- Key specs or description to uniquely identify the device configuration.
+
+- Serial number used for device-level tracking and reconciliation.
+
+- Name of the vendor or party you purchased from.
+
+- Buying cost of this device. This amount contributes to **Total Purchase Value** and finance reports.
+
+### Steps
+
+Use the following flow whenever you create a manual purchase entry.
+
+<Steps>
+  <Step title="Open the Add Purchase form" icon="plus" title-type="p">
+    - Go to **Finance → Device Purchases**.
+
+    - Click the **+ Add Purchase** button at the top of the page to open the manual entry form.
+  </Step>
+
+  <Step title="Enter purchase details" icon="edit" title-type="p">
+    - Set the **Purchase Date** and **Type** (B2C, B2B, or Excess).
+
+    - Fill in **Device Name**, **Specs / Description**, and **Serial Number**.
+
+    - Add the **Vendor Name** and **Purchase Price** exactly as per the invoice or deal.
+  </Step>
+
+  <Step title="Save and verify the entry" icon="check-circle" title-type="p">
+    - Click **Save** to create the purchase record.
+
+    - Confirm the new row appears in the Device Purchases table with correct values.
+
+    - Check that **Total Purchase Value** and **Total Items** reflect the new entry.
+  </Step>
+</Steps>
+
+<Callout kind="info" collapsed="false">
+  Manual purchase entries behave like any other row: they update the summary metrics and, where applicable, enable the device to move into Inventory.
+</Callout>
+
+---
+
+## Business logic
+
+### Automatic purchase entry
+
+Automatic entries are created when internal vendors complete qualifying orders.
+
+```plaintext
+Order Completed (Internal Vendor)
+        ↓
+Purchase Record Created
+        ↓
+Added to Device Purchases
+        ↓
+Added to Inventory
+```
+
+<Callout kind="info" collapsed="false">
+  Only eligible internal vendor order completions flow into Device Purchases automatically. Use this page to verify that all completed internal orders have corresponding purchase entries.
+</Callout>
+
+### Manual purchase entry
+
+Manual entries follow a similar path once saved by an admin.
+
+```plaintext
+Admin → Add Purchase
+        ↓
+Enter Details
+        ↓
+Save
+        ↓
+Purchase Record Created
+        ↓
+Visible in Device Purchases
+```
+
+<Callout kind="alert" collapsed="false">
+  Treat edits and deletions on this page as finance-impacting actions. Always confirm with finance before adjusting historical purchase entries, especially for closed accounting periods.
+</Callout>
+
+---
+
+## Roles and responsibilities
+
+- The Device Purchases page is used mainly by finance and operations roles that manage buying costs and vendor activity.
+
+- Tracks device buying cost, reconciles purchase values with payments, and exports data for accounting.
+
+- Monitors vendor purchases, checks stock intake, and validates that internal vendor completions are recorded.
+
+- Creates and adjusts manual purchase entries for offline buys, direct deals, and stock corrections.
+
+- Manual purchase entries are fully controlled by admins. Finance and operations should align on who can create or edit these entries.
+
+---
+
+## Connections to other modules
+
+- Device Purchases is tightly connected to order completion flows, inventory, finance reports, and vendor records.
+
+- Automatic source of purchase records when internal vendors complete customer orders. Each eligible completion generates a purchase entry.
+
+- Admin-created manual entries via **+ Add Purchase** for offline or corrective purchases.
+
+- Receives devices from purchase records so that purchased stock becomes available inventory.
+
+- Uses purchase data and **Total Purchase Value** to build profit, loss, and cost reports.
+
+- Links vendor-level purchase history to vendor profiles for performance and reconciliation.
+
+- The **Price** field stores the buying cost, not selling price. This value feeds directly into purchase value and margin calculations.
+
+- **Total Purchase Value** and **Total Items** auto-calculate from the visible rows based on active filters.
+
+- Any edit or deletion of purchase entries should immediately reflect in the summary totals and downstream finance reports.
+
+---
+
+## Screenshot
+
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/1772003135_699e9f3f66417.png" width="1569" height="810" alt="Admin Panel Finance Device Purchases page showing summary totals, filters, and the device purchases table" />
+
