@@ -1,0 +1,238 @@
+---
+title: All Inventory
+description: >-
+  Manage B2C, Excess, and B2B device stock from a single All Inventory view in
+  the Cashkr Admin Panel.
+---
+## Overview
+
+Use the **All Inventory** module in the Admin Panel to see all devices that have been completed by internal vendors, received into stock, and are available for resale.
+
+<Callout kind="info" collapsed="false">
+  Only devices completed through internal vendor orders appear in All Inventory. Externally completed vendor orders do not show in this module.
+</Callout>
+
+---
+
+## Inventory sources
+
+Devices in All Inventory come from three stock sources. Use the source to understand how the device entered your inventory and which team owns it.
+
+<Tabs>
+  <Tab title="B2C In-house" icon="home">
+    **B2C In-house** covers devices completed by in-house B2C vendors.\
+    These are devices purchased from individual customers through B2C operations and processed by your internal vendor network.
+  </Tab>
+
+  <Tab title="B2C Excess" icon="package">
+    **B2C Excess** tracks excess stock from B2C operations.\
+    These are devices that remain in stock after B2C purchase and processing.
+  </Tab>
+
+  <Tab title="B2B Buybacks" icon="briefcase">
+    **B2B Buybacks** includes devices received through corporate B2B buyback orders.\
+    These devices typically arrive in bulk from business clients.
+  </Tab>
+</Tabs>
+
+---
+
+## Filters and controls
+
+Use filters and controls at the top of the All Inventory page to narrow the list, view older stock, or export data.
+
+<ParamField body="search" param-type="text" required="false" deprecated="false">
+  Search bar that lets you find devices by:
+
+  - **Device name** (for example, `Oppo F31`, `Asus ROG`)
+
+  - **Serial number**
+
+  Type your term and press <kbd>Enter</kbd> to apply the search.
+</ParamField>
+
+<ParamField body="sourceFilter" param-type="dropdown" required="false" deprecated="false">
+  Source filter that limits inventory to a specific stock source:
+
+  - **All Sources** — shows the full inventory
+
+  - **B2C In-house** — only in-house completed devices
+
+  - **B2C Excess** — only excess B2C stock
+
+  - **B2B Buybacks** — only corporate buyback devices
+</ParamField>
+
+<ParamField body="showOldInventory" param-type="checkbox" required="false" deprecated="false">
+  Toggle that includes older inventory entries that are no longer in active circulation. Use this to trace historical stock or reconcile past sales.
+</ParamField>
+
+<ParamField body="export" param-type="button" required="false" deprecated="false">
+  Action that downloads the current filtered inventory list as a file. Use it for reporting, audits, or sharing with finance and operations.
+</ParamField>
+
+<ParamField body="refresh" param-type="button" required="false" deprecated="false">
+  Action that reloads the latest inventory data so new internal vendor completions and recent changes appear in the table.
+</ParamField>
+
+---
+
+## Inventory table columns
+
+Each row in the All Inventory table represents a single device and includes the following columns.
+
+<ParamField body="date" param-type="date" required="false" deprecated="false">
+  Date when the device was added to inventory after internal vendor completion.
+</ParamField>
+
+<ParamField body="device" param-type="string" required="false" deprecated="false">
+  Device name and model, such as `iPhone 12` or `Samsung Galaxy S21`.
+</ParamField>
+
+<ParamField body="specCondition" param-type="string" required="false" deprecated="false">
+  Combined specification and condition details, including RAM, storage, and condition grade.
+</ParamField>
+
+<ParamField body="serial" param-type="string" required="false" deprecated="false">
+  Unique device serial number.
+</ParamField>
+
+<ParamField body="source" param-type="enum" required="false" deprecated="false">
+  Stock source label for the device: `B2C In-house`, `B2C Excess`, or `B2B Buybacks`.
+</ParamField>
+
+<ParamField body="price" param-type="currency" required="false" deprecated="false">
+  Cost price of the device in your base currency.
+</ParamField>
+
+---
+
+## How devices enter inventory
+
+Devices move into All Inventory automatically when an internal vendor completes an order. No manual inventory entry is required.
+
+```plaintext
+Internal vendor completes order
+        ↓
+Device added to All Inventory
+        ↓
+Source tagged (B2C In-house / B2C Excess / B2B Buybacks)
+```
+
+---
+
+## Punch sale
+
+Use **Punch Sale** to sell one or more devices directly from All Inventory to a dealer.
+
+<Callout kind="tip" collapsed="false">
+  Before you punch a sale, confirm that:
+
+  - The device details and source are correct
+
+  - The target customer exists in the **Customers (Dealers)** module or you are ready to add a new dealer
+
+  - You know the selling price and payment method
+</Callout>
+
+<Steps>
+  <Step title="Select device rows" title-type="p">
+    Select the checkbox on the left of each device you want to sell.\
+    You can select a single device or multiple devices for a bulk sale.
+  </Step>
+
+  <Step title="Click Punch Sale" title-type="p">
+    After selecting the devices, click the **Punch Sale** button that appears above the table.
+  </Step>
+
+  <Step title="Choose the customer (dealer)" title-type="p">
+    In the popup, select an existing dealer from the customer list.\
+    If the dealer is not yet created, click **Add New Customer** and complete the dealer details.
+  </Step>
+
+  <Step title="Enter selling price per device" title-type="p">
+    For each selected device, enter the **Selling Price**.\
+    The system calculates the **Total Sale Value** automatically based on your entries.
+  </Step>
+
+  <Step title="Select payment method" title-type="p">
+    Choose the payment method used for this sale, such as **Cash** or any other available payment option.
+  </Step>
+
+  <Step title="Confirm and finalize the sale" title-type="p">
+    Review the devices, dealer, prices, and payment method, then click **Confirm Sale**.\
+    On confirmation, the devices are removed from All Inventory and a sale record is created.
+  </Step>
+</Steps>
+
+<Callout kind="alert" collapsed="false">
+  Once you confirm a sale, the device is permanently removed from All Inventory and cannot be sold again from this view.\
+  Use the Device Sales module to review or audit confirmed sales.
+</Callout>
+
+---
+
+## After a sale
+
+After you complete the Punch Sale flow, the system updates inventory and finance records automatically.
+
+```plaintext
+Device selected → Punch Sale → Dealer selected → Sale confirmed
+        ↓
+Device removed from All Inventory
+        ↓
+New entry created in Device Sales page
+```
+
+The corresponding entry in the **Device Sales** module includes:
+
+- Device name and model
+
+- Serial number
+
+- Selling price
+
+- Customer (dealer) name
+
+- Payment method
+
+- Sale date
+
+---
+
+## View device details
+
+Click any device row in All Inventory to open its detail view.
+
+The detail view shows:
+
+- Device model, variant, and specifications
+
+- Source type (`B2C In-house`, `B2C Excess`, or `B2B Buybacks`)
+
+- Cost price
+
+- Serial number
+
+- Completion date from the internal vendor
+
+Use this view to verify information before punching a sale or during reconciliations.
+
+---
+
+## Related modules
+
+All Inventory works closely with other Admin Panel modules:
+
+- **Order Completion module** — pushes completed internal vendor orders into All Inventory as new stock.
+
+- **Credit deduction process** — adjusts vendor or partner credits at the point of order completion.
+
+- **Device Sales** — receives devices after a Punch Sale; use it for sales tracking and reporting.
+
+- **Customers (Dealers)** — stores dealer records that you select during the Punch Sale flow.
+
+## Snapshot
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774328945885-iu8sy6ei0js-all-inventory.all inventory?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="825" alt="" />
+
