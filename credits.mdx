@@ -1,0 +1,255 @@
+---
+title: Credits
+description: Review and action vendor credit purchase requests, and track all approved and rejected credit transactions in Finance
+---
+
+## Overview
+
+Use the Credits page in the Finance module to approve or reject vendor credit purchase requests and audit all historical credit transactions.
+
+<Callout kind="info">
+
+Treat Credits as the financial source of truth for vendor credit inflows. Every approval adds credits to a vendor account and impacts Cash In Hand and finance reports.
+
+</Callout>
+
+---
+
+## Tabs
+
+<ParamField body="credits-purchase" param-type="tab" show-location="false">
+Pending vendor credit purchase requests that require admin review and approval or rejection.
+</ParamField>
+
+<ParamField body="purchase-logs" param-type="tab" show-location="false">
+Complete history of all credit purchase requests, including status, amounts, credits, and receipts.
+</ParamField>
+
+---
+
+## Credits Purchase (Pending approvals)
+
+The Credits Purchase tab lists all **pending** credit purchase requests submitted by vendors and waiting for admin action.
+
+<Callout kind="tip">
+
+Work through Credits Purchase from newest to oldest requests, verifying each payment before approving. Every approved request immediately credits the vendor wallet.
+
+</Callout>
+
+### What you see
+
+Each request card shows the key details you need to verify the payment and decide whether to approve or reject.
+
+<ParamField body="vendor-name" param-type="text" show-location="false">
+Display name of the vendor who submitted the credit purchase request.
+</ParamField>
+
+<ParamField body="vendor-id" param-type="text" show-location="false">
+Unique system ID of the vendor, usually shown in brackets next to the vendor name.
+</ParamField>
+
+<ParamField body="payment-id" param-type="text" show-location="false">
+Internal payment reference number recorded for this transaction.
+</ParamField>
+
+<ParamField body="date-time" param-type="datetime" show-location="false">
+Timestamp of when the vendor submitted the credit purchase request.
+</ParamField>
+
+<ParamField body="amount" param-type="currency" show-location="false">
+INR amount paid by the vendor for this credit purchase.
+</ParamField>
+
+<ParamField body="credits" param-type="number" show-location="false">
+Number of credits that will be added to the vendor account if you approve the request.
+</ParamField>
+
+<ParamField body="payment-screenshot" param-type="file" show-location="false">
+Image proof of payment uploaded by the vendor (for example UPI, bank transfer, or payment gateway screenshot).
+</ParamField>
+
+### Approve a request
+
+<Steps>
+  <Step title="Review the request" icon="eye" title-type="p">
+
+Check the vendor name and vendor ID, the INR amount, and the credits to be issued. Review the **Payment Screenshot** carefully to confirm that the payment reference, amount, and payer match the request.
+
+  </Step>
+
+  <Step title="Click Approve (enter TXN ID)" icon="check-circle" title-type="p">
+
+Click the **Approve (enter TXN ID)** button on the request card when you are confident the payment is valid.
+
+  </Step>
+
+  <Step title="Enter the transaction ID" icon="edit" title-type="p">
+
+In the popup, enter the **Transaction ID** from the payment screenshot or from your bank or payment gateway records so that finance and audit can cross-check the transaction later.
+
+  </Step>
+
+  <Step title="Confirm approval" icon="arrow-right" title-type="p">
+
+Submit the TXN ID to finalize approval. Credits are immediately added to the vendor account, and the request moves to **Purchase Logs** with status **Approved**.
+
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+
+Always cross-check the TXN ID and amount against bank or payment gateway records before approving. Incorrect approvals directly affect company cash and vendor credit balances.
+
+</Callout>
+
+### Reject a request
+
+<Steps>
+  <Step title="Review the request" icon="eye" title-type="p">
+
+Inspect the Payment Screenshot, amount, vendor details, and any visible discrepancies. If the screenshot is missing, unclear, incorrect, or appears fraudulent, move to rejection.
+
+  </Step>
+
+  <Step title="Click Reject" icon="x-circle" title-type="p">
+
+Click the **Reject** button on the request card when you decide not to honor the payment.
+
+  </Step>
+
+  <Step title="Confirm rejection" icon="arrow-right" title-type="p">
+
+Confirm the rejection in the popup. The request moves to **Purchase Logs** with status **Rejected**, and no credits are added to the vendor account.
+
+  </Step>
+</Steps>
+
+<Callout kind="info">
+
+Rejected requests stay visible in Purchase Logs for audit and reconciliation. You can use them to investigate disputes or suspicious payment attempts.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774330151038-lovdrx82hws-credit-purchase-tab.credit purchase tab?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="821" alt="Credits Purchase tab showing pending vendor credit requests with payment details and approve or reject actions" />
+
+---
+
+## Purchase Logs
+
+The Purchase Logs tab shows a complete record of all credit purchase requests, including both approved and rejected transactions.
+
+### What each log entry shows
+
+Use the fields in each row to reconcile bank statements, investigate disputes, and review vendor credit history.
+
+<ParamField body="vendor-name-id" param-type="text" show-location="false">
+Vendor name and vendor ID for the credit purchase transaction.
+</ParamField>
+
+<ParamField body="payment-id" param-type="text" show-location="false">
+Internal payment reference number tied to the original request.
+</ParamField>
+
+<ParamField body="request-date-time" param-type="datetime" show-location="false">
+Date and time when the vendor originally submitted the credit purchase request.
+</ParamField>
+
+<ParamField body="txn-id" param-type="text" show-location="false">
+Transaction ID entered by the admin at the time of approval; use this to match against bank or payment gateway records.
+</ParamField>
+
+<ParamField body="approved-date" param-type="datetime" show-location="false">
+Date and time when the admin approved or rejected the request.
+</ParamField>
+
+<ParamField body="amount" param-type="currency" show-location="false">
+Final INR amount recorded for the credit purchase transaction.
+</ParamField>
+
+<ParamField body="credits" param-type="number" show-location="false">
+Number of credits issued for the transaction if approved, or zero if rejected.
+</ParamField>
+
+<ParamField body="receipt-icon" param-type="action" show-location="false">
+Action icon to view or download the receipt for this transaction.
+</ParamField>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774330219214-vook19hozal-purchase-log.purchase log?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="827" alt="Purchase Logs tab showing historical vendor credit purchase entries with TXN ID, amount, credits, and receipt icon" />
+
+---
+
+### Filters available
+
+<ParamField body="date-range-filter" param-type="filter" show-location="false">
+Pick a date range to show only purchase logs between the selected start and end dates, useful for monthly reconciliation and audit checks.
+</ParamField>
+
+<ParamField body="status-filter" param-type="filter" show-location="false">
+Use the status dropdown to filter records by **All**, **Approved**, or **Rejected** so you can focus on successful credits or review declined requests.
+</ParamField>
+
+---
+
+## Business logic
+
+### How credits enter the system
+
+```plaintext
+Vendor submits Credit Purchase Request
+        ↓
+Request appears in Credits Purchase tab (Pending)
+        ↓
+Admin reviews Payment Screenshot
+        ↓
+Admin Approves (enters TXN ID) or Rejects
+        ↓
+If Approved → Credits added to Vendor's account
+If Rejected → No credits added
+        ↓
+Request logged in Purchase Logs with final status
+```
+
+### Credit to INR conversion
+
+Each credit purchase converts INR to credits at a fixed platform rate. The **Credits** column on each card or log row shows the exact number of credits the vendor receives for the INR amount recorded.
+
+---
+
+## Admin responsibilities
+
+<ParamField body="approve-request" param-type="action" show-location="false">
+Approve a request only when the payment screenshot is valid and the INR amount matches your bank or payment gateway records.
+</ParamField>
+
+<ParamField body="reject-request" param-type="action" show-location="false">
+Reject requests with missing, blurry, mismatched, or suspicious payment screenshots or amounts.
+</ParamField>
+
+<ParamField body="cross-check-txn-id" param-type="action" show-location="false">
+Always verify the TXN ID against official bank or payment gateway entries before confirming approval.
+</ParamField>
+
+<ParamField body="use-purchase-logs" param-type="action" show-location="false">
+Use Purchase Logs for monthly reconciliation, audits, dispute handling, and reviewing vendor credit history.
+</ParamField>
+
+---
+
+## Related modules
+
+<ParamField body="vendor-accounts" param-type="module" show-location="false">
+Approved credits are added directly to the vendor account balance used for unlocking and executing orders.
+</ParamField>
+
+<ParamField body="device-purchases" param-type="module" show-location="false">
+Vendors spend credits to place buyback purchase orders; approved credits here directly fund those device purchases.
+</ParamField>
+
+<ParamField body="reports" param-type="module" show-location="false">
+Credit purchase transactions flow into finance and management reports for revenue, cash, and vendor activity tracking.
+</ParamField>
+
+<ParamField body="cash-in-hand" param-type="module" show-location="false">
+INR received from credit purchases is tracked in Cash In Hand and other finance views, linked by Payment ID and TXN ID.
+</ParamField>
