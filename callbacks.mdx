@@ -1,0 +1,167 @@
+---
+title: Call Back
+description: View and manage leads where customers have requested a callback, update dispositions, and convert qualified leads into confirmed orders.
+---
+
+## Overview
+
+Callbacks shows leads where the customer has requested a call and the disposition is marked as Connected with the reason set to callback.
+
+<Callout kind="info">
+
+Callbacks includes only leads with **disposition status = Connected** and **reason = Callback**, so you always see customers expecting a follow-up call.
+
+</Callout>
+
+## At a glance
+
+<Columns cols={3}>
+
+<Card title="What it shows" icon="list">
+
+- Leads where the customer requested a callback
+- Disposition status is **Connected**
+- Reason is **Callback**
+- Device, city, and contact details for each lead
+
+</Card>
+
+<Card title="When to use" icon="clock">
+
+- During daily follow-ups to honor callback promises  
+- When you need a focused list of leads expecting a call  
+- To avoid missing time-bound customer requests
+
+</Card>
+
+<Card title="What happens next" icon="arrow-right">
+
+- Call the customer at the requested time  
+- Update disposition as Connected or Not Connected with the right reason  
+- Convert interested customers to confirmed orders
+
+</Card>
+
+</Columns>
+
+## Filters and search
+
+Use filters to narrow down callback leads:
+
+- **Disposition status**: Connected  
+- **Device type**: Mobile, Laptop, Tablet, Mac  
+- **City**: Filter leads by customer city  
+- **Search**: Find leads by lead ID, device name, or customer phone number
+
+## Callback workflow
+
+<Steps>
+
+<Step title="Open a callback lead" icon="list">
+
+- Go to **Admin Panel → Leads → Callbacks**.
+- Select a lead from the callbacks list to view its details.
+
+</Step>
+
+<Step title="Call the customer" icon="phone">
+
+- Call the customer on the registered phone number.
+- Confirm interest, timing, and any questions about the offer.
+
+</Step>
+
+<Step title="Update status and disposition" icon="edit">
+
+- Set **status** as **Connected** or **Not Connected**.
+- Select the appropriate **reason** based on the call outcome (see Dispositions below).
+
+</Step>
+
+<Step title="Add notes" icon="file-text">
+
+- Add brief call notes (intent, objections, timing, special requests).
+- Use clear notes to make future follow-ups faster and more effective.
+
+</Step>
+
+<Step title="Convert to order (if qualified)" icon="check-circle">
+
+- If the customer wants to proceed, click **Create lead**.
+- Enter pickup address, payment details, and appointment date and time.
+- The lead moves to the **Orders** module as a confirmed order.
+
+</Step>
+
+</Steps>
+
+## Dispositions
+
+Use consistent dispositions so reporting and follow-ups stay accurate.
+
+<Tabs>
+
+<Tab title="Connected dispositions" icon="check-circle">
+
+When you reach the customer and speak to them, set **status = Connected** and choose one of these reasons:
+
+- **Callback** – Customer asked to be called again later.  
+- **Sold elsewhere** – Customer sold the device to another buyer.  
+- **Order already placed** – Customer has already placed an order with Cashkr.  
+- **Better price elsewhere** – Customer received a higher offer from another platform.  
+- **Higher expectation** – Customer expects a higher price than the current quote.  
+- **Was just checking** – Customer was only exploring and is not currently interested.  
+- **Not selling anywhere** – Customer has decided not to sell the device.  
+- **Out of town** – Customer is not currently available due to travel.
+
+</Tab>
+
+<Tab title="Not connected dispositions" icon="x-circle">
+
+When you cannot connect to the customer, set **status = Not Connected** and choose one of these reasons:
+
+- **Switched off** – Phone is switched off.  
+- **Not reachable** – Network issue or number temporarily unreachable.  
+- **Ringing** – Phone keeps ringing but no one answers.  
+- **Wrong number** – Number is invalid or does not belong to the customer.
+
+</Tab>
+
+</Tabs>
+
+## Screenshot
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774353105546-ln4maycajk-callback-page.callback page?q=85&fm=auto&auto=compress%2Cformat"
+  width="1919"
+  height="820"
+  alt="Callbacks page in the Admin Panel showing filtered leads where customers requested a callback"
+/>
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card
+  title="New Leads"
+  href="/new-leads"
+  icon="users"
+  cta="View new leads"
+>
+
+Manage all incoming leads before they move into callbacks, follow-ups, or orders.
+
+</Card>
+
+<Card
+  title="Available Orders"
+  href="/available-orders"
+  icon="package"
+  cta="View available orders"
+>
+
+Review and manage confirmed orders that are ready for vendor assignment and processing.
+
+</Card>
+
+</Columns>

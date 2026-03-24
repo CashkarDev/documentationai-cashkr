@@ -1,0 +1,240 @@
+---
+title: New Leads
+description: Use the New Leads page in the Admin Panel to track checkout drop-offs, follow up with customers, update dispositions, and convert qualified leads into pickup orders.
+---
+
+## Overview
+
+New Leads in the Sales module tracks customers who reached the checkout page on the Cashkr website or customer app but did not complete an order. Use this view to follow up on intent, record call outcomes, and convert qualified leads into confirmed pickup orders.
+
+<Callout kind="info">
+  A New Lead is an uncompleted checkout from the customer app or website. Leads are not orders. Convert a lead to an order only after speaking with the customer and confirming their intent to sell.
+</Callout>
+
+## At a glance
+
+<Columns cols={3}>
+  <Card title="Source" icon="cloud" href="/lead-creation">
+
+  - Created automatically when a customer reaches checkout and does not place an order  
+  - Includes drop-offs from both the Cashkr website and customer app
+
+  </Card>
+
+  <Card title="What you do here" icon="phone">
+
+  - Call customers to confirm if they still want to sell  
+  - Update status to New, Connected, or Not Connected  
+  - Select the correct disposition after every call and add notes
+
+  </Card>
+
+  <Card title="What happens next" icon="arrow-right" href="/available-orders">
+
+  - Convert qualified leads into confirmed pickup orders  
+  - Orders move to the Orders module and then to vendor available orders  
+  - Vendors see orders based on matching pincode and device type
+
+  </Card>
+</Columns>
+
+## Workflow
+
+Use New Leads as the working queue between customer checkout and order creation.
+
+<Steps>
+  <Step title="Review the lead list" icon="folder">
+    Scan the New Leads table to see new checkout drop-offs, using filters and search to focus on specific device types, cities, tiers, or date ranges.
+  </Step>
+
+  <Step title="Call the customer" icon="phone">
+    Open a lead, call the customer using the phone number shown, and confirm whether they are still interested in selling the device.
+  </Step>
+
+  <Step title="Update status and disposition" icon="settings">
+    After each call, set the status to Connected or Not Connected and select the most accurate disposition reason from the available options.
+  </Step>
+
+  <Step title="Capture clear notes" icon="edit">
+    Add brief, specific notes about what the customer said and any next steps so any admin can pick up the lead later without confusion.
+  </Step>
+
+  <Step title="Decide on follow-up vs. conversion" icon="help-circle">
+    For leads that need follow-up, rely on the relevant dispositions and track next attempts via the Callbacks section. For customers who confirm they want to sell, move to conversion.
+  </Step>
+
+  <Step title="Convert qualified leads to orders" icon="check-circle">
+    When the customer confirms intent to sell, start the conversion flow, capture address, payment, and appointment details, and create a confirmed pickup order.
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+  Treat New Leads as a live pipeline. Every call should end with an updated status, a specific disposition, and notes that explain the current state of the lead.
+</Callout>
+
+## Dispositions and statuses
+
+Statuses and dispositions help standardize how you track each interaction with the customer.
+
+- **Status** tracks whether you reached the customer: New, Connected, or Not Connected.
+- **Disposition** records the exact outcome of the call attempt.
+
+<Tabs>
+  <Tab title="Connected dispositions" icon="check-circle">
+
+  Use these reasons when you were able to speak with the customer:
+
+  - **Callback** — Customer asked you to call back later.
+  - **Sold Elsewhere** — Customer already sold the device to another buyer.
+  - **Order Already Placed** — Customer has already placed an order with Cashkr.
+  - **Better Price Elsewhere** — Customer found a higher price with a competitor.
+  - **Higher Expectation** — Customer’s price expectation is higher than the Cashkr quote.
+  - **Was Just Checking** — Customer was only checking the price and is not ready to sell.
+  - **Not Selling Anywhere** — Customer has decided not to sell the device at all.
+  - **Out of Town** — Customer is not available currently due to travel.
+
+  </Tab>
+
+  <Tab title="Not Connected dispositions" icon="x-circle">
+
+  Use these reasons when you could not complete the call:
+
+  - **Switch Off** — Customer’s phone is switched off.
+  - **Not Reachable** — Network or service issue; call cannot be connected.
+  - **Ringing** — Phone rings but the customer does not answer.
+  - **Wrong Number** — The contact number is incorrect or belongs to someone else.
+
+  </Tab>
+</Tabs>
+
+<Callout kind="tip">
+  Update the disposition every time you call. Accurate dispositions keep the pipeline clean and support reporting across New, Connected, and Not Connected leads.
+</Callout>
+
+## Filters and search
+
+Use filters and search to prioritize leads and assign work efficiently.
+
+- **Type** — Filter by device type: Mobile, Laptop, Tablet, or Mac.
+- **Tiers** — Filter by customer tier or segment.
+- **City** — Filter by customer city for location-based routing.
+- **Date range** — Show leads created within a specific period.
+- **Search** — Search by Lead ID, device name, or customer phone number.
+
+Actions on filters:
+
+- **Apply Filters** — Apply the selected filters to update the list.
+- **Reset** — Clear all filters and return to the full New Leads list.
+
+## Field reference
+
+Each row in the New Leads table represents one customer who showed intent to sell a device but did not complete the order. Key fields include:
+
+- **Order Date** — Date and time when the lead was created from checkout.
+- **Model** — Device model the customer wants to sell.
+- **Type** — Device category: Mobile, Tablet, Laptop, or Mac.
+- **Status** — Lead status: New, Connected, or Not Connected.
+- **Notes** — Follow-up notes added by admins during calls.
+
+## Converting a lead to an order
+
+Convert a lead only after the customer clearly confirms they want to proceed with the sale and you have captured all required details.
+
+<Steps>
+  <Step title="Open and review the lead" icon="folder">
+    Select the relevant lead from the New Leads list and review the device details, status, disposition history, and previous notes.
+  </Step>
+
+  <Step title="Call and confirm intent" icon="phone">
+    Call the customer, confirm they want to sell the device on the quoted terms, and set the status to Connected with the correct disposition reason.
+  </Step>
+
+  <Step title="Start conversion (Create Lead)" icon="plus">
+    Click the Create Lead action on the lead to start the conversion flow from lead to order.
+  </Step>
+
+  <Step title="Capture pickup address" icon="map-pin">
+    Enter the customer’s pickup address accurately so the system can assign the order to the correct pincode and show it to the right vendors.
+  </Step>
+
+  <Step title="Add payment details" icon="credit-card">
+    Record the customer’s preferred payment method along with any required account or UPI details to enable smooth payment after pickup.
+  </Step>
+
+  <Step title="Schedule pickup" icon="calendar">
+    Select the pickup appointment date and time in coordination with the customer and confirm it during the call.
+  </Step>
+
+  <Step title="Confirm and create order" icon="check-circle">
+    Save all details to convert the lead into a confirmed pickup order. The new order moves to the Orders module and appears in available orders for vendors matching the customer’s pincode and device type.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+  After conversion, the record no longer appears in New Leads. Track it in the appropriate Orders module view and in the vendor app under available orders.
+</Callout>
+
+## Lead lifecycle
+
+New Leads sits between customer checkout and vendor assignment. The typical lifecycle is:
+
+- Customer reaches checkout on the Cashkr website or customer app but does not complete the order.
+- The system creates a lead automatically and adds it to the New Leads list in the Sales module.
+- An admin calls the customer, updates the status (New, Connected, Not Connected), and selects a disposition reason after each attempt.
+- If the customer confirms they want to sell, the admin clicks Create Lead and fills in address, payment, and pickup appointment details.
+- The system converts the lead into a confirmed pickup order in the Orders module.
+- Vendors with matching pincode and device type see the order in their available orders list in the vendor app.
+- Leads that require follow-up calls are tracked via the [Callbacks](/callbacks) section.
+
+## Operational guardrails
+
+- Treat leads as **potential** orders, not confirmed business.
+- Convert a lead only after speaking directly with the customer and confirming intent to sell.
+- Always update status and disposition after every call attempt, even if the outcome did not change much.
+- Use clear, specific notes so any admin can understand the latest state and the next action required.
+
+## Screenshot
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774352321644-hptjin3ganv-new-leads.new leads?q=85&fm=auto&auto=compress%2Cformat"
+  width="1919"
+  height="827"
+  alt="New Leads page in the Admin Panel showing the lead list, filters, statuses, dispositions, and actions to call customers and convert leads to pickup orders."
+/>
+
+## Related pages
+
+<Columns cols={3}>
+  <Card
+    title="Lead Creation (Website)"
+    href="/lead-creation"
+    icon="cloud"
+    cta="View website lead flow"
+  >
+
+  See how leads are generated from the Cashkr website when customers drop off at checkout.
+
+  </Card>
+
+  <Card
+    title="Callbacks"
+    href="/callbacks"
+    icon="phone"
+    cta="Manage follow-up calls"
+  >
+
+  Manage leads that require follow-up attempts using callback dispositions and schedules.
+
+  </Card>
+
+  <Card
+    title="Available Orders (Vendor App)"
+    href="/available-orders"
+    icon="monitor"
+    cta="See how vendors get orders"
+  >
+
+  Understand how converted leads appear as available pickup orders for vendors by pincode and device type.
+
+  </Card>
+</Columns>

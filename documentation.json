@@ -755,12 +755,12 @@
                 "group": "Leads",
                 "pages": [
                   {
-                    "title": "Callbacks",
-                    "path": "callbacks"
-                  },
-                  {
                     "title": "New Leads",
                     "path": "new-leads"
+                  },
+                  {
+                    "title": "Callbacks",
+                    "path": "callbacks"
                   }
                 ]
               },

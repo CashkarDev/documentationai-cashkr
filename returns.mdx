@@ -1,0 +1,200 @@
+---
+title: Returns
+description: >-
+  Manage refunds and returns in the Finance module: credit refunds, device
+  returns, purchase returns, and audit logs.
+---
+## &#x20;
+
+## Overview
+
+Returns and Refunds in the Finance module handle credit refunds, device returns, and purchase returns with a complete audit trail. Use this page to reverse transactions in a controlled way while keeping inventory and vendor balances accurate.
+
+Every action you take here writes to the Logs tab so Finance, Operations, and Support can reconcile payments, devices, and disputes later.
+
+## Page tabs
+
+<Tabs>
+  <Tab title="Credits Refund" icon="rotate-ccw">
+    The **Credits Refund** tab lets admins reset a vendor's credit balance back to zero when an order fails, credits are incorrectly deducted, or a full credit refund is agreed.
+
+    ### How to process a credit refund
+
+    <Steps>
+      <Step title="Search for the vendor" icon="search" title-type="p">
+        Use the search bar at the top of the Credits Refund tab and enter the vendor name or registered phone number. Click **Search** to load matching vendors.
+      </Step>
+
+      <Step title="Review vendor credits" icon="table" title-type="p">
+        Check the table row for the vendor you want to refund. Confirm the vendor name, phone number, and current credit balance before continuing.
+      </Step>
+
+      <Step title="Initiate the refund" icon="rotate-ccw" title-type="p">
+        Click the **Action** button on the vendor's row to start the refund. The system shows a confirmation prompt summarizing the refund impact.
+      </Step>
+
+      <Step title="Confirm and complete" icon="check-circle" title-type="p">
+        Confirm the refund. The vendor's credit balance resets to zero immediately, and the action is permanently recorded in the **Logs** tab.
+      </Step>
+    </Steps>
+
+    ### Table columns
+
+    - **Vendor** — Name of the vendor.
+
+    - **Phone** — Registered phone number of the vendor.
+
+    - **Credits** — Current credit balance of the vendor.
+
+    - **Action** — Button to initiate and confirm the credit refund.
+
+    ### When to use this
+
+    - Order failed after credits were already deducted.
+
+    - Vendor was incorrectly charged credits.
+
+    - Vendor requested a full credit refund to close their account.
+
+    - Technical error caused a double deduction of credits.
+  </Tab>
+
+  <Tab title="Device Returns" icon="rotate-ccw">
+    The **Device Returns** tab is for bringing back devices that were sold through the Device Sales page and adding them back into active inventory.
+
+    ### How to process a device return
+
+    <Steps>
+      <Step title="Search for the sold device" icon="search" title-type="p">
+        Use the search bar to look up the sold device by device name or serial number. Wait for the system to load matching sale records.
+      </Step>
+
+      <Step title="Review sale details" icon="table" title-type="p">
+        Check the sale record for device details, sale price, and customer information. Confirm that this is the exact device and transaction you want to reverse.
+      </Step>
+
+      <Step title="Initiate the return" icon="rotate-ccw" title-type="p">
+        Select the device record and start the return flow from the actions available on that row.
+      </Step>
+
+      <Step title="Confirm and update inventory" icon="check-circle" title-type="p">
+        Confirm the return. The device is removed from **Device Sales** and added back to **All Inventory**, and the return entry is created in the **Logs** tab.
+      </Step>
+    </Steps>
+
+    ### When to use this
+
+    - A customer or dealer returns a device after purchase.
+
+    - A device was sold by mistake and the sale needs to be reversed.
+
+    - A device fails quality check after sale and is taken back.
+  </Tab>
+
+  <Tab title="Purchase Returns" icon="rotate-ccw">
+    The **Purchase Returns** tab is for sending devices back to the original seller or vendor after they were already purchased into inventory.
+
+    ### How to process a purchase return
+
+    <Steps>
+      <Step title="Search for the purchased device" icon="search" title-type="p">
+        Search by device name or serial number to find the purchase record. Wait for the system to display matching purchase entries.
+      </Step>
+
+      <Step title="Review purchase details" icon="table" title-type="p">
+        Confirm device details, vendor information, and purchase price on the selected record to ensure you are reversing the correct purchase.
+      </Step>
+
+      <Step title="Initiate the return" icon="rotate-ccw" title-type="p">
+        Select the device and start the purchase return from the available actions on the record.
+      </Step>
+
+      <Step title="Confirm and update records" icon="check-circle" title-type="p">
+        Confirm the return. The device is removed from inventory, and the original purchase record is updated to reflect the reversal. The action is logged in the **Logs** tab.
+      </Step>
+    </Steps>
+
+    ### When to use this
+
+    - Device received from a vendor does not match the agreed condition.
+
+    - Wrong model or variant was delivered.
+
+    - Device has a defect discovered after purchase.
+
+    - Vendor and admin mutually agree to reverse the transaction.
+  </Tab>
+
+  <Tab title="Logs" icon="history">
+    The **Logs** tab shows a complete, permanent history of all credit refunds, device returns, and purchase returns processed across the other three tabs.
+
+    ### How logs work
+
+    <Steps>
+      <Step title="Open the Logs tab" icon="monitor" title-type="p">
+        Switch to the **Logs** tab from the Returns and Refunds page to view all historical entries.
+      </Step>
+
+      <Step title="Filter or scan activity" icon="search" title-type="p">
+        Use search or filters (where available) to focus on specific vendors, customers, devices, time ranges, or action types.
+      </Step>
+
+      <Step title="Review detailed entries" icon="table" title-type="p">
+        Open or read each entry to see the type of action, party involved, device details (where applicable), credits or amount affected, date and time, and the admin who performed the action.
+      </Step>
+    </Steps>
+
+    ### What each log entry includes
+
+    - Type of action — Credit Refund, Device Return, or Purchase Return.
+
+    - Vendor or customer involved.
+
+    - Device details for device and purchase returns.
+
+    - Credits or amount involved.
+
+    - Date and time of the action.
+
+    - Admin who processed the action.
+
+    ### When to use this
+
+    - Audit past refund and return decisions.
+
+    - Reconcile finance for returned devices and refunded credits.
+
+    - Resolve vendor or customer disputes with a clear activity trail.
+
+    - Prepare monthly reporting on return volumes and reasons.
+  </Tab>
+</Tabs>
+
+## Connections to other modules
+
+- **Credits** — Credit refunds directly affect the vendor's credit balance.
+
+- **All Inventory** — Device returns add the device back into active inventory.
+
+- **Device Sales** — Device returns are reconciled against the original sale record.
+
+- **Device Purchases** — Purchase returns are linked to the original purchase order.
+
+- **Reports** — All return and refund data feeds into finance reports.
+
+## Important notes
+
+<Callout kind="alert" collapsed="false">
+  Credit refunds reset the vendor's balance to zero and cannot be undone. Always confirm the reason and verify with the vendor before processing.
+</Callout>
+
+- Device returns move the device back into **All Inventory** and make it available for resale again.
+
+- Purchase returns remove the device from inventory and update the original purchase record to show the reversal.
+
+- All actions across all four tabs are permanently recorded in the **Logs** tab and cannot be deleted.
+
+## Screen Preview
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774345541700-uqtse1exup-returns.returns?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="828" alt="" />
+
