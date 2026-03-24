@@ -1,0 +1,134 @@
+---
+title: B2C Vendor Tiers
+description: Understand how B2C vendor tiers map to device tiers, control order visibility, and how to troubleshoot tier-related issues in the Admin Panel.
+---
+
+## Overview
+
+Use the B2C Vendor Tiers screen in the Admin Panel to see how each B2C vendor is classified by tier and how that classification interacts with the device tier system.
+
+Vendor tiers control which device orders a vendor is allowed to see and work on. The system compares each vendor tier against the minimum tier required for an order to decide whether that order appears in the vendor's Available Orders list.
+
+<Callout kind="info">
+
+Device tiers belong to device models, not to vendors:
+
+- Each device model is assigned to exactly one tier based on its demand and brand level.  
+- Each customer order carries the tier of the selected device model, which becomes the order's minimum required tier.  
+- Each vendor has a vendor tier. Vendors only see orders in `Available Orders` when their vendor tier meets or exceeds the order's minimum tier.
+
+</Callout>
+
+## At a glance
+
+<Columns cols={3}>
+
+<Card title="What it shows" icon="monitor">
+
+- List of B2C vendors with their assigned vendor tier  
+- How vendors are grouped by tier level for operational control  
+- A quick way to review tier distribution across active vendors
+
+</Card>
+
+<Card title="Why it matters" icon="alert-triangle">
+
+- Vendor tier decides which device tiers they can access  
+- Tier mismatches are a common reason vendors report missing orders  
+- Correct vendor tiering protects higher-tier devices from low-tier vendors
+
+</Card>
+
+<Card title="Where it impacts" icon="arrow-right">
+
+- Vendor App `Available Orders` visibility  
+- Which orders operations teams can route to which vendors  
+- Overall quality and control of the vendor network
+
+</Card>
+
+</Columns>
+
+## How tiers work (reference)
+
+Tiers classify both devices and vendors so the system can control access to orders.
+
+- Tiers for device models are based on **market demand and brand level**. Higher-value or more sensitive models sit in higher tiers.  
+- Each device model belongs to **exactly one tier**, which becomes the minimum tier requirement for any order involving that model.  
+- Each vendor has a **vendor tier** that represents their capability and trust level.  
+- When a new order is created, the system compares **vendor tier vs. order minimum tier**.  
+- A vendor **only sees an order in Available Orders if their vendor tier is equal to or higher than the order's minimum tier**.  
+- This same rule applies across device categories (phone, laptop, tablet, etc.) wherever tiers are defined.
+
+For a deeper explanation of how tiers are defined and maintained, read [Tiers System](/tiers-system).
+
+## Common troubleshooting checks
+
+When vendors or ops teams report issues related to missing or unexpected orders, start with these tier checks.
+
+### Vendor says "I cannot see this order"
+
+- Confirm the **device model's tier** for that order from the device catalog or tier reference.  
+- Check the **order's minimum tier requirement** (it should match the device model's tier).  
+- Compare this minimum tier with the **vendor's tier shown on the B2C Vendor Tiers screen**.  
+- If the vendor tier is **lower** than the order's minimum tier, the behavior is correct: the order will not appear in their Available Orders.  
+- If the vendor tier **meets or exceeds** the minimum and the order still does not appear, investigate other filters or constraints in [Available Orders](/available-orders).
+
+### Orders are going to the wrong kind of vendors
+
+- Review whether the **device model is mis-tiered** (for example, a premium device set in a lower tier).  
+- If a device is assigned to a tier that is **too low**, the related orders will appear to **too many vendors**, including those who should not handle that model.  
+- If a device is assigned to a tier that is **too high**, very few vendors will see the orders, and ops may experience assignment delays.  
+- Fix mis-tiering at the **device model level** in your device configuration so future orders follow the correct visibility rules.
+
+### Vendor mix looks unbalanced across tiers
+
+- Use the B2C Vendor Tiers screen to scan how many vendors sit in each tier.  
+- If too many vendors sit in a high tier, higher-tier devices might be spread across vendors with very different performance levels.  
+- If too few vendors sit in a high tier, high-tier orders may have limited routing options and slower pickup.  
+- Work with ops leadership to adjust vendor tiers strategically, while keeping the device tier definitions from [Tiers System](/tiers-system) as the source of truth.
+
+## Screenshots
+
+### Vendor type
+
+This view groups B2C vendors by vendor type and assigned vendor tier so you can quickly sanity-check whether similar vendors sit in appropriate tiers, but it does not define or change the underlying device tiers that belong to device models.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774353776688-6oi0bqf39uh-vendor-type.vendor type?q=85&fm=auto&auto=compress%2Cformat" width="1908" height="824" alt="Admin Panel B2C Vendor Tiers view showing vendors grouped by vendor type and tier level" />
+
+### Access matrix
+
+Use the access matrix as a visual tier-eligibility map that shows which vendor tiers are allowed to access which device or order tiers based on the core tier-matching rules.
+
+- Each device model is assigned to exactly one tier, which represents its level in the matrix.  
+- Every customer order inherits a minimum required tier from the selected device model's tier.  
+- A vendor only sees an order in `Available Orders` when their vendor tier meets or exceeds the order's minimum tier in the matrix.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774353820448-4lnogcx9q45-access-matrix.access matrix?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="831" alt="Access matrix view illustrating which vendor tiers can access which device tiers" />
+
+### Extra credits
+
+This view highlights any additional credit cost patterns that apply when vendors unlock orders from different tiers, so ops and finance teams can explain why similar-looking orders may have different unlock costs.
+
+- If a vendor reports a higher unlock cost for a given order, first check which tier the underlying device model belongs to and whether extra credits apply for that tier.  
+- When extra credit costs look wrong, verify the device model's tier assignment and confirm that tier-based credit rules are configured as expected before making manual adjustments.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774353846060-5gfc1bg0ir2-extra-credits.extra credits?q=85&fm=auto&auto=compress%2Cformat" width="1915" height="834" alt="Supplementary B2C vendor tiers screen showing additional tier-related information for operations" />
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card title="Tiers System" href="/tiers-system" icon="layers" cta="Open tiers reference">
+
+How device and order tiers are defined, and how tier matching works across the platform.
+
+</Card>
+
+<Card title="Available Orders" href="/available-orders" icon="list" cta="View vendor order list behavior">
+
+How vendors see and filter their orders in the Vendor App, including the impact of tier rules.
+
+</Card>
+
+</Columns>

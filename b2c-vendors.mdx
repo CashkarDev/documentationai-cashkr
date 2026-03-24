@@ -1,0 +1,180 @@
+---
+title: Vendors - B2C
+description: View and manage all B2C vendors, including status, limits, assignments, and performance links that drive order distribution and quality.
+---
+
+## Overview
+
+The Vendors - B2C page in the Operations B2C section shows a complete list of all registered B2C vendors, along with their live status, performance indicators, and key profile details. Operations teams use this view to monitor vendor activity across cities and devices, and to drill into any vendor for configuration or issue checks. Changes made here directly control which vendors receive leads and orders and under what limits and conditions.
+
+## At a glance
+
+<Columns cols={3}>
+
+<Card title="What it shows" icon="monitor">
+
+A searchable table of all registered B2C vendors with identifiers, contact details, city, trust score, financial indicators, live status, and in-progress order counts, plus a detailed side panel for each vendor.
+
+</Card>
+
+<Card title="Why it matters" icon="alert-triangle">
+
+Vendor status, device assignments, pincodes, tier access, and Max Leads settings here decide how leads and orders are routed in the field, how much volume each vendor can handle, and how performance is monitored and controlled.
+
+</Card>
+
+<Card title="Where it impacts" icon="arrow-right">
+
+Impacts order assignment from Leads and Orders - B2C, vendor-facing data in the Vendor App, credit usage from Finance Credits, performance grading in Quality - B2C, and tier access defined in B2C Vendor Tiers.
+
+</Card>
+
+</Columns>
+
+## What it shows
+
+Each row in the vendor list represents one registered B2C vendor with the following fields:
+
+- **Vendor ID** — Unique system identifier for the vendor.
+- **Vendor Name** — Name of the vendor and their shop or business name.
+- **Contact** — Vendor phone number with a quick call option.
+- **City** — City where the vendor operates.
+- **Trust Score** — Vendor grade (Grade A, B, C, D) based on performance and reliability.
+- **Avg. Drop** — Average credit drop or financial adjustment on the vendor's account.
+- **In Progress** — Number of orders currently active with the vendor.
+- **Status** — Current vendor status: Live or Hold.
+
+## Filters & search
+
+Use filters and search to quickly find specific vendors or focus on a subset:
+
+- **Search** — Search by Vendor ID, vendor name, phone number, or email address. Press <kbd>Enter</kbd> to apply the search.
+- **Status filter** — Filter vendors by current status: Live or Hold.
+- **City filter** — Filter vendors by city to focus on a specific operational area.
+- **Date range filter** — Filter vendors by registration or activity date using from and to date fields.
+- **New Vendors toggle** — Turn on the New Vendors checkbox to see only recently registered vendors.
+- **Apply / Reset filters** — Click Apply Filters to apply the selected filters, or Reset to clear all filters and return to the full vendor list.
+
+## Vendor detail panel
+
+Click any vendor row to open a detailed side panel with multiple tabs for that vendor. The tabs provide quick access to profile, performance, and order activity without leaving the main list.
+
+The vendor detail panel includes these tabs:
+
+- **All** — Full vendor profile and configuration details.
+- **In Progress** — Orders currently assigned to and in progress with the vendor.
+- **Reviews** — Customer and admin reviews and ratings for the vendor.
+- **Report** — Performance report view for the vendor.
+- **Failed Rejected** — Orders that were failed or rejected by the vendor.
+- **Transactions** — Complete transaction history for the vendor.
+- **Details** — Vendor profile details including contact, address, and documents.
+
+## Vendor details (All tab)
+
+The All tab in the vendor detail panel shows the complete vendor profile and allows admins to manage key settings:
+
+- **Status**  
+  Shows whether the vendor is currently Live or on Hold. Use the Switch to Hold control to move a vendor to Hold. When you place a vendor on Hold, the system clears their pincodes and sets Max Leads to 0. To bring a vendor Live again, assign at least one pincode and set a Max Leads value greater than zero.
+
+- **Internal vendor**  
+  Use the Internal Vendor toggle to mark a vendor as internal. Internal vendors are treated differently in order assignment and inventory flow compared to external vendors.
+
+- **Contact information**  
+  Shows the vendor's phone number, email address, and full operational address so you can verify and update basic details before activating or changing configurations.
+
+- **Devices assigned**  
+  Lists which device types are currently assigned to the vendor, such as Mobile, Tablet, Laptop, or Mac. Use the Add Device control to add or remove device types. Vendors only receive leads and orders for the device types assigned to them.
+
+- **Credits**  
+  Shows the vendor's current credit balance available for placing orders. This connects with the Credits module and determines how many orders the vendor can unlock and process.
+
+- **Max leads**  
+  Shows the maximum number of leads the vendor can receive at one time. Update this limit directly from the panel to increase or cap the vendor's concurrent workload.
+
+- **Vendor type**  
+  Indicates the vendor's type classification (for example, Type 1, Type 2). Vendor type controls their tier access and credit requirements as defined in the broader vendor tier system.
+
+- **Tier access**  
+  Shows which tiers the vendor has access to, such as Tier 1, Tier 2, or Tier 3. Each tier has a base credit requirement, for example Tier 1 requiring a base of 100 credits, and governs which orders and price points the vendor can handle.
+
+- **Agents added by vendor**  
+  Displays the list of field agents that the vendor has added in their Vendor App. These agents work under the vendor and handle device pickups and on-ground operations.
+
+## Admin capabilities
+
+From the vendor detail panel, admins can:
+
+- Add or update the Max Lead limit for a vendor.
+- Update the Vendor Type (tier-related classification).
+- Assign or remove device types (Mobile, Tablet, Laptop, Mac).
+- Assign or remove serviceable areas by pincode.
+- Switch vendor status between Live and Hold.
+- Mark or unmark a vendor as an Internal Vendor.
+- View uploaded vendor documents such as Aadhaar card photo, shop photo, PAN card, and other verification documents.
+- View the list of agents added by the vendor.
+
+## Connections to other modules
+
+The Vendors - B2C page connects with several other modules:
+
+- **Vendor App** — All changes made here reflect live in the vendor's app instantly.
+- **Leads** — Converted leads are assigned to vendors based on matching pincode and device type.
+- **Orders - B2C** — Active orders with the vendor are visible in the vendor's In Progress tab.
+- **Credits** — Vendor credit balance is managed through the Credits module in Finance.
+- **Quality - B2C** — Vendor performance and order quality are tracked and linked to their trust score.
+- **B2C Vendor Tiers** — Tier settings and credit requirements are configured in the B2C Vendor Tiers section.
+
+## Important notes
+
+<Callout kind="info">
+
+- Changes to device assignments, pincode coverage, and Max Leads take effect immediately and sync live to the Vendor App.
+- A vendor on Hold does not receive any new leads or orders until you switch them back to Live and set at least one pincode and a Max Leads value greater than zero.
+- Always verify vendor documents in the Details tab before activating a new vendor or increasing their access.
+- Vendor trust scores and grades are calculated automatically based on order performance, requote rates, and customer feedback and cannot be manually edited.
+
+</Callout>
+
+## Screenshots
+
+### Vendor list
+
+The main Vendors - B2C table shows all registered vendors with their identifiers, contact details, trust scores, live status, and in-progress order counts, along with filters and search controls at the top.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774355550923-0r6uzl6q3jlb-vendor---b2c.vendor - b2c?q=85&fm=auto&auto=compress%2Cformat" width="1914" height="820" alt="Vendors - B2C list showing vendor ID, name, contact, city, trust score, average drop, in progress orders, and status columns" />
+
+### Vendor details panel
+
+Clicking any row opens a side panel with the All tab and other tabs for orders, reviews, reports, and transactions, where you can change status, Max Leads, devices, pincodes, and other vendor-level settings.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774355483305-ybdcfmp2ojf-vendor-details.vendor details?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="832" alt="Vendor details side panel showing All tab with status, internal vendor toggle, contact information, devices, credits, Max Leads, vendor type, tier access, and agents list" />
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card title="B2C Vendor Tiers" href="/b2c-vendor-tiers" icon="layers" cta="View tier rules">
+
+Configure tier rules, base credit requirements, and access levels that control which vendors can access Tier 1, Tier 2, and Tier 3.
+
+</Card>
+
+<Card title="Credits" href="/credits" icon="credit-card" cta="Open credits module">
+
+Manage vendor credit balances, top-ups, adjustments, and financial flows that power order unlocks and Avg. Drop calculations.
+
+</Card>
+
+<Card title="New Vendors - B2C" href="/new-vendors---b2c" icon="plus" cta="Review new vendors">
+
+Review, verify, and onboard newly registered B2C vendors before moving them to Live in the main Vendors - B2C list.
+
+</Card>
+
+<Card title="Creating & assigning orders to vendors" href="/creating-assigning-orders-to-vendors" icon="arrow-right" cta="See assignment flow">
+
+Understand how leads convert to orders and how those orders are assigned to vendors based on pincodes, devices, and availability.
+
+</Card>
+
+</Columns>
