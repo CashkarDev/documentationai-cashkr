@@ -1,0 +1,241 @@
+---
+title: Onboarding B2C
+description: Manage the B2C vendor onboarding pipeline from uploaded leads to approved vendors, including stages, statuses, filters, and admin responsibilities.
+---
+
+## Overview
+
+The Onboarding B2C page in the Expansion section under Operations B2C manages the pipeline of potential B2C vendors sourced from scraped or uploaded data. Admins call vendor leads, track follow-ups, move interested vendors through the funnel, and convert them into registered Cashkr vendors.
+
+The page works together with New Vendors - B2C and Vendors - B2C to take a lead from raw data to a live vendor account.
+
+## At a glance
+
+<Columns cols={3}>
+
+<Card title="Pipeline stages" icon="bar-chart" href="#pipeline-tabs" cta="View tab details">
+
+- Five funnel tabs: All Leads, New, Follow-ups, Interested, Converted
+- Each tab shows a count of leads in that stage
+- Status changes move leads between tabs
+
+</Card>
+
+<Card title="Lead data & actions" icon="database" href="#what-it-shows" cta="See list fields">
+
+- Key columns: business, contact, address, status, calls, follow-up, added
+- Call directly from the panel
+- Update status and schedule follow-ups
+
+</Card>
+
+<Card title="End-to-end flow" icon="zap" href="#vendor-onboarding-funnel-flow" cta="Follow the funnel">
+
+- Upload vendor list
+- Call and qualify leads
+- Vendor registers via app
+- Admin approves in New Vendors - B2C
+- Vendor appears in Vendors - B2C
+
+</Card>
+
+</Columns>
+
+## Pipeline tabs
+
+Use the tabs at the top of the page to switch between different stages of the vendor onboarding funnel. Each tab label shows the current count of leads in that stage.
+
+<Tabs>
+
+<Tab title="All Leads" icon="list">
+
+All Leads shows the complete list of all vendor leads in the system, regardless of their current status. Use this tab when you want a full view of the pipeline, including leads marked as Not Interested or Invalid.
+
+</Tab>
+
+<Tab title="New" icon="plus">
+
+New contains freshly uploaded leads that have not yet been contacted. Every lead starts in this tab as soon as it is added to the system (for example, through a manual upload).
+
+</Tab>
+
+<Tab title="Follow-ups" icon="clock">
+
+Follow-ups includes leads that have already been contacted and asked to be called back at a later time. Use this tab to plan and complete scheduled follow-up calls.
+
+</Tab>
+
+<Tab title="Interested" icon="check-circle">
+
+Interested shows leads who have confirmed they want to join Cashkr as vendors. From this tab, admins share the vendor app download link and guide leads through completing registration.
+
+</Tab>
+
+<Tab title="Converted" icon="check">
+
+Converted lists leads who have completed registration through the vendor app and have been approved as vendors. These leads have finished the onboarding funnel and are now registered Cashkr vendors.
+
+</Tab>
+
+</Tabs>
+
+## What the lead list shows
+
+Each row in the vendor lead list displays:
+
+- **Business Name** — Business name and the source of the lead, such as Manual Upload.
+- **Contact** — Phone number of the business owner or contact person.
+- **Address** — Business address of the vendor lead.
+- **Status** — Current status of the lead: New, Follow Up, Interested, Not Interested, Invalid, or Converted.
+- **Calls** — Number of call attempts made to this lead.
+- **Follow-up** — Scheduled follow-up date, if one is set.
+- **Added** — Date the lead was added to the system.
+- **Actions** — Call button and additional action options for the lead.
+
+## Lead statuses
+
+Statuses describe where a lead is in the outreach and onboarding journey and control which tab they appear in.
+
+- **New** — Lead has been added but no contact attempt has been made yet.
+- **Follow Up** — Lead was contacted and asked to be called back at a later time.
+- **Interested** — Lead has shown interest in onboarding as a vendor.
+- **Not Interested** — Lead explicitly declined to join as a vendor.
+- **Invalid** — Lead contact details are incorrect or the business could not be reached.
+- **Converted** — Lead completed registration through the vendor app and is now a registered vendor.
+
+## Uploading vendor leads
+
+Use **Upload Vendor List** (top right) to bulk upload a list of potential vendor leads from a file. This is typically scraped business data such as mobile shops, repair stores, or electronics dealers for a city or area targeted for expansion.
+
+Each uploaded lead appears:
+
+- In the **New** tab as a fresh lead to be called.
+- In the **All Leads** list with a **Manual Upload** tag indicating the source.
+
+## Search and filters
+
+Use search and filters to quickly find and prioritize leads.
+
+- **Search** — Search by business name, phone number, or city. Enter your query and click **Search** to apply.
+- **Status filter** — Use the **All Statuses** dropdown to filter by status: New, Follow Up, Interested, Not Interested, Invalid, or Converted.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774427363192-j2b2sg0u44h-onboarding-b2c.onboarding b2c?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="821" alt="Onboarding B2C admin panel screen showing lead list, status filters, and pipeline tabs." />
+
+## Vendor onboarding funnel flow
+
+The funnel takes a lead from uploaded data to a live vendor connected to the B2C inventory.
+
+<Steps>
+
+<Step title="Upload and create leads" icon="upload">
+
+- Upload potential vendor leads using **Upload Vendor List** from scraped or sourced business data.
+- The system creates leads and places them in the **New** tab and **All Leads** with a Manual Upload tag.
+
+</Step>
+
+<Step title="Call new leads and update status" icon="phone">
+
+- Use the **call** action on each lead in the New tab to make the first outreach.
+- After each call, update the lead status to reflect the outcome: Follow Up, Interested, Not Interested, or Invalid.
+
+</Step>
+
+<Step title="Manage follow-ups" icon="clock">
+
+- If a lead asks to be called later, set a follow-up date and move them to the **Follow-ups** tab.
+- Work the Follow-ups tab daily to complete scheduled calls and update statuses based on the latest conversation.
+
+</Step>
+
+<Step title="Confirm interest and share app link" icon="arrow-right">
+
+- When a lead agrees to become a vendor, move them to the **Interested** tab.
+- Share the vendor app download link and guide them through completing registration on the vendor app.
+
+</Step>
+
+<Step title="Review in New Vendors - B2C" icon="info">
+
+- Once the vendor completes registration in the app, they appear in **New Vendors - B2C** with a Pending status.
+- An admin reviews their details and documentation in New Vendors - B2C.
+
+</Step>
+
+<Step title="Approve and convert to live vendor" icon="check-circle">
+
+- After approval in **New Vendors - B2C**, the lead status updates to **Converted** and the lead moves to the **Converted** tab.
+- The vendor now appears as an active vendor in **Vendors - B2C**, contributing to the Live Vendors count in the Expansion Onboarding dashboard.
+
+</Step>
+
+</Steps>
+
+## Admin actions
+
+For each lead in the list, admins can:
+
+- Click the call button to initiate a call directly from the panel.
+- Update the lead status after every call attempt.
+- Schedule a follow-up date if the vendor asked to be called back.
+- Move the lead to **Interested** once the vendor confirms intent to onboard.
+- Mark leads as **Not Interested** or **Invalid** to keep the pipeline clean.
+- Track call counts to monitor outreach effort and avoid over-calling the same vendor.
+
+## Connections to other modules
+
+Onboarding B2C connects with other Expansion and vendor modules:
+
+- **New Vendors - B2C** — Once an Interested lead completes registration on the vendor app, they appear here with Pending status for admin approval.
+- **Vendors - B2C** — Approved vendors from New Vendors - B2C become active vendors in this main vendor list.
+- **Expansion — Onboarding tab** — Converted and live vendors contribute to the **Live Vendors** metrics in the Onboarding dashboard.
+- **Vendor App** — Interested leads are directed to register through the vendor app, which creates their profile in New Vendors - B2C.
+
+## Important notes
+
+<Callout kind="info">
+
+- A lead only becomes **Converted** after the vendor completes registration on the vendor app and an admin approves their application in **New Vendors - B2C**. Interest alone does not convert a lead.
+- Leads marked as **Not Interested** or **Invalid** remain visible in **All Leads** but do not appear in the active funnel tabs such as New, Follow-ups, Interested, or Converted.
+- The **Calls** count on each lead helps the team avoid over-calling the same vendor and prioritize leads with fewer attempts.
+
+</Callout>
+
+## Admin responsibilities
+
+To keep the B2C onboarding funnel healthy and up to date, admins should:
+
+- Upload fresh vendor lead lists regularly for cities targeted for expansion.
+- Call all **New** leads promptly and update their status after every attempt.
+- Schedule and complete follow-ups for leads who asked to be called back.
+- Share the vendor app registration link with all **Interested** leads and encourage them to complete registration.
+- Monitor the **Converted** tab to confirm that onboarded vendors have been approved and are live in Vendors - B2C.
+- Keep the pipeline clean by marking unreachable or declined leads as **Invalid** or **Not Interested**.
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card
+  title="New Vendors - B2C"
+  href="/new-vendors---b2c"
+  icon="users"
+  cta="Review and approve vendor registrations"
+>
+
+See how pending vendor applications are reviewed and approved after registration from the vendor app.
+
+</Card>
+
+<Card
+  title="B2C Vendors"
+  href="/b2c-vendors"
+  icon="store"
+  cta="View and manage active B2C vendors"
+>
+
+Understand how approved vendors appear in the main B2C vendor list and how to manage live vendor accounts.
+
+</Card>
+
+</Columns>
