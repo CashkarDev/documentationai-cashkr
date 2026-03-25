@@ -1,0 +1,232 @@
+---
+title: New Vendors - B2C
+description: Review and approve new B2C vendor registration requests from the vendor app, including filters, detail panel, documents, and onboarding lifecycle.
+---
+
+## Overview
+
+The New Vendors - B2C page under Expansion in the Admin Panel shows all new vendor registration requests submitted through the vendor app that are pending review and approval. Use this page to verify vendor details and documents before onboarding them to the platform.
+
+## At a glance
+
+<Columns cols={3}>
+
+<Card title="Purpose" icon="users" href="#overview" cta="Understand this page">
+
+- View all new vendor registration requests in Pending status
+- Review vendor profiles and uploaded KYC documents
+- Decide whether to accept or reject each vendor
+
+</Card>
+
+<Card title="Key fields in list" icon="database" href="#list-columns" cta="See all columns">
+
+- Vendor ID, Vendor Name, Contact, City
+- Trust Score, Avg. Drop
+- Status (Pending for all new vendors)
+
+</Card>
+
+<Card title="Main actions" icon="check-circle" href="#review-and-decision-steps" cta="Follow review steps">
+
+- Filter and search pending applications
+- Open application detail panel
+- Accept or reject vendor applications
+
+</Card>
+
+</Columns>
+
+## List view: what the page shows
+
+Each row in the New Vendors - B2C list represents one vendor who has submitted a registration application and is awaiting admin review. All vendors on this page have a Pending status by default.
+
+### List columns
+
+The list shows the following information for each pending vendor application:
+
+- **Vendor ID** — Unique system identifier assigned to the vendor on registration.
+- **Vendor Name** — Name of the vendor and their shop or business name.
+- **Contact** — Registered phone number of the vendor, with a quick call option.
+- **City** — City where the vendor is located.
+- **Trust Score** — Initial grade assigned to the vendor, which defaults to Grade A for new applications.
+- **Avg. Drop** — Average credit drop value; this remains blank for new vendors with no history.
+- **Status** — Current application status; shown as Pending for all new vendors on this page.
+
+## Filters and search
+
+Use filters to narrow down pending vendor applications and focus on specific vendors or time periods.
+
+- **Search** — Find a specific vendor application by vendor name, phone number, or vendor ID.
+- **Status filter** — Filter applications by their current status.
+- **City filter** — Filter applications by city to focus on vendors from a specific location.
+- **Date range filter** — Filter applications by the date they were submitted using from and to date fields.
+- **New Vendors toggle** — Enable the New Vendors checkbox to ensure only new pending applications are shown.
+- **Apply filters** — Click Apply Filters to apply the selected filters.
+- **Reset filters** — Click Reset to clear all filters and return to the full list.
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774418045738-1q2a4mct05t-new-vendors.new%20vendors?q=85&fm=auto&auto=compress%2Cformat"
+  width="1919"
+  height="822"
+  alt="New Vendors - B2C list view showing pending vendor registration applications with filters and key columns"
+/>
+
+## Application detail panel
+
+Click any vendor row in the list to open the application detail panel on the right side. Use this panel to review both profile information and uploaded documents before taking a decision.
+
+<Tabs>
+
+<Tab title="Details" icon="info">
+
+The Details tab shows the full profile of the vendor who has applied:
+
+- **Current Status** — Shows the application status as Pending, Accepted, or Rejected.
+- **Vendor Name** — Name of the applicant and their shop name.
+- **Internal Vendor toggle** — Option to mark the vendor as an internal vendor during approval.
+- **Phone** — Registered phone number of the vendor.
+- **Email** — Registered email address of the vendor.
+- **Address** — Business or shop address provided during registration.
+- **Created On** — Date the vendor submitted their registration application.
+- **Activity History** — Log of all actions taken on this application by admins.
+
+</Tab>
+
+<Tab title="Documents" icon="folder">
+
+The Documents tab displays all verification documents uploaded by the vendor during registration. These may include:
+
+- Aadhaar card photo
+- PAN card
+- Shop photo
+- Any other verification documents required during onboarding
+
+Review all uploaded documents carefully before approving or rejecting an application to ensure the vendor meets onboarding and KYC requirements.
+
+</Tab>
+
+</Tabs>
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774418129420-ei1pwzy7cq-new-vendors-details.new%20vendors%20details?q=85&fm=auto&auto=compress%2Cformat"
+  width="1916"
+  height="833"
+  alt="Application detail panel for a new vendor showing Details and Documents tabs"
+/>
+
+## Review and decision steps
+
+Use the following sequence to review and decide on each new vendor application.
+
+<Steps>
+
+<Step title="Receive vendor application" icon="users">
+
+- Vendor submits a registration request through the vendor app.
+- The application appears in the New Vendors - B2C list with Pending status.
+
+</Step>
+
+<Step title="Filter and open application" icon="search">
+
+- Use search and filters (status, city, date range, New Vendors toggle) to locate the relevant application.
+- Click the vendor row to open the application detail panel on the right.
+
+</Step>
+
+<Step title="Review vendor details and history" icon="info">
+
+- In the Details tab, confirm vendor name, shop details, contact information, address, and Created On date.
+- Check the Activity History to see any prior admin actions on this application.
+- Decide whether the vendor should be treated as an internal vendor using the Internal Vendor toggle if required.
+
+</Step>
+
+<Step title="Verify documents" icon="shield">
+
+- Switch to the Documents tab to view all uploaded verification documents (such as Aadhaar, PAN, shop photos, and other required KYC).
+- Confirm that documents are complete, clear, and match the details provided in the application.
+
+</Step>
+
+<Step title="Accept application (onboard vendor)" icon="check-circle">
+
+- Click the **Accept** button when the vendor meets all onboarding criteria and documents are valid.
+- After acceptance:
+  - The vendor profile moves to the main [B2C Vendors](/b2c-vendors) page with Live status.
+  - The vendor can log in to the vendor app and start receiving orders.
+  - The accepted vendor contributes to the Live Vendors count in the [Onboarding B2C](/onboarding-b2c) tab.
+  - Once live and configured, the vendor begins receiving orders based on pincode and device type assignments.
+
+</Step>
+
+<Step title="Reject application (close vendor request)" icon="x-circle">
+
+- Click the **Reject** button if documents are invalid, details are incorrect, or the vendor does not meet onboarding criteria.
+- After rejection:
+  - The application is closed and the vendor cannot access the vendor app.
+  - Rejected applications cannot be reversed from this page; contact the system administrator if a rejection was made in error.
+
+</Step>
+
+</Steps>
+
+## Connections to other modules
+
+New Vendors - B2C works closely with other vendor and order modules:
+
+- **Vendor app** — All registration requests originate from the vendor onboarding section of the vendor app.
+- **B2C Vendors** — Accepted vendors move to the [B2C Vendors](/b2c-vendors) page and become active on the platform.
+- **Onboarding B2C** — Accepted vendors contribute to the Live Vendors count in the [Onboarding B2C](/onboarding-b2c) tab.
+- **Orders - B2C** — Once live and configured with pincode and device type, accepted vendors begin receiving orders through the B2C orders modules.
+
+## Important notes
+
+<Callout kind="info">
+
+- Always verify all uploaded documents in the Documents tab before approving any application; do not approve applications with missing or unclear documents.
+- Once a vendor is accepted, they can immediately log in to the vendor app, so ensure their pincode and device type assignments are configured in the B2C Vendors page after approval.
+- Rejected applications cannot be reversed from the New Vendors - B2C page; contact the system administrator if a rejection was made in error.
+- Vendors with a Pending status do not appear in the B2C Vendors list and cannot receive any leads or orders until their application is approved.
+
+</Callout>
+
+## Related pages
+
+<Columns cols={3}>
+
+<Card
+  title="B2C Vendors"
+  href="/b2c-vendors"
+  icon="users"
+  cta="Manage active vendors"
+>
+
+View and manage all live B2C vendors after their applications are accepted.
+
+</Card>
+
+<Card
+  title="Onboarding B2C"
+  href="/onboarding-b2c"
+  icon="bar-chart"
+  cta="Track onboarding metrics"
+>
+
+Monitor Live Vendors counts and onboarding performance for accepted vendors.
+
+</Card>
+
+<Card
+  title="Vendor app context"
+  href="/vendor-registration-login"
+  icon="monitor"
+  cta="See vendor-side flow"
+>
+
+Learn how vendors register and log in from their app, which feeds into New Vendors - B2C.
+
+</Card>
+
+</Columns>

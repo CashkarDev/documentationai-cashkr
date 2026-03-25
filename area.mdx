@@ -1,0 +1,300 @@
+---
+title: Area
+description: Manage serviceability coverage, zones, and vendor distribution across cities and pincodes in the Expansion section of the Admin Panel.
+---
+
+## Overview
+
+Area controls where Cashkr operates — which pincodes are serviceable, which device types are available in each area, how zones are structured, and how vendor coverage is distributed across cities and states.
+
+Use this page to expand into new locations, monitor coverage gaps, and align vendor onboarding with real customer demand.
+
+## Where to find it
+
+Access Area from the Admin Panel under **Expansion → Area** in the left navigation.
+
+The page is organized into seven tabs:
+
+- Matrix
+- Zones
+- Map
+- Pincodes
+- Cities
+- Unserviced
+- Onboarding
+
+## Tabs reference
+
+<Tabs>
+  <Tab title="Matrix">
+
+The Matrix tab shows the Vendor Area Matrix, a pincode-level view of vendor coverage by device type for approved and live vendors.
+
+Use this tab to identify coverage gaps by device type and prioritize vendor onboarding or expansion.
+
+**Shows**
+
+- **Pincode** — Area pincode.
+- **City** — City the pincode belongs to.
+- **State** — State the pincode belongs to.
+- **Orders** — Number of active orders in that pincode.
+- **Zone** — Zone assigned to the pincode (if any).
+- **Ads** — Whether ads are running for that pincode (Yes or No).
+- **Phone** — Number of live vendors covering phones in that pincode.
+- **Laptop** — Number of live vendors covering laptops in that pincode.
+- **Mac** — Number of live vendors covering Macs in that pincode.
+- **Tablet** — Number of live vendors covering tablets in that pincode.
+
+**Filters**
+
+- **Search** — Search by pincode, city, or state.
+- **City filter** — Filter rows to a specific city.
+- **Device Type filter** — Filter by device type: All, Mobile, Laptop, Mac, or Tablet.
+- **Full Power Only** — Checkbox to show only pincodes with 3 or more vendors.
+
+**Actions**
+
+- **Refresh** — Reload the latest vendor coverage data.
+- **Export CSV** — Download the entire matrix for offline analysis or reporting.
+- **Gap analysis** — Spot pincodes where a device type has zero or very few vendors and plan onboarding or reassignment.
+
+<Callout kind="info">
+
+The Matrix tab counts only approved and live vendors. Vendors on hold or pending approval do not appear in the coverage numbers.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416654114-48mbz7ypj8-Matrix.Matrix?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="837" alt="Vendor coverage Matrix by pincode and device type in the Area section" />
+
+  </Tab>
+
+  <Tab title="Zones">
+
+The Zones tab lets you create and manage geographic zones that group multiple pincodes under a named region.
+
+Use this tab to organize vendor assignments and monitor coverage at a regional level instead of pincode by pincode.
+
+**Shows**
+
+- **Name** — Zone name, such as South Central Zone 1 or South Bombay Zone 2.
+- **Location** — City and state the zone covers.
+- **Pincodes** — Number of pincodes assigned to the zone.
+- **Vendors** — Number of vendors currently active in the zone.
+- **Actions** — Options to edit or delete the zone.
+
+**Filters**
+
+- **Search** — Use the search bar to find a specific zone by name.
+
+**Actions**
+
+- **Add New Zone** — Create a new zone by entering the zone name, selecting the location, and assigning relevant pincodes.
+- **Edit zone** — Update the zone name, location, or assigned pincodes.
+- **Delete zone** — Remove a zone that is no longer needed.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416623744-en7l8vrmfht-zones.zones?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="807" alt="Zones list with name, location, pincodes, vendors, and actions" />
+
+  </Tab>
+
+  <Tab title="Map">
+
+The Map tab provides a visual geographic view of all serviceable areas and vendor coverage across India.
+
+Use this tab to quickly understand where coverage is strong or weak across cities and regions.
+
+**Shows**
+
+- **Coverage map** — Colored dots representing vendor locations and serviceable areas.
+- **Status or zone colors** — Each color indicates the vendor's current status or the assigned zone, based on the selected view.
+- **Total areas count** — Total number of areas currently shown on the map below the filters.
+
+**Filters**
+
+- **Vendor filter** — View all vendors or select a specific vendor to see only their coverage.
+- **View Mode** — Switch between:
+  - Status view (vendor live or hold status coloring).
+  - Zones view (zone-based color coding).
+- **Zone filter** — Limit the map to a specific zone only.
+- **Device filter** — Filter by device type: All, Mobile, Laptop, Mac, or Tablet.
+
+**Actions**
+
+- **Select Area** — Click directly on the map to select a specific area.
+- **Fix Coords** — Correct or update geographic coordinates for any area plotted incorrectly.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416550661-x3r59aprh4s-vendor-on-map.vendor on map?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="836" alt="Coverage map of India showing vendor locations and zones" />
+
+  </Tab>
+
+  <Tab title="Pincodes">
+
+The Pincodes tab is the master list of all serviceable areas added to the system, with one row per pincode.
+
+Use this tab to add, edit, enable, or disable specific pincodes and device types as the business expands.
+
+**Shows**
+
+- **Pincode** — The 6-digit area code.
+- **City** — City the pincode belongs to.
+- **State** — State the pincode belongs to.
+- **Device Types** — Device categories active for that pincode: Mobile, Laptop, Tablet, Mac.
+- **Serviceable** — Toggle indicating whether the pincode is currently active and accepting orders.
+- **Created At** — Date the pincode was added to the system.
+- **Actions** — Edit or Delete the pincode.
+
+**Filters**
+
+- **Search** — Search by pincode, city, or state, then click Search to apply.
+- **Filters button** — Open additional filtering options for more granular views.
+
+**Actions**
+
+- **Add New Area** — Add a new pincode by entering the pincode, city, state, selecting device types, and setting the serviceable toggle.
+- **Import Excel** — Upload an Excel file to bulk import multiple pincodes, useful when expanding into a new city.
+- **Edit** — Update device types, city, or state for an existing pincode.
+- **Toggle serviceability** — Instantly enable or disable a pincode from the Serviceable column.
+- **Delete** — Permanently remove a pincode from the system when that area is no longer needed.
+
+<Callout kind="alert">
+
+Disabling or deleting a pincode immediately stops new orders from that area. Customers in an unserviceable pincode cannot place new orders, though existing orders remain unaffected.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416515095-b6peuoqq5tg-Pincodes.Pincodes?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="836" alt="Pincodes master list with device types, serviceable toggle, and actions" />
+
+  </Tab>
+
+  <Tab title="Cities">
+
+The Cities tab provides a city-level view of all pincodes, summarizing how many are serviceable in each city.
+
+Use this tab to enable or disable entire cities and quickly assess city-level coverage.
+
+**Shows**
+
+- **City Name** — Name of the city.
+- **State** — State the city belongs to.
+- **Total Pincodes** — Total number of pincodes added under that city.
+- **Serviceable** — Number of pincodes currently marked serviceable in that city.
+- **Toggle All** — Control to enable or disable all pincodes in the city with a single toggle.
+- **Expanded view** — When you expand a city row, you see all individual pincodes under that city.
+
+**Filters**
+
+- **Search** — Filter by city name, state, or pincode using the search bar.
+
+**Actions**
+
+- **Toggle All** — Disable or enable every pincode in a city at once when operations pause or resume.
+- **Per-pincode actions** — Within an expanded city, manage individual pincodes if needed.
+
+<Callout kind="alert">
+
+Using Toggle All on an active city will enable or disable every pincode at once. Confirm operational readiness before turning an entire city off or on.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416474350-txu6imqd36i-cities.cities?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="831" alt="Cities overview with total and serviceable pincodes and city-level Toggle All" />
+
+  </Tab>
+
+  <Tab title="Unserviced">
+
+The Unserviced tab highlights areas where customers or the system tried to check serviceability but the pincode was not found or had been deleted.
+
+Use this tab to find high-demand areas that are not yet covered and prioritize expansion.
+
+**Shows**
+
+- **Failed Pincode Checks** — Summary card showing total pincode lookup failures.
+- **Top Unserviced Areas** — Summary of the most frequently failed pincodes with their failure counts.
+- **City / Pincode** — City name, when known, and the pincode that failed the serviceability check.
+- **Failed Checks (GA4)** — Number of times this pincode failed a serviceability check.
+- **Action** — Add button to quickly add the pincode as a new serviceable area.
+
+**Filters**
+
+- **City filter** — Filter the list by city name using the search bar.
+- **Time period filter** — Filter by time range, such as Last 90 days or a custom date range.
+
+**Actions**
+
+- **Add from Unserviced** — Click Add next to any pincode to onboard it as a new area without switching to the Pincodes tab, ideal for acting on high-demand areas immediately.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416334877-46b7omhdlw-unserviced.unserviced?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="825" alt="Unserviced areas list with failed checks and quick Add actions" />
+
+  </Tab>
+
+  <Tab title="Onboarding">
+
+The Onboarding tab is a dashboard of vendor onboarding status and live vendor distribution across cities.
+
+Use this tab to track the vendor funnel and identify cities that need more vendors.
+
+**Shows**
+
+- **Vendor Onboarding Funnel**
+  - **Pending** — Vendors who have registered but are not yet live.
+  - **On Hold** — Vendors currently on hold.
+  - **Live Vendors** — Total number of vendors currently live and active.
+  - **Conversion Rate** — Percentage of registered vendors who have successfully gone live.
+- **Live Vendors by City**
+  - City-wise breakdown of how many vendors are live in each city, helping you see which cities are well covered and which need attention.
+
+**Actions**
+
+- **Refresh** — Reload the latest onboarding and vendor distribution data.
+- **Prioritize onboarding** — Focus on cities with low live vendor counts relative to demand or serviceable pincodes.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774416267177-zqxfdiwzk3-onboarding-tab.onboarding tab?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="834" alt="Onboarding dashboard with vendor funnel and live vendors by city" />
+
+  </Tab>
+</Tabs>
+
+## Admin responsibilities
+
+Expansion and operations admins use the Area page to keep serviceability aligned with business priorities and vendor capacity.
+
+- Review the **Matrix** tab regularly to identify device coverage gaps by pincode and plan vendor onboarding or reassignment.
+- Add new **pincodes** as the business expands into new cities or neighborhoods.
+- Use the **Cities** tab to disable or re-enable entire cities quickly during operational changes, downtimes, or expansion pauses.
+- Monitor the **Unserviced** tab to discover high-demand areas not yet covered and prioritize adding those pincodes.
+- Keep **zones** organized and updated as new pincodes are added, so reporting and vendor assignments stay manageable.
+- Use the **Map** tab as a visual sanity check on coverage distribution across cities, states, and zones.
+- Track vendor onboarding progress from the **Onboarding** tab and act on pending or on-hold vendors, especially in under-served cities.
+
+## Related modules
+
+Changes you make in Area directly affect other modules in the Cashkr ecosystem.
+
+- **Customer App and Website** — If a pincode is marked unserviceable, customers in that area cannot place new orders on the app or website.
+- **Vendors - B2C** — Vendor pincode assignments are managed in Vendors - B2C and reflected in the Matrix tab coverage counts.
+- **Leads** — Converted leads are assigned to vendors based on the customer's pincode matching vendor service areas.
+- **Orders - B2C** — Orders are created only for serviceable pincodes with at least one live vendor assigned.
+
+## Important notes
+
+<Callout kind="alert">
+
+Disabling a pincode immediately prevents customers in that area from placing new orders. Existing orders already placed in that pincode are not affected.
+
+</Callout>
+
+<Callout kind="alert">
+
+Using Toggle All in the Cities tab will enable or disable every pincode under that city in one action. Use this carefully in active cities to avoid accidentally stopping or starting all orders.
+
+</Callout>
+
+<Callout kind="info">
+
+Pincodes appearing in the Unserviced tab represent real customer demand or attempts to check serviceability. Prioritize adding high-failure pincodes to capture missed business.
+
+</Callout>
+
+<Callout kind="info">
+
+The Matrix tab includes only approved and live vendors. Vendors on hold or pending approval are excluded from coverage numbers, so always cross-check with Onboarding when investigating gaps.
+
+</Callout>
