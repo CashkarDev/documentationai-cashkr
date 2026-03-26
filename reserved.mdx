@@ -1,0 +1,125 @@
+---
+title: Reserved
+---
+The Reserved page is part of the Orders - B2C section. It displays all orders that have been reserved for a specific vendor. A reserved order is held exclusively for that vendor and is not visible to or actionable by other vendors in the same area. Admins use this page to monitor reserved orders and ensure they are being acted upon by the intended vendor.
+
+---
+
+**What It Shows**
+
+Each row in the Reserved list represents one order that has been reserved for a specific vendor. The table columns are the same as other order views:
+
+- **Created At** — Date and time the order was created
+
+- **Model** — Device model the customer wants to sell
+
+- **City** — City where the pickup is scheduled
+
+- **Type** — Device category — Mobile, Laptop, Tablet, or Mac
+
+- **Status** — Current status of the reserved order
+
+When no reserved orders are present, the page displays a No Orders Found message indicating there are currently no orders matching the reserved criteria.
+
+---
+
+**What Reserved Means**
+
+A reserved order is one that has been locked to a specific vendor. This means:
+
+- Only the reserved vendor can see and act on this order in their vendor app
+
+- Other vendors in the same pincode cannot see or accept this order
+
+- The order is held exclusively until the reserved vendor completes it or the reservation is removed by the admin
+
+Reserved orders are typically created when:
+
+- A customer specifically requests a particular vendor for their pickup
+
+- An admin manually reserves an order for a trusted or preferred vendor in that area
+
+- A vendor has a prior relationship or commitment with the customer for that order
+
+- An order was previously assigned, fell through, and needs to be specifically directed to a reliable vendor
+
+---
+
+**Filters & Controls**
+
+Device Type Filter Filter reserved orders by device category — Mobile, Laptop, Tablet, or Mac.
+
+City Filter Filter reserved orders by the city where the pickup is scheduled.
+
+From Date and To Date Filter orders by their creation date range.
+
+Show Orders with Test Accounts Check this box to include test account orders in the view. Uncheck during normal operations to see only real customer orders.
+
+Search Search for a specific reserved order by order details, device name, or customer information.
+
+Reset and Apply Filters Click Apply Filters to apply the selected filters. Click Reset to clear all filters and return to the full reserved orders list.
+
+---
+
+**Admin Actions**
+
+For orders in the Reserved page, admins can:
+
+- Monitor whether the reserved vendor is acting on the order in a timely manner
+
+- Contact the reserved vendor directly if the order is sitting idle
+
+- Remove the reservation and reassign to a different vendor if the reserved vendor is unable to complete the pickup
+
+- Check the order detail to see which vendor the order is reserved for and when it was reserved
+
+- Escalate to operations if a reserved order becomes delayed
+
+---
+
+**Reserved Order Flow**
+
+Order is created by customer or converted from lead → Admin reserves the order for a specific vendor → Order appears in Reserved page → Reserved vendor sees the order exclusively in their vendor app → Vendor completes the pickup → Order moves out of Reserved and proceeds through the completion flow → Device enters All Inventory
+
+If the reserved vendor does not act → Admin reviews the Reserved page → Admin removes reservation or reassigns to another vendor → Order moves to the appropriate section based on new status
+
+---
+
+**Admin Responsibilities**
+
+- Check the Reserved page regularly to ensure reserved orders are not sitting idle
+
+- Act immediately if a reserved order shows no progress from the assigned vendor
+
+- Remove reservations that are no longer relevant to open the order back up to all vendors in the area
+
+- Use reservations carefully and only when there is a genuine operational or customer-driven reason to restrict an order to one vendor
+
+- Ensure the reserved vendor is informed and available before placing a reservation
+
+---
+
+**Connections to Other Modules**
+
+- **In Progress** — Once the reserved vendor acts on the order it moves to In Progress
+
+- **Vendors - B2C** — The vendor the order is reserved for must be live and have the relevant pincode and device type assigned
+
+- **Delayed** — If a reserved order crosses its pickup date without completion it will also appear in the Delayed section
+
+- **No Action** — If the reserved vendor takes no action after assignment the order may also appear in No Action
+
+- **All Inventory** — Once the reserved order is completed and the device received it enters All Inventory
+
+---
+
+**Important Notes**
+
+A reserved order is exclusively locked to one vendor. No other vendor in the area can see or act on it until the reservation is removed by the admin.
+
+Reservations should be used sparingly. Overuse of reservations can reduce order visibility across the vendor network and slow down pickup times.
+
+If a reserved vendor becomes unavailable or unresponsive, remove the reservation immediately to prevent the order from becoming unnecessarily delayed.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774516987405-iht5gdbw6j-reserved.reserved?q=85&fm=auto&auto=compress%2Cformat" width="1568" height="678" alt="" />
+

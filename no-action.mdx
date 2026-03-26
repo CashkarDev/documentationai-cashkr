@@ -1,0 +1,129 @@
+---
+title: No Action
+---
+The No Action page is part of the Orders - B2C section. It displays all orders that have been assigned to a vendor but the vendor has not taken any action on them — meaning the vendor has neither started the pickup process nor updated the order status. Admins use this page to identify stalled orders and follow up with vendors to get them moving.
+
+---
+
+**What It Shows**
+
+Each row in the No Action list represents one order that is assigned but sitting idle with the vendor:
+
+- **Created At** — Date and time the order was created
+
+- **Model** — Device model the customer wants to sell
+
+- **City** — City where the pickup is scheduled
+
+- **Type** — Device category — Mobile, Laptop, Tablet, Mac
+
+- **Status** — Current status of the order — shown as Assigned since the vendor has been assigned but has not acted
+
+---
+
+**Why Orders Appear Here**
+
+An order appears in the No Action page when:
+
+- The order has been assigned to a vendor
+
+- The vendor has not started the pickup, updated the order status, or taken any recorded action within the expected timeframe
+
+- The vendor may have accepted the order but gone inactive or unresponsive
+
+- The vendor may have forgotten or deprioritised the order
+
+---
+
+**Difference Between No Action and Delayed**
+
+These two sections are related but distinct:
+
+- **No Action** — Order is assigned to a vendor but the vendor has not done anything with it yet. The focus here is on vendor inactivity after assignment.
+
+- **Delayed** — Orders that have crossed their scheduled pickup date without being completed. An order can be both delayed and have no action if the vendor was assigned but never acted and the pickup date has also passed.
+
+The count badge next to No Action in the sidebar shows the real-time number of orders in this state and should be checked daily.
+
+---
+
+**Filters & Controls**
+
+Device Type Filter Filter orders by device category — Mobile, Laptop, Tablet, or Mac.
+
+City Filter Filter orders by the city where the pickup is scheduled.
+
+From Date and To Date Filter orders by their creation date range to narrow down older or newer stalled orders.
+
+Show Orders with Test Accounts Check this box to include test account orders. Uncheck during normal operations to view only real customer orders.
+
+Search Search for a specific order by order details, device name, or customer information.
+
+Reset and Apply Filters Click Apply Filters to apply the selected filters. Click Reset to clear all filters and return to the full list.
+
+Pagination Orders are displayed across pages. Use the Previous and Next buttons to navigate. The total result count is shown below the table.
+
+---
+
+**Admin Actions**
+
+For orders in No Action, admins should:
+
+- Open the order detail and check when it was assigned and how long it has been idle
+
+- Call the assigned vendor directly to prompt them to act on the order
+
+- If the vendor is unresponsive or unable to complete the pickup, reassign the order to another available vendor in the same pincode
+
+- Contact the customer to update them on the status and reassure them the pickup is being arranged
+
+- Escalate to the operations manager if a vendor repeatedly has orders in No Action
+
+---
+
+**Order Flow for No Action Orders**
+
+Order created and assigned to vendor → Vendor receives order in vendor app but takes no action → Order appears in No Action after the inactivity threshold is crossed → Admin follows up with vendor → Vendor acts on the order → Order moves to In Progress OR admin reassigns to another vendor → Reassigned order moves to In Progress under the new vendor
+
+---
+
+**Admin Responsibilities**
+
+- Check the No Action page daily and prioritise orders that have been idle the longest
+
+- Call vendors with stalled orders and push them to take action immediately
+
+- Reassign orders where the vendor is unreachable or consistently inactive
+
+- Use the count badge in the sidebar as a quick health indicator — a growing No Action count signals a vendor activity problem
+
+- Cross-reference with the Vendors - B2C page to check the vendor's overall In Progress count and trust score before reassigning
+
+- If a vendor has multiple orders in No Action regularly, consider reviewing their trust score and Max Leads limit
+
+---
+
+**Connections to Other Modules**
+
+- **In Progress** — Once the vendor takes action on the order it moves to In Progress
+
+- **Vendors - B2C** — Vendor activity and trust score are directly linked to how often their orders appear in No Action
+
+- **Not Assigned** — If an order is reassigned and the new vendor also takes no action it may cycle back here
+
+- **Delayed** — Orders that remain in No Action past their pickup date will also appear in Delayed
+
+- **Quality - B2C** — Repeated No Action orders from a vendor can negatively affect their quality metrics and trust grade
+
+---
+
+**Important Notes**
+
+An order in No Action is still assigned to a vendor. The customer's device has not been picked up and the order has not progressed. This is a time-sensitive section — delays here directly impact the customer experience.
+
+If an order has been in No Action for more than 24 hours, it should be treated as a priority and the vendor should be contacted immediately.
+
+Reassigning an order removes it from the original vendor's queue and makes it available to the newly assigned vendor. Always inform the original vendor if their order is being reassigned.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774513989619-a4pqntzx4y8-no-action.no action?q=85&fm=auto&auto=compress%2Cformat" width="1568" height="681" alt="" />
+

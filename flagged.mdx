@@ -1,0 +1,157 @@
+---
+title: Flagged
+---
+The Flagged page is part of the Orders - B2C section. It displays all orders that have been flagged by the admin team for escalation due to a customer issue, vendor problem, or operational concern. Admins use this page to monitor all open flagged issues, resolve them, or reassign the order to a different vendor.
+
+---
+
+**Summary Cards**
+
+Three summary cards at the top provide a real-time snapshot of the current flagged order situation:
+
+- **Total Pending** — Total number of flagged orders currently awaiting resolution
+
+- **Critical (more than 15 minutes)** — Number of flagged orders that have been open for more than 15 minutes without any response or action — these require immediate attention
+
+- **Avg Response Time** — Average time taken by the admin team to respond to and resolve flagged orders
+
+When there are no pending flagged orders, the page displays an All Clear message confirming no customer issues are pending at the moment.
+
+---
+
+**What It Shows**
+
+Each row in the Flagged Orders list represents one escalated order:
+
+- **Order** — Order ID and city of the flagged order
+
+- **Device** — Device model and customer phone number with quick call option
+
+- **Issue** — The problem type that was selected when the order was flagged (e.g. customer not called)
+
+- **Current Vendor** — Name and phone number of the vendor currently assigned to the order
+
+- **Flagged Vendor** — The vendor who was flagged in relation to the issue
+
+- **Actions** — Resolve button to close the issue or Reassign button to move the order to a different vendor
+
+---
+
+**How to Flag an Order**
+
+An order can be flagged from any section under Orders - B2C including All Orders, In Progress, Not Assigned, No Action, Delayed, and Reserved. To flag an order:
+
+1. Open the order detail from any orders section
+
+2. Click the Flag Order option within the order detail panel
+
+3. The Flag Order popup will appear
+
+4. Select the Problem Type from the dropdown — this is a required field
+
+5. Add an optional Description to provide more detail about the issue
+
+6. Click Flag Order to confirm — the order immediately appears in the Flagged page
+
+---
+
+**Problem Types Available When Flagging**
+
+When flagging an order, the admin must select one of the following problem types:
+
+- **Pickup Not Complete** — The vendor was assigned and confirmed but did not complete the pickup
+
+- **Customer Not Called** — The vendor did not call the customer before or during the pickup attempt
+
+- **Vendor Did Not Arrive** — The vendor confirmed the pickup but did not show up at the customer's location
+
+- **Wrong Price Quoted** — The vendor quoted a different price to the customer than what was agreed
+
+- **Customer Complaint** — The customer raised a complaint about the vendor's behaviour or service
+
+- **Document Issue** — There is a problem with the documents provided during the order
+
+- **Payment Issue** — There is an issue with the payment made or offered to the customer
+
+- **Other** — Any other issue that does not fit the categories above
+
+After selecting the problem type, the admin can add a description to provide additional context before submitting the flag.
+
+---
+
+**Resolving a Flagged Order**
+
+Once the issue has been addressed, the admin can resolve the flag directly from the Flagged Orders page:
+
+Click Resolve on the flagged order row to mark the issue as resolved. The order is removed from the Flagged list and the flag is closed. The resolution is logged against the order for audit purposes.
+
+---
+
+**Reassigning a Flagged Order**
+
+If the issue is related to the assigned vendor and the order needs to be moved to a different vendor:
+
+Click Reassign on the flagged order row to open the reassignment flow. Select a new vendor for the order. The order is reassigned to the new vendor, removed from the current vendor's queue, and the flag remains on record until it is resolved.
+
+---
+
+**Flagged Order Flow**
+
+Issue identified on an active order → Admin opens the order detail from any Orders - B2C section → Admin selects Flag Order and chooses the problem type → Order appears in Flagged page with pending status → Admin contacts the vendor or customer to investigate → Admin clicks Resolve if the issue is fixed → OR Admin clicks Reassign if a new vendor is needed → Order moves back to the regular order flow with the new vendor → Flag is closed and logged
+
+---
+
+**Admin Responsibilities**
+
+- Check the Flagged page at the start of every shift and throughout the day
+
+- Respond to all flagged orders within 15 minutes to avoid them appearing in the Critical count
+
+- Contact the customer immediately for issues involving vendor no-shows, wrong pricing, or complaints
+
+- Contact the flagged vendor to understand their side of the issue before taking action
+
+- Use Reassign for vendor-related failures and Resolve only after confirming the issue has been addressed
+
+- Keep the Average Response Time as low as possible — this is a key customer service metric
+
+- Use the problem type data over time to identify vendors with recurring issues and address them through quality reviews
+
+---
+
+**Connections to Other Modules**
+
+- **All Orders** — Orders can be flagged from the All Orders view
+
+- **In Progress** — Active orders with field issues are commonly flagged from In Progress
+
+- **Delayed** — Overdue orders with additional complications can be escalated by flagging
+
+- **Vendors - B2C** — Flagged vendor information links to the vendor's profile for review and trust score impact
+
+- **Quality - B2C** — Flagged orders and their problem types feed into vendor quality assessments and grading
+
+- **Not Assigned / No Action** — Unresponsive order situations can be escalated to Flagged when vendor contact fails
+
+---
+
+**Important Notes**
+
+Any order under Orders - B2C can be flagged from its order detail panel regardless of its current status or section.
+
+The Critical counter tracks orders that have been flagged for more than 15 minutes without any admin response. A non-zero Critical count should be treated as an emergency.
+
+Flagging an order does not cancel it or remove it from the vendor's queue. The order remains active until it is either resolved in place or reassigned to a new vendor.
+
+All flags are permanently logged against the order and cannot be deleted. This creates a clear audit trail for every escalated issue.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517351633-3q17a3k68my-flag-order.flag order?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="837" alt="" />
+
+
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517379073-8yevt2h691y-flagorder.flagorder?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="821" alt="" />
+
+
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517411288-ynu7a6igbcj-flagged-order.flagged order?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="829" alt="" />
+
