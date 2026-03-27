@@ -1,0 +1,205 @@
+---
+title: Dashboard
+description: Understand and use the Coupon Dashboard in the Cashkr admin panel to track coupon performance, user engagement, and abandoned cart recovery.
+---
+
+## Overview
+
+Coupon Dashboard under Admin Panel → Marketing → Coupons provides a single view of how all coupons are performing across app and web for a selected date range.
+
+<Callout kind="info">
+
+Use this dashboard to monitor overall coupon health, track campaign impact, and understand how discounts influence orders, revenue, and abandoned cart recovery.
+
+</Callout>
+
+The header shows:
+
+- **Title** — `Coupon Dashboard`
+- **Date range selector** — For example `Feb 25, 2026 – Mar 27, 2026`
+- **Refresh** — Reloads all KPIs, charts, and tables for the selected period
+
+Use the date range and Refresh together whenever you run reviews, daily standups, or campaign post-mortems.
+
+## How to use
+
+<Steps>
+  <Step title="Choose the analysis period" icon="calendar">
+
+Set the date range in the top-right selector to match the campaign or review period you care about, such as week-on-week or month-on-month.
+
+  </Step>
+
+  <Step title="Refresh the dashboard" icon="refresh-ccw">
+
+Click **Refresh** after changing the date range so that all KPIs, charts, and tables recalculate using the new period.
+
+  </Step>
+
+  <Step title="Scan key metrics and breakdowns" icon="bar-chart">
+
+Review the top summary cards, period metrics row, and abandoned cart recovery panel to understand overall coupon usage, impact on revenue, and user engagement.
+
+  </Step>
+
+  <Step title="Drill into top coupons" icon="list">
+
+Use the **Top Coupons** table to identify the best performing codes, channels where they work, and whether any coupon is close to its usage limits or underperforming.
+
+  </Step>
+</Steps>
+
+## Filters
+
+The Coupon Dashboard uses a single global filter:
+
+- **Date range** — Controls which orders, redemptions, and users are counted in all period-based metrics, charts, and the Top Coupons table.
+
+After changing the date range:
+
+- Click **Refresh** to apply the new filter across the dashboard.
+- Confirm that KPI cards and graphs update to the new period before using numbers in reports.
+
+## Key metrics
+
+The top part of the dashboard is split into two sections: a summary metrics row and a period metrics row.
+
+### Summary metrics row
+
+These cards give an overall view of your coupon setup and long-term usage:
+
+- **Total Coupons** — Total number of coupons currently configured in the system.
+- **All-Time Usage** — Total number of coupon redemptions across all time.
+- **Avg Discount/Use** — Average discount amount per coupon redemption in INR.
+- **First-Customer Coupons** — Count of coupons restricted to first-time customers, shown with a usage progress bar and an `All coupons` reference.
+
+Use these metrics to understand how heavily you rely on coupons overall and how aggressively you discount.
+
+### Period metrics row
+
+These cards recalculate based on the selected date range:
+
+- **Usage (Period)** — Total coupon redemptions during the selected period, often with a percentage change vs the previous period.
+- **New Coupons** — Number of coupons created within the selected period.
+- **Unique Users** — Number of distinct customers who used at least one coupon in the period.
+- **Revenue** — Revenue from orders where a coupon was applied during the period.
+- **Completed Orders** — Count of orders completed with a coupon in the selected period.
+- **Total Discount** — Total discount amount given via coupons in INR during the period.
+- **Cart Tokens** — Number of cart tokens generated for abandoned cart recovery.
+- **Cart Redeemed** — Percentage of generated cart tokens that were actually redeemed.
+
+Compare **Usage (Period)**, **Revenue**, and **Total Discount** to judge whether coupon campaigns are efficient or too costly for the results they generate.
+
+### Abandoned Cart Recovery
+
+The **Abandoned Cart Recovery** panel tracks how well your coupon-based recovery flow is working:
+
+- **Recovery %** — Share of abandoned carts recovered using tokens and coupons.
+- **Total tokens** — Total cart tokens generated in the selected period.
+- **Redeemed** — Number of tokens successfully used by customers.
+- **Unused** — Number of tokens that expired or were never used.
+
+Use this panel to decide whether to adjust incentive levels, validity windows, or follow-up messaging for abandoned cart campaigns.
+
+## Charts and breakdowns
+
+The middle section of the dashboard visualizes coupon performance by status, platform, device, accessibility, discount range, and time.
+
+### Coupon Status
+
+A donut chart shows how all coupons are distributed by status, such as:
+
+- **Active**
+- **Expired**
+- **Upcoming**
+
+Watch the share of **Expired** vs **Active** coupons to avoid running out of valid offers during live campaigns.
+
+### Platform Breakdown
+
+This donut chart shows where coupons are being used:
+
+- **APP**
+- **WEB**
+- **BOTH**
+
+Use it to:
+
+- Check if app-only campaigns are driving redemptions.
+- Confirm that web banners and landing pages are actually leading to coupon usage.
+
+### Device Breakdown
+
+The Device Breakdown chart shows coupon usage split by device type:
+
+- Phone
+- Tablet
+- Laptop
+- Mac
+
+When there is no data for the selected period, the chart can show **No data**. Use this as a signal to:
+
+- Tune campaigns for device categories where you want more orders.
+- Verify whether device-specific coupons are actually being redeemed.
+
+### Accessibility
+
+This breakdown compares:
+
+- **FirstCustomer** — Coupons restricted to first-time users.
+- **ALL** — Coupons open to all customers.
+
+Check this chart when you:
+
+- Evaluate the balance between acquisition-focused offers vs retention or reactivation offers.
+- Decide whether to convert some first-time-only coupons into all-customer coupons.
+
+### Discount Distribution
+
+A bar chart shows how coupons are distributed across discount value ranges, for example:
+
+- `₹101–200`
+- `₹201–500`
+- Higher ranges as configured
+
+Use the shape of this distribution to:
+
+- Spot if most offers are clustered in a single low or high range.
+- Plan new coupon tiers for better experimentation (e.g., multiple discount levels per campaign).
+
+### Daily Usage Trend
+
+A line chart displays daily coupon redemptions within the selected date range.
+
+Typical uses:
+
+- Identify peak promotion days and weekends.
+- See how fast a new coupon starts getting traction after launch.
+- Check whether redemptions drop sharply after a campaign ends.
+
+Overlay this view with campaign calendars to understand which promotions truly moved numbers.
+
+## Top coupons table
+
+At the bottom of the dashboard, the **Top Coupons** table lists the most used coupons for the selected date range.
+
+Each row shows:
+
+- **Code** — Coupon code used by customers.
+- **Title** — Short name or description of the coupon.
+- **Discount** — Discount value or structure configured for the coupon.
+- **Platform** — Platform where the coupon is valid: App, Web, or Both.
+- **Period Uses** — Number of times the coupon was used within the selected date range.
+- **Total Uses** — All-time total usage of the coupon.
+- **Max Uses** — Maximum number of times each user can redeem this coupon.
+- **Status** — Current coupon status, such as Active or Inactive.
+
+Use this table to:
+
+- Identify your top-performing coupons by **Period Uses** and **Revenue**.
+- Spot coupons close to usage limits using **Max Uses** and **Total Uses**.
+- Find underperforming coupons that may need better promotion or updated discount values.
+
+## Screenshot
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774594892466-shkq0b2erem-coupon-dashboard.coupon dashboard?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="825" alt="Coupon Dashboard in the Cashkr admin panel showing KPI cards, coupon status breakdown, and top coupons table" />

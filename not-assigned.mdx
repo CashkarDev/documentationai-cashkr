@@ -1,123 +1,131 @@
 ---
 title: Not Assigned
----
-The Not Assigned page is part of the Orders - B2C section. It displays all orders that have been created by customers or converted from leads but have not yet been picked up or assigned to any vendor. Admins use this page to monitor unassigned orders and take action to ensure they are picked up before becoming further delayed.
-
+description: Use the Not Assigned view in Orders - B2C to track unassigned customer orders, understand statuses, apply filters, and take corrective admin actions.
 ---
 
-**What It Shows**
+## Overview
 
-Each row in the Not Assigned list represents one order that is currently waiting to be picked up by a vendor:
+The Not Assigned page in **Admin Panel → Orders - B2C → Not Assigned** shows all orders that customers created or that were converted from leads but are not yet picked up or assigned to any vendor. Admins use this view to monitor unassigned orders and act before they become further delayed.
 
-- **Created At** — Date and time the order was created
+<Callout kind="info">
+  An order qualifies as **Not Assigned** when it is visible in the vendor app for the relevant pincode and device type, but **no vendor has accepted, picked up, or been manually assigned to the order yet**.
+</Callout>
 
-- **Model** — Device model the customer wants to sell
+## What the Not Assigned page shows
 
-- **City** — City where the pickup needs to happen
+Each row in the Not Assigned list represents one order that is currently waiting to be picked up by a vendor. The key columns are:
 
-- **Type** — Device category — Mobile, Laptop, Tablet, or Mac
+- **Created At** — Date and time when the order was created.
+- **Model** — Device model the customer wants to sell.
+- **City** — City where the pickup needs to happen.
+- **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
+- **Status** — Current status of the order: **Generated** or **Pickup Delayed**.
 
-- **Status** — Current status of the order — Generated or Pickup Delayed
+### Order statuses on this page
 
----
+- **Generated** — The order has been created and is visible to vendors in the vendor app based on matching pincode and device type. No vendor has accepted or acted on it yet.
+- **Pickup Delayed** — The scheduled pickup date has passed and no vendor has picked up the order. For example, if a customer created an order on 20 March with a pickup date of 24 March and no vendor completed the pickup by 24 March, the order status automatically changes to Pickup Delayed after that date. The order remains available for vendors to pick up or for admin to manually assign.
 
-**Order Statuses on This Page**
+<Callout kind="alert">
+  Treat **Pickup Delayed** orders as priority. These customers have already passed their expected pickup date, so delays here directly impact service experience.
+</Callout>
 
-Generated The order has been created and is visible to vendors in the vendor app based on matching pincode and device type. No vendor has accepted or acted on it yet.
-
-Pickup Delayed The order's scheduled pickup date has passed and no vendor has picked it up yet. For example, if a customer created an order on 20 March with a pickup date of 24 March and no vendor completed the pickup by 24 March, the order status automatically changes to Pickup Delayed after that date. The order remains available for vendors to pick up or for admin to manually assign.
-
----
-
-**Why Orders Appear Here**
+## Why orders appear in Not Assigned
 
 An order appears in the Not Assigned page when:
 
-- No vendor in the customer's pincode has accepted the order yet
+- No vendor in the customer's pincode has accepted the order yet.
+- There are no live vendors covering the customer's pincode and device type.
+- Vendors in the area saw the order but skipped or ignored it.
+- The pickup date has passed without any vendor action, resulting in **Pickup Delayed** status.
 
-- There are no live vendors covering the customer's pincode and device type
+## Filters and controls
 
-- The order was created but vendors in the area skipped or ignored it
+Use the filters and controls at the top of the Not Assigned page to narrow down which orders you see:
 
-- The pickup date has passed without any vendor action — resulting in Pickup Delayed status
+- **Device Type Filter** — Filter orders by device category (Mobile, Laptop, Tablet, or Mac).
+- **City Filter** — Filter orders by the city where the pickup is required.
+- **From Date / To Date** — Filter orders by their creation date range.
+- **Show Orders with Test Accounts** — Toggle to include test account orders in the view. Turn this **off** during normal operations to see only real customer orders.
+- **Search** — Search for a specific order using order details, device name, or customer information.
+- **Apply Filters** — Apply the selected filter values to update the order list.
+- **Reset** — Clear all filters and return to the default view.
+- **Pagination Controls** — Navigate across pages of results using Previous and Next. The total result count appears below the table.
 
----
+<Callout kind="alert">
+  During day-to-day operations, keep **Show Orders with Test Accounts** turned off so you do not mix real customer orders with internal test data.
+</Callout>
 
-**Filters & Controls**
+## Admin actions on Not Assigned orders
 
-Device Type Filter Filter orders by device category — Mobile, Laptop, Tablet, or Mac.
+For orders sitting in Not Assigned, especially those with **Pickup Delayed** status, admins should:
 
-City Filter Filter orders by the city where the pickup is required.
+- **Manually assign vendors** — Open the order detail and assign it to a specific vendor.
+- **Nudge existing vendors** — Contact vendors in the matching pincode and prompt them to accept the order.
+- **Reassign to nearby areas** — Assign the order to a vendor from a nearby pincode if none are available in the exact pincode.
+- **Reschedule with customers** — Contact the customer to reschedule the pickup appointment when needed.
+- **Escalate operational gaps** — Escalate to the operations team for cities or pincodes with consistently unassigned orders.
 
-From Date and To Date Filter orders by their creation date range.
+<Callout kind="alert">
+  Always inform the customer when an order becomes **Pickup Delayed** or needs rescheduling. Proactive communication helps maintain trust even when pickups are late.
+</Callout>
 
-Show Orders with Test Accounts Check this box to include test account orders in the view. Uncheck during normal operations to see only real customer orders.
+## Order flow for Not Assigned orders
 
-Search Search for a specific order by order details, device name, or customer information.
+These steps show how an order moves through the Not Assigned state before it becomes In Progress.
 
-Reset and Apply Filters Click Apply Filters to apply the selected filters. Click Reset to clear all filters.
+<Steps>
+  <Step title="Customer places order" icon="download">
+    The customer creates an order on the website or app and selects a preferred pickup date and time.
+  </Step>
+  <Step title="Order becomes visible to vendors" icon="monitor">
+    The order appears in the vendor app for vendors whose pincode and device type settings match the order.
+  </Step>
+  <Step title="Order waits for vendor action" icon="users">
+    If no vendor accepts or picks up the order before the scheduled pickup date, it remains unassigned in the Not Assigned view.
+  </Step>
+  <Step title="Status changes to Pickup Delayed" icon="alert-triangle">
+    When the scheduled pickup date passes without completion, the order status automatically updates to **Pickup Delayed** but stays available for vendors or manual assignment.
+  </Step>
+  <Step title="Vendor pickup or manual assignment" icon="settings">
+    A vendor eventually accepts the order from the vendor app, or an admin manually assigns the order to a vendor from the admin panel.
+  </Step>
+  <Step title="Order moves to In Progress" icon="rocket">
+    As soon as a vendor is assigned (via app or admin action), the order exits Not Assigned and moves to the **In Progress** queue.
+  </Step>
+</Steps>
 
-Pagination Orders are displayed across pages. Use the Previous and Next buttons to navigate. The total result count is shown below the table.
+## Admin responsibilities
 
----
+Use the Not Assigned view as a daily operational queue:
 
-**Admin Actions**
+- Check the Not Assigned page every day to spot orders without a vendor.
+- Prioritise **Pickup Delayed** orders, as these have already crossed the customer's expected pickup date.
+- Manually assign delayed orders to available vendors to prevent further dissatisfaction.
+- Monitor the count badge on **Not Assigned** in the sidebar; a rising count suggests a coverage gap in a specific city or pincode.
+- Cross-check with the **Expansion → Area** page to confirm vendor coverage for affected pincodes.
 
-For orders sitting in Not Assigned — especially those with Pickup Delayed status — admins can:
+## Connections to other modules
 
-- Manually assign the order to a specific vendor directly from the order detail
+Understanding how Not Assigned links to other modules helps you resolve root causes, not just symptoms:
 
-- Contact the vendor in the matching pincode and prompt them to accept the order
+- **In Progress** — Once a vendor accepts or is manually assigned to the order, it moves from Not Assigned to **In Progress**.
+- **Vendors - B2C** — Vendor pincode and device type assignments control which orders each vendor can see and accept.
+- **Expansion → Area** — Pincode serviceability and vendor coverage here directly affect whether orders get assigned or stay in Not Assigned.
+- **Leads** — Orders converted from leads appear in Not Assigned if no vendor has been assigned yet.
+- **Quality - B2C** — Prolonged unassigned or Pickup Delayed orders can negatively impact overall service quality metrics.
 
-- Reassign the order to a vendor from a nearby pincode if no vendor is available in the exact pincode
+## Important notes
 
-- Contact the customer to reschedule the pickup appointment if needed
+An order with **Pickup Delayed** status is still active and visible in the vendor app. The delayed status is informational, not a cancellation, and vendors can pick it up at any time.
 
-- Escalate to the operations team for cities with consistently unassigned orders
+If an order remains unassigned for a long period, investigate whether there is a vendor coverage gap in that pincode and work with the Expansion team to onboard new vendors. Combine this with customer communication to keep expectations clear when delays occur.
 
----
+## Screenshot
 
-**Order Flow for Not Assigned Orders**
-
-Customer places order with a pickup date → Order becomes visible to vendors in matching pincode → If no vendor picks it up before the pickup date → Status changes to Pickup Delayed → Order remains in Not Assigned → Vendor picks it up from the vendor app OR admin manually assigns it to a vendor → Order moves to In Progress
-
----
-
-**Admin Responsibilities**
-
-- Check the Not Assigned page daily to identify orders that are sitting without a vendor
-
-- Prioritise Pickup Delayed orders as these have already crossed the customer's expected pickup date
-
-- Manually assign delayed orders to available vendors to avoid further customer dissatisfaction
-
-- Monitor the count badge on Not Assigned in the sidebar — a rising count indicates a coverage gap in a particular city or pincode
-
-- Cross-check with the Expansion — Area page to verify vendor coverage in the affected pincode
-
----
-
-**Connections to Other Modules**
-
-- **In Progress** — Once a vendor accepts or is manually assigned to the order, it moves to In Progress
-
-- **Vendors - B2C** — Vendor pincode and device type assignments determine which orders they can see and accept
-
-- **Expansion — Area** — Pincode serviceability and vendor coverage directly affects whether orders get assigned
-
-- **Leads** — Orders converted from leads appear here if no vendor has been assigned yet
-
-- **Quality - B2C** — Prolonged unassigned orders can impact overall service quality metrics
-
----
-
-**Important Notes**
-
-An order with Pickup Delayed status is still active and can be picked up by a vendor at any time. The delayed status is informational — it does not cancel the order or remove it from the vendor app.
-
-If an order remains unassigned for an extended period, the admin should investigate whether there is a vendor coverage gap in that pincode and take steps to onboard new vendors through the Expansion module.
-
-Always contact the customer when an order becomes Pickup Delayed to keep them informed and maintain trust.
-
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774513938149-fzi5acwlkys-not-assigned.not assigned?q=85&fm=auto&auto=compress%2Cformat" width="1568" height="675" alt="" />
-
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774513938149-fzi5acwlkys-not-assigned.not assigned?q=85&fm=auto&auto=compress%2Cformat"
+  width="1568"
+  height="675"
+  alt="Not Assigned view in the Admin Panel showing unassigned customer orders, filters, and status columns."
+/>

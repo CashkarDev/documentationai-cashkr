@@ -1,0 +1,155 @@
+---
+title: Fines
+description: Manage manual credit additions and deductions for B2C vendors and review a complete, auditable history of all credit operations.
+---
+
+## Overview
+
+The Fines page in Quality - B2C lets admins manually add or deduct credits from any vendor account and review a complete history of all credit operations.
+
+<Callout kind="info">
+  Use the Fines page to apply manual credit adjustments (rewards, penalties, corrections) and to access an auditable log of every credit operation across all vendors.
+</Callout>
+
+The page is typically used to:
+
+- Reward vendors for good performance
+- Penalise vendors for order failures, policy violations, or poor service
+- Correct any credit discrepancies when reconciling vendor balances
+
+## Summary cards
+
+Three summary cards at the top provide an overview of all credit operations across the platform for the selected period:
+
+- **Total Fines Processed** — Total number of credit operations (additions and deductions) performed in the selected period.
+- **Total Added Credits** — Total credits added across all vendors in the selected period.
+- **Total Deducted Credits** — Total credits deducted across all vendors in the selected period.
+
+Use these totals to monitor aggregate credit activity and support monthly finance reconciliation.
+
+## Select vendor and vendor information panel
+
+The top section of the page allows you to search for and select a specific vendor to perform a credit operation on.
+
+- **Search inputs** — Search by vendor name, email address, or vendor ID to find the correct vendor.
+- **Vendor name and status** — Shows the vendor name and whether the vendor is currently live or on hold.
+- **Email** — Registered email address of the vendor.
+- **Phone number** — Primary contact number for the vendor.
+- **Shop name** — Name of the vendor shop or business.
+- **City** — City where the vendor operates.
+- **Current Credits** — Vendor's live credit balance at the time of the operation.
+
+Always confirm that you have selected the correct vendor before applying any credit changes.
+
+## Perform a credit operation
+
+After you select a vendor, the Fines section appears where you configure and confirm the credit adjustment.
+
+<Steps>
+  <Step title="Choose Operation Type and Performed By" icon="settings">
+
+  - **Operation Type** — Select the type of credit operation to perform:
+    - **Deduct Credits** — Remove a specified number of credits from the vendor's balance. Use for fines, penalties, or corrections.
+    - **Add Credits** — Add a specified number of credits to the vendor's balance. Use for rewards, corrections, or compensations.
+  - **Performed By** — Select who is performing the operation. This defaults to Admin and is stored with the transaction for audit purposes.
+
+  </Step>
+
+  <Step title="Enter Credit Amount and Reason" icon="edit">
+
+  - **Credit Amount** — Enter the number of credits to add or deduct from the vendor's account. The field shows `0` by default; update it to the correct value before confirming.
+  - **Reason** — Enter a clear, detailed reason for the credit operation. This field is mandatory and is visible in the Fines History for anyone reviewing the transaction later.
+
+  </Step>
+
+  <Step title="Review and confirm the operation" icon="check-circle">
+
+  - **Verify vendor and Current Credits** — Confirm you are working on the correct vendor and review the Current Credits value.
+  - **Check all fields** — Confirm Operation Type, Performed By, Credit Amount, and Reason are accurate.
+  - **Confirm the operation** — Submit the form to apply the credit change. The vendor's credit balance updates immediately, and the transaction appears in the Fines History.
+
+  </Step>
+</Steps>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774588901553-7e0ft3p5xqw-fines-form.fines form?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="828" alt="Fines form for selecting Operation Type, Performed By, Credit Amount, and Reason before confirming a credit operation" />
+
+<Callout kind="alert">
+  Credit operations take effect immediately after you confirm them and cannot be auto-reversed. Always double-check the vendor, Operation Type, and Credit Amount before submitting.
+</Callout>
+
+<Callout kind="alert">
+  Verify the vendor's Current Credits before performing a deduction. If you deduct more credits than the vendor holds, the account may move into a negative balance.
+</Callout>
+
+## Fines history
+
+The Fines History section below the vendor selector shows a complete log of all credit operations across all vendors on the platform.
+
+Each row in the Fines History represents one credit operation, with the following columns:
+
+- **Date** — Date and time the operation was performed.
+- **Operation** — Credit amount added or deducted, shown with a green plus for additions and a red minus for deductions.
+- **Vendor** — Name and email of the vendor whose credits were affected.
+- **Reason** — The detailed reason entered by the admin at the time of the operation.
+- **Amount** — Credit value of the operation — positive for additions, negative for deductions.
+- **Previous Balance** — Vendor's credit balance before the operation.
+- **New Balance** — Vendor's credit balance after the operation.
+- **Performed By** — Name of the admin who performed the operation.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774588916064-v2gt0j95t2o-fines-page.fines page?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="839" alt="Fines page showing summary cards, vendor selection, and Fines History with filters and export option" />
+
+<Callout kind="alert">
+  Every credit operation is permanently recorded in Fines History and cannot be deleted, ensuring a complete and tamper-proof audit trail.
+</Callout>
+
+### Filters and controls in Fines history
+
+Use the available filters and controls above the table to focus on the records you need:
+
+- **Date Range Filter** — Select a date range to view credit operations within a specific period, such as for monthly reconciliation or audit reviews.
+- **Operation Type Filter** — Filter by type:
+  - **All Fines** — Shows all credit operations.
+  - **Deductions only** — Shows only credit deduction operations.
+  - **Additions only** — Shows only credit addition operations.
+- **Vendor Filter** — Filter the history by a specific vendor to review that vendor's complete credit history.
+- **Results Per Page** — Choose how many records to display per page (for example, 10 or more), depending on the volume of data.
+- **Export CSV** — Download the filtered Fines History as a CSV file for finance reporting, audits, or sharing with the management team.
+
+## Common use cases
+
+Use the Fines page for the following typical scenarios.
+
+**Credit deductions (Deduct Credits):**
+
+- Vendor failed an order without a valid reason.
+- Vendor did not show up for a confirmed pickup.
+- Vendor quoted a wrong price to the customer.
+- Vendor violated platform policies.
+- Correction for an over-credited vendor account.
+
+**Credit additions (Add Credits):**
+
+- Vendor performed exceptionally well on a difficult order.
+- Compensation for a system error that incorrectly deducted credits.
+- Incentive for achieving a performance milestone.
+- Manual correction for an under-credited vendor account.
+
+## Admin responsibilities and best practices
+
+Admins using the Fines page are responsible for keeping credit operations accurate, consistent, and auditable.
+
+- **Always document reasons clearly** — Enter a detailed and accurate Reason before confirming any credit operation. Vague or generic reasons create audit problems later.
+- **Double-check before confirming** — Review Operation Type, Credit Amount, vendor details, and Reason before you confirm. Because changes take effect immediately, you cannot rely on an automatic reversal.
+- **Verify application in Fines History** — After confirming, quickly check the new entry in Fines History to ensure the Amount, Previous Balance, and New Balance are correct.
+- **Monitor platform-level credit activity** — Review the Total Deducted Credits and Total Added Credits summary cards regularly to spot unusual patterns across the vendor network.
+- **Support finance processes** — Export the Fines History monthly for finance reconciliation and management reporting.
+- **Align with failure decisions** — Cross-reference deductions with the To Be Failed page to ensure fines are applied consistently for accepted failures.
+
+## Connections to other modules
+
+The Fines page interacts with several other admin modules:
+
+- **Quality - B2C — To Be Failed** — Accepted vendor failures typically result in credit deductions processed through the Fines page.
+- **Credits (Finance)** — Credit additions through Fines complement the credit purchase flow managed in the Finance Credits module.
+- **Vendors - B2C** — The credit balance shown in a vendor's profile reflects all additions and deductions processed on the Fines page.
+- **Reports** — Credit operation data feeds into finance and operations reports for overall platform credit flow analysis.

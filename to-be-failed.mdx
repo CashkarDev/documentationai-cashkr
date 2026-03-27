@@ -1,0 +1,174 @@
+---
+title: To Be Failed
+description: Review and action failed B2C orders in the admin panel, deciding whether to accept, reject, reverse to vendor, or make the device available.
+---
+
+## Overview
+
+The To Be Failed page in Quality - B2C shows all B2C orders that have been marked as failed by a vendor or by Cashkr and are now awaiting admin review.
+
+<Callout kind="info">
+  Use the To Be Failed queue to review every failed B2C order, validate the failure reason, and decide whether to accept the failure, reject it, reverse it back to the vendor, or make the device available in inventory.
+</Callout>
+
+## What the list shows
+
+Each row in the To Be Failed list represents one order that has been failed and is pending admin action.
+
+- **Created At** — Date and time the order was originally created.
+- **Model** — Device model the customer wanted to sell.
+- **City** — City where the pickup was scheduled.
+- **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
+- **Status** — Who failed the order: Failed By Vendor or Failed By Cashkr.
+
+## Failed order statuses
+
+- **Failed By Vendor** — The vendor marked the order as failed from their end. This can happen when the customer was not available, the device condition did not match expectations, the customer changed their mind, or any other reason from the vendor's side.
+- **Failed By Cashkr** — The order was failed by Cashkr's operations or admin team. This typically happens when an internal decision is made to close the order due to operational reasons.
+
+## Order detail panel
+
+Click any order row to open the detail panel on the right side. This panel shows:
+
+- **Device Name** — Model of the device in the failed order.
+- **Points** — Points value associated with the order.
+- **Token** — Unique order token for reference.
+- **Inspection Code** — Code generated during the device inspection process.
+- **Secondary Status** — The specific reason the order was failed as marked by the vendor, for example Not Interested, indicating the customer was no longer interested in selling.
+- **Failed On** — Exact date and time the order was marked as failed.
+
+The panel also shows the failure type tag at the top — Failed By Vendor or Failed By Cashkr — along with the device type tag.
+
+## Admin actions available
+
+From the order detail panel, admins can take one of four actions.
+
+### Fail Accept
+
+Confirm and accept the failure so the order is officially closed as a failed order.
+
+**When to use**
+
+Use Fail Accept when the failure reason is valid and verified, for example when the customer genuinely declined to sell or was not available.
+
+### Fail Reject
+
+Reject the failure and keep the order open for further action.
+
+**When to use**
+
+Use Fail Reject when the failure reason is invalid, suspicious, or the vendor failed the order incorrectly.
+
+### Reverse To Vendor
+
+Send the order back to the same vendor to continue working on it.
+
+**When to use**
+
+Use Reverse To Vendor when you believe the vendor can still complete the pickup after further follow-up.
+
+### Make Available
+
+Return the device to the available pool so another vendor can pick it up.
+
+**When to use**
+
+Use Make Available when the order should not be reversed to the same vendor but still has potential to be completed by a different vendor.
+
+## Filters and controls
+
+Use filters and controls above the table to narrow down which failed orders you review.
+
+- **Device Type Filter** — Filter orders by device category: Mobile, Laptop, Tablet, or Mac.
+- **City Filter** — Filter orders by the city where the pickup was scheduled.
+- **From Date / To Date** — Filter orders by their creation date range to review failures within a specific period.
+- **Show Orders with Test Accounts** — Include or exclude test account orders; uncheck during normal operations to view only real customer orders.
+- **Search** — Search for a specific failed order by order details, device name, or customer information.
+- **Apply Filters** — Apply the selected filters to update the list.
+- **Reset** — Clear all filters and return to the full list.
+- **Pagination controls** — Move between pages using page numbers or Previous and Next; the total result count appears below the table.
+
+## Decision flow for each failed order
+
+Use a consistent review flow for every order in To Be Failed.
+
+<Steps>
+  <Step title="Order enters To Be Failed" icon="alert-triangle">
+    An order is failed either by a vendor or by Cashkr, and it appears in the To Be Failed queue for admin review.
+  </Step>
+
+  <Step title="Open and review order details" icon="monitor">
+    Open the order detail panel and review the failure reason, Secondary Status, and other order information.
+  </Step>
+
+  <Step title="Verify with vendor or customer if needed" icon="users">
+    Contact the vendor or customer when needed to verify the stated reason and confirm whether the failure is justified.
+  </Step>
+
+  <Step title="Choose and apply the final action" icon="check-circle">
+    Based on the verified information, select one of the four actions to resolve the order from the queue.
+  </Step>
+</Steps>
+
+After completing these steps, choose the appropriate outcome:
+
+- If the failure is valid → **Fail Accept** → Order is closed as failed.
+- If the failure is not valid → **Fail Reject** → Order is returned for action.
+- If the vendor can still complete it → **Reverse To Vendor** → Order goes back to the vendor.
+- If another vendor should pick it up → **Make Available** → Order returns to the available pool for reassignment.
+
+## Admin responsibilities
+
+Admins are responsible for keeping the To Be Failed queue clear and decisions consistent.
+
+- Review the To Be Failed page daily and action all pending failed orders promptly.
+- Verify the Secondary Status and failure reason before accepting or rejecting.
+- Contact the customer for orders with Secondary Status Not Interested to confirm their decision before accepting the failure.
+- Contact the vendor to understand the failure reason for orders marked Failed By Vendor before taking action.
+- Use Reverse To Vendor only when there is a genuine reason to believe the vendor can still complete the pickup.
+- Use Make Available when the device and customer are still viable but the current vendor is not suitable.
+- Track patterns in failure reasons across vendors; repeated failures from the same vendor should be escalated to a quality review.
+
+## Connections to other modules
+
+The To Be Failed queue interacts with several other admin modules:
+
+- **Orders - B2C** — Failed orders originate from the active order pipeline across all Orders - B2C sections.
+- **Vendors - B2C** — Vendor trust score and performance are impacted by accepted failures, especially those marked Failed By Vendor.
+- **Fines** — Vendors with unjustified failures may be subject to fines managed in the Fines section under Quality - B2C.
+- **All Inventory** — If Make Available is selected and the order is eventually completed, the device enters All Inventory.
+- **Credits** — Credit adjustments linked to failed orders may be handled through the Returns and Credits modules.
+
+## Operationally critical notes
+
+<Callout kind="alert">
+  Every order in To Be Failed requires a deliberate admin decision. Do not leave orders sitting here without action, as they represent unresolved customer and vendor situations.
+</Callout>
+
+<Callout kind="alert">
+  Fail Accept is permanent; once you accept an order as failed, you cannot reopen it from this page.
+</Callout>
+
+<Callout kind="alert">
+  Always check the Secondary Status field carefully before accepting a failure. A status of Not Interested means the customer chose not to sell and is a valid failure; other statuses may require further investigation.
+</Callout>
+
+<Callout kind="alert">
+  Repeated Failed By Vendor entries from the same vendor strongly indicate performance issues and should be reviewed in the context of their overall trust score and quality history.
+</Callout>
+
+## Screenshots
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774586719907-mucrx8qom8-tobefailed.tobefailed?q=85&fm=auto&auto=compress%2Cformat"
+  width="1919"
+  height="829"
+  alt="To Be Failed page showing the list of failed B2C orders with filters and summary columns"
+/>
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774586755480-3htlo4v4ujk-actions-on-to-be-failed.actions on to be failed?q=85&fm=auto&auto=compress%2Cformat"
+  width="1919"
+  height="820"
+  alt="Order detail panel for a To Be Failed order showing failure details and admin actions"
+/>

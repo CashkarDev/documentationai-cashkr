@@ -1,123 +1,117 @@
 ---
 title: In Progress
----
-The In Progress page is part of the Orders - B2C section. It displays all orders that have been assigned to a vendor and are currently active in the field. Admins use this page to monitor order progress, track pickup statuses, and take action on delayed or stalled orders.
-
+description: Use the In Progress view in Orders - B2C to monitor active vendor-assigned orders, track pickup progress, apply filters, and act on delays.
 ---
 
-**Orders - B2C Sub-sections**
+## Overview
 
-The Orders - B2C module is divided into the following views accessible from the left sidebar:
+The In Progress page in the Orders - B2C section displays all orders that have been assigned to a vendor and are currently active in the field. Admins use this page to monitor order progress, track pickup statuses, and take action on delayed or stalled orders.
 
-- **All Orders** — Complete list of every B2C order regardless of status
+<Callout kind="info">
+  An order appears in In Progress only after an admin or system process assigns it to a vendor. Unassigned orders appear in the Not Assigned section and must be actioned separately.
+</Callout>
 
-- **In Progress** — Orders currently assigned to vendors and actively being processed
+## Orders - B2C sub-sections
 
-- **Not Assigned** — Orders that have been created but not yet assigned to any vendor
+The Orders - B2C module is divided into multiple views accessible from the left sidebar:
 
-- **No Action** — Orders where no activity has been recorded for a defined period
-
-- **Delayed** — Orders that have crossed their expected pickup date without completion
-
-- **Reserved** — Orders reserved for a specific vendor
-
-- **Flagged** — Orders that have been flagged for admin attention due to issues or disputes
-
----
-
-**What It Shows**
-
-The In Progress page lists all orders currently assigned to vendors. Each row in the table represents one active order:
-
-- **Created At** — Date and time the order was created
-
-- **Model** — Device model the customer wants to sell (e.g. Apple iPhone 14 Pro Max, Dell Inspiron Series)
-
-- **City** — City where the pickup is scheduled
-
-- **Type** — Device category — Mobile, Laptop, Tablet, or Mac
-
-- **Status** — Current status of the order in the pickup pipeline
-
----
-
-**Order Statuses**
-
-- **Assigned** — Order has been assigned to a vendor but pickup has not started yet
-
-- **Pickup** — Vendor is on the way or has initiated the pickup process
-
-- **Pickup Delayed** — Order has passed its scheduled pickup time without completion — requires admin attention
-
----
-
-**Filters & Controls**
-
-Device Type Filter Filter orders by device category — Mobile, Laptop, Tablet, or Mac.
-
-City Filter Filter orders by the city where the pickup is scheduled.
-
-From Date and To Date Filter orders by their creation date range to view orders placed within a specific period.
-
-All Pickup Dates Filter orders by their scheduled pickup date — view all pickup dates or filter to a specific date.
-
-Show Orders with Test Accounts Check this box to include orders created by test accounts. Uncheck to exclude test data from the view and see only real customer orders.
-
-Search Search for a specific order by order ID, device name, customer name, or other identifiers.
-
-Reset and Apply Filters Click Apply Filters to apply the selected filters. Click Reset to clear all filters and return to the full in-progress order list.
-
----
-
-**Order Status Pipeline**
-
-Order created by customer or converted from lead → Order assigned to vendor based on matching pincode and device type → Order appears in In Progress with status Assigned → Vendor initiates pickup → Status updates to Pickup → Vendor completes pickup and inspection → Order moves out of In Progress to the next stage
-
-If the vendor does not act within the scheduled pickup window → Status changes to Pickup Delayed → Order requires admin follow-up
-
----
-
-**Admin Responsibilities**
-
-- Monitor the In Progress list daily to track active order movement
-
-- Pay close attention to orders with Pickup Delayed status and follow up with the assigned vendor
-
-- Use the Delayed sub-section for a dedicated view of all overdue orders
-
-- Use the No Action sub-section to identify orders where vendors have gone silent
-
-- Filter by city to manage regional operations and assign local follow-ups to the relevant team
-
-- Use the Flagged section to review orders with disputes or quality concerns
-
-- Check the Not Assigned section to ensure no orders are left unassigned for long
-
----
-
-**Connections to Other Modules**
-
-- **Leads** — Converted leads from the New Leads page flow into Orders and appear here once assigned
-
-- **Vendors - B2C** — Orders are assigned to vendors based on their pincode coverage and device type assignments
-
-- **Quality - B2C** — Completed orders are reviewed for quality and linked back to vendor performance
-
-- **All Inventory** — Once a vendor completes a pickup and the order is marked done, the device enters All Inventory
-
-- **Expansion — Area** — Order assignment depends on the serviceable pincodes configured in the Area module
-
----
-
-**Important Notes**
-
-An order appears in In Progress only after it has been assigned to a vendor. Unassigned orders appear in the Not Assigned section and must be actioned separately.
-
-Pickup Delayed orders are a priority. If a vendor does not complete a pickup within the scheduled window, the admin team should intervene — reassign the order or contact the customer to reschedule.
+- **All Orders** — Complete list of every B2C order regardless of status.
+- **In Progress** — Orders currently assigned to vendors and actively being processed.
+- **Not Assigned** — Orders that have been created but not yet assigned to any vendor.
+- **No Action** — Orders where no activity has been recorded for a defined period.
+- **Delayed** — Orders that have crossed their expected pickup date without completion.
+- **Reserved** — Orders reserved for a specific vendor.
+- **Flagged** — Orders that have been flagged for admin attention due to issues or disputes.
 
 The count badges shown next to No Action and Delayed in the sidebar give a real-time indicator of how many orders need immediate attention without opening each sub-section.
 
-Enabling Show Orders with Test Accounts is useful during testing or QA but should be disabled during normal operations to avoid cluttering the view with dummy data.
+## What the In Progress table shows
 
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774505193114-qglb7c7komh-inprogress-page.inprogress page?q=85&fm=auto&auto=compress%2Cformat" width="1915" height="825" alt="" />
+The In Progress page lists all orders currently assigned to vendors. Each row in the table represents one active order and includes:
 
+- **Created At** — Date and time the order was created.
+- **Model** — Device model the customer wants to sell (for example, Apple iPhone 14 Pro Max, Dell Inspiron Series).
+- **City** — City where the pickup is scheduled.
+- **Type** — Device category such as Mobile, Laptop, Tablet, or Mac.
+- **Status** — Current status of the order in the pickup pipeline.
+
+## Order statuses in this view
+
+The Status column uses specific labels to show where an order sits in the pickup pipeline:
+
+- **Assigned** — Order has been assigned to a vendor but pickup has not started yet.
+- **Pickup** — Vendor is on the way or has initiated the pickup process.
+- **Pickup Delayed** — Order has passed its scheduled pickup time without completion and requires admin attention.
+
+<Callout kind="alert">
+  Pickup Delayed orders are a priority. If a vendor does not complete a pickup within the scheduled window, the admin team should intervene — reassign the order or contact the customer to reschedule.
+</Callout>
+
+## Filters and controls
+
+Use filters and controls at the top of the page to narrow the In Progress list to the orders you care about:
+
+- **Device Type Filter** — Filter orders by device category such as Mobile, Laptop, Tablet, or Mac.
+- **City Filter** — Filter orders by the city where the pickup is scheduled.
+- **From Date / To Date** — Filter orders by their creation date range to view orders placed within a specific period.
+- **All Pickup Dates** — Filter orders by their scheduled pickup date; view all pickup dates or narrow down to a specific date.
+- **Show Orders with Test Accounts** — Include or exclude orders created by test accounts to control whether test data appears in the list.
+- **Search** — Search for a specific order by order ID, device name, customer name, or other identifiers.
+- **Reset and Apply Filters** — Click **Apply Filters** to apply the selected filters. Click **Reset** to clear all filters and return to the full In Progress order list.
+
+<Callout kind="alert">
+  Enabling Show Orders with Test Accounts is useful during testing or QA but should be disabled during normal operations to avoid cluttering the view with dummy data.
+</Callout>
+
+## Order status pipeline
+
+The In Progress view tracks orders through a specific sequence from assignment to completion.
+
+<Steps>
+  <Step title="Order created" icon="download">
+    Order is created by a customer or converted from a lead in the Orders - B2C module.
+  </Step>
+  <Step title="Order assigned to vendor" icon="users">
+    The system assigns the order to a vendor based on matching pincode and device type assignments.
+  </Step>
+  <Step title="Order appears in In Progress" icon="monitor">
+    The order appears in the In Progress list with status Assigned so admins can start tracking it.
+  </Step>
+  <Step title="Vendor initiates pickup" icon="play-circle">
+    The vendor contacts the customer and initiates the pickup process; the status updates to Pickup.
+  </Step>
+  <Step title="Pickup completion or delay" icon="alert-triangle">
+    If the vendor completes pickup and inspection on time, the order moves out of In Progress to the next stage. If the vendor does not act within the scheduled pickup window, the status changes to Pickup Delayed and the order requires admin follow-up.
+  </Step>
+</Steps>
+
+## Admin responsibilities on this page
+
+Admins use the In Progress view to keep active orders moving toward completion:
+
+- Monitor the In Progress list daily to track active order movement.
+- Pay close attention to orders with Pickup Delayed status and follow up with the assigned vendor.
+- Use the Delayed sub-section for a dedicated view of all overdue orders.
+- Use the No Action sub-section to identify orders where vendors have gone silent.
+- Filter by city to manage regional operations and assign local follow-ups to the relevant team.
+- Use the Flagged section to review orders with disputes or quality concerns.
+- Check the Not Assigned section to ensure no orders are left unassigned for long.
+
+## Connections to other modules
+
+The In Progress view links to several other modules across the admin panel:
+
+- **Leads** — Converted leads from the New Leads page flow into Orders and appear here once assigned.
+- **Vendors - B2C** — Orders are assigned to vendors based on their pincode coverage and device type assignments.
+- **Quality - B2C** — Completed orders are reviewed for quality and linked back to vendor performance.
+- **All Inventory** — Once a vendor completes a pickup and the order is marked done, the device enters All Inventory.
+- **Expansion — Area** — Order assignment depends on the serviceable pincodes configured in the Area module.
+
+## Screenshot
+
+<Image
+  src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774505193114-qglb7c7komh-inprogress-page.inprogress page?q=85&fm=auto&auto=compress%2Cformat"
+  width="1915"
+  height="825"
+  alt="In Progress view in the Orders - B2C section showing active vendor-assigned orders, filters, and status column"
+/>

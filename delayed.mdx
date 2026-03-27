@@ -1,143 +1,145 @@
 ---
 title: Delayed
----
-The Delayed page is part of the Orders - B2C section. It displays all orders whose scheduled pickup date has passed but the order has not been completed yet. Unlike other order views that filter by a single status, the Delayed page shows orders across all statuses — what they all have in common is that their pickup date is in the past. Admins use this page to identify and urgently action all overdue pickups across the platform.
-
+description: Understand how the Delayed view in Orders - B2C works, what qualifies as delayed, and how admins should prioritize and resolve overdue pickups.
 ---
 
-**What It Shows**
+## Overview
 
-Each row in the Delayed list represents one order that has crossed its scheduled pickup date without being completed:
+The Delayed page in Orders - B2C shows all orders whose scheduled pickup date has passed but the order has not been completed yet. Admins use this page to identify and urgently action overdue pickups across the platform.
 
-- **Created At** — Date and time the order was originally created
+<Callout kind="info">
+  The Delayed page is date-driven. An order appears here when its pickup date is in the past and it is still incomplete, regardless of its current status.
+</Callout>
 
-- **Model** — Device model the customer wants to sell
+## What the Delayed page shows
 
-- **City** — City where the pickup was scheduled
+Each row in the Delayed list represents one order that has crossed its scheduled pickup date without being completed. Key columns include:
 
-- **Type** — Device category — Mobile, Laptop, Tablet, or Mac
+- **Created At** — Date and time the order was originally created.
+- **Model** — Device model the customer wants to sell.
+- **City** — City where the pickup was scheduled.
+- **Type** — Device category such as Mobile, Laptop, Tablet, or Mac.
+- **Status** — Current status of the order, which can be Pickup Delayed, Assigned, or Pickup depending on where the order currently sits in the pipeline.
 
-- **Status** — Current status of the order — can be Pickup Delayed, Assigned, or Pickup depending on where the order currently sits in the pipeline
+## Why orders appear in Delayed
 
----
+An order appears in the Delayed page purely based on its pickup date, not its status. If a customer placed an order on 22 March with a pickup date of 25 March and the order was not completed by 25 March, it appears in Delayed from that date onwards whether it is assigned, unassigned, or in progress.
 
-**Why Orders Appear Here**
+### Example scenarios
 
-An order appears in the Delayed page purely based on its pickup date — not its status. If a customer placed an order on 22 March with a pickup date of 25 March and the order was not completed by 25 March, it will appear in the Delayed page from that date onwards regardless of whether it is assigned, unassigned, or in progress.
+- Customer placed order on 22 March with pickup date 25 March, vendor was assigned but did not complete the pickup by 25 March — order appears in Delayed with status **Assigned**.
+- Customer placed order on 18 March with pickup date 20 March, no vendor accepted the order — order appears in Delayed with status **Pickup Delayed**.
+- Customer placed order on 19 March with pickup date 21 March, vendor started pickup but did not complete — order appears in Delayed with status **Pickup**.
 
-Examples of delayed order scenarios:
+## Order statuses visible on this page
 
-- Customer placed order on 22 March with pickup date 25 March — vendor was assigned but did not complete the pickup by 25 March — order appears in Delayed with status Assigned
+Since the Delayed page is date-driven, orders here can carry any of the following statuses:
 
-- Customer placed order on 18 March with pickup date 20 March — no vendor accepted the order — order appears in Delayed with status Pickup Delayed
+- **Pickup Delayed** — Pickup date has passed and no vendor has been assigned or acted on the order.
+- **Assigned** — Vendor has been assigned but has not started or completed the pickup despite the date passing.
+- **Pickup** — Vendor initiated the pickup process but did not complete it before the scheduled date passed.
 
-- Customer placed order on 19 March with pickup date 21 March — vendor started pickup but did not complete — order appears in Delayed with status Pickup
+## Filters and controls
 
----
+Use filters and controls at the top and bottom of the page to quickly locate and work through delayed orders:
 
-**Order Statuses Visible on This Page**
+- **Search** — Search for a specific order by order details, device name, or customer information.
+- **Filters button** — Open additional filter options to narrow down the delayed orders list.
+- **Pagination** — View delayed orders across multiple pages and use Previous, Next, or page numbers to navigate. The total result count and page count appear below the table.
 
-Since the Delayed page is date-driven and not status-driven, orders here can carry any of the following statuses:
-
-- **Pickup Delayed** — Pickup date has passed and no vendor has been assigned or acted on the order
-
-- **Assigned** — Vendor has been assigned but has not started or completed the pickup despite the date passing
-
-- **Pickup** — Vendor initiated the pickup process but did not complete it before the scheduled date passed
-
----
-
-**Filters & Controls**
-
-Search Search for a specific order by order details, device name, or customer information.
-
-Filters Button Click Filters to access additional filter options to narrow down the delayed orders list.
-
-Pagination Delayed orders are displayed across multiple pages. Use the page number buttons or Previous and Next to navigate. The total result count and page count are shown below the table.
-
----
-
-**Admin Actions**
+## Admin actions on delayed orders
 
 For every order on this page, immediate action is required:
 
-- Open the order detail to check the original pickup date and how many days overdue it is
+- Open the order detail to check the original pickup date and how many days overdue it is.
+- Check if a vendor is assigned; if not, manually assign to the nearest available vendor.
+- If a vendor is assigned but has not acted, call the vendor immediately and push them to complete the pickup.
+- If the vendor is unreachable or unable to complete, reassign the order to another available vendor in the same pincode.
+- Contact the customer to apologise for the delay, provide an updated pickup timeline, and offer reassurance.
+- If the customer no longer wants to proceed, cancel the order and update the status accordingly.
 
-- Check if a vendor is assigned — if not, manually assign to the nearest available vendor
+## How Delayed differs from Not Assigned and No Action
 
-- If a vendor is assigned but has not acted, call the vendor immediately and push them to complete the pickup
+All three sections highlight problem orders but from different angles. An order can appear in multiple sections at the same time.
 
-- If the vendor is unreachable or unable to complete, reassign the order to another available vendor in the same pincode
+### Not Assigned
 
-- Contact the customer to apologise for the delay, provide an updated pickup timeline, and offer reassurance
+- Focuses on whether a vendor is assigned.
+- Includes any order with no vendor assigned yet, whether or not the pickup date has passed.
+- Unassigned orders that are also past their pickup date appear in both **Not Assigned** and **Delayed**.
 
-- If the customer no longer wants to proceed, cancel the order and update the status accordingly
+### No Action
 
----
+- Focuses on vendor activity.
+- Includes orders assigned to a vendor where the vendor has not taken any action yet, whether or not the pickup date has passed.
+- Assigned but inactive orders that are also past their pickup date appear in both **No Action** and **Delayed**.
 
-**How Delayed Orders Differ from No Action and Not Assigned**
+### Delayed
 
-All three sections highlight problem orders but from different angles:
+- Focuses on the pickup date.
+- Includes any order that has crossed its scheduled pickup date while still incomplete.
+- Can include orders that are not assigned, assigned with no action, or assigned and in progress but not yet completed.
 
-- **Not Assigned** — Order has no vendor assigned yet. May or may not have crossed the pickup date.
+## Order flow for delayed orders
 
-- **No Action** — Order is assigned to a vendor but the vendor has not taken any action. May or may not have crossed the pickup date.
+<Steps>
+  <Step title="Customer places order" icon="download">
+    Customer places an order and selects a scheduled pickup date for the device.
+  </Step>
+  <Step title="Pickup date passes" icon="alert-triangle">
+    The scheduled pickup date passes without the order being completed.
+  </Step>
+  <Step title="Order appears in Delayed" icon="folder">
+    The order automatically appears in the Delayed view in Orders - B2C.
+  </Step>
+  <Step title="Admin reviews and takes action" icon="settings">
+    Admin opens the order, reviews the delay, and contacts or reassigns the vendor as needed.
+  </Step>
+  <Step title="Vendor completes pickup" icon="check-circle">
+    Vendor completes the delayed pickup and updates the order accordingly.
+  </Step>
+  <Step title="Order exits Delayed and completes" icon="rocket">
+    The order moves out of Delayed, proceeds through the completion flow, and once the device is received it enters All Inventory.
+  </Step>
+</Steps>
 
-- **Delayed** — Order has crossed its scheduled pickup date. Can include orders that are not assigned, assigned with no action, or assigned and in progress but not yet completed.
+## Admin responsibilities and escalation
 
-An order can appear in multiple sections simultaneously. For example an order that is both unassigned and past its pickup date will appear in both Not Assigned and Delayed.
+Admins are responsible for keeping the Delayed count under control and resolving overdue pickups quickly:
 
----
+- Review the Delayed page every day, ideally at the start of each shift.
+- Sort by oldest orders first to prioritise the most overdue pickups.
+- Contact customers for all orders delayed beyond 48 hours to maintain trust and manage expectations.
+- Reassign unresponsive vendor orders promptly rather than waiting for the vendor to act.
+- Track recurring delayed orders from the same city or pincode, which signals a vendor coverage or capacity problem.
+- Escalate orders delayed beyond 5 days to the operations manager for special handling.
+- Use the count badge on Delayed in the sidebar as a daily health metric; a rising count indicates systemic issues needing immediate attention.
 
-**Order Flow for Delayed Orders**
+## Connections to other modules
 
-Customer places order with pickup date → Pickup date passes without order completion → Order automatically appears in Delayed → Admin reviews and takes action → Admin contacts vendor or reassigns → Vendor completes pickup → Order moves out of Delayed and proceeds to completion flow → Device enters All Inventory
+Delayed orders interact with other admin modules:
 
----
+- **Not Assigned** — Unassigned orders that are also past their pickup date appear in both sections.
+- **No Action** — Assigned but inactive orders that are also past their pickup date appear in both sections.
+- **In Progress** — Once a vendor takes action on a delayed order it also appears in In Progress.
+- **Vendors - B2C** — Vendor trust score and performance are impacted by repeatedly delayed orders.
+- **Quality - B2C** — Delayed orders are factored into quality assessments and vendor grading.
+- **All Inventory** — Once a delayed order is completed and the device is received, it enters All Inventory.
 
-**Admin Responsibilities**
+## Operationally critical notes
 
-- Review the Delayed page every day — ideally at the start of each shift
+<Callout kind="alert">
+  Every delayed order represents a customer who has been waiting longer than expected. Speed of resolution directly impacts customer satisfaction and Cashkr's reputation.
+</Callout>
 
-- Sort by oldest orders first to prioritise the most overdue pickups
+<Callout kind="alert">
+  Do not close or cancel a delayed order without first attempting to contact the customer. Some customers may still want to proceed even after a significant delay.
+</Callout>
 
-- Contact customers for all orders delayed beyond 48 hours to maintain trust and manage expectations
+<Callout kind="alert">
+  The count badge next to Delayed in the sidebar is one of the most important operational metrics. A count of 99+ indicates a serious backlog that requires immediate team-wide attention.
+</Callout>
 
-- Reassign unresponsive vendor orders promptly rather than waiting for the vendor to act
+## Screenshot
 
-- Track recurring delayed orders from the same city or pincode — this signals a vendor coverage or capacity problem
-
-- Escalate orders delayed beyond 5 days to the operations manager for special handling
-
-- Use the count badge on Delayed in the sidebar as a daily health metric — a rising count indicates systemic issues needing immediate attention
-
----
-
-**Connections to Other Modules**
-
-- **Not Assigned** — Unassigned orders that are also past their pickup date appear in both sections
-
-- **No Action** — Assigned but inactive orders that are also past their pickup date appear in both sections
-
-- **In Progress** — Once a vendor takes action on a delayed order it moves to In Progress
-
-- **Vendors - B2C** — Vendor trust score and performance are impacted by repeatedly delayed orders
-
-- **Quality - B2C** — Delayed orders are factored into quality assessments and vendor grading
-
-- **All Inventory** — Once a delayed order is finally completed and the device is received, it enters All Inventory
-
----
-
-**Important Notes**
-
-The Delayed page is date-driven. An order does not need to have any specific status to appear here — it only needs to have a pickup date in the past and remain incomplete.
-
-Every delayed order represents a customer who has been waiting longer than expected. Speed of resolution directly impacts customer satisfaction and Cashkr's reputation.
-
-Do not close or cancel a delayed order without first attempting to contact the customer. Some customers may still want to proceed even after a significant delay.
-
-The count badge next to Delayed in the sidebar is one of the most important operational metrics on the platform. A count of 99+ indicates a serious backlog that requires immediate team-wide attention.
-
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774514139624-5dh3tg6u6xe-delayed.delayed?q=85&fm=auto&auto=compress%2Cformat" width="1568" height="676" alt="" />
-
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774514139624-5dh3tg6u6xe-delayed.delayed?q=85&fm=auto&auto=compress%2Cformat" width="1568" height="676" alt="Admin Panel Delayed page showing list of overdue pickup orders with filters, search, and status columns" />
