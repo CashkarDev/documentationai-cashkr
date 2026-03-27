@@ -1,0 +1,154 @@
+---
+title: Widgets
+description: Configure and manage embeddable review widgets that pull from the Reviews page, filter by rating and platform, and power website and app social proof.
+---
+
+## Overview
+
+The Widgets page in Marketing → Platform Reviews lets admins create and manage embeddable review widgets for the Cashkr website and app. Each widget pulls from Reviews and only shows reviews with visibility turned on.
+
+<Callout kind="info">
+
+Use this page to create new review widgets, choose display type, filter review sources (platform, rating, count), copy embed codes for implementation, and manage widget status (active or disabled).
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774608228238-gpkprm7oemd-widgets.widgets?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="830" alt="Widgets page in the Platform Reviews section showing a list of review widgets with name, type, filters, status, and actions." />
+
+## What the widgets list shows
+
+Each card in the list represents one configured review widget and includes:
+
+- **Name** — Internal label for the widget, such as homepage or checkout review section.
+- **Widget type** — Visual format used to display reviews, for example Strip Slider.
+- **Status** — Whether the widget is currently Active or Disabled.
+- **Description** — Short explanation of how and where the widget displays reviews.
+- **Filter tags** — Key filters applied: selected platforms (All, Google, Play Store, App Store), number of reviews, and minimum rating (such as 4+ stars).
+- **Actions** — Available controls for that widget: Edit, Embed, Disable, and Delete.
+
+Use the filters and status badges here to quickly see which widgets are live and how they are configured.
+
+## Widget types
+
+Widget types control how reviews appear to customers on the website or app.
+
+- **Strip Slider** — Shows reviews in a continuously scrolling horizontal strip. Use this for compact sections like the homepage or promotional banners where you want ongoing motion without taking much vertical space.
+- **Other formats** — Additional widget types may be available in the interface. Each provides a different layout suited to specific placements and designs, but all follow the same review filtering logic described on this page.
+
+## Create a new widget
+
+Use the Create Widget button to define how reviews should appear and which reviews to include.
+
+<Steps>
+
+  <Step title="Open the Widgets page" icon="layout-dashboard">
+
+  Go to Marketing → Platform Reviews → Widgets in the admin panel. Confirm the list shows any existing widgets and the **Create Widget** button in the top-right corner.
+
+  </Step>
+
+  <Step title="Click Create Widget" icon="plus">
+
+  Select **Create Widget** to open the widget configuration form. This creates a new, separate widget card once you save.
+
+  </Step>
+
+  <Step title="Name and type the widget" icon="sliders-horizontal">
+
+  Add a clear **Widget Name** that matches its placement (for example `Homepage strip reviews`) and choose the **Widget Type** such as Strip Slider or any other available format.
+
+  </Step>
+
+  <Step title="Set platform filters" icon="list-filter">
+
+  Choose the **Platform Filter** to control where reviews come from: **All Platforms**, **Google**, **Play Store**, or **App Store**. The widget will only display reviews from the selected sources.
+
+  </Step>
+
+  <Step title="Control rating and volume" icon="star">
+
+  Define the **Minimum Rating** (for example, 4+ stars) and the **Number of Reviews** to display. If fewer visible reviews match than the configured count, the widget shows all qualifying reviews that are available.
+
+  </Step>
+
+  <Step title="Set status and save" icon="save">
+
+  Choose whether the widget should be **Active** or **Disabled** at creation, then save. The new widget appears in the list, ready for your tech team to embed where required.
+
+  </Step>
+
+  <Step title="Copy the embed code" icon="code">
+
+  After creation, use the **Embed** action on the widget card to copy its unique embed code. Share this code with the website or app team so they can add the widget to the correct page or screen.
+
+  </Step>
+
+</Steps>
+
+## Widget actions
+
+Each widget card includes four actions that control how and where the widget appears.
+
+### Edit
+
+Update the widget configuration, including name, widget type, platform filter, minimum rating, number of reviews, or status. When you save, changes apply immediately everywhere that widget is already embedded, so coordinate with the tech team for live sections.
+
+### Embed
+
+Open the embed dialog and copy the generated code for that specific widget. Paste this code into the relevant part of the Cashkr website or app to display the widget. Each widget has its own unique embed code.
+
+### Disable
+
+Temporarily deactivate the widget without deleting it. A disabled widget stops showing on the website or app, but its configuration stays intact. Re-enable it anytime by editing the widget and switching the status back to Active.
+
+### Delete
+
+Remove the widget permanently from the system. Deleting also removes the widget from any page or app screen where its embed code was placed, and you cannot undo this action. To use a similar setup later, you must create a new widget and share its new embed code.
+
+## How widgets connect to reviews
+
+Widgets always pull from the Reviews page and show only reviews that match the widget filters.
+
+A review appears in a widget only when:
+
+- **Visibility is on** for that review in the Reviews page.
+- The review is from one of the **selected platforms** in the widget (All Platforms, Google, Play Store, or App Store).
+- The review meets or exceeds the widget's **minimum star rating** (such as 4+ stars).
+
+If you turn off visibility for a review in Reviews, the review automatically disappears from all widgets that were displaying it. You do not need to edit any widget configurations for this change to take effect.
+
+## Admin responsibilities
+
+Marketing and admin users use the Widgets page to control how social proof appears across Cashkr surfaces.
+
+Key responsibilities:
+
+- **Create widgets for each placement** where reviews should be visible, such as homepage, landing pages, product pages, or critical app flows.
+- **Use rating filters** so public-facing widgets show only high-quality reviews (typically 4 stars and above).
+- **Monitor active widgets** after hiding or adding reviews to confirm that website and app sections still look complete and up to date.
+- **Prefer disabling over deleting** when a widget only needs to be paused; disabling preserves configuration and avoids broken sections.
+- **Refine filters over time** using the Edit action, for example increasing the number of reviews shown after collecting more strong feedback.
+- **Track embed codes** so the tech team always knows which code corresponds to which widget placement.
+
+## Connections to other modules
+
+Widgets sit between the review collection workflow and the customer-facing web and app experiences.
+
+- **Platform Reviews → Reviews** — All widget content comes from this module. Visibility, platform, and rating on individual reviews directly control which reviews appear in each widget.
+- **Customer website** — Embed codes are inserted into relevant website pages (for example, homepage, landing pages, checkout) to show review sections and social proof.
+- **Customer app** — The same widgets can be embedded in app screens to present reviews during key parts of the customer journey.
+
+## Important notes
+
+<Callout kind="alert">
+
+If you **delete a widget**, its embed code stops working and the review section disappears from every website or app placement using that code. Coordinate with the tech team before deleting any active widget.
+
+</Callout>
+
+Additional behavior to keep in mind:
+
+- Widget changes made via **Edit** (filters, rating, count, type, status) apply immediately to all live placements using that widget.
+- Test significant changes in a staging environment whenever possible before adjusting widgets that power critical pages.
+- **Disable** widgets when you want to hide sections temporarily; re-enable them without needing to replace embed codes.
+- The widget's **Number of Reviews** setting is a maximum, not a guarantee. If fewer visible reviews match the filters, the widget shows all available qualifying reviews.

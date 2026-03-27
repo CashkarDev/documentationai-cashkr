@@ -1,0 +1,156 @@
+---
+title: Reviews
+description: Monitor customer sentiment across Google, Play Store, and App Store, filter and search reviews, and control which reviews appear in Cashkr widgets.
+---
+
+## Overview
+
+The Reviews page under Marketing → Platform Reviews aggregates all customer reviews from Google My Business, Google Play Store, and Apple App Store into a single view. Admins use this page to track sentiment by platform, search and filter reviews, and control which reviews appear in Cashkr public-facing widgets.
+
+<Callout kind="info">
+
+Use the Reviews page to monitor sentiment across platforms, quickly find specific feedback with search and filters, and curate which reviews are visible in widgets that appear on the Cashkr website and apps.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774607472897-9jlxhjfeiph-reviews-page.reviews page?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="830" alt="Admin Reviews page showing aggregated customer reviews with filters and visibility toggles" />
+
+## What the Reviews page shows
+
+The top-right corner of the page displays the total number of reviews collected across all connected platforms.
+
+Each row in the reviews list represents a single customer review and includes:
+
+- **Platform**: Source platform for the review — Google My Business, Google Play Store, or Apple App Store.
+- **Reviewer**: Reviewer name and profile picture from the original platform.
+- **Rating**: Star rating from 1 to 5.
+- **Review**: Review text from the customer. Long reviews are truncated with a `Show More` link to expand the full text.
+- **Images**: Indicator showing whether the review includes attached images.
+- **Date**: Date the review was posted on the original platform.
+- **Visibility**: Toggle that controls whether the review appears in Cashkr review widgets and other public-facing surfaces.
+
+## Filters and search
+
+Use search and filters together to quickly focus on a specific set of reviews.
+
+### Search
+
+- Search by reviewer name.
+- Search by keywords contained in the review text.
+
+### Platform filter
+
+Filter reviews by the platform where they were posted:
+
+- **All Platforms**: Show reviews from every connected source.
+- **Google**: Show only Google My Business reviews.
+- **Play Store**: Show only Google Play Store reviews.
+- **App Store**: Show only Apple App Store reviews.
+
+### Rating filter
+
+Focus on reviews by star rating:
+
+- **All Ratings**: Show reviews with any rating.
+- **Specific ratings**: Filter to 5, 4, 3, 2, or 1-star reviews.
+
+### Visibility filter
+
+Segment reviews based on their current visibility setting:
+
+- **All**: Show all reviews, regardless of visibility.
+- **Visible**: Show only reviews currently set to visible.
+- **Hidden**: Show only reviews that have been hidden.
+
+### Reset filters
+
+- Use **Reset** to clear all filters and search terms and return to the full reviews list.
+
+## Visibility toggle
+
+Each review row includes a Visibility toggle on the right side. This controls whether the review appears in Cashkr public-facing review widgets on the website or apps.
+
+- **Toggle on (green eye icon)**: The review is visible and can appear in review widgets.
+- **Toggle off**: The review is hidden and will not appear in any public-facing widgets.
+
+Use the visibility toggle to:
+
+- Hide reviews that are spam, off-topic, or not representative of real customer experience.
+- Feature high-quality positive reviews in public widgets.
+- Suppress reviews that contain sensitive, personal, or inappropriate content.
+
+## Core workflow: Curate review visibility
+
+Use this workflow regularly to keep public-facing reviews aligned with Cashkr brand and quality standards.
+
+<Steps>
+  <Step title="Filter and search for relevant reviews" icon="search">
+
+  - Open Marketing → Platform Reviews → Reviews.
+  - Use search, platform, rating, or visibility filters to narrow down to the reviews you want to curate.
+  - For example, filter by low ratings (1 and 2 stars) to triage issues or by 5 stars to identify reviews to feature.
+
+  </Step>
+
+  <Step title="Review content and context" icon="star">
+
+  - Scan the rating, review text, images indicator, and date for each review.
+  - Prioritize recent reviews and those that mention specific issues, locations, or team members.
+  - Note any reviews that are clearly spam, irrelevant, or contain sensitive information.
+
+  </Step>
+
+  <Step title="Adjust visibility for widgets" icon="eye">
+
+  - For reviews you want to show in widgets, turn the visibility toggle on (green eye).
+  - For spam, irrelevant, or sensitive reviews, turn the visibility toggle off to hide them from all widgets.
+  - Confirm the Widgets tab preview reflects the curated set of visible reviews.
+
+  </Step>
+
+  <Step title="Share and follow up where needed" icon="share-2">
+
+  - Share standout positive reviews internally with marketing and operations for recognition.
+  - For negative but constructive reviews, coordinate with the team to respond directly on Google My Business, Play Console, or App Store Connect.
+  - Revisit filtered views (such as low ratings) regularly to track whether issues are improving over time.
+
+  </Step>
+</Steps>
+
+## Widgets tab
+
+The Widgets tab under Platform Reviews lets admins configure and embed review display widgets on the Cashkr website and customer app. These widgets pull directly from the Reviews page.
+
+- Only reviews with the Visibility toggle turned **on** are eligible to appear in widgets.
+- Changes to visibility on the Reviews page update widget content automatically.
+- Use the combination of filters and toggles on the Reviews page to control which reviews feed into each widget configuration.
+
+## Admin responsibilities
+
+Admins and marketing owners use the Reviews page to keep Cashkr’s public reputation accurate and up to date:
+
+- Check the Reviews page regularly to monitor customer sentiment across all platforms.
+- Filter by low ratings (1 and 2 stars) to spot operational or service issues that need action.
+- Respond to negative reviews through the original platform (Google, Play Store, App Store) outside the admin panel.
+- Use the visibility toggle to curate which reviews appear in public-facing widgets and on the website/app.
+- Use the Platform filter to compare performance and sentiment by channel (Google vs Play Store vs App Store).
+- Share notable positive reviews with marketing and operations teams for recognition, training, and morale.
+
+## Connections to other modules
+
+Reviews in this section connect to several other parts of the Cashkr system:
+
+- **Platform Reviews → Widgets**: Reviews marked as visible feed directly into the review widgets configured in the Widgets tab.
+- **Customer app and website**: Visible reviews can appear on customer-facing pages to build trust and improve conversion.
+- **Quality - B2C**: Patterns in negative reviews can reveal vendor quality or service issues that the Quality module should address.
+- **Push Notifications**: Marketing can use push notifications to encourage satisfied customers to leave reviews on Google or the app stores, which will then appear here once collected.
+
+## Important notes
+
+Reviews shown on this page are synchronized automatically from connected external platforms. You manage visibility inside Cashkr, but ownership and control of the underlying review content stays with Google, Play Store, and App Store.
+
+<Callout kind="alert">
+
+You cannot edit or delete reviews from the admin panel. Hiding a review only removes it from Cashkr widgets and public displays; it does not remove or change the review on the original platform. Always publish responses or replies directly on Google My Business, Play Console, or App Store Connect — the admin panel is for monitoring and curation only.
+
+</Callout>

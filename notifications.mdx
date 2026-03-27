@@ -1,0 +1,228 @@
+---
+title: Notifications
+description: Compose, schedule, and track push notifications to Customer and Vendor apps, with templates, segments, analytics, history, and scheduling controls.
+---
+
+## Overview
+
+The Push Notifications page in the Marketing module lets admins compose, schedule, and send push notifications to the Customer App or Vendor App, then review performance, history, and upcoming sends.
+
+<Callout kind="info">
+
+Use this page to: draft notifications with a live preview, target the right app and audience, reuse templates, send immediately or schedule for later, and monitor analytics, history, and scheduled messages.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774605845240-tbvglmk9z4j-notifications.notifications?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="840" alt="Push Notifications page in the Admin Panel showing Compose form, live preview, and navigation tabs for campaigns, templates, segments, analytics, history, and scheduled notifications." />
+
+Notifications can send immediately or at a scheduled date and time, depending on how you configure the Compose form.
+
+## Page tabs
+
+The Push Notification Hub is divided into seven tabs:
+
+- **Compose** — Create and send a new push notification.
+- **Campaigns** — View and manage created notification campaigns.
+- **Templates** — Save and reuse notification templates for common messages.
+- **Segments** — Manage audience segments for targeted notifications.
+- **Analytics** — View performance metrics for sent notifications.
+- **History** — See a complete log of all notifications sent.
+- **Scheduled** — View and manage notifications queued for future delivery.
+
+The Compose tab is where you create new notifications; the other tabs help you organize, target, measure, and audit your messaging.
+
+## Compose tab
+
+The Compose tab is where you create and send push notifications. A live preview panel on the right shows how the notification will appear on the recipient device while you type.
+
+### Compose fields
+
+Use these fields to configure each notification:
+
+- **Title** (required, max 255 characters)  
+  Enter the notification title, which appears as the bold heading on the device. Keep it short and attention-grabbing.  
+  Example: `Special Offer — 20% Off`
+
+- **Body** (required)  
+  Enter the main message text that appears below the title. Keep it concise, clear, and focused on a single action.
+
+- **Image URL** (optional)  
+  Enter a direct image URL if you want to include an image in the notification. The image appears as part of the notification on supported devices.  
+  Example format: `https://media.cashkr.in/campaigns/festive-offer-banner.jpg`
+
+- **Target App** (required)  
+  Choose which app receives the notification:
+  - **Customer App** — Sends to Cashkr customers using the customer app.
+  - **Vendor App** — Sends to partner vendors using the vendor app.
+
+  Only one target app is allowed per notification. To contact both groups, create separate notifications for each app.
+
+- **Audience** (required)  
+  Choose who within the selected target app receives the notification:
+  - **All Users** — Sends to every user in the selected app.
+  - **Segments** — Select one or more pre-defined segments from the Segments tab (for example, city-based groups or inactive customers).
+
+- **Schedule for Later** (optional toggle)  
+  Turn on **Schedule for Later** to send the notification at a specific date and time. When enabled, a date and time picker appears so you can choose the exact delivery time.  
+  If this toggle is off, the notification sends immediately when you click **Send Now**.
+
+### Live preview panel
+
+The live preview on the right shows a real-time mock-up of the notification as you edit the fields. It displays:
+
+- The app icon and app name.
+- The notification title.
+- The notification body text.
+- The selected target app.
+- The selected audience group.
+
+Use this preview to confirm the wording, formatting, and targeting before you send or schedule.
+
+## Send vs schedule
+
+The final action button depends on whether scheduling is enabled.
+
+- **Send Now**  
+  When **Schedule for Later** is off, the primary button is **Send Now**. Clicking it sends the notification immediately to the selected audience in the selected app.
+
+- **Schedule**  
+  When **Schedule for Later** is on and a valid date and time are selected, the button label changes to **Schedule**. Clicking it queues the notification for delivery at the chosen date and time.
+
+<Callout kind="alert">
+
+Notifications sent with **Send Now** deliver immediately and cannot be recalled or cancelled. Choosing the wrong **Target App** or **Audience** is a common mistake and can send the message to the wrong users. Always double-check these fields before sending or scheduling.
+
+</Callout>
+
+Scheduled notifications remain editable and cancellable in the **Scheduled** tab until their delivery time passes. After they are sent, you cannot recall them.
+
+## Send a notification step by step
+
+Use this flow each time you send or schedule a new notification.
+
+<Steps>
+
+  <Step title="Open the Compose tab" icon="monitor">
+
+  Go to **Push Notifications → Notifications** in the Admin Panel and open the **Compose** tab.
+
+  </Step>
+
+  <Step title="Draft the content" icon="pencil">
+
+  Enter the notification **Title** and **Body**, and optionally add an **Image URL** if you want to include an image.
+
+  </Step>
+
+  <Step title="Choose app and audience" icon="users">
+
+  Select the **Target App** (Customer App or Vendor App), then choose the **Audience** (All Users or one or more segments).
+
+  </Step>
+
+  <Step title="Review the live preview" icon="eye">
+
+  Check the live preview panel to confirm the app, audience, title, body, and overall appearance are correct.
+
+  </Step>
+
+  <Step title="Decide timing: send now or schedule" icon="calendar-clock">
+
+  For immediate delivery, keep **Schedule for Later** off.  
+  To schedule, turn on **Schedule for Later**, then pick the delivery date and time.
+
+  </Step>
+
+  <Step title="Confirm and send or schedule" icon="send">
+
+  If sending immediately, click **Send Now**.  
+  If scheduling, click **Schedule** to queue the notification for the selected time.
+
+  </Step>
+
+</Steps>
+
+After sending or scheduling, you can track the notification in **Analytics**, **History**, and **Scheduled** (for future sends).
+
+## Other tabs in the notification hub
+
+### Campaigns tab
+
+The Campaigns tab lists all push notification campaigns that have been created. Use it to review campaign configurations, check their status, and manage ongoing or recurring notification initiatives.
+
+### Templates tab
+
+The Templates tab lets admins save frequently used notification formats as reusable templates. Load a template in the Compose tab to keep recurring campaigns (like weekly offers or festival alerts) consistent and faster to send.
+
+### Segments tab
+
+The Segments tab is where you define and manage audience groups. Examples include customers in a specific city, users who have not ordered in a set time period, or vendors in a particular zone. Use these segments from the Compose tab to send targeted notifications instead of always broadcasting to all users.
+
+### Analytics tab
+
+The Analytics tab shows performance data for sent notifications, such as delivery rates, open rates, click-through rates, and audience reach. Use it to identify which messages and campaigns generate engagement and refine future notifications.
+
+### History tab
+
+The History tab provides a complete log of all notifications sent through the platform, including title, body, target app, audience, send date and time, and delivery status. Use it for auditing past communications and confirming what has already been sent before planning new messages.
+
+### Scheduled tab
+
+The Scheduled tab shows all notifications queued for future delivery. From here, you can review, edit, or cancel scheduled notifications before they send. Once the scheduled time passes and the notification is delivered, it moves into History and can no longer be changed.
+
+## Admin responsibilities
+
+Admins using the Push Notifications page should:
+
+- **Preview before sending**  
+  Always review the live preview to catch typos, broken URLs, or incorrect targeting before sending or scheduling.
+
+- **Use templates for recurring messages**  
+  Save common campaign formats as templates and reuse them to keep tone and structure consistent and reduce manual work.
+
+- **Target segments thoughtfully**  
+  Prefer segments over All Users whenever possible to avoid notification fatigue and keep messages relevant.
+
+- **Check scheduled notifications**  
+  Review the **Scheduled** tab before creating new sends to avoid duplicate or conflicting notifications.
+
+- **Monitor performance**  
+  Use the **Analytics** tab after each campaign to understand delivery, open, and click performance, then adjust future campaigns accordingly.
+
+- **Audit with history**  
+  Reference the **History** tab to confirm that a notification was sent, see who it went to, and review past messaging during audits or investigations.
+
+## Connections to other modules
+
+Push notifications often work alongside other modules:
+
+- **Customer App**  
+  Notifications targeting customers appear directly in the Cashkr customer app to drive actions like placing orders, using coupons, or checking referrals.
+
+- **Vendor App**  
+  Vendor notifications reach partner vendors via the vendor app for updates like new leads, policy changes, or operational alerts.
+
+- **Coupons**  
+  Use push notifications to announce new coupons, limited-time offers, or expiring discounts.
+
+- **Referrals**  
+  Promote referral programs, share referral codes, or remind users about pending rewards through notifications.
+
+- **Campaigns and broader marketing**  
+  Include push notifications as one channel within larger marketing campaigns that may also use email, in-app banners, or other touchpoints.
+
+## Important best practices
+
+Keep these points in mind to avoid mistakes and maintain a good user experience:
+
+- **Send Now is final**  
+  Immediate sends cannot be recalled or cancelled. Always verify title, body, target app, and audience before clicking **Send Now**.
+
+- **Scheduled notifications are editable until send time**  
+  You can edit or cancel any future notification from the **Scheduled** tab up to its delivery time. After it sends, treat it as final.
+
+- **Avoid over-sending**  
+  Sending too many notifications can lead users to disable push notifications for the app. Focus on timely, relevant, and valuable messages.
+
+- **Double-check the target app**  
+  Always confirm whether the message is meant for customers or vendors. Sending a customer promotion to the Vendor App, or an internal vendor alert to the Customer App, creates confusion and reduces trust.
