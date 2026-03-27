@@ -1,0 +1,187 @@
+---
+title: Referral Programs
+description: Configure and manage referral programs in the Admin Panel Referrals section, including rewards, eligibility rules, and fraud protection.
+---
+
+## Overview
+
+The Programs page in Admin Panel → Referrals → Programs lets you define and manage referral programs that reward existing customers for bringing new users to the Cashkr platform. Each program controls the reward structure for both the referrer (existing customer who shares the code) and the referee (new customer who uses the code).
+
+<Callout kind="info">
+
+Use this page to create, edit, activate or deactivate, and delete referral programs, while controlling rewards, minimum order value, and eligibility conditions.
+
+</Callout>
+
+## What the programs list shows
+
+Each row in the programs list represents one referral program with the following fields:
+
+- **Program name** — Title of the referral program.
+- **Description** — Short description of the program shown to customers.
+- **Referee discount** — Discount given to the new customer who used the referral code at checkout.
+- **Referrer reward** — Reward given to the existing customer who shared the referral code.
+- **Referrer eligibility** — Condition that must be met for the referrer to receive their reward (for example, completed orders).
+- **Status** — Current status of the program: Active or Inactive.
+- **Created at** — Date the program was created.
+- **Actions** — Options to edit or manage the program.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774601017243-bak0760pxcf-program-page.program page?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="683" alt="Admin Panel Referrals Programs list showing referral programs and actions" />
+
+## How the referral code system works
+
+Each existing customer on the Cashkr platform has one permanent referral code. This code never changes, even if you create new referral programs, and the same referral code works across all active referral programs at the same time.
+
+For new customers:
+
+- A new customer can use a referral code only once in their lifetime.
+- After a referral code is used, that customer can never use any referral code again.
+- Deleting an account and trying to re-register does not reset referral eligibility, because the system enforces this rule using the customer's phone number.
+
+## Add a new referral program
+
+Click **Add New Program** (top right) to create a referral program and configure its details and rewards.
+
+<Steps>
+  <Step title="Enter basic details" icon="edit">
+
+  - Set the **Title** — Name of the referral program (for example, Share and Earn ₹100 for Every Referral).
+  - Add a **Description** — Short explanation of the program shown to customers.
+
+  </Step>
+
+  <Step title="Set minimum order value" icon="bar-chart">
+
+  - Define the **Minimum Order Value** that must be met for rewards to be issued.
+  - Apply this threshold to both the referrer and the referee.
+  - If the completed order value is below this threshold, the system does not give any rewards.
+
+  </Step>
+
+  <Step title="Configure referee rewards (new customer)" icon="users">
+
+  - Choose the **Discount type** — Percentage or flat amount.
+  - Set the **Discount value** — The discount percentage or flat INR amount.
+  - Optionally set a **Maximum discount** — Cap the maximum discount the referee can receive.
+
+  Example: If the discount is 10% with a maximum of ₹300 and the device generated price is ₹5,000:
+  
+  - 10% of ₹5,000 is ₹500.
+  - The maximum cap limits the discount to ₹300.
+  - The referee receives a final device value of ₹5,300 (₹5,000 plus ₹300 bonus).
+
+  </Step>
+
+  <Step title="Configure referrer rewards (existing customer)" icon="cashkr">
+
+  - Choose the **Discount type** — Percentage or flat amount.
+  - Set the **Discount value** — The reward percentage or flat INR amount.
+  - Optionally set a **Maximum discount** — Cap the maximum reward the referrer can receive.
+  - Remember that this reward is calculated after the referee completes their order.
+  - Referrer rewards require admin approval before adding them to the referrer's wallet.
+
+  Example: If the referrer reward is 10% with a maximum of ₹300 and the referee's final completed order value (after referee rewards are applied) is ₹5,500:
+  
+  - 10% of ₹5,500 is ₹550.
+  - The maximum cap limits the referrer reward to ₹300.
+
+  </Step>
+
+</Steps>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774601043291-c7pgads066l-program-form.program form?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="692" alt="Add New Program form with basic details, minimum order value, and rewards configuration" />
+
+## Referral flow lifecycle
+
+The referral flow describes how a customer referral moves from sharing a code to reward payout.
+
+<Steps>
+  <Step title="Referrer shares code or link" icon="share">
+
+  - The referrer shares their unique referral code or referral link with a friend.
+  - The same permanent referral code works across all active referral programs.
+
+  </Step>
+
+  <Step title="New customer registers with referral code" icon="users">
+
+  - The new customer registers on Cashkr using the referral code.
+  - The code links permanently to that customer and cannot be reused by them.
+  - The customer cannot use any other referral code again in the future.
+
+  </Step>
+
+  <Step title="Referee sells a device and receives discount" icon="phone">
+
+  - The referee uses the platform to sell a device.
+  - At checkout, the system automatically applies the referee discount to the device price.
+  - The transaction is auto-approved and paid by the vendor.
+
+  </Step>
+
+  <Step title="Referrer reward is generated and approved" icon="check-circle">
+
+  - After the referee completes their order, the system generates the referrer reward.
+  - The reward appears in the Referrals → Transactions page with a Pending status.
+  - An admin reviews and approves the reward.
+  - After approval, the system adds the reward to the referrer's wallet in the customer app.
+
+  </Step>
+
+  <Step title="Referrer withdraws wallet balance" icon="download">
+
+  - The referrer can request a withdrawal of their wallet balance through the customer app.
+  - The withdrawal request appears in the Referrals → Payouts page for admins to process.
+
+  </Step>
+
+</Steps>
+
+## Fraud and abuse prevention
+
+The referral system includes built-in safeguards to prevent misuse:
+
+- Each customer has one permanent referral code that cannot be changed or duplicated.
+- A new customer can use a referral code only once in their lifetime.
+- Deleting an account and re-registering does not reset referral eligibility because the system tracks usage by phone number.
+- The system blocks multiple referral code registrations from the same phone number.
+- The system issues rewards only after order completion and admin approval for referrers.
+
+## Search and filters
+
+Use search and filters to quickly find specific programs:
+
+- Search by **program name** or **description** to locate a referral program.
+- Filter by **status** — All Status, Active, or Inactive — to view programs in a specific state.
+
+## Admin capabilities
+
+On the Programs page, admins can:
+
+- **Add New Program** — Create a referral program with full reward configuration.
+- **Edit program** — Update any field of an existing program, including rewards, minimum order value, and status.
+- **Toggle status** — Activate or deactivate a program without deleting it.
+- **Delete program** — Permanently remove a program from the system.
+
+<Callout kind="alert">
+
+Keep only one referral program Active at a time to avoid reward conflicts. When multiple programs are active, the same referral code works for all of them, which can lead to overlapping or unexpected rewards.
+
+</Callout>
+
+## Connections to other modules
+
+Referral programs connect with several other modules in the Cashkr system:
+
+- **Referrals → Transactions** — Approved and pending referral rewards appear in the Transactions page.
+- **Referrals → Payouts** — Referrer withdrawal requests from their wallet appear in the Payouts page.
+- **Customer app** — Referee discounts apply automatically at checkout and referrer wallets are visible in the app.
+- **Customer website** — Referral code validation and discount application also happen on the web checkout page.
+
+## Important notes
+
+Keep these rules in mind when managing referral programs:
+
+- Referee rewards apply automatically at checkout and you cannot reverse them after the order is completed.
+- Referrer rewards remain Pending until an admin manually approves them.
+- Always review each referrer reward before approving to confirm that the order genuinely qualifies under the program's minimum order value.
