@@ -1,0 +1,127 @@
+---
+title: Transactions
+description: View and manage all referral reward transactions in the admin panel, including referee discounts, referrer rewards, statuses, and approval actions.
+---
+
+## Overview
+
+The Transactions page under Marketing → Referrals shows every referral reward transaction across all referral programs, including auto-approved referee discounts and referrer rewards that require admin approval before crediting the referrer's wallet.
+
+<Callout kind="info">
+
+Use the Transactions screen to review, approve, or cancel referrer rewards, track referee discounts, and reconcile referral performance with Programs and Payouts.
+
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774603939540-j3gq50ezbio-transactions.transactions?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="689" alt="Admin Panel Referrals Transactions screen showing summary cards, filters, and the referral transactions table" />
+
+## Summary cards
+
+Four summary cards at the top show the current state of all referral transactions:
+
+- **Pending** — Count and total INR value of referrer reward transactions awaiting admin approval.
+- **Approved** — Count and total value of transactions that have been approved and credited.
+- **Paid Out** — Count and total value of rewards that have been paid out through the wallet.
+- **Cancelled** — Count and total value of transactions that were cancelled.
+
+Use these to monitor overall referral volume and how much value is sitting in each state.
+
+## Transaction types
+
+Two transaction types appear in the list.
+
+### Referrer Reward
+
+A Referrer Reward is generated for the existing customer who shared their referral code once the referee completes an eligible order.
+
+- Requires admin approval before the reward is added to the referrer's wallet.
+- Appears in the list with a Referrer Reward tag and a Pending status until reviewed.
+- Can be approved or cancelled from the Actions menu.
+
+### Referee Discount
+
+A Referee Discount is a discount automatically applied to the new customer's device price at checkout when they use a referral code.
+
+- Auto-approved with no admin action required.
+- Appears in the list with a Referee Discount tag and an Approved status.
+- Cannot be reversed after the order is completed.
+
+## Table columns
+
+Each row in the Transactions table represents one referral reward transaction and includes:
+
+- **Type** — Referrer Reward or Referee Discount.
+- **Amount** — INR value of the reward or discount.
+- **Recipient** — Name and phone number of the customer receiving the reward or discount.
+- **Referral info** — The referral code used and the name of the referrer associated with that code.
+- **Status** — Current status: Pending, Approved, Paid Out, or Cancelled.
+- **Created at** — Date and time when the transaction was generated.
+- **Actions** — Options to approve or cancel a Pending Referrer Reward.
+
+When you approve a referrer reward, the status moves to Approved and the amount is credited to the referrer's wallet in the customer app.
+
+## Filters
+
+Use filters at the top of the table to focus on specific transactions:
+
+- **Status** — All Status, Pending, Approved, Paid Out, or Cancelled.
+- **Type** — All Types, Referrer Reward, or Referee Discount.
+- **Date range** — From and to dates to see transactions generated in a specific period, such as a campaign window.
+
+Combine filters to audit rewards for a particular program, timeframe, or review queue.
+
+## Approving and cancelling referrer rewards
+
+Referrer Reward transactions always start in Pending status and require admin review. You can either approve a valid reward or cancel one that is invalid or fraudulent.
+
+<Steps>
+  <Step title="Approve a referrer reward" icon="circle-check">
+
+  - Identify the **Pending** Referrer Reward transaction in the list using the Type and Status columns.
+  - Verify the **referral code**, **referrer name**, and **reward amount** shown in the Referral info and Amount columns.
+  - Confirm that the referee's order was genuinely completed and meets the **minimum order value** defined in the active referral program.
+  - Click **Actions** on that row and select **Approve**.
+  - Check that the transaction status updates to **Approved** and that the reward is now credited to the referrer's wallet in the customer app.
+
+  </Step>
+
+  <Step title="Cancel a referrer reward" icon="circle-x">
+
+  - Use the filters or table search to find a **Pending** Referrer Reward transaction that is invalid, fraudulent, or does not meet program conditions.
+  - Review the referral code and order details one more time to confirm that the reward should not be granted.
+  - Click **Actions** on that row and select **Cancel**.
+  - Confirm that the transaction status updates to **Cancelled** and that no reward is credited to the referrer's wallet.
+
+  </Step>
+</Steps>
+
+## Status flow
+
+The typical transaction lifecycle connects referee discounts, referrer rewards, and payouts:
+
+- The referee uses a referral code at checkout → a **Referee Discount** transaction is created automatically with **Approved** status. No admin action is needed.
+- Once the referee completes their order → a **Referrer Reward** transaction is created with **Pending** status.
+- An admin reviews and approves the reward → status updates to **Approved** and the amount is added to the referrer's wallet.
+- The referrer requests withdrawal from their wallet → after processing the payout, the transaction status moves to **Paid Out**.
+
+Use the Approved and Paid Out counts to track how much value has been credited and actually paid.
+
+## Connections to other modules
+
+- **Referrals → Programs** — Transactions are generated based on the reward and minimum order value rules configured in active referral programs.
+- **Referrals → Payouts** — Approved Referrer Reward amounts become available in the referrer's wallet and can be withdrawn through the Payouts page.
+- **Customer App** — The referrer's wallet balance in the app updates immediately after a reward is approved.
+
+## Admin responsibilities and important notes
+
+<Callout kind="alert">
+
+Referrer Reward approvals are irreversible. Once you approve a reward, the amount is immediately credited to the referrer's wallet and cannot be automatically reversed.
+
+</Callout>
+
+- Review Pending Referrer Reward transactions regularly and approve or cancel them promptly.
+- Cross-check the **minimum order value** and program conditions before approving any referrer reward.
+- Monitor Approved and Paid Out totals to understand referral program performance over time.
+- Cancel transactions that are fraudulent or that do not meet the program's eligibility rules.
+- Remember that Referee Discount transactions are always auto-approved and cannot be reversed once the order is completed.

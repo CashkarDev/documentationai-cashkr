@@ -1,0 +1,136 @@
+---
+title: Payouts
+description: Manage referral wallet withdrawal requests from customers, track manual UPI payouts, and keep an audit trail of completed disbursements.
+---
+
+## Overview
+
+The Payouts page in Marketing → Referrals shows all withdrawal requests from customers who want to move their referral wallet balance to their UPI account. Admins manually transfer these payouts and then update the status to keep records accurate.
+
+<Callout kind="info">
+
+Use this page to see pending withdrawal requests, process manual UPI transfers, record transaction references, and confirm that customer referral wallets stay in sync with actual payouts.
+
+</Callout>
+
+## Summary cards
+
+Summary cards at the top of the page show the overall state of withdrawal requests:
+
+- **Pending Payouts** — Number of withdrawal requests waiting to be processed and their total INR value.
+- **Completed Payouts** — Number of withdrawal requests that have been successfully paid out and their total INR value.
+- **Processing** — Number of withdrawal requests currently being processed and their total INR value.
+
+Use these cards to monitor workload, track how much has already been paid out, and spot any build-up of unprocessed requests.
+
+## Withdrawal requests table
+
+Each row in the table represents one withdrawal request submitted by a customer from their referral wallet in the customer app.
+
+Columns:
+
+- **Customer** — Name of the customer requesting the withdrawal.
+- **Amount** — INR amount requested for withdrawal.
+- **UPI ID** — Customer UPI ID where you should transfer the payout.
+- **Wallet Balance** — Customer wallet balance at the time of the request.
+- **Status** — Current state of the withdrawal: Pending, Processing, or Completed.
+- **Requested At** — Date and time when the withdrawal was created.
+- **Transaction Ref** — Reference number you enter after completing the manual transfer.
+- **Actions** — Options to update the request status and record payout details.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774604152886-iljdame7yw8-payouts.payouts?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="698" alt="Admin Payouts page listing referral wallet withdrawal requests with summary cards, table columns, and actions." />
+
+## Status filter
+
+The Status filter lets you narrow down withdrawal requests by state:
+
+- **All Status** — Show every withdrawal, regardless of status.
+- **Pending** — Show only new withdrawal requests waiting to be processed.
+- **Processing** — Show withdrawals that you have started working on but not yet completed.
+- **Completed** — Show withdrawals that have been fully paid out and recorded.
+
+Use this filter to focus on actionable items (Pending and Processing) or audit past payouts (Completed).
+
+## Payout status flow
+
+Every withdrawal request moves through a simple manual status flow:
+
+1. **Pending** — A new request created from the customer app appears in this state.
+2. **Processing** — Use this state while you initiate the manual UPI transfer or confirm payment.
+3. **Completed** — After you finish the transfer and enter the transaction reference, mark the payout as Completed.
+
+Completed payouts stay recorded for audit purposes and do not revert back to Pending or Processing.
+
+## Process a withdrawal
+
+When a customer requests a withdrawal from their referral wallet in the app, the request appears in the Payouts table with a Pending status.
+
+<Steps>
+  <Step title="Identify the pending request" icon="banknote">
+
+  Filter by **Pending** status and locate the withdrawal you want to process. Confirm the **Customer**, **Amount**, and **Wallet Balance** so the requested amount does not exceed the available wallet balance.
+
+  </Step>
+
+  <Step title="Verify UPI ID and amount" icon="shield">
+
+  Open the row details and carefully check the **UPI ID** and **Amount**. Make sure the UPI ID is valid and belongs to the correct customer before you initiate any payment.
+
+  </Step>
+
+  <Step title="Transfer the payout manually" icon="send">
+
+  Use your payment gateway or bank interface to transfer the exact **Amount** to the customer's **UPI ID**. Keep the payment confirmation or reference handy for the next step.
+
+  </Step>
+
+  <Step title="Record the transaction reference" icon="edit">
+
+  After the transfer succeeds, enter the payment reference into the **Transaction Ref** field for that withdrawal. This keeps a clear audit trail linking the payout to your banking or gateway records.
+
+  </Step>
+
+  <Step title="Mark the payout as completed" icon="circle-check">
+
+  Change the **Status** to **Completed** once you have confirmed the payment has gone through. The customer's referral wallet balance updates accordingly to reflect the withdrawal.
+
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+
+Payouts are fully manual. Always double-check the UPI ID and amount before transferring funds, because incorrect payments cannot be automatically reversed or corrected by the platform.
+
+</Callout>
+
+## Customer wallet context (customer app)
+
+The customer's referral wallet in the customer app shows three key values:
+
+- **Total Balance** — Current available referral balance that can be withdrawn.
+- **Total Earned** — Lifetime total of all referral rewards added to the wallet.
+- **Total Withdrawn** — Lifetime total of all amounts successfully paid out via Payouts.
+
+The wallet balance increases when you approve referrer rewards in the Transactions page and decreases when a payout moves to Completed. Customers see the updated balance in their app after each approval and payout.
+
+## Admin responsibilities
+
+Admins use the Payouts page to keep referral withdrawals accurate, timely, and auditable.
+
+Key responsibilities:
+
+- Check the Payouts page regularly and process **Pending** withdrawal requests without long delays.
+- Verify the **UPI ID** carefully before sending any payout, because wrong transfers are not auto-reversible.
+- Enter the correct **Transaction Ref** value after each successful transfer for audit and reconciliation.
+- Only mark a withdrawal as **Completed** after confirming the customer has actually received the payment.
+- Monitor the **Processing** count so no payout remains stuck in an intermediate state.
+
+A customer's wallet balance cannot go below zero. If a withdrawal request appears to exceed the current wallet balance, review and resolve it before processing.
+
+## Connections to other modules
+
+Payouts is tightly linked to other parts of the referral system:
+
+- **Referrals → Transactions** — Approved referrer reward transactions add funds to the customer's referral wallet, which later become available for withdrawal in Payouts.
+- **Referrals → Programs** — The referral program rules define how much a customer can earn and therefore how much can accumulate in the wallet for future withdrawals.
+- **Customer App** — Customers initiate withdrawal requests from the wallet section in the app, and see their updated wallet balance after you complete payouts.

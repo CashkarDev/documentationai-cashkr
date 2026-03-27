@@ -1,13 +1,14 @@
 ---
 title: Coupons
-description: Manage marketing coupons in the admin panel, including filters, field definitions, validity rules, and how coupons apply across web and app.
+description: >-
+  Manage marketing coupons in the admin panel, including filters, field
+  definitions, validity rules, and how coupons apply across web and app.
 ---
-
 ## Overview
 
 Coupons in the admin panel let marketing and operations teams configure targeted discounts that apply during checkout on the customer website and app.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   Use the Coupons screen to run time-bound, platform-specific, and user-segmented promotions while keeping usage and eligibility fully controlled.
 </Callout>
 
@@ -18,12 +19,19 @@ The Coupons screen displays a list of all configured coupons with key details so
 You see:
 
 - Coupon code
+
 - Discount or extra amount value
+
 - Platform (Web, App, or Both)
+
 - User type or accessibility (all customers or first-time customers)
+
 - Device compatibility (device types and brands)
+
 - Validity period (start date and expiry date)
+
 - Max device value and min device value
+
 - Coupon status (active or inactive)
 
 ## Use cases
@@ -31,8 +39,11 @@ You see:
 Marketing and operations teams use coupons to:
 
 - Run limited-time, seasonal, or platform-specific promotions
+
 - Offer discounts or bonuses to new or repeat users
+
 - Set campaign-specific or brand-aligned coupon offers
+
 - Control eligibility based on device value, device type, and brand
 
 ## Filters and search
@@ -40,63 +51,72 @@ Marketing and operations teams use coupons to:
 Use filters and search to quickly find the right coupon in a large list.
 
 - **Search**
+
   - Search by coupon code
 
 - **Filters**
+
   - **Platform:** Web, App, or Both
+
   - **Device type:** Laptop, Mac, Phone, Tablet
+
   - **Accessibility:** All customers or first-time customers
+
   - **Date range:** Start date and expiry date
 
 ## Screenshot
 
-<Image
-  src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750921683.png"
-  width="1600"
-  height="780"
-  alt="Coupons list in the Cashkr admin panel showing coupon codes, platforms, eligibility, and status"
-/>
+<Image src="https://cdn.eniston.com/bases/782a0d78-0c46-4953-a206-43d859847fed/attachments/mceclip0_1750921683.png" width="1600" height="780" alt="Coupons list in the Cashkr admin panel showing coupon codes, platforms, eligibility, and status" />
 
 ## Admin capabilities
 
 Use the admin actions to add, edit, or delete coupons as your campaigns change.
 
 <Steps>
-  <Step title="Add a new coupon" icon="plus">
+  <Step title="Add a new coupon" icon="plus" title-type="p">
     Add a new coupon when you want to launch a fresh offer or campaign.
 
     Configure these fields:
 
     - **Coupon code (unique):** The unique code users enter at checkout.
+
     - **Extra amount:** Flat rupee amount to be added to the final device price when the coupon applies.
+
     - **Title:** Short name for the coupon, such as "New User Bonus".
+
     - **Description:** Internal and external explanation of the offer.
+
     - **Platform:** Web, App, or Both, depending on where the coupon should be valid.
+
     - **Max device value and min device value:** Coupon is valid only for devices whose price falls between these values.
+
     - **Max usage limit:** Maximum number of times the coupon can be redeemed in total.
+
     - **All customer or max user limit:** Either set a maximum number of users who can use the coupon or select "All customers" so everyone is eligible.
+
     - **Accessibility:** Restrict to first-time users or allow all customers.
+
     - **Compatible devices:** Device types where the coupon applies, such as laptop, Mac, phone, or tablet.
+
     - **Brand:** Optional brand filter so the coupon applies only to selected brands for the chosen device types.
+
     - **Start and expiry dates:** Validity period for the coupon.
+
     - **Status:** Active or inactive toggle to control whether the coupon can be used.
 
     After saving, the new coupon appears in the list and becomes available based on its status and validity dates.
-
   </Step>
 
-  <Step title="Edit a coupon" icon="edit">
+  <Step title="Edit a coupon" icon="edit" title-type="p">
     Edit an existing coupon to change its offer details, eligibility, or validity.
 
     You can update any of the fields listed above, such as platform, device value range, max usage limit, accessibility, compatible devices, brand, dates, and status.
-
   </Step>
 
-  <Step title="Delete a coupon" icon="trash">
+  <Step title="Delete a coupon" icon="trash" title-type="p">
     Delete a coupon when it is no longer needed or was created by mistake.
 
     Deleting a coupon removes it from the system, and users can no longer apply that coupon code at checkout.
-
   </Step>
 </Steps>
 
@@ -105,16 +125,23 @@ Use the admin actions to add, edit, or delete coupons as your campaigns change.
 Use coupon types to control how tightly the offer is scoped.
 
 - **Normal coupon**
+
   - Device min value and max value are optional.
+
   - Brand selection is optional.
+
   - Coupon applies broadly across eligible devices as long as other rules (platform, accessibility, max usage, dates) are satisfied.
 
 - **Value-bound coupon**
+
   - Device min value and max value are set.
+
   - Coupon applies only to devices whose price falls within the configured value range.
 
 - **Brand-specific coupon**
+
   - Brand is selected for a specific device type, such as a particular phone brand.
+
   - Coupon applies only to the selected brand within the chosen device type.
 
 ## Coupon validity rules
@@ -122,45 +149,56 @@ Use coupon types to control how tightly the offer is scoped.
 Coupon validation happens automatically during checkout (website and app) based on the fields you configure.
 
 - **Platform**
+
   - If the coupon is added for the web platform, it is not valid in the app.
+
   - If the coupon is added for the app, it is not valid on the web.
+
   - If the coupon is added for both platforms, it is valid on both web and app.
 
 - **Device type**
+
   - If the coupon is added for a specific device type, such as laptop, it is valid only when selling that device type.
 
 - **All customer or max user**
+
   - If max user is set to a number, such as 3, the coupon is applicable only for the first 3 users.
+
   - If "All customers" is selected, all eligible customers can use the coupon until other limits are reached.
 
 - **Max usage**
+
   - If max usage is 2, each user can redeem the coupon two times.
 
 - **Max device value and min device value**
+
   - If max device value is 20000 and min device value is 5000, the coupon applies only to devices priced between 5000 and 20000.
 
 - **Accessibility**
+
   - If accessibility is set to first-time user, the coupon is valid only for new users who register on the platform for the first time.
+
   - A new user can use the coupon until the max usage limit is reached.
+
   - If accessibility is set to all users, the coupon is valid for both new and existing users, subject to other limits.
 
 - **Brand**
+
   - If you add a coupon for a phone device type and a specific brand, such as Redmi, the coupon is applicable only to that brand within the phone device type.
 
 - **Expiry date**
+
   - If the coupon expiry date is June 26, it is not valid from June 27 onwards.
 
 ## Where coupons are applied
 
 - Coupon visibility and application are enabled on both the customer website and app checkout pages.
+
 - The system validates each coupon based on platform, device type, brand, user eligibility, device value range, usage limits, and expiry date before applying the offer.
 
 ## How coupon system works? (embed code)
 
 The snippet below shows the raw embed code used in other documentation or dashboards to explain the coupon system flow.
 
-```html
-<video style='width: 794px; height: 397px;' controls='controls' width='794' height='397'>
-  <source src='https://eniston.io/article/692861dd-e9b8-4d92-8acd-a2d0c7fade57/&lt;div style=&quot;position: relative; padding-bottom: 64.94708994708994%; height: 0;&quot;&gt;&lt;iframe src=&quot;https:/vento.so/view/71b34e0a-a333-40e9-b44f-3692f07da892/embed&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen style=&quot;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;'>
-</video>
-```
+<Iframe uid="06294419-d7f4-4c5b-8e1e-6e601dbf198c" src="https://vento.so/view/71b34e0a-a333-40e9-b44f-3692f07da892/embed" title="Embedded content" height="400" allow-full-screen="true" frame-border="0" loading="lazy" display-mode="auto-resize" />
+
