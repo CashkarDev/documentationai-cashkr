@@ -1,0 +1,134 @@
+---
+title: Master Logs
+description: Review every admin action across the Cashkr admin panel with a permanent, read-only audit trail, including search, filters, and key use cases.
+---
+
+## Overview
+
+The Master Logs page in Settings records every action performed by any admin user across the entire admin panel. Every create, update, delete, and status change made anywhere in the system appears here with the admin's name and the exact timestamp.
+
+The total number of logs is displayed at the top of the page next to the title, giving a high-level view of overall activity since the platform went live.
+
+<Callout kind="info">
+  Master Logs provide a complete and permanent audit trail of all admin panel activity. Every action performed anywhere in the admin panel is automatically recorded; admins never need to create log entries manually.
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774779672709-qmk4dsx6nb7-master-lofs.master lofs?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="828" alt="Master Logs page showing admin actions with action type, entity, description, admin name, and timestamp" />
+
+## What the logs show
+
+Each row in the Master Logs table represents one action performed by an admin in the panel. Each entry includes:
+
+- **Action type tag** — The operation performed, shown as a coloured tag such as `CREATE` (green), `STATUS_CHANGE` (grey), `UPDATE`, `DELETE`, and others depending on the action taken.
+- **Entity tag** — The module or entity affected, shown as a plain tag next to the action type. Examples include `LEAD`, `INVENTORY`, `SALE`, `CUSTOMER`, `ORDER`, `VENDOR`, `COUPON`, and others.
+- **Description** — A short plain-text summary of what was done, such as `Create inventory`, `Status_change lead`, `Create sale`, or `Create customer`.
+- **Admin name** — The name of the admin user who performed the action.
+- **Date and time** — The exact date and time the action was performed, down to the minute.
+
+## Action types
+
+The action type tag on each log entry shows what kind of operation was performed:
+
+- **CREATE** — A new record was created, such as a new inventory entry, a new customer, or a new sale.
+- **STATUS_CHANGE** — The status of an existing record was changed, such as a lead status update or an order status change.
+- **UPDATE** — An existing record was edited or modified.
+- **DELETE** — A record was deleted from the system.
+- **Other action types** — Additional action types may appear depending on the operation performed in different modules.
+
+## Entity types
+
+The entity tag on each log entry shows which part of the system was affected. Common entities include:
+
+- **LEAD** — Actions in the Leads module such as status changes or conversions.
+- **INVENTORY** — Devices added to or removed from All Inventory.
+- **SALE** — Device sales created through Punch Sale in inventory.
+- **CUSTOMER** — Customer records created or modified.
+- **ORDER** — Order-related actions across Orders - B2C.
+- **VENDOR** — Vendor profile changes or status updates.
+- **COUPON** — Coupon creation, edits, or deletions.
+- **CREDIT** — Credit additions, deductions, or approvals.
+- **Other entities** — Additional entities appear based on the module where the action was taken.
+
+## Search
+
+Use the search bar at the top of the Master Logs page to quickly locate specific log entries by description, action type, entity, or admin name.
+
+<Steps>
+  <Step title="Enter keywords" icon="search">
+    Type a relevant keyword into the search bar, such as an entity name like inventory or vendor, an admin name, or a phrase from the description.
+  </Step>
+  <Step title="Click Search" icon="play-circle">
+    Click the Search control to apply the keyword filter and refresh the log list with matching entries.
+  </Step>
+  <Step title="Refine and review" icon="edit">
+    Adjust your keywords as needed to narrow results further, then review the matching log entries to find the exact action you are investigating.
+  </Step>
+</Steps>
+
+Examples of useful searches:
+
+- Search `inventory` to find all inventory-related actions.
+- Search `vendor` to see all vendor changes.
+- Search an admin name to see all actions performed by a specific team member.
+
+## Filters
+
+Use Filters to narrow the log list by action type, entity, date range, or admin user when you need a focused view for auditing or investigations.
+
+<Steps>
+  <Step title="Open Filters" icon="settings">
+    Click the Filters button at the top right of the Master Logs page to open the filter panel with additional options.
+  </Step>
+  <Step title="Set filter criteria" icon="edit">
+    Choose the relevant action types, entities, date range, and admin users that match the activity you want to review, combining criteria when needed.
+  </Step>
+  <Step title="Apply and iterate" icon="play-circle">
+    Apply the filters to update the log list, then adjust or clear criteria as required until you have the exact subset of logs for your audit.
+  </Step>
+</Steps>
+
+Use filters together with search for high-volume investigations, so you avoid scrolling through the full list.
+
+## Use cases
+
+The Master Logs page supports several operational needs:
+
+- **Audit and accountability** — Every action in the admin panel is tied to a specific admin user and timestamp. When you need to investigate a data change such as an incorrect price update, an unauthorised deletion, or an unexpected status change, Master Logs show who did what and when.
+- **Troubleshooting** — When something looks incorrect in the system, such as a device disappearing from inventory or an order changing status unexpectedly, use Master Logs to identify the action that caused the change and the admin responsible.
+- **Compliance and reporting** — For internal compliance, management audits, or operational reviews, Master Logs function as a tamper-proof record of all admin panel activity. The log count shown at the top helps gauge total platform activity over time.
+- **Team monitoring** — Operations managers can monitor the activity levels of individual admin users by reviewing their actions in Master Logs, identifying who is active in the panel and what changes they are making.
+
+## Admin responsibilities
+
+Admins and managers should use Master Logs as part of their standard workflows:
+
+- Use Master Logs to investigate any unexpected changes in other modules before escalating issues to the tech team.
+- Search by admin name when reviewing the work of a specific team member during performance reviews or incident investigations.
+- Combine date and action type filters when auditing activity in a specific operational period.
+- Treat Master Logs as the single source of truth for admin panel activity; no action performed in the panel is missing from this log.
+
+<Callout kind="alert">
+  Master Logs cannot be edited, deleted, or hidden. Treat them as the single source of truth for all admin panel activity when investigating issues, disputes, or compliance questions.
+</Callout>
+
+## Connections to other modules
+
+Every module in the admin panel generates entries in Master Logs whenever an admin takes an action. Key connections include:
+
+- **All Inventory** — Create, update, and delete actions on inventory entries are logged.
+- **Device Sales** — Every Punch Sale confirmation creates a `SALE` log entry.
+- **Orders - B2C** — Order status changes, assignments, and reassignments are logged.
+- **Vendors - B2C** — Vendor profile edits, status changes, and pincode updates are logged.
+- **Credits** — All credit approvals, rejections, additions, and deductions are logged.
+- **Leads** — Lead status changes and conversions to orders are logged.
+- **Coupons** — Coupon creation, edits, and deletions are logged.
+- **Users** — Customer block and unblock actions are logged.
+- **Fines** — All credit fine operations are logged with the admin who performed them.
+
+## Important notes
+
+Master Logs are read-only. No log entry can be edited, deleted, or hidden by any admin user, which ensures the audit trail remains complete and tamper-proof.
+
+Every action performed anywhere in the admin panel is automatically recorded; admins do not need to remember to log their own activity. The log count shown at the top of the page reflects the total number of actions recorded since the platform went live and only ever increases.
+
+For high-volume investigations, always combine the search bar with filters to narrow down relevant log entries quickly instead of scrolling through the full list.

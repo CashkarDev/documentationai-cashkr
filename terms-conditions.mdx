@@ -1,0 +1,164 @@
+---
+title: Terms & Conditions
+description: Manage versioned terms and conditions for Cashkr, track vendor acceptance, and maintain a clear compliance history from the Settings module.
+---
+
+## Overview
+
+The Terms & Conditions page in Settings lets admins create, manage, and publish versioned terms and conditions documents for the Cashkr platform. Multiple versions can exist at the same time with different statuses, while only one version is active for vendors at any point.
+
+Active versions are displayed to vendors in the vendor app and must be accepted before vendors can continue using the platform. Acceptance metrics on this page help you monitor compliance and follow up with vendors who have not yet agreed to the latest terms.
+
+<Callout kind="info">
+  Draft versions are not visible to vendors and never require acceptance. Only the version in Active status appears in the vendor app and blocks access until vendors accept.
+</Callout>
+
+## Summary cards
+
+Use the four summary cards at the top of the page to understand platform-wide terms and conditions activity at a glance:
+
+- **Total Users** — Total number of users the active terms and conditions apply to.
+- **Need Acceptance** — Number of users who have not yet accepted the current active version of the terms and conditions.
+- **Acceptance Rate** — Percentage of users who have accepted the active terms and conditions out of the total users it applies to.
+- **Active Versions** — Number of terms and conditions versions currently in Active or Published status.
+
+These metrics update as vendors accept the active version and help you identify when additional communication is needed to drive acceptance.
+
+## Versions table
+
+The main table lists every version of the terms and conditions document and its current state.
+
+Each row in the table represents a single version and includes:
+
+- **Version** — Version number of the document, such as `v1.0.0`.
+- **Title** — Name of the terms and conditions document, such as `Vendor Onboard Agreement`.
+- **Status** — Current status of the version: Draft, Active, or Published.
+- **Sections** — Number of sections the document contains.
+- **Acceptances** — Number of users who have accepted this version.
+- **Created** — Date and time when the version was created.
+- **Actions** — Quick actions available for that version: View, Duplicate, Edit, Export, and Delete.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774785954305-uwkzm8ujem-terms-and-conditions.terms and conditions?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="831" alt="Terms & Conditions versions table and summary cards in the Cashkr Admin Panel" />
+
+### Creating a new version
+
+Use the **Create New Version** button (top right) to add a new terms and conditions document while keeping existing versions intact.
+
+<Steps>
+  <Step title="Start a new Draft" icon="plus">
+    Click Create New Version in the top-right corner of the Terms & Conditions page to open the new version form, which is created in Draft status by default.
+  </Step>
+  <Step title="Enter document details" icon="edit">
+    Add a clear document title such as Vendor Onboard Agreement or Customer Terms of Service and confirm the version number, which is either assigned automatically or entered manually following your versioning convention.
+  </Step>
+  <Step title="Add sections and content" icon="file-text">
+    Define the sections that make up the terms document and fill in the full legal content so that vendors will see the complete agreement when it is activated.
+  </Step>
+  <Step title="Save as Draft" icon="save">
+    Keep the status set to Draft while the content is being written and reviewed; once you create the version, it appears in the table with Draft status and remains fully editable.
+  </Step>
+</Steps>
+
+Once created, the new Draft version appears as a row in the versions table with its own metrics and action icons.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774786050172-w8eegcdzq7i-create-new-version.create new version?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="831" alt="Create New Version form for Terms & Conditions in the Cashkr Admin Panel" />
+
+## Version statuses
+
+Status determines whether vendors can see a version and whether acceptance is required.
+
+- **Draft** — The version is being created or reviewed and is not yet available to users. Draft versions are not shown to vendors in the vendor app and do not require acceptance. Admins can edit a Draft version freely without affecting any active documents.
+- **Active** — The version has been activated and is currently live. Active versions are displayed in the vendor app and must be accepted before vendors can proceed with using the platform. The Acceptance Rate and Need Acceptance metrics in the summary cards always reflect the current Active version.
+- **Published** — The version has been published as a finalized record. Published versions represent historical or archived terms that were previously Active and serve as part of your legal and compliance history.
+
+## Search, filters, and sorting
+
+Use search, filters, and sorting controls above the table to quickly locate specific versions:
+
+- **Search** — Search for a version by title, version number, or content keywords, then click Search to apply the filter.
+- **Status filter** — Narrow the list by status: All Status, Draft, Active, or Published, so you can focus on versions that are being drafted, currently live, or archived.
+- **Sort options** — Sort the list by Created date, Acceptance count, Version number, or Title using the sort dropdown, and toggle ascending or descending order using the sort direction button.
+
+These tools make it easier to manage large histories of terms and conditions versions over time.
+
+## Common actions
+
+The **Actions** column in the table provides quick controls for each version:
+
+- **View** — Click the eye icon to open a read-only preview of the full terms and conditions document. All sections and content are displayed exactly as vendors will see them in the vendor app.
+- **Edit** — Click the pencil icon to change the document content, title, sections, or status. Only edit versions in Draft status. Avoid editing an Active version while vendors are in the process of accepting it to prevent inconsistencies.
+- **Duplicate** — Click the duplicate icon to create an exact copy of an existing version. The duplicate is created as a new Draft with the same content and sections, which is ideal when creating an updated version based on an existing document.
+- **Export** — Click the export icon to download the terms and conditions document as a file for offline sharing, legal review, or record-keeping.
+- **Delete** — Click the delete icon to permanently remove a version from the system. You can delete Draft versions freely, but be cautious with Published versions because they may be referenced in acceptance records.
+
+<Callout kind="alert">
+  Deleting a Published version that is associated with acceptance records can break your compliance history. Only delete Published versions when you are certain they are not needed for legal or audit purposes.
+</Callout>
+
+## How acceptance works
+
+When you set a terms and conditions version to Active, it becomes visible to vendors in the vendor app and is enforced as the current agreement. Vendors are prompted to read and accept the active terms before they can continue using the platform.
+
+After a vendor accepts the Active version, their acceptance is recorded and contributes to the **Acceptances** count for that version. The overall **Acceptance Rate** summary metric is calculated as the number of vendors who have accepted divided by the total number of vendors the terms apply to.
+
+Vendors who have not yet accepted the Active version are counted in the **Need Acceptance** card. These vendors should be followed up with via support outreach, campaigns, or push notifications to ensure they accept the latest terms and remain compliant.
+
+## Version management best practice
+
+Follow a consistent versioning workflow to preserve history and keep acceptance tracking clean when you update terms and conditions.
+
+<Steps>
+  <Step title="Duplicate the current Active version" icon="copy">
+    Start by duplicating the current Active version to create a new Draft that contains all existing content and sections, which ensures you build updates on the exact terms that vendors have already accepted.
+  </Step>
+  <Step title="Edit the Draft with required changes" icon="edit">
+    Open the duplicated Draft and update the legal text, sections, and any other details needed for the new version while keeping the original Active version unchanged.
+  </Step>
+  <Step title="Review and approve internally" icon="users">
+    Share the Draft with legal, compliance, and operations teams to review and approve the updated content so that all stakeholders sign off before activation.
+  </Step>
+  <Step title="Activate the new version" icon="check-circle">
+    Change the status of the reviewed Draft to Active; the previously Active version automatically moves to Published status and remains available as a historical record.
+  </Step>
+  <Step title="Allow vendors to accept the update" icon="alert-triangle">
+    Once the new version is Active, vendors are prompted to accept the updated terms the next time they open the vendor app, and their responses update the Acceptances and Acceptance Rate metrics.
+  </Step>
+</Steps>
+
+This workflow maintains a clear, auditable history of all terms and their acceptance records while minimizing disruption to vendors.
+
+## Admin responsibilities
+
+Admins who manage Terms & Conditions in Settings should consistently follow these operational practices:
+
+- Always create new versions as Drafts and review them thoroughly before changing the status to Active.
+- Monitor the **Need Acceptance** count regularly after activating a new version and follow up with vendors who have not accepted.
+- Use the **Duplicate** action when creating updated versions instead of editing an Active version directly, so the original remains an accurate record.
+- Export and archive all Published versions for legal and compliance record-keeping.
+- Keep version numbering consistent and meaningful; use semantic versioning such as `v1.0.0`, `v1.1.0`, or `v2.0.0` to indicate the scale of changes.
+- Never delete a Published version that has acceptance records associated with it, as those records may be required later for compliance checks or audits.
+
+## Connections to other modules
+
+Terms & Conditions interacts with several other modules and systems in the Cashkr ecosystem:
+
+- **Vendor App** — The Active terms and conditions version is displayed directly in the vendor app and must be accepted before vendors can use the platform.
+- **Admin Users** — Admin users create and manage terms versions, and their actions (create, edit, status changes) are tied to their accounts.
+- **Master Logs** — All create, edit, and status change actions on terms and conditions versions are logged in Master Logs with the admin's name and timestamp, providing an audit trail.
+- **Users — Cashkr** — Customer-facing terms and conditions acceptance is tracked against customer accounts in the Users module, mirroring the vendor acceptance tracking.
+
+## Important notes
+
+Use the following constraints and reminders to keep the terms and conditions process compliant and predictable:
+
+<Callout kind="alert">
+  Only one version should be Active at a time. Coordinate any activation of a new version with the operations team so vendors receive clear notice and enough time to review and accept the updated terms.
+</Callout>
+
+Draft versions are never visible to vendors. Always confirm that the content is complete and legally approved before setting a version to Active, since this immediately enforces the new terms in the vendor app.
+
+<Callout kind="alert">
+  Acceptance records are permanent. Once a vendor accepts a version, their acceptance is logged and cannot be removed, even if that version is later deactivated or replaced by a newer one.
+</Callout>
+
+The **Acceptance Rate** metric is a key compliance indicator. A low acceptance rate after activating a new version means many vendors have not yet agreed to the updated terms, and you should resolve this quickly through direct communication or push notifications.

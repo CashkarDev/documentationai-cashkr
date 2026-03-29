@@ -1,0 +1,129 @@
+---
+title: Admin Users
+description: Manage who can access the Cashkr admin panel, define their roles and permissions, and review activity across admin accounts.
+---
+
+## Overview
+
+The Admin Users page under Settings → Admin Users lists every administrative user who can access the Cashkr admin panel. Use it to add, edit, deactivate, or delete admin accounts, assign roles and permissions, and audit activity. The page is organised into four tabs: Admins, Hierarchy, Assignments, and Activity.
+
+## Tabs
+
+<Tabs>
+  <Tab title="Admins">
+    ### What you see
+
+    The Admins tab shows the complete list of all admin users registered in the system. Each row represents one admin account, with the following columns:
+
+    - **Admin** — Full name and email address of the admin user.
+    - **Role & Permissions** — The assigned role (Root Admin or Executive) and the number of permissions granted. Root Admins display a crown icon indicating full access. Executive admins display a settings icon indicating limited access based on assigned permissions.
+    - **Department** — The department or team the admin belongs to, if configured.
+    - **Status** — Current account status, either Active or Inactive.
+    - **Last Login** — The most recent date the admin logged into the panel. Displays Never if the admin has not logged in yet.
+    - **Actions** — Edit (pencil icon) or Delete (trash icon) controls for the admin account.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774780847579-uitch79zu5-admins.admins?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="830" alt="Admins tab showing the list of admin users, their roles, departments, status, last login, and actions." />
+
+    ### Admin roles
+
+    **Root Admin**  
+    The Root Admin has unrestricted access to every section and feature in the admin panel. Root Admin accounts are marked with a crown icon next to their role tag. Organisations typically maintain one or two Root Admin accounts for the most senior and trusted team members. Root Admins can create, edit, and delete all other admin accounts, including other Root Admins.
+
+    **Executive**  
+    Executive admins have limited access based on the specific permissions assigned to them. The number of permissions granted appears in brackets next to the Executive tag, such as 2 permissions or 1 permission. An Executive admin can only access the sections of the admin panel that their permissions allow; all other sections are restricted and either hidden from the sidebar or blocked when accessed.
+
+    ### Search and filters
+
+    Use search and filters to quickly locate specific admin accounts:
+
+    - **Search** — Search by admin name or email address using the search bar.
+    - **User Type Filter** — Filter the list using the All Users dropdown:
+      - **All Users** — Shows every admin regardless of role or status.
+      - **Root Admin** — Shows only Root Admin accounts.
+      - **Regular Admin** — Shows only Executive or regular admin accounts.
+      - **Active** — Shows only admins with Active status.
+      - **Inactive** — Shows only admins whose accounts have been deactivated.
+
+    ### Common actions
+
+    Use the actions in the Admins tab to create and manage admin accounts.
+
+    <Steps>
+      <Step title="Add admin" icon="plus">
+        Click Add Admin in the top right to create a new administrative user. Enter the full name, email address that will be used as the login credential, role (Root Admin or Executive), department, and status (Active or Inactive). If you set the role to Executive, select the specific sections of the admin panel the admin is allowed to access, then save so the admin receives their login credentials and can access the panel according to the configured permissions.
+      </Step>
+
+      <Step title="Edit admin" icon="edit">
+        Click the pencil icon in the Actions column to update an existing admin account. Adjust the name, email, role, department, permissions, or status as needed, then save to apply changes immediately. Use this flow to upgrade an Executive to Root Admin, add or remove permissions from an Executive admin, deactivate an account when a team member leaves, or update department assignments during team restructuring.
+      </Step>
+
+      <Step title="Delete admin" icon="trash">
+        Click the trash icon in the Actions column to permanently delete an admin account that is no longer needed. Confirm the deletion in the prompt that appears to finalise the removal. Once deleted, the admin account and its configuration are removed from the system and cannot be recovered, so for temporary situations prefer setting the Status to Inactive instead of deleting the account.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Hierarchy">
+    ### What it is for
+
+    The Hierarchy tab visualises how admin accounts are structured in terms of roles and reporting levels. Use it to understand the organisational hierarchy of the admin team, confirm that responsibilities align with seniority, and ensure roles are distributed correctly across the team.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774780881140-dak440j8ffj-hierarchy.hierarchy?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="824" alt="Hierarchy tab showing the organisational structure and reporting levels between admin users." />
+  </Tab>
+
+  <Tab title="Assignments">
+    ### What it is for
+
+    The Assignments tab shows which admins are responsible for specific tasks, modules, or operational areas within the panel. Use it to track workload distribution, ensure that all key modules have an accountable owner, and avoid gaps in operational coverage.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774780943350-0bgymsz2ucfp-assignment.assignment?q=85&fm=auto&auto=compress%2Cformat" width="1916" height="834" alt="Assignments tab listing admin users mapped to specific tasks, modules, and responsibilities." />
+  </Tab>
+
+  <Tab title="Activity">
+    ### What it is for
+
+    The Activity tab provides a user-level log of actions performed by individual admin accounts. Use it to monitor admin behaviour, review recent changes by specific team members, and audit activity that may impact operations or data. This view is more granular than the Master Logs page because you can focus on a single admin at a time.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774780969832-66b789ajqi9-admintab.admintab?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="826" alt="Activity tab showing a log of actions performed by the selected admin user." />
+  </Tab>
+</Tabs>
+
+## Permission-based access control
+
+The Admin Users page uses role-based access control to decide what each admin can see and do in the panel.
+
+- Root Admins can see and access every section and feature in the admin panel without restriction.
+- Executive admins only see and access the sections they have been explicitly granted permission for; all other sections remain hidden or blocked.
+- Permissions are configured when you create an admin or when you edit their account, and changes take effect immediately.
+- If an Executive admin attempts to access a restricted section, they are either blocked from the page or do not see it in the sidebar at all.
+
+<Callout kind="info">
+  Role-based access control protects sensitive financial data, vendor management areas, and operational tools by limiting access to authorised admin users only.
+</Callout>
+
+## Admin responsibilities
+
+- Review the admin list regularly so only active team members retain access; deactivate accounts for team members who have left.
+- Assign the minimum necessary permissions to each Executive admin to avoid over-permissioning and reduce risk.
+- Ensure every team member uses their own individual admin account and never shares credentials.
+- Monitor the Last Login column to identify accounts that have never been used or have been inactive for a long period.
+- Check the Activity tab periodically to confirm that admin accounts are being used appropriately.
+- Delete admin accounts only when you are certain they are no longer needed; prefer deactivation when access may be required again later.
+
+## Connections to other modules
+
+- **Master Logs** — All actions performed by admin users appear in Master Logs with the admin’s name; records from Admin Users are the source of those names.
+- **Authentication system** — Admin accounts connect directly to the panel’s authentication system, and login access depends on the status and credentials configured here.
+- **All modules** — The permissions you assign in Admin Users determine which modules and sections each Executive admin can access across the entire admin panel.
+
+## Important notes
+
+Root Admin accounts have full control over every feature, including the ability to delete other Root Admins. Assign this role only to trusted senior team members and keep the number of Root Admins low.
+
+Deactivating an admin account immediately revokes access to the panel while preserving the record for audit and history. The admin can no longer log in once you set their status to Inactive.
+
+If an admin’s email address changes, update it in their profile as soon as possible, because the email is tied to login authentication and an outdated email will prevent access.
+
+<Callout kind="alert">
+  Root Admins can delete any admin account, including other Root Admins, and deletions are permanent and cannot be undone. For temporary access changes, set the account to Inactive instead of deleting it so you preserve history and can restore access later if needed.
+</Callout>

@@ -1,0 +1,104 @@
+---
+title: Stolen Devices
+description: Review and act on devices flagged as stolen in the Fraud & Safety module, using risk scores, IMEI checks, and documents to prevent fraudulent sales.
+---
+
+## Overview
+
+The Stolen Devices page in the Fraud & Safety section maintains a registry of all devices flagged as stolen during the buyback process. Each record combines customer details, order information, device identifiers, and supporting documents to give admins a complete view of suspected or confirmed fraud.
+
+A risk score of 100 with a Stolen label represents a confirmed stolen device and the highest severity level on the platform. Admins use this registry to identify these cases quickly, halt related orders, and coordinate with vendors, operations, and law enforcement where required.
+
+All records in the Stolen Devices Registry are permanent and form an audit trail of every stolen-device case handled through the Cashkr platform.
+
+## What the registry shows
+
+The Stolen Devices page shows the total number of flagged records at the top right of the screen, so you can see overall volume at a glance.
+
+Each row in the Stolen Devices Registry represents one flagged device and includes:
+
+- **Date Flagged** — The date the device was flagged as stolen in the system.
+- **Customer** — Full name, email address, and phone number of the customer who attempted to sell the device.
+- **Order ID** — The order ID associated with the device, shown in truncated form with an option to copy the full ID.
+- **Device** — Device type and model name, such as Mobile — Apple iPhone 15 Pro.
+- **IMEI** — The unique IMEI number of the flagged device, used to identify it across networks and registries.
+- **Documents** — A View link to open any documents or evidence associated with the flagged record.
+- **Severity** — Risk score and status label; a score of 100 with a Stolen tag indicates a confirmed stolen device.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774778532798-ppck4gaiij-stolen-devices.stolen devices?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="830" alt="Stolen Devices registry in the Admin Panel showing flagged orders, IMEI details, and severity scores" />
+
+## Search
+
+Use the search bar to find a specific flagged record by customer name, email address, phone number, or order ID. This helps you quickly locate a case when investigating a complaint, responding to a query, or verifying whether a particular device has already been flagged.
+
+Searching updates the list of registry entries so you only see rows that match your query, making it easier to review related orders and customers together.
+
+## Severity and risk score
+
+Each flagged device in the registry is assigned a risk score that indicates how serious the case is.
+
+- **Score 100 — Stolen** — The device has been confirmed as stolen. This is the highest severity level and requires immediate action.
+- **Lower scores** — Lower risk scores indicate suspected fraud or devices flagged for review while the team gathers more information or awaits confirmation.
+
+The Severity column shows both the numeric score and the status label together, so admins can scan the table and immediately spot the most critical cases that need to be handled first.
+
+## Documents
+
+Every flagged record includes a Documents column with a View link. Select View to open the supporting documents associated with the case, such as police reports, IMEI check results, customer-provided proof, or any other evidence collected during the fraud flagging process.
+
+Always review the available documents before taking action on a flagged device. Documents provide the context you need to confirm a stolen status, understand how the case was raised, and decide the right operational and legal steps.
+
+## How devices get flagged
+
+Devices are added to the Stolen Devices Registry through the Fraud Registry process. This can be triggered when:
+
+- An IMEI check during device evaluation returns a stolen status from a national or carrier database.
+- A customer, vendor, or third party reports the device as stolen during an active order.
+- An admin manually flags a device after reviewing suspicious order activity.
+- Law enforcement or an original device owner contacts Cashkr to report a stolen device being sold on the platform.
+
+Once flagged, the device remains in the registry so future attempts to sell the same IMEI can be identified and blocked.
+
+## Admin actions
+
+Use the following standard flow for any device that appears in the Stolen Devices Registry.
+
+<Steps>
+  <Step title="Open the order and halt pickup or payment" icon="alert-triangle">
+    Use the Order ID in the registry row to open the associated order in the Orders - B2C module and immediately stop any ongoing pickup or payment actions linked to that order.
+  </Step>
+  <Step title="Review supporting documents" icon="file-text">
+    Select the View link in the Documents column to check police reports, IMEI check results, and any customer or vendor submissions that support the stolen-device flag.
+  </Step>
+  <Step title="Coordinate with the assigned vendor" icon="phone">
+    Contact the vendor assigned to the order and clearly instruct them not to proceed with the pickup or any further handling of the device until the case is resolved.
+  </Step>
+  <Step title="Block the customer account" icon="shield">
+    From the Users — Cashkr module, block the customer account linked to the stolen device flag to prevent the customer from placing new orders while the case is under investigation.
+  </Step>
+  <Step title="Hold any picked-up devices" icon="package">
+    If the device has already been picked up, work with the operations team to ensure the device is physically held, not processed further, and not added to the All Inventory module.
+  </Step>
+  <Step title="Support law enforcement when required" icon="info">
+    When needed, cooperate with law enforcement or the original device owner by sharing customer contact details and order information through the appropriate legal and compliance channels.
+  </Step>
+</Steps>
+
+## Connections to other modules
+
+- **Users — Cashkr** — Block customer accounts linked to stolen-device flags to stop further activity on the platform.
+- **Orders - B2C** — Cancel or put on hold orders associated with flagged devices using the Order ID.
+- **All Inventory** — Confirm that a flagged device has not been added to inventory, and ensure it never enters the saleable stock.
+- **Quality - B2C — Flagged Orders** — Escalate orders linked to stolen device reports through the Flagged Orders section for closer review and tracking.
+
+## Important notes
+
+A risk score of 100 with a Stolen label is the most serious fraud classification on the platform. Any order linked to a Score 100 device must be stopped immediately, regardless of its current stage in the pipeline.
+
+<Callout kind="alert">
+  For any device with a Stolen flag, do not release payment, process a sale, or transfer the device to another party while the case is under investigation. Treat all Score 100 records as urgent, and halt operational steps first before reviewing documents and next actions.
+</Callout>
+
+The IMEI number is the most reliable identifier for a stolen device. Always cross-reference the IMEI against external stolen device registries, such as CEIR in India, when verifying a flag before taking irreversible action like blocking accounts or coordinating with law enforcement.
+
+Never allow a device with a Stolen flag to be sold, resold, or moved into any sales channel or stock list. The registry is permanent and records cannot be deleted, ensuring a complete audit trail for every fraud case and investigation handled via the platform.

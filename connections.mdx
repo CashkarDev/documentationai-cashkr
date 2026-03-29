@@ -1,0 +1,131 @@
+---
+title: Connections
+description: Configure analytics and advertising integrations, run manual data syncs, and rebuild the device search index from the Admin Panel Connections page.
+---
+
+## Overview
+
+The Connections page in Settings lets admins configure third-party integrations, trigger manual Google Ads data syncs, and rebuild the device search index after catalog changes.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774779177649-qlfqbhs0coi-connections.connections?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="834" alt="Connections settings page showing Google Analytics 4, Google Ads, manual sync, and update search index sections" />
+
+The top section lists all available third-party service connections in cards, each showing the service name, description, current connection status, and a Configure Integration button. Below the integrations, you manage manual Google Ads data synchronization and the device search index.
+
+## Third-party integrations
+
+Use the Third-party integrations section to connect analytics and advertising platforms that rely on platform events and order data.
+
+### Google Analytics 4
+
+Google Analytics 4 (GA4) tracks real-time website and app traffic, device searches, order events, and other platform interactions. The connection status for GA4 shows as Not Connected by default until you configure it.
+
+When connected, GA4 automatically collects data on user behaviour, page visits, device searches, order events, and other platform interactions in real time. You do not need to trigger manual syncs for GA4.
+
+Use GA4 data to:
+
+- Monitor real-time traffic on the customer app and website
+- Track user behaviour during the device evaluation and checkout flow
+- Measure conversion rates from device search to order completion
+- Identify drop-off points in the customer journey
+- Analyse traffic sources and campaign performance
+
+<Steps>
+  <Step title="Configure Google Analytics 4" icon="settings">
+    Click Configure Integration on the GA4 card, enter the required tracking ID and API credentials, and save the configuration. The GA4 status changes from Not Connected once the credentials are valid and the connection is active, and GA4 begins tracking platform events automatically in real time.
+  </Step>
+</Steps>
+
+### Google Ads
+
+Google Ads integration connects platform conversion data to your Google Ads campaigns for CPA (Cost Per Acquisition), ROAS (Return on Ad Spend), and advertising spend analysis. The connection status for Google Ads shows as Not Connected by default until you configure it.
+
+When connected, conversion data from the platform is shared with Google Ads to optimise campaign bidding and performance reporting.
+
+Use Google Ads integration to:
+
+- Track CPA for each device buyback order driven by paid ads
+- Measure ROAS across active Google Ads campaigns
+- Optimise campaign budgets based on actual conversion data
+- Attribute revenue to specific ad campaigns and keywords
+- Improve bidding strategies using real order completion data
+
+<Steps>
+  <Step title="Configure Google Ads" icon="settings">
+    Click Configure Integration on the Google Ads card, enter the required account ID and API credentials, and save the configuration. The Google Ads status changes from Not Connected once the credentials are valid, and the platform starts sharing conversion data to support CPA, ROAS, and performance reporting.
+  </Step>
+</Steps>
+
+## Manual data synchronization
+
+The Manual Data Synchronization section lets admins manually trigger a data fetch from Google Ads when they need up-to-date performance metrics in the admin panel.
+
+<Callout kind="info">
+  Google Analytics 4 tracks data in real time and does not require manual synchronization. Manual sync applies to Google Ads data only.
+</Callout>
+
+Use Sync Data Now when you need the latest Google Ads data without waiting for the next automatic sync:
+
+- Reviewing ad performance immediately after a campaign change
+- Verifying that conversion data is being received correctly after setting up the integration
+- Reconciling admin panel ad data with the Google Ads dashboard
+
+<Steps>
+  <Step title="Run Sync Data Now" icon="play-circle">
+    Go to the Manual Data Synchronization section and click Sync Data Now. The system immediately fetches the latest Google Ads performance data so the admin panel reflects current campaign and conversion metrics.
+  </Step>
+</Steps>
+
+## Update search index
+
+The Update Search Index section lets admins rebuild the device search index after any change to the device catalog. This includes adding, updating, or removing phone, tablet, laptop, or Mac models.
+
+Clicking Update Search Index triggers a full rebuild of the search index, re-syncing all device types into the search table. The rebuild typically completes within 1 to 3 seconds.
+
+Use Update Search Index when:
+
+- After adding new device models in the Devices section
+- After editing existing model names or specifications
+- After deleting models that should no longer appear in search results
+- After bulk importing device data via Excel
+- When customers or vendors report that newly added devices are not appearing in search
+
+<Steps>
+  <Step title="Run Update Search Index" icon="refresh-ccw">
+    Go to the Update Search Index section and click Update Search Index. The system rebuilds the device search index in approximately 1 to 3 seconds so that all device catalog changes are reflected in customer search results on the app and website.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+  Always run Update Search Index after any device catalog change. If you skip this step, newly added or updated models may not appear in search results for customers, even when they have been added correctly in the Devices section.
+</Callout>
+
+## Admin responsibilities
+
+Admins are responsible for keeping integrations and search indexing healthy so data and search work as expected:
+
+- Configure Google Analytics 4 and Google Ads integrations as early as possible to ensure complete data collection from day one.
+- Use Sync Data Now after any significant Google Ads campaign changes so the admin panel reflects the latest performance data.
+- Always click Update Search Index after making any changes to the device catalog so search results stay in sync with the Devices section.
+- Verify integration connection status regularly; a Not Connected status means no data is being collected or shared with the respective service.
+- Reconfigure integrations immediately if credentials expire or the connection is lost.
+
+## Connections to other modules
+
+Changes in other Admin Panel modules often require follow-up actions in Connections:
+
+- **Devices** — After adding, editing, or deleting phone, tablet, laptop, or Mac models in Devices, run Update Search Index so the changes become searchable on the platform.
+- **Coupons** — GA4 tracks coupon usage events during checkout; GA4 must be connected for accurate coupon performance data in GA4 reports.
+- **Orders - B2C** — Order completion events tracked by GA4 are used as conversions in Google Ads for CPA and ROAS calculations.
+- **Expansion — Area** — GA4 unserviced pincode data from the Unserviced tab may appear in GA4 reports as failed serviceability checks.
+
+## Important notes
+
+Both Google Analytics 4 and Google Ads must be configured with valid credentials before they start collecting or sharing data. A Not Connected status means zero data is flowing to or from the service.
+
+<Callout kind="alert">
+  Treat a Not Connected status on GA4 or Google Ads as a critical issue. While it remains Not Connected, no analytics or conversion data is collected or shared for that service, which directly impacts reporting and optimisation.
+</Callout>
+
+GA4 operates continuously in real time and does not need manual intervention after initial setup. Google Ads data may have a sync delay, and the Sync Data Now button lets you force an immediate update when needed.
+
+Always run Update Search Index after any device catalog change. If you skip it, customers searching for newly added models on the app or website will see no results, even when the model has been added correctly in the Devices section. The index rebuild takes only 1 to 3 seconds and should be treated as a mandatory final step after every catalog update.

@@ -970,6 +970,15 @@
                 ]
               },
               {
+                "group": "Fraud & Safety",
+                "pages": [
+                  {
+                    "title": "Stolen Devices",
+                    "path": "stolen-devices"
+                  }
+                ]
+              },
+              {
                 "group": "Settings",
                 "pages": [
                   {

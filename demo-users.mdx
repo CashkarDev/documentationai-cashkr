@@ -1,0 +1,88 @@
+---
+title: Demo Users
+description: Manage demo user accounts in Settings to test customer flows with fixed OTP logins without affecting real customer data.
+---
+
+## Overview
+
+The Demo Users page in Settings lists all demo customer accounts used for testing and simulation. Demo users are stored separately from real customers so admin and QA teams can test the customer app and website without affecting production data.
+
+<Callout kind="info">
+  Demo users use a fixed OTP for login instead of receiving an SMS. The platform always accepts the configured OTP for that demo account, and no real SMS is sent for these logins.
+</Callout>
+
+Using demo users, teams can verify end-to-end flows, debug issues, and validate changes in a safe, controlled environment.
+
+## What the page shows
+
+Each row in the Demo Users table represents one demo customer account:
+
+- **FirstName** — First name of the demo user.
+- **LastName** — Last name of the demo user.
+- **OTP** — Fixed OTP assigned to the demo account. Use this predefined code to log in to the customer app or website during testing without requiring a real OTP from the phone number.
+- **Phone** — Phone number associated with the demo account.
+- **Actions** — Edit or Delete the demo user account.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774782735754-7hpawjssnwv-demo-users.demo users?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="839" alt="Demo Users list view in the Admin Panel Settings section" />
+
+## Common actions
+
+Use the Actions column or toolbar on the Demo Users page to create, edit, or delete demo accounts.
+
+<Steps>
+  <Step title="Add a new demo user" icon="plus">
+    Click Add User in the top-right corner, then enter the first name, last name, phone number, and a fixed OTP that will always be accepted for this account; after you save, the new demo user appears in the list immediately and can be used to log in to the customer app or website for testing.
+  </Step>
+  <Step title="Edit an existing demo user" icon="edit">
+    Click Edit in the Actions column for any row to update the demo user's name, phone number, or fixed OTP; use this to change the test phone number, rotate or adjust the OTP for security or testing scenarios, or correct name details so the account is easy for the team to recognize.
+  </Step>
+  <Step title="Delete a demo user" icon="trash">
+    Click Delete in the Actions column for any row to permanently remove that demo account, which immediately disappears from the list and can no longer be used to log in to the app or website, with no additional confirmation step.
+  </Step>
+</Steps>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774782765148-mx2cgjck4xi-add-demo-user.add demo user?q=85&fm=auto&auto=compress%2Cformat" width="1915" height="826" alt="Add Demo User form showing fields for name, phone number, and fixed OTP" />
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774782792516-lyb1rz1cfh-update-demo-user.update demo user?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="834" alt="Edit Demo User modal showing editable name, phone, and OTP fields" />
+
+## How demo users work
+
+Demo users bypass the standard OTP authentication flow used by real customers. Instead of sending a one-time password over SMS, the system validates logins against the fixed OTP configured for that demo account.
+
+When logging in to the customer app or website with a demo phone number, the tester enters the predefined OTP and gains access without triggering any SMS.
+
+This setup allows the team to:
+
+- Test the full customer journey without needing a real SIM card or waiting for SMS delivery.
+- Simulate order placements, device evaluations, coupon usage, and referral flows in a controlled way.
+- Run QA checks on the app and website without creating noise in real customer data.
+
+Demo user activity may appear in other modules, such as Orders - B2C and All Orders, depending on the test scenarios. Use the **Show Orders with Test Accounts** checkbox in order views to include or exclude demo account activity from operational views.
+
+## Admin responsibilities
+
+Admins manage demo users to keep testing reliable and data clean:
+
+- Keep the demo user list organised by removing accounts that are no longer needed to avoid confusion.
+- Use clearly identifiable names for demo accounts so team members can easily distinguish them from real users.
+- Set unique fixed OTPs for each demo account to prevent accidental cross-login during parallel testing by multiple team members.
+- Never use a real customer's phone number as a demo account; always use test numbers or dedicated dummy numbers.
+- Review the demo user list regularly and clean up outdated accounts created for one-time tests.
+
+## Connections to other modules
+
+Demo users interact with several other modules in the Admin Panel and across the platform:
+
+- **Users — Cashkr** — Demo users are stored separately from real customers and do not appear in the main Users — Cashkr list unless specifically included.
+- **Orders - B2C** — Orders placed using demo accounts appear in order views; use the **Show Orders with Test Accounts** filter to include or exclude them.
+- **Coupons** — Coupon redemptions by demo accounts help verify coupon validity and discount logic without affecting real usage counts.
+- **Referrals** — Demo accounts can be used to test the referral code and reward flow end to end.
+- **Customer App and Website** — Demo accounts log in using the fixed OTP configured in Settings; the platform does not trigger any real SMS for these logins.
+
+## Important notes
+
+<Callout kind="alert">
+  Treat demo OTPs and demo accounts as internal-only test credentials; do not share them outside the team, clean up demo user activity and test orders after QA sessions to avoid polluting operational data, and be careful when deleting demo users because deletion takes effect instantly with no confirmation step or undo.
+</Callout>
+
+Demo accounts are designed for safe testing but can grant access to real environments. Keep the list curated and limit access to ensure demo usage does not impact real customers, reporting, or operations.
