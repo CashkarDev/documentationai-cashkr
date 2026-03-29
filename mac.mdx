@@ -1,0 +1,220 @@
+---
+title: Mac
+description: Manage the Mac device catalog in the Admin Panel, including models, brands, condition classes, and warranty-based pricing for all Apple Mac product lines.
+---
+
+## Overview
+
+Use the Mac page in the Admin Panel to manage all Apple Mac product lines available for buyback, including iMac, MacBook Air, MacBook Pro, Mac Mini, and Mac Studio. The page acts as the master catalog for Mac devices and controls what customers see on the website and app. It is organized into four tabs: Models, Brands, Classes, and Pricing, following the same structure as the Phone and Tablet device pages.
+
+## Tabs
+
+<Tabs>
+  <Tab title="Models">
+    ### What you see
+
+    The Models tab displays all configured Mac models in the system. Each row shows the model name, RAM and storage variant, chip generation such as Intel 2017, M1, or M3, device image, unique system code, base buyback price, assigned class, number of variants, and available actions.
+
+    Mac models typically have a higher number of variants due to the multiple chip configurations, RAM sizes, and storage options available across Mac product lines.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774777798526-ca19op2ifu-mac-models.mac models?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="838" alt="Admin Panel Mac Models tab listing MacBook, iMac, and other Mac models with variants, pricing, and actions" />
+
+    ### Search and filters
+
+    Search by model name to quickly locate a specific Mac configuration. Filter by brand to narrow the list to a particular Mac product line such as MacBook Pro or iMac.
+
+    ### Add
+
+    Use Add Model to create a new Mac entry with all required catalog details.
+
+    <Steps>
+      <Step title="Open the Add Model form">
+        Click the Add Model button on the Models tab to open the Mac model creation form.
+      </Step>
+      <Step title="Fill Basic Info with Mac as device type">
+        Enter the model name, select the correct brand, and set the Device Type field to Mac so the model appears in the Mac catalog.
+      </Step>
+      <Step title="Configure pricing and variants">
+        Define RAM and storage variants, chip generations, and the base buyback price for each configuration in the Pricing and Variants section.
+      </Step>
+      <Step title="Add SEO information">
+        Complete the SEO Information section so the model displays correctly on the customer website and app during device search and evaluation.
+      </Step>
+      <Step title="Save the new Mac model">
+        Review all fields and save the model. The new Mac model becomes available immediately for pricing and for customers to select.
+      </Step>
+    </Steps>
+
+    ### Edit
+
+    Use the edit action in a row to update model details such as name, variants, assigned class, or base buyback price. Save changes to update the Mac catalog and customer-facing pricing in real time.
+
+    ### Delete
+
+    Avoid deleting Mac models that are referenced by live orders or active inventory, because removal can break existing workflows.
+
+    <Callout kind="alert">
+      Before deleting a Mac model, check the inventory and order modules to ensure the model is not linked to active inventory or live orders.
+    </Callout>
+  </Tab>
+  <Tab title="Brands">
+    ### What you see
+
+    The Brands tab displays all Mac brands registered in the system. Since all Macs are Apple products, this tab primarily manages Apple's Mac sub-brands and product lines such as iMac, MacBook, Mac Mini, and Mac Studio.
+
+    All capabilities are identical to the Phone Brands tab and follow the same configuration logic.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774777839118-qmb0k6dofrg-mac-brands.mac brands?q=85&fm=auto&auto=compress%2Cformat" width="1915" height="830" alt="Admin Panel Mac Brands tab showing Apple Mac sub-brands like iMac, MacBook, and Mac Mini" />
+
+    ### Search and filters
+
+    Browse the brand list or use search to find a specific Mac sub-brand. Use the table view to confirm which brands are currently active for Mac models.
+
+    ### Add
+
+    Add a new Mac sub-brand or product line using the brand creation flow.
+
+    <Steps>
+      <Step title="Open the Add Brand form">
+        Click the Add Brand button on the Brands tab to start creating a new Mac brand entry.
+      </Step>
+      <Step title="Set Device Type to Mac">
+        Enter the brand or sub-brand name and set the Device Type field to Mac so the brand appears when configuring Mac models.
+      </Step>
+      <Step title="Save the brand">
+        Save the brand to make it available in the brand dropdown during Mac model creation and editing, and to show it on the customer app and website.
+      </Step>
+    </Steps>
+
+    ### Edit
+
+    Edit an existing brand to correct naming, update visibility, or align product line definitions with how they appear in the customer catalog. Changes reflect on the customer app and website during device selection.
+
+    ### Delete
+
+    Deleting a Mac brand can affect any models that reference it.
+
+    <Callout kind="alert">
+      Verify that no active Mac models use a brand before deleting it, or reassign those models to another appropriate Mac brand to prevent broken references.
+    </Callout>
+  </Tab>
+  <Tab title="Classes">
+    ### What you see
+
+    The Classes tab displays all condition-based classes configured for Mac devices. Each class covers fields like warranty condition, battery condition, screen condition, physical condition, technical condition, and accessories, and uses the same pricing logic as the Phone Classes tab.
+
+    Mac classes may have higher pricing thresholds given the generally higher resale value of Mac devices compared to other device types.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774777990376-sfze9hj7ma-mac-classes.mac classes?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="822" alt="Admin Panel Mac Classes tab listing condition-based classes with pricing rules for Mac devices" />
+
+    ### Search and filters
+
+    Scroll or search to find a specific Mac class by name. Use the table to compare class definitions and relative pricing levels across Mac conditions.
+
+    ### Add
+
+    Create new Mac classes when you need different condition or pricing groups for Mac devices.
+
+    <Steps>
+      <Step title="Open the Add Class flow">
+        Use the Add Class control on the Classes tab to start defining a new Mac condition class.
+      </Step>
+      <Step title="Set Device Type to Mac">
+        Enter the class name and description and set Device Type to Mac so the class is available when assigning classes to Mac models.
+      </Step>
+      <Step title="Configure condition fields and pricing logic">
+        Define the warranty, battery, screen, physical, technical, and accessories conditions and configure pricing logic consistent with your Mac resale strategy.
+      </Step>
+      <Step title="Save the class">
+        Save the class to make it available on the Mac model creation and editing forms.
+      </Step>
+    </Steps>
+
+    ### Edit
+
+    Update class definitions when market conditions or pricing strategy change. Adjust thresholds for Mac warranty age, condition tolerances, or price adjustments to keep buyback offers accurate.
+
+    ### Delete
+
+    Removing a Mac class that is assigned to models can break pricing and evaluation flows.
+
+    <Callout kind="alert">
+      Check which Mac models use a class before deleting it, and either reassign those models to another class or update configurations to avoid missing or incorrect pricing.
+    </Callout>
+  </Tab>
+  <Tab title="Pricing">
+    ### What you see
+
+    The Pricing tab displays a table of all Mac models with their assigned class and warranty-based price slabs. Each model shows four warranty brackets: 0 to 3 months, 3 to 6 months, 6 to 11 months, and above 11 months, with corresponding buyback prices.
+
+    Pricing configuration and auto-update logic are identical to the Phone and Tablet Pricing tabs. Mac models tend to have significantly higher price values across all warranty brackets, reflecting their premium resale market.
+
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774778035275-1kz0sdno9xt-mac-pricing.mac pricing?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="830" alt="Admin Panel Mac Pricing tab showing warranty slab prices for Mac models and classes" />
+
+    ### Search and filters
+
+    Search by model name to find a specific Mac model's pricing across all warranty brackets. Use the table to compare price levels between models and classes.
+
+    ### Add
+
+    Add pricing entries for new Mac models after you create them in the Models tab.
+
+    <Steps>
+      <Step title="Locate the Mac model in Pricing">
+        Use the search field to find the newly created Mac model in the Pricing table.
+      </Step>
+      <Step title="Assign a class and enter slab prices">
+        Set the appropriate class and fill in buyback prices for each warranty bracket so pricing covers the full warranty range.
+      </Step>
+      <Step title="Save pricing">
+        Save your changes so the Mac model displays a buyback price on the customer app and website during evaluation.
+      </Step>
+    </Steps>
+
+    <Callout kind="alert">
+      A Mac model without a pricing entry will not display a buyback price to customers on the app or website. Always add or update pricing whenever you create a new model.
+    </Callout>
+
+    ### Edit
+
+    Edit pricing for any Mac model directly in the Pricing tab when market rates change. Confirm and save updates to apply new prices immediately to the customer app and website.
+
+    ### Delete
+
+    Avoid deleting pricing rows outright unless you also plan to remove or disable the underlying Mac model.
+
+    <Callout kind="alert">
+      Removing pricing for an active Mac model results in missing buyback prices for customers. Review model usage before deleting any pricing configuration.
+    </Callout>
+  </Tab>
+</Tabs>
+
+## Connections across device pages
+
+All four device pages — Phone, Tablet, Laptop, and Mac — share the following connections:
+
+- **Customer App** — All model, pricing, class, and brand changes reflect immediately on the customer app during device search and evaluation.
+- **Customer Website** — The customer website shows the same updates as the app; all catalog changes go live immediately.
+- **Brand Page** — Brand entries created in the Brands tab populate the brand dropdown when creating or editing models.
+- **Classes Page** — Class entries created in the Classes tab are available for assignment during model creation.
+- **Pricing Page** — Pricing changes made in the Pricing tab update the model's displayed price on both the product page and during customer evaluation.
+
+## Important notes
+
+Always ensure pricing entries cover all models when adding a new model. A model without a pricing entry will not display a buyback price to customers on the app or website.
+
+<Callout kind="alert">
+  Do not leave any active model without pricing. Missing pricing stops customers from seeing buyback values and can block order creation.
+</Callout>
+
+Classes should be reviewed and updated whenever market conditions change so buyback prices remain competitive and fair across all device types, including Macs.
+
+Deleting a model, brand, or class that is actively referenced by live orders or active inventory should be avoided. Check the inventory and order modules before removing any device catalog entry.
+
+<Callout kind="alert">
+  Treat deletions for models, brands, and classes as destructive changes. Confirm that no live orders or inventory items depend on the entry before you remove it.
+</Callout>
+
+For Laptop management specifically, keep the Credits tab updated whenever laptop price ranges shift in the market, because outdated credit brackets may result in vendors being under or over-rewarded for high-value laptop orders.
+
+Component prices in the Laptop Components tab should be reviewed regularly as hardware market prices change frequently. Outdated component prices directly impact the accuracy of laptop buyback offers shown to customers.
