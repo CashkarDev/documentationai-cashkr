@@ -1,0 +1,101 @@
+---
+title: Leads
+description: Monitor and convert store walk-in leads in the Admin Panel, using statuses, filters, and actions to move each lead into Completed or Failed.
+---
+
+The Store Leads view shows all store-based leads that are pending follow-up or conversion. Admins use this page to track store walk-ins, update dispositions, and convert qualified leads into confirmed store orders.
+
+## Where this page fits
+
+The Store section in the Admin Panel is divided into three views:
+
+- **Leads**: Store leads that are pending action or conversion.
+- **Completed**: Store orders that have been successfully completed.
+- **Failed**: Store orders that failed or could not be completed.
+
+Leads move out of the Leads view once you convert them to orders; from there, the orders continue through the main B2C pipeline and end up in either Completed or Failed based on the outcome.
+
+## What you see in the table
+
+Each row in the Leads table represents one pending store lead with the following key fields:
+
+- **Created At**: Date and time the lead was created.
+- **Model**: Device model associated with the lead.
+- **City**: City where the lead originated.
+- **Type**: Device category such as Mobile, Laptop, Tablet, or Mac.
+- **Status**: Current status of the lead based on your last action.
+
+When no leads match the active filters, the page displays a `No Orders Found` message.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774847404648-6ui6erb5bre-store-leads.store-leads?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="828" alt="Admin Panel Store Leads table showing store-based leads with filters and statuses" />
+
+## Filters and controls
+
+Use filters and search to focus on the leads that need your attention.
+
+- **Status filter**: Narrow leads by their current status.
+- **Type filter**: Filter by device category such as Mobile, Laptop, Tablet, or Mac.
+- **City filter**: Filter by the city where the lead originated.
+- **Date range**: Filter leads by creation date using the From and To date fields.
+- **Search**: Search for a specific lead by order details, device name, or customer information.
+- **Filters button**: Open additional filtering options when available.
+- **Apply filters**: Apply the current filter and search settings.
+- **Reset**: Clear all filters and return to the full list of leads.
+
+## Admin actions
+
+From the Leads table, you manage each lead and progress it toward conversion:
+
+- Open a lead row to review full lead details.
+- Update the lead status after each follow-up attempt.
+- Mark as **Connected** and select a reason such as Callback, Sold Elsewhere, Order Already Placed, Better Price Elsewhere, Higher Expectation, Was Just Checking, Not Selling Anywhere, or Out of Town.
+- Mark as **Not Connected** and select a reason such as Switch Off, Not Reachable, Ringing, or Wrong Number.
+- Convert a confirmed lead to an order by entering pickup address, payment details, and appointment date and time.
+- Schedule follow-up callbacks for leads that require later contact.
+
+## Lead conversion flow
+
+Use this flow to move each store lead from creation to final outcome.
+
+<Steps>
+  <Step title="Lead created in store" icon="download">
+    A store-based lead is generated and automatically appears in the Store Leads view with a pending status.
+  </Step>
+  <Step title="Initial follow-up from admin" icon="settings">
+    Open the lead, contact the customer, and update the status as Connected or Not Connected with the correct reason.
+  </Step>
+  <Step title="Customer confirms order" icon="users">
+    Once the customer agrees to proceed, confirm details such as model, price, and pickup expectations during your follow-up.
+  </Step>
+  <Step title="Convert lead to order" icon="rocket">
+    Create the order from the lead by adding pickup address, payment details, and appointment date and time; the lead leaves the Leads view.
+  </Step>
+  <Step title="Order moves through B2C pipeline" icon="bar-chart">
+    The converted order progresses through the main B2C order pipeline and ultimately appears in Store Completed on success or Store Failed on failure.
+  </Step>
+</Steps>
+
+## Related modules
+
+Store Leads connects directly to the main order and inventory views in the Admin Panel.
+
+<Columns cols={3}>
+  <Card title="Store - Completed" icon="check-circle" href="/completed">
+    View store orders that converted successfully and completed without failure.
+  </Card>
+  <Card title="Store - Failed" icon="x-circle" href="/failed">
+    Review store orders that failed after conversion to understand issues and reasons.
+  </Card>
+  <Card title="Orders - B2C (All Orders)" icon="database" href="/all-orders">
+    Track converted store leads as they move through the main B2C order pipeline.
+  </Card>
+  <Card title="All Inventory" icon="package" href="/vendors---b2c">
+    See devices from completed store orders once they enter All Inventory.
+  </Card>
+</Columns>
+
+## Notes
+
+<Callout kind="info">
+  Always update the lead status after every customer interaction to keep the store pipeline accurate. Leads that are not actioned promptly may become stale and reduce conversion rates.
+</Callout>

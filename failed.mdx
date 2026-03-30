@@ -1,0 +1,121 @@
+---
+title: Failed
+description: Review and investigate store orders that could not be completed, understand failure reasons, and coordinate corrective actions with vendors and customers.
+---
+
+Use the Store Failed page to review orders that did not complete after lead conversion. Track why they failed, who marked them as failed, and what follow-up is needed with customers and vendors.
+
+## Where this page fits
+
+The Failed page in the Store section lists all store orders that were converted from leads but did not complete. Use it to review failure reasons, identify patterns by vendor or city, and decide what follow-up is required.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774848177630-z59ur7ijxyn-failed-store.failed store?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="829" alt="Admin Panel Store Failed page showing failed store orders, filters, and table columns." />
+
+## What you see in the table
+
+Each row represents one failed store order converted from a lead.
+
+Key columns:
+
+- **Created At** — Date and time the order was originally created.
+- **Model** — Device model associated with the failed order.
+- **City** — City where the order was attempted.
+- **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
+- **Status** — Failure status: Failed By Vendor or Failed By Cashkr, based on who marked the order as failed.
+
+When no failed orders match the active filters, the page shows a `No Orders Found` message.
+
+## Filters and controls
+
+Use filters to narrow down failed orders and spot issues faster:
+
+- **Status Filter** — Filter by failure status (Failed By Vendor, Failed By Cashkr).
+- **Type Filter** — Filter by device category (Mobile, Laptop, Tablet, Mac).
+- **City Filter** — Filter by the city where the order was attempted.
+- **Date Range** — Filter by order creation date using the From and To date fields.
+- **Search** — Search by order details, device name, or customer information.
+- **Filters Button** — Open additional filtering options.
+- **Apply Filters / Reset** — Click Apply Filters to run your selected filters; click Reset to clear them and show all failed orders again.
+
+## Why orders appear here
+
+<Steps>
+  <Step title="Lead converts to a store order" icon="download">
+    A customer lead is converted into a store order with a specific device, city, and device type.
+  </Step>
+
+  <Step title="Order is attempted at the store">
+    The responsible store team or vendor attempts to process and complete the order.
+  </Step>
+
+  <Step title="Order cannot be completed">
+    A blocking issue occurs that prevents successful completion, such as customer unavailability, change of mind, or a condition mismatch.
+  </Step>
+
+  <Step title="Order is marked as failed">
+    The responsible party marks the order as failed, either on the vendor side (Failed By Vendor) or by the Cashkr operations or admin team (Failed By Cashkr).
+  </Step>
+
+  <Step title="Order moves to Store → Failed">
+    After it is marked failed, the order appears in the Store Failed page as a record for review and follow-up decisions.
+  </Step>
+</Steps>
+
+## Failed order statuses
+
+- **Failed By Vendor**  
+  The vendor marked the order as failed. Common reasons include:
+  - Customer not available at the time of visit.
+  - Device condition or quality mismatch versus expectations.
+  - Customer not interested or changed their mind.
+  - Vendor unable to reach the customer location.
+
+- **Failed By Cashkr**  
+  The Cashkr admin or operations team failed the order due to:
+  - Internal decision or policy-based rejection.
+  - Quality check failure or condition mismatch flagged by the team.
+  - Operational issues that prevented completion (for example, process or system problems).
+
+## Admin actions
+
+Use the Failed page to control next steps and reduce repeat failures:
+
+- **Open the order details** to review full information: failure reason, any secondary status, vendor details, and the date and time the order was failed.
+- **Contact the customer** to confirm if they still want to sell the device; if yes, create a new lead and restart the process through Store Leads.
+- **Contact the vendor** to understand the exact failure reason before deciding on fines, coaching, or vendor-level actions.
+- **Track patterns** across cities and vendors to spot recurring failure issues and address operational gaps.
+- **Cross-check Quality - B2C** by referencing Quality - B2C To Be Failed if the failure originated from the standard order pipeline and required admin approval.
+
+## Related modules
+
+<Columns cols={3}>
+  <Card title="Store Leads" icon="folder" href="/store">
+    View and create leads that later convert into store orders, including replacements for failed orders.
+  </Card>
+
+  <Card title="Store Completed" icon="check-circle" href="/completed">
+    Review successfully completed store orders and compare patterns with failures.
+  </Card>
+
+  <Card title="Quality - B2C To Be Failed" icon="alert-triangle" href="/to-be-failed">
+    Approve or review orders that vendors request to fail before they appear in Store Failed.
+  </Card>
+
+  <Card title="Quality - B2C Fines" icon="shield" href="/fines">
+    Apply and manage fines when failures are due to vendor negligence or repeated issues.
+  </Card>
+
+  <Card title="B2C Vendors" icon="users" href="/b2c-vendors">
+    Check vendor performance and trust scores impacted by repeated failed store orders.
+  </Card>
+</Columns>
+
+## Notes
+
+<Callout kind="info">
+  Failed orders remain as a permanent record in the Store section and act as an audit trail for all unsuccessful store order attempts. Always investigate the failure reason and context before considering the case complete or closing any related follow-ups.
+</Callout>
+
+<Callout kind="alert">
+  If a customer still wants to sell their device after a failed order, do not reopen the failed order. Create a new lead in Store Leads and restart the process. A high volume of failed orders from a specific city or vendor is a strong signal of an operational or vendor performance issue that needs immediate attention.
+</Callout>

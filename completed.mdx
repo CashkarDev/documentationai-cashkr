@@ -1,0 +1,100 @@
+---
+title: Completed
+description: Review and filter successfully completed store orders in the Admin Panel, and understand how they connect to inventory, sales, finance, and returns.
+---
+
+Use the Completed page in the Store section to review finalized store orders, track store performance, and reconcile devices that have moved into inventory. This view is typically used by operations, finance, and quality teams for reporting and follow-up actions.
+
+## Where this page fits
+
+The Completed page in the Store section lists all store orders where the device was picked up, inspected, and the transaction was finalised. Admins use it to review completed store order records, track store performance, and access order details for reference or reporting.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774847936133-etfxtios1m-completed---store.completed - store?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="833" alt="Completed store orders table in the Admin Panel Store section with filters and order details." />
+
+## What you see in the table
+
+Each row represents one successfully completed store order and shows:
+
+- **Created At** — Date and time the order was originally created.
+- **Model** — Device model sold through the store order.
+- **City** — City where the order was completed.
+- **Type** — Device category such as Mobile, Laptop, Tablet, or Mac.
+- **Status** — Order status, shown as Completed.
+
+If no completed orders match the active filters, the page displays a No Orders Found message.
+
+## Filters and controls
+
+Use filters and controls at the top of the page to narrow the list to the orders you need:
+
+- **Status filter** — Filter by order status.
+- **Type filter** — Filter by device category such as Mobile, Laptop, Tablet, or Mac.
+- **City filter** — Filter by the city where the order was completed.
+- **Date range** — Filter completed orders by creation date using the From and To fields.
+- **Search** — Search for a specific completed order by order details, device name, or customer information.
+- **Filters button** — Open additional filtering options.
+- **Apply and reset** — Click Apply Filters to apply current selections or Reset to clear all filters.
+
+## How orders appear here
+
+Use this lifecycle to understand when a store order moves into Completed.
+
+<Steps>
+  <Step title="Lead converts to a store order" icon="zap">
+    The customer lead converts into a store order from the Store Leads page in the Store module.
+  </Step>
+  <Step title="Vendor completes pickup and inspection" icon="check-circle">
+    The vendor completes device pickup and performs the required inspection.
+  </Step>
+  <Step title="Order is marked as completed" icon="check">
+    The system updates the order status to Completed after pickup and inspection are finished and the transaction is finalised.
+  </Step>
+  <Step title="Device enters All Inventory" icon="database">
+    The received device enters All Inventory and becomes available for resale, and the order now appears on the Completed page.
+  </Step>
+</Steps>
+
+## Admin actions
+
+From the Completed page you can:
+
+- **Open an order** to review full details including device information, customer details, vendor who completed the order, price, and completion date.
+- **Filter by date range** to review completed store orders for a specific period such as a day, week, month, or custom range.
+- **Export data** for reporting or analysis if export functionality is enabled for this module.
+- **Cross-check inventory** by matching completed orders with entries in All Inventory to verify that every received device is recorded correctly.
+
+## Related modules
+
+Use these connected modules to follow the full lifecycle from lead to resale and finance.
+
+<Columns cols={3}>
+  <Card title="Store – Leads" icon="folder" href="/store">
+    View and manage store leads that later convert into completed store orders.
+  </Card>
+
+  <Card title="All Inventory" icon="database" href="/vendors---b2c">
+    Confirm that devices from completed store orders are available for resale in inventory.
+  </Card>
+
+  <Card title="Device Sales" icon="shopping-bag" href="/device-sales">
+    Track devices sold from All Inventory after the order is completed in the store.
+  </Card>
+
+  <Card title="Finance – Reports" icon="bar-chart" href="/reports---finance">
+    Use completed store order data in overall finance and revenue reporting.
+  </Card>
+
+  <Card title="Returns" icon="rotate-ccw" href="/returns">
+    Handle returns or reversals for completed orders through the Finance Returns module.
+  </Card>
+</Columns>
+
+## Notes
+
+<Callout kind="alert">
+  Once an order appears in Completed you cannot reverse or edit the completion status from this page. If a completed order needs to be returned or reversed, handle the case through the Returns module under Finance.
+</Callout>
+
+<Callout kind="info">
+  Completed store orders contribute to the vendor performance record and may impact the vendor trust score over time. Use this view together with quality and finance modules when evaluating vendors.
+</Callout>
