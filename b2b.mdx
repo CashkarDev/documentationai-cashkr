@@ -1,158 +1,186 @@
 ---
 title: B2B Payments
-description: Manage and track all B2B corporate buyback payments
+description: Manage and track all B2B corporate buyback payments in the Finance module, from payment request creation to completion and reporting
 ---
+
 ## Overview
 
-The B2B Payments page in the Finance module shows all payment records linked to B2B corporate buyback deals, including pending, completed, and total paid amounts across active clients.
+The B2B Payments page in the Finance module lists all payment records linked to approved B2B corporate buyback deals that are awaiting or have completed payment processing. Payment records appear after the sales team requests payment from the Clients page in the Buyback B2B section. The finance team uses this page to process payments, upload payment confirmation details, and mark payments as complete.
 
-Records appear only after a B2B deal is confirmed in the sales pipeline and the client accepts the quotation, so deals still in negotiation or lead stage do not show here.
+## Summary cards
 
----
+Use the four summary cards at the top to track overall B2B payment activity in real time:
 
-## How Finance uses this page
+- **Pending payments** — Total number of deals with payments not yet processed and their total INR value.
+- **Pending amount** — Total INR value of all outstanding payments awaiting processing.
+- **Completed** — Total number of deals where payment has been successfully made.
+- **Total paid** — Total INR value of all completed B2B payments.
+
+## How payment records are created
+
+B2B payment records are created automatically after a deal moves through key stages in the Buyback B2B pipeline.
 
 <Steps>
-  <Step title="Review summary cards" icon="chart-bar" title-type="p">
-    Check the four summary cards at the top to see total pending payments, outstanding amount, completed deals, and total paid value for the selected period.
+  <Step title="Send final quotation from Deals page">
+    The pricing team sends a final quotation to the client from the Deals page after reviewing device details and inspection outcomes.
   </Step>
 
-  <Step title="Filter by date and status" icon="settings" title-type="p">
-    Apply a date range to focus on payments for a specific period, and use the status filter to view Pending, Completed, or All B2B payment records.
+  <Step title="Get client approval on final quotation">
+    The client approves the final quotation, and the deal status updates to Approved, confirming the agreed buyback value.
   </Step>
 
-  <Step title="Review payment rows" icon="database" title-type="p">
-    Scan the payments table by deal number and client to compare quoted value vs amount paid, payment mode, status, and payment date for each B2B deal.
+  <Step title="Receive invoice from client">
+    The client raises an invoice and submits it to Cashkr for the approved buyback amount.
   </Step>
 
-  <Step title="Verify payment and invoice" icon="shield" title-type="p">
-    Confirm that funds have been received in the bank account or payment gateway and verify that the client invoice is received and accurate before updating any record.
+  <Step title="Sales team requests payment">
+    The sales team receives the invoice and requests payment from the Clients page in the Buyback B2B section.
   </Step>
 
-  <Step title="Mark payments as Completed" icon="circle-check" title-type="p">
-    Update the payment status from Pending to Completed only after full payment is received against the quoted amount and internal verification is done.
-  </Step>
-
-  <Step title="Export for reconciliation and audits" icon="download" title-type="p">
-    Use the Export control to download the currently filtered list and share it for monthly reconciliation, finance reporting, or external audits.
-  </Step>
-
-  <Step title="Refresh to pull latest data" icon="refresh-ccw" title-type="p">
-    Click Refresh after processing payments or updating deals so that summary cards and table rows reflect the latest payment statuses.
+  <Step title="Payment record created in Finance B2B">
+    The payment request automatically creates a record in the B2B Payments page with Pending status, ready for finance processing.
   </Step>
 </Steps>
 
----
+## Payments table
 
-## What you see on the page
+The payments table lists one row per B2B deal payment record:
 
-### Summary cards
+- **Deal #** — Unique deal reference number that links back to the Deals page.
+- **Client** — Name of the corporate client.
+- **Quote** — Final agreed buyback value from the approved quotation.
+- **Paid** — Amount actually transferred to the client.
+- **Mode** — Payment method used: NEFT, RTGS, UPI, or Cash.
+- **Status** — Current payment status: Pending or Completed.
+- **Date** — Date the payment was recorded or completed.
+- **Action** — Available actions to update the payment record and mark payment as done.
 
-- Pending payments: number of B2B buyback deals with payments not yet received.
+## Finance team workflow
 
-- Pending amount: total INR value of all outstanding payments across active B2B deals.
+Use this workflow to manage all B2B payments consistently and maintain a clean audit trail.
 
-- Completed deals: number of B2B deals where full payment has been received.
+<Steps>
+  <Step title="Review pending payments">
+    Check the B2B Payments page daily and focus on records with Pending status. Each pending record represents a corporate client awaiting payment for an approved buyback deal.
+  </Step>
 
-- Total paid: total INR value of all completed B2B payments received.
+  <Step title="Verify the client invoice">
+    Confirm that the client invoice has been received and matches the final agreed quotation amount. Do not release payment without a valid invoice addressed to Cashkr Technologies Pvt. Ltd.
+  </Step>
 
-### Payments table
+  <Step title="Process the payment">
+    Transfer the agreed amount to the corporate client using the appropriate payment mode: NEFT for standard transfers, RTGS for high-value same-day transfers, or UPI for instant transfers.
+  </Step>
 
-- Deal number: unique reference number linked to the B2B sales pipeline.
+  <Step title="Upload payment details">
+    After the transfer is confirmed, upload payment confirmation details in the B2B Payments page, including the transaction reference number, payment mode, and date of transfer.
+  </Step>
 
-- Client: name of the corporate client for the buyback deal.
+  <Step title="Mark payment as done">
+    Once payment details are uploaded, mark the payment as completed. The status updates to Completed and the deal automatically moves to the Closed tab in the Deals page where the pricing or sales team finalises deal closure.
+  </Step>
+</Steps>
 
-- Quote: quoted buyback value agreed with the client.
+## Filters and controls
 
-- Paid: amount actually received against the quoted value.
+Use filters and controls at the top of the page to manage and review payment records efficiently:
 
-- Mode: payment mode recorded, such as NEFT, RTGS, UPI, or Cash.
-
-- Status: current payment status, either Pending or Completed.
-
-- Date: date when the payment was recorded or marked as completed.
-
-- Action: available admin actions on the record, such as updating status.
-
-### Filters & controls
-
-- Date range filter: restricts payment records to a selected start and end date for reconciliation or audit periods.
-
-- Status filter: shows only Pending, Completed, or All payments.
-
-- Export: downloads the payment list based on current filters for reporting or documentation.
-
-- Refresh: reloads the latest payment data and reflects recent deal or status updates.
-
----
-
-## Payment lifecycle
-
-```plaintext
-B2B Deal Created in Sales Pipeline
-  ↓
-Quotation Accepted by Client
-  ↓
-Payment Record Created in B2B Payments (Status: Pending)
-  ↓
-Pickup Completed and Devices Verified
-  ↓
-Client Raises Invoice to Cashkr
-  ↓
-Finance Processes Payment
-  ↓
-Admin Marks Payment as Completed
-  ↓
-Payment Acknowledgment Issued to Client
-```
-
----
+- **Date range filter** — Filter payment records between specific dates for monthly reconciliation or period-based reporting.
+- **Status filter** — Filter by Pending or Completed to focus on records requiring action or to review completed transactions.
+- **Export** — Click Export to download the filtered payment list for finance reporting, audits, or management review.
+- **Refresh** — Click Refresh (top right) to reload the latest payment data before processing or exporting.
 
 ## Payment modes
 
-- NEFT: National Electronic Funds Transfer used for standard bank transfers.
+Choose the correct payment mode based on deal value and urgency:
 
-- RTGS: Real Time Gross Settlement used for high-value same-day transfers.
+- **NEFT** — National Electronic Funds Transfer used for most standard B2B bank transfers.
+- **RTGS** — Real Time Gross Settlement used for high-value same-day payments above ₹2 lakhs.
+- **UPI** — Unified Payments Interface for instant digital transfers.
+- **Cash** — Physical cash payment at the time of pickup, used rarely for B2B corporate deals.
 
-- UPI: Unified Payments Interface used for instant digital transfers.
-
-- Cash: physical cash collected at the time of pickup.
-
-For B2B corporate deals, prefer NEFT or RTGS for payments above ₹50,000 and ensure the client has raised a valid invoice to Cashkr Technologies Pvt. Ltd. before processing any payment.
-
----
+For all B2B corporate deals, use NEFT or RTGS for payments above ₹50,000. Always confirm that the client invoice has been received before processing any payment.
 
 ## Admin responsibilities
 
-- Monitor Pending payments daily and follow up with clients on overdue B2B deals.
+Finance and admin users managing B2B payments should:
 
-- Mark a payment as Completed only after confirming receipt in the bank account or payment gateway.
+- Check the B2B Payments page daily and process all Pending payments promptly.
+- Never release payment without first verifying the client's invoice.
+- Always upload the transaction reference number and payment details after transferring funds so the deal can move to Closed in the Deals page.
+- Monitor the Pending amount card to track total outstanding financial commitments to corporate clients.
+- Export payment records monthly for finance reconciliation and management reporting.
+- Coordinate with the sales team if any invoice is missing or if there is a discrepancy between the invoice amount and the agreed quotation.
 
-- Verify that the client invoice is received and accurate before releasing any payment.
+## Full B2B deal lifecycle
 
-- Export B2B payment records for monthly finance reconciliation, reporting, and audit checks.
+The B2B deal lifecycle connects multiple modules across sales, operations, pricing, inventory, and finance.
 
-- Share a Payment Acknowledgment Slip with the client once a payment is marked Completed and issue data wipe certificates within 48 hours of pickup completion when requested.
+<Steps>
+  <Step title="Create and convert the lead">
+    The sales team creates a lead from the website form or manually and then converts the lead to a client in the Clients page.
+  </Step>
 
----
+  <Step title="Create deal from client record">
+    From the client record, the sales team creates a new B2B deal, which then appears in the Deals page for the pricing team.
+  </Step>
+
+  <Step title="Share data request and receive device list">
+    The pricing team sends a data request to the client, and the client provides the list of devices for buyback.
+  </Step>
+
+  <Step title="Send initial quote and schedule inspection">
+    The pricing team sends the first quote based on the device list, and the operations team schedules an inspection if required.
+  </Step>
+
+  <Step title="Complete inspection and finalise quotation">
+    The operations team completes the inspection in the Inspection page. The pricing team reviews the inspection results and sends the final quote.
+  </Step>
+
+  <Step title="Get client approval and invoice">
+    The client approves the final quote and raises an invoice for the agreed buyback amount, which they submit to Cashkr.
+  </Step>
+
+  <Step title="Request payment and create finance record">
+    The sales team requests payment from the Clients page. This creates a payment record in Finance B2B with Pending status on the B2B Payments page.
+  </Step>
+
+  <Step title="Verify, pay, and upload payment details">
+    The finance team verifies the invoice, processes the payment, uploads payment details in B2B Payments, and marks the payment as done.
+  </Step>
+
+  <Step title="Close the deal and move inventory">
+    Once the payment is marked completed, the deal moves to the Closed tab in the Deals page. The pricing or sales team closes the deal, and devices enter All Inventory as B2B Buyback stock available for resale.
+  </Step>
+</Steps>
 
 ## Connections to other modules
 
-- B2B Sales Pipeline: confirmed deals here automatically generate payment records in B2B Payments.
+The B2B Payments page integrates with other admin panel modules:
 
-- All Inventory: completed B2B buybacks add verified devices into inventory.
+- **Buyback B2B — Deals** — Completing payment here moves the deal to the Closed tab in the Deals page.
+- **Buyback B2B — Clients** — Payment requests originate from the sales team using the Clients page.
+- **All Inventory** — After deal closure, devices received from the corporate client appear in All Inventory as B2B Buyback stock.
+- **Finance — Reports** — B2B payment data feeds into the Money Report and Profit and Loss report in Finance Reports.
 
-- Finance Reports: reports in the Finance section use B2B payment data for revenue and cash flow tracking.
+## Important notes
 
-- Cash In Hand: cash-mode B2B payments appear in overall cash flow tracking.
-
-<Callout kind="info" collapsed="false">
-  The system creates a payment record only after a B2B deal has been confirmed and the quotation is accepted by the client; deals in negotiation or lead stage do not appear in B2B Payments.
+<Callout kind="alert">
+  Payment must never be released before the client's invoice is received and verified. This is a mandatory compliance step for every B2B deal, regardless of deal size or client relationship.
 </Callout>
 
----
+<Callout kind="info">
+  Uploading payment details and marking the record as done is what triggers the deal to move to Closed in the Deals page. If this step is skipped, the pricing and sales teams cannot close the deal and the pipeline remains inaccurate.
+</Callout>
 
-### Screen preview
+<Callout kind="tip">
+  For high-value corporate deals, use RTGS to ensure same-day settlement and obtain a confirmed transaction receipt before uploading payment details.
+</Callout>
+
+<Callout kind="info">
+  All B2B payment records are permanent and cannot be deleted. They form the complete financial audit trail for every corporate buyback transaction processed through the platform.
+</Callout>
+
+## Screen preview
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774338314840-ieuyxtbvtpd-B2B--payments.B2B  payments?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="830" alt="B2B Payments finance screen showing summary cards, filters, and the payments table for corporate buyback deals" />
-

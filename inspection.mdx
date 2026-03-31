@@ -1,0 +1,109 @@
+---
+title: Inspection
+description: Track and manage on-site device inspections for Buyback B2B deals, from scheduled queues to operations workflow and data handoff.
+---
+
+## Overview
+
+The Inspection page is part of the Buyback B2B section and is used primarily by the Operations Team. It provides a queue of all device inspections that the pricing team has scheduled as part of active B2B deals, and captures the detailed device assessment that feeds back into pricing on the Deals page.
+
+## Summary cards
+
+Three summary cards at the top show the current inspection workload for the operations and admin teams:
+
+- **Pending Inspections** — Total number of inspections scheduled and awaiting completion.
+- **Total Units to Inspect** — Total number of individual device units across all pending inspections.
+- **Unique Clients** — Number of distinct corporate clients with pending inspections.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774951562176-czh4e6unrd5-inspection.inspection?q=85&fm=auto&auto=compress%2Cformat" width="1914" height="824" alt="Inspection page summary cards and queue showing pending inspections and device counts" />
+
+## Inspection queue
+
+The Inspection Queue lists all deals with a scheduled inspection. Each entry in the queue shows the deal reference, client name, scheduled inspection date and time, location, and the number of devices to be inspected.
+
+When no inspections are scheduled the queue shows the message: `No scheduled inspections. Deals with scheduled inspections will appear here.`
+
+## Operations team workflow
+
+The operations team uses a standard on-site workflow for each scheduled inspection.
+
+<Steps>
+
+<Step title="Review the inspection queue" icon="list">
+
+The operations team checks the Inspection Queue daily to see all upcoming inspections. They confirm the scheduled date, time, client location, contact person, and expected device count before each visit.
+
+</Step>
+
+<Step title="Visit the client location" icon="map-pin">
+
+On the scheduled date the operations team visits the corporate client's office or location. They coordinate directly with the client's team to access all devices listed for the buyback.
+
+</Step>
+
+<Step title="Inspect each device" icon="search">
+
+For every device the operations team fills in all required inspection fields:
+
+- IMEI number
+- Device model and variant confirmation
+- Physical condition assessment
+- Any identified issues such as screen damage, battery health, or technical faults
+- Assessed price based on condition
+
+</Step>
+
+<Step title="Complete the inspection in the system" icon="check-circle">
+
+After all devices have been inspected and all fields filled in, the operations team marks the inspection as completed in the system. A completed inspection updates the inspection workload metrics and clears the visit from the pending queue.
+
+</Step>
+
+<Step title="Hand off to the pricing team" icon="arrow-right">
+
+Once the inspection is marked complete, the deal automatically moves back to the **In Progress** tab of the [Deals](/deals) page, where the pricing team reviews the inspection data and proceeds with preparing and sending the final quotation.
+
+</Step>
+
+</Steps>
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774951602142-8m9aj0yaluh-operations.operations?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="827" alt="Operations team view completing device inspection details and marking inspection as completed" />
+
+## Admin responsibilities
+
+Admins use the Inspection page to coordinate visits and ensure data quality:
+
+- Check the Inspection Queue every morning and confirm all upcoming inspections with the assigned operations team members.
+- Ensure the operations team has the client's full address, contact person details, and the complete device list before each visit.
+- Monitor the **Total Units to Inspect** count to plan team size and time allocation for large inspection visits.
+- Complete all inspection fields accurately, as incorrect or incomplete inspection data directly affects the final quotation sent to the client.
+- Mark inspections as completed immediately after the field visit to avoid delays in the pricing team's workflow.
+- Click **Refresh** (top right) to reload the latest inspection queue data.
+
+## Connections to other modules
+
+The Inspection page fits into the broader Buyback B2B and finance workflows:
+
+- **Buyback B2B — Deals** — Inspections are scheduled from deals in the [Deals](/deals) page. Completing an inspection returns the deal to **In Progress** for the pricing team to send the final quote.
+- **Buyback B2B — Clients** — The corporate clients in the inspection queue are managed in the [Clients](/clients) page.
+- **Finance — B2B Payments** — After inspection and final quote approval, payment processing begins in the B2B Payments page.
+
+## Important notes and best practices
+
+<Callout kind="alert">
+
+Missing or rescheduling a confirmed inspection without prior notice damages the corporate client relationship and can result in losing the deal entirely.
+
+</Callout>
+
+<Callout kind="info">
+
+Every device must have its IMEI number recorded during inspection. The IMEI is the key identifier used throughout the deal and payment process.
+
+</Callout>
+
+<Callout kind="tip">
+
+The inspection data filled in here directly determines the final price Cashkr offers to the client. Accurate condition assessments and thorough issue capture prevent financial losses after the deal is closed.
+
+</Callout>

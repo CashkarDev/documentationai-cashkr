@@ -1,0 +1,193 @@
+---
+title: Deals
+description: Manage corporate buyback B2B deals from first request through payment and closure, including pricing workflow, statuses, and linked modules.
+---
+
+## Overview
+
+The Deals page in the Buyback B2B section is the primary workspace for the Pricing Team. It tracks all active corporate buyback deals from creation through final closure and payment confirmation.
+
+The pricing team uses this page to request device data from clients, send initial and final quotations, schedule inspections, review inspection results, mark deals as approved, and close completed deals.
+
+## Deal pipeline tabs
+
+The Deals page has three tabs that represent the lifecycle stages of every corporate buyback deal.
+
+### New Requests
+
+New Requests shows recently created deals that are waiting for the pricing team to start work. These deals come from the sales team when they create a deal from the Clients page.
+
+Use this tab to:
+
+- Identify new deals that need a data request sent to the client.
+- Prioritize which deals to action first based on creation date and client.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774951279053-p5vo6nzefng-new-request.new request?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="835" alt="New Requests tab on the Deals page showing newly created B2B buyback deals awaiting pricing team action" />
+
+### In Progress
+
+In Progress shows deals that the team is actively working on. These are deals where you have already started the pricing workflow.
+
+Typical activities for deals in this tab include:
+
+- Data requests sent and responses under review.
+- Inspections scheduled or completed.
+- First quotes shared and awaiting feedback.
+- Final quotes under review or already approved.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774951305094-s9w6v8pote-inprogress.inprogress?q=85&fm=auto&auto=compress%2Cformat" width="1916" height="829" alt="In Progress tab on the Deals page showing B2B buyback deals currently being priced and inspected" />
+
+### Closed
+
+Closed lists deals that are fully completed and paid. These are deals where finance has confirmed payment and the deal has been formally closed by the pricing or sales team.
+
+Use this tab to:
+
+- Review completed deals.
+- Cross-check that all devices have moved into inventory.
+- Refer back to past pricing decisions and deal details.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774951333895-bc71dv3o12e-closed.closed?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="829" alt="Closed tab on the Deals page showing completed B2B buyback deals with confirmed payments" />
+
+## Deal table
+
+Each row in the deals table represents one corporate buyback deal. Use these columns to quickly understand the deal context and next action.
+
+- **Deal #** — Unique deal reference number.
+- **Date** — Date the deal was created.
+- **Company / Contact** — Name of the corporate client and their contact person.
+- **Subject** — Description or reference subject for the deal.
+- **Location** — City or location of the corporate client.
+- **Status** — Current deal status within the pipeline.
+- **Action** — Available actions for the deal based on its status.
+
+## Pricing team workflow in the Deals page
+
+The pricing team follows a consistent workflow from the moment a deal appears in New Requests until it is ready for payment and closure.
+
+<Steps>
+  <Step title="Send data request" icon="send">
+
+    When a new deal appears in the New Requests tab, send a data request to the client asking for a complete list of all devices they want to sell, including models, quantities, conditions, and specifications.
+
+  </Step>
+
+  <Step title="Prepare and send first quote" icon="edit">
+
+    After the client shares their device data, review the list, evaluate the devices, and send the first quotation to the client based on the provided models, quantities, and conditions.
+
+  </Step>
+
+  <Step title="Schedule device inspection" icon="calendar">
+
+    Once you send the first quote, schedule a physical inspection of the devices at the client's location. This action moves the deal to the Inspection page, where the operations team takes over for on-site checks.
+
+  </Step>
+
+  <Step title="Review inspection results" icon="search">
+
+    After the operations team completes the inspection and fills in all device details, the deal returns to the In Progress tab. Review the inspection findings, including actual device conditions, IMEI numbers, and any identified issues, and adjust pricing if needed.
+
+  </Step>
+
+  <Step title="Send final quote" icon="check-circle">
+
+    Based on the inspection results, prepare and send the final quotation to the client. This final quote is the definitive price Cashkr will pay for the devices in the deal.
+
+  </Step>
+
+  <Step title="Mark deal as Approved" icon="check">
+
+    When the client accepts the final quotation, update the deal status to Approved. The client then raises an invoice for the approved amount and submits it to Cashkr.
+
+  </Step>
+
+  <Step title="Request payment from client" icon="credit-card">
+
+    After receiving the invoice, the sales team uses the Clients page to formally request payment from the client. This action creates a corresponding payment entry in the Finance — B2B Payments page.
+
+  </Step>
+
+  <Step title="Close deal after payment confirmation" icon="archive">
+
+    Once the finance team processes the payment and marks it as done in the B2B Payments page, the deal appears in the Closed tab. The pricing or sales team then reviews the closed deal and formally closes it to complete the lifecycle.
+
+  </Step>
+</Steps>
+
+## Creating a new deal
+
+Deals are usually created by the sales team from the Clients page when a client confirms they want to sell devices. The pricing team does not create deals themselves; they receive new deals in the New Requests tab and start the pricing workflow from there.
+
+Admins can also click **New Request** on the Deals page to manually create a deal if needed, for example when setting up a one-off corporate buyback outside the normal flow.
+
+## Deal lifecycle flow
+
+This flow shows how a typical B2B buyback deal moves across teams and modules from start to finish.
+
+<Steps>
+  <Step title="Deal creation from Clients page" icon="plus">
+
+    The sales team creates a new deal from the relevant client record on the Clients page when the client confirms they want to sell devices.
+
+  </Step>
+
+  <Step title="New Requests to data request and first quote" icon="arrow-right">
+
+    The deal appears in the New Requests tab on the Deals page. The pricing team sends a data request, receives the device list, and sends the first quote to the client.
+
+  </Step>
+
+  <Step title="Inspection scheduling and operations work" icon="calendar">
+
+    After the first quote, the pricing team schedules an inspection. The deal moves to the Inspection page, where the operations team inspects the devices and records detailed data.
+
+  </Step>
+
+  <Step title="Return to In Progress and final quote" icon="refresh-ccw">
+
+    Once the inspection is complete, the deal returns to the In Progress tab. The pricing team reviews inspection results and sends the final quote for approval.
+
+  </Step>
+
+  <Step title="Approval, invoice, and payment processing" icon="file-text">
+
+    When the client approves the final quote, the deal is marked as Approved. The client raises an invoice, and the sales team requests payment from the Clients page, creating a record in Finance — B2B Payments.
+
+  </Step>
+
+  <Step title="Payment confirmation and closure" icon="check-circle">
+
+    The finance team processes the payment and marks it as done in B2B Payments. The deal moves to the Closed tab, where the pricing or sales team closes it, and the lifecycle is fully completed.
+
+  </Step>
+</Steps>
+
+## Connections to other modules
+
+Deals link tightly with other B2B modules so that sales, pricing, operations, finance, and inventory stay in sync.
+
+- **Buyback B2B — Clients** — All deals originate from client records on the Clients page, and payment requests are also triggered there after invoice receipt.
+- **Buyback B2B — Inspection** — Inspections scheduled from deals appear on the Inspection page for the operations team to complete on-site checks and fill in device details.
+- **Finance — B2B Payments** — Payment requests created from the Clients page generate records in B2B Payments, which link back to the relevant deals for payment tracking.
+- **All Inventory** — Devices received after deal closure flow into All Inventory as B2B Buyback stock once payment is confirmed and the deal is completed.
+
+## Important notes and best practices
+
+<Callout kind="info">
+
+  The pricing team should action all New Requests within 24 hours of appearing in the pipeline. Slow responses delay data collection, stall the deal, and frustrate corporate clients.
+
+</Callout>
+
+<Callout kind="tip">
+
+  Send the final quote only after the inspection is fully completed and all device details are updated. Waiting for complete inspection data reduces pricing errors and prevents disputes later.
+
+</Callout>
+
+<Callout kind="alert">
+
+  Never mark a deal as Closed until the finance team has confirmed payment as complete in the B2B Payments page. Premature closure can create financial discrepancies and reconciliation issues.
+
+</Callout>
