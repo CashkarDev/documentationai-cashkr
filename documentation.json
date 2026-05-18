@@ -106,6 +106,10 @@
                 "path": "articles"
               },
               {
+                "title": "Finder",
+                "path": "finder"
+              },
+              {
                 "title": "Refer & Earn",
                 "path": "refer-earn"
               },

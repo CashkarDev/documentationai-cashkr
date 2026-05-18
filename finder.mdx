@@ -1,0 +1,816 @@
+---
+title: Device Finder
+description: Browse, search, compare, and manage Finder devices in Cashkr, including page routes, Strapi content types, CMS workflows, API queries, and SEO patterns.
+---
+
+## Overview
+
+<Callout kind="info">
+
+Finder is Cashkr’s device discovery and research section. It is separate from the Sell flow and is powered by two Strapi collection types: `Device` and `DeviceType`.
+
+</Callout>
+
+Finder lets users browse, filter, search, and compare electronic devices across Laptops, Smartphones, and Tablets. The section includes category browsing, brand and model listings, detailed specification pages, device search, and side-by-side comparison.
+
+At a high level, `DeviceType` defines the top-level category structure, while `Device` supplies the actual brand, model, specification, score, and comparison data shown across the section.
+
+## Finder page types
+
+<Columns cols={3}>
+  <Card title="Finder Home" href="/finder" icon="home" />
+  <Card title="Category Page" href="/finder/{deviceType}" icon="folder" />
+  <Card title="Brand Page" href="/finder/{deviceType}/{brand_slug}" icon="folder" />
+  <Card title="Device Detail Page" href="/finder/{deviceType}/{brand_slug}/{slug}" icon="smartphone" />
+  <Card title="Search Page" href="/finder/search" icon="search" />
+  <Card title="Compare Page" href="/finder/compare" icon="columns-2" />
+</Columns>
+
+These six page types make up the full Finder experience:
+
+| Page | Route |
+| --- | --- |
+| Finder Home | `/finder` |
+| Category Page | `/finder/{deviceType}` |
+| Brand Page | `/finder/{deviceType}/{brand_slug}` |
+| Device Detail Page | `/finder/{deviceType}/{brand_slug}/{slug}` |
+| Search Page | `/finder/search` |
+| Compare Page | `/finder/compare` |
+
+## Strapi data model
+
+<Tabs>
+  <Tab title="DeviceType" icon="folder">
+
+  `DeviceType` defines the top-level categories shown throughout Finder. Each entry maps to a category tab such as Laptop, Smartphone, or Tablet and drives category navigation, brand grouping, and search or compare selectors.
+
+  ### How DeviceType powers Finder
+
+  - Category buttons on Finder Home are pulled from `DeviceType` entries.
+  - The URL segment `deviceType` maps to the `DeviceType.slug` value.
+  - Each `DeviceType` groups the brands and devices shown in that category.
+  - The Search page category toggle uses `DeviceType` entries.
+  - The Compare page category selector also uses `DeviceType` entries.
+
+  ### Suggested fields
+
+  <ParamField body="name" param-type="text" required="true" show-location="false">
+  Display name, for example `Laptop`, `Smartphone`, or `Tablet`.
+  </ParamField>
+
+  <ParamField body="slug" param-type="uid" required="true" show-location="false">
+  URL-safe key generated from `name`, for example `laptop`, `smartphone`, or `tablet`.
+  </ParamField>
+
+  <ParamField body="icon" param-type="media" show-location="false">
+  Optional category icon used on toggle buttons.
+  </ParamField>
+
+  <ParamField body="description" param-type="text" show-location="false">
+  Optional category description such as `Select a brand to browse category models.`
+  </ParamField>
+
+  <ParamField body="devices" param-type="relation → Device (one-to-many)" show-location="false">
+  All devices belonging to this category.
+  </ParamField>
+
+  ### Current DeviceType entries
+
+  | Name | Slug | Route |
+  | --- | --- | --- |
+  | Laptop | `laptop` | `/finder/laptop` |
+  | Smartphone | `smartphone` | `/finder/smartphone` |
+  | Tablet | `tablet` | `/finder/tablet` |
+
+  </Tab>
+
+  <Tab title="Device" icon="database">
+
+  `Device` is the primary content type behind Finder. Every device card, brand listing, specification page, search result, and comparison slot comes from a `Device` entry.
+
+  ### How Device powers Finder
+
+  - Each `Device` entry appears as a card on `/finder/{deviceType}/{brand}`.
+  - Each `Device` entry has a detail page at `/finder/{deviceType}/{brand}/{slug}`.
+  - Devices with `is_trending: true` appear in the Trending Devices carousel on Finder Home.
+  - Devices also populate the Popular Right Now sidebar widget.
+  - Search filters query `Device` fields such as brand, price, RAM, storage, and OS.
+  - Compare loads multiple `Device` entries side by side.
+
+  ### Identity and classification
+
+  <ParamField body="name" param-type="text" required="true" show-location="false">
+  Full device name, for example `iPhone 15` or `ROG Strix G17 (2023)`.
+  </ParamField>
+
+  <ParamField body="slug" param-type="uid" required="true" show-location="false">
+  URL slug, for example `iphone-15` or `rog-strix-g17-2023`.
+  </ParamField>
+
+  <ParamField body="device_type" param-type="relation → DeviceType" required="true" show-location="false">
+  Many-to-one relation that determines whether the device belongs to `laptop`, `smartphone`, or `tablet`.
+  </ParamField>
+
+  <ParamField body="brand" param-type="text" required="true" show-location="false">
+  Brand name such as `Apple`, `Asus`, or `Samsung`.
+  </ParamField>
+
+  <ParamField body="brand_slug" param-type="text or uid" required="true" show-location="false">
+  URL-safe brand value such as `apple` or `asus`. Used in `/finder/{deviceType}/{brand_slug}/{slug}`.
+  </ParamField>
+
+  <ParamField body="brand_logo" param-type="media" show-location="false">
+  Brand logo shown on brand cards on Finder Home and category pages.
+  </ParamField>
+
+  <ParamField body="image" param-type="media" required="true" show-location="false">
+  Main product image shown on cards and on the detail page.
+  </ParamField>
+
+  <ParamField body="summary" param-type="text" show-location="false">
+  One-line summary shown below the device name.
+  </ParamField>
+
+  <ParamField body="release_year" param-type="number" show-location="false">
+  Release year badge shown on model listing cards.
+  </ParamField>
+
+  <ParamField body="release_date_label" param-type="text" show-location="false">
+  Human-readable release date such as `12th September 2023` or `17th May 2023 (expected)`.
+  </ParamField>
+
+  <ParamField body="market_status" param-type="enumeration" required="true" show-location="false">
+  Allowed values are `available`, `upcoming`, and `discontinued`.
+  </ParamField>
+
+  <ParamField body="availability_note" param-type="text" show-location="false">
+  Availability text such as `Available in India` or `Not available in India`.
+  </ParamField>
+
+  <ParamField body="is_trending" param-type="boolean" show-location="false">
+  When `true`, the device appears in the Trending Devices carousel.
+  </ParamField>
+
+  <ParamField body="available_colours" param-type="json or text multi-value" show-location="false">
+  List of available colours such as `Black, Blue, Green, Pink, Yellow`.
+  </ParamField>
+
+  <ParamField body="price_launch" param-type="number" show-location="false">
+  Launch price in INR. Used for price range filtering on the Search page.
+  </ParamField>
+
+  ### Expert review and scores
+
+  <ParamField body="expert_review_score" param-type="decimal" show-location="false">
+  Overall score out of 10, for example `9.0`.
+  </ParamField>
+
+  <ParamField body="score_design" param-type="decimal" show-location="false">
+  Design score out of 10.
+  </ParamField>
+
+  <ParamField body="score_display" param-type="decimal" show-location="false">
+  Display score out of 10.
+  </ParamField>
+
+  <ParamField body="score_camera" param-type="decimal" show-location="false">
+  Camera score out of 10.
+  </ParamField>
+
+  <ParamField body="score_performance" param-type="decimal" show-location="false">
+  Performance score out of 10.
+  </ParamField>
+
+  <ParamField body="score_battery" param-type="decimal" show-location="false">
+  Battery score out of 10.
+  </ParamField>
+
+  <ParamField body="score_software" param-type="decimal" show-location="false">
+  Software score out of 10.
+  </ParamField>
+
+  <ParamField body="score_value" param-type="decimal" show-location="false">
+  Value for money score out of 10.
+  </ParamField>
+
+  <ParamField body="pros" param-type="json or rich text" show-location="false">
+  List of pros, for example `✓ Substantial improvements from the 14`.
+  </ParamField>
+
+  <ParamField body="cons" param-type="json or rich text" show-location="false">
+  List of cons, for example `✗ Pricy`.
+  </ParamField>
+
+  ### Display specifications
+
+  <ParamField body="display_panel_type" param-type="text" show-location="false">
+  Panel type such as `Super Retina XDR OLED` or `IPS LCD`.
+  </ParamField>
+
+  <ParamField body="display_size_inches" param-type="decimal" show-location="false">
+  Screen size in inches, for example `6.1` or `17.0`.
+  </ParamField>
+
+  <ParamField body="display_resolution" param-type="text" show-location="false">
+  Resolution such as `1179x2556` or `2560x1440`.
+  </ParamField>
+
+  <ParamField body="display_refresh_rate_hz" param-type="number" show-location="false">
+  Refresh rate in Hz, for example `60`, `120`, or `240`.
+  </ParamField>
+
+  <ParamField body="display_peak_brightness_nits" param-type="number" show-location="false">
+  Peak brightness in nits.
+  </ParamField>
+
+  <ParamField body="display_touch_screen" param-type="boolean" show-location="false">
+  Indicates whether the display supports touch input.
+  </ParamField>
+
+  <ParamField body="display_ppi" param-type="number" show-location="false">
+  Pixels per inch, for example `460`.
+  </ParamField>
+
+  ### Camera specifications
+
+  <ParamField body="rear_camera_setup" param-type="text" show-location="false">
+  Rear camera setup, for example `48-megapixel (f/1.6) + 12-megapixel (f/2.4)`.
+  </ParamField>
+
+  <ParamField body="front_camera_setup" param-type="text" show-location="false">
+  Front camera setup, for example `12-megapixel (f/1.9)`.
+  </ParamField>
+
+  <ParamField body="video_recording" param-type="text" show-location="false">
+  Video recording modes such as `4K@24/25/30/60fps, 1080p@25/30/60/120/240fps`.
+  </ParamField>
+
+  <ParamField body="ois" param-type="boolean" show-location="false">
+  Optical Image Stabilisation support.
+  </ParamField>
+
+  <ParamField body="rear_lens_count" param-type="number" show-location="false">
+  Number of rear lenses.
+  </ParamField>
+
+  <ParamField body="front_lens_count" param-type="number" show-location="false">
+  Number of front lenses.
+  </ParamField>
+
+  ### Battery and charging
+
+  <ParamField body="battery_wh" param-type="number" show-location="false">
+  Battery capacity in Wh, primarily for laptops.
+  </ParamField>
+
+  <ParamField body="wireless_charging_w" param-type="number" show-location="false">
+  Wireless charging wattage, primarily for smartphones and tablets.
+  </ParamField>
+
+  <ParamField body="reverse_charging" param-type="boolean" show-location="false">
+  Indicates whether reverse charging is supported.
+  </ParamField>
+
+  <ParamField body="removable_battery" param-type="boolean" show-location="false">
+  Indicates whether the battery is removable.
+  </ParamField>
+
+  ### Performance
+
+  <ParamField body="chipset" param-type="text" show-location="false">
+  Chipset such as `Apple A16 Bionic` or `AMD Ryzen 9`.
+  </ParamField>
+
+  <ParamField body="cpu" param-type="text" show-location="false">
+  CPU description such as `Hexa-core (2x3.46 GHz Everest + 4x2.02 GHz Sawtooth)`.
+  </ParamField>
+
+  <ParamField body="gpu" param-type="text" show-location="false">
+  GPU such as `Apple GPU (5-core)` or `Nvidia GeForce RTX 4070`.
+  </ParamField>
+
+  <ParamField body="ram_base_gb" param-type="number" show-location="false">
+  Base RAM option in GB.
+  </ParamField>
+
+  <ParamField body="storage_base_gb" param-type="number" show-location="false">
+  Base storage option in GB.
+  </ParamField>
+
+  <ParamField body="storage_options" param-type="text" show-location="false">
+  Available storage options such as `128GB, 256GB, 512GB`.
+  </ParamField>
+
+  <ParamField body="is_discrete_gpu" param-type="boolean" show-location="false">
+  Indicates whether the device includes a discrete GPU.
+  </ParamField>
+
+  <ParamField body="gpu_vram_gb" param-type="number" show-location="false">
+  GPU VRAM in GB.
+  </ParamField>
+
+  ### Connectivity
+
+  <ParamField body="network_5g" param-type="boolean" show-location="false">
+  5G support.
+  </ParamField>
+
+  <ParamField body="wifi" param-type="text" show-location="false">
+  Wi-Fi standard, for example `802.11 b/g/n/ac/ax` or `802.11 ax`.
+  </ParamField>
+
+  <ParamField body="bluetooth" param-type="text" show-location="false">
+  Bluetooth version such as `5.30` or `5.2`.
+  </ParamField>
+
+  <ParamField body="nfc" param-type="boolean" show-location="false">
+  NFC support.
+  </ParamField>
+
+  <ParamField body="usb_type" param-type="text" show-location="false">
+  USB connector type such as `USB Type-C`.
+  </ParamField>
+
+  <ParamField body="sim_type" param-type="text" show-location="false">
+  SIM type such as `Nano-SIM + Nano-SIM`.
+  </ParamField>
+
+  <ParamField body="sim_count" param-type="number" show-location="false">
+  Number of SIM slots.
+  </ParamField>
+
+  <ParamField body="esim" param-type="boolean" show-location="false">
+  eSIM support.
+  </ParamField>
+
+  <ParamField body="usb_a_ports" param-type="number" show-location="false">
+  Number of USB-A ports, mainly for laptops.
+  </ParamField>
+
+  <ParamField body="hdmi_port" param-type="boolean" show-location="false">
+  HDMI port availability.
+  </ParamField>
+
+  <ParamField body="ethernet_port" param-type="boolean" show-location="false">
+  Ethernet port availability.
+  </ParamField>
+
+  <ParamField body="headphone_jack" param-type="boolean" show-location="false">
+  Headphone jack availability.
+  </ParamField>
+
+  ### Build and design
+
+  <ParamField body="weight_grams" param-type="number" show-location="false">
+  Weight in grams.
+  </ParamField>
+
+  <ParamField body="dimensions_mm" param-type="text" show-location="false">
+  Physical dimensions in millimetres.
+  </ParamField>
+
+  <ParamField body="ip_rating" param-type="text" show-location="false">
+  IP rating such as `IP68`.
+  </ParamField>
+
+  <ParamField body="body_material" param-type="text" show-location="false">
+  Body material such as `Glass front, glass back, aluminum frame`.
+  </ParamField>
+
+  <ParamField body="in_display_fingerprint" param-type="boolean" show-location="false">
+  Indicates whether in-display fingerprint authentication is available.
+  </ParamField>
+
+  <ParamField body="face_unlock" param-type="boolean" show-location="false">
+  Indicates whether face unlock is available.
+  </ParamField>
+
+  ### Software
+
+  <ParamField body="os_name" param-type="text" show-location="false">
+  Operating system name such as `iOS`, `Android`, or `Windows`.
+  </ParamField>
+
+  <ParamField body="os_version" param-type="text" show-location="false">
+  Operating system version such as `17`, `14`, or `11`.
+  </ParamField>
+
+  <ParamField body="ai_enabled" param-type="boolean" show-location="false">
+  Indicates whether AI features are enabled.
+  </ParamField>
+
+  </Tab>
+</Tabs>
+
+## How data maps to Finder pages
+
+### Finder Home — `/finder`
+
+| UI section | Data source |
+| --- | --- |
+| Category tabs | `DeviceType` collection, all published entries |
+| Popular Brands | Distinct `brand` and `brand_logo` values from `Device`, filtered by selected `device_type` |
+| View all brand link | Built from `DeviceType.slug` and distinct `Device.brand_slug` |
+| Device cards in browse grid | `Device` collection filtered by `device_type` |
+| Trending Devices carousel | `Device` entries where `is_trending = true` |
+| Popular Right Now sidebar | `Device` entries, top 5 trending or most viewed |
+
+### Category page — `/finder/{deviceType}`
+
+| UI element | Data source |
+| --- | --- |
+| Page heading | `DeviceType.name` |
+| Sub-heading | `DeviceType.description` |
+| Brand cards | Distinct `Device.brand`, `Device.brand_slug`, and `Device.brand_logo` filtered by `device_type.slug = {deviceType}` |
+| Brand card link | `/finder/{DeviceType.slug}/{Device.brand_slug}` |
+
+### Brand listing — `/finder/{deviceType}/{brand}`
+
+| UI element | Data source |
+| --- | --- |
+| Page heading | `Device.brand` plus `DeviceType.name` |
+| Model count | Count of `Device` entries where `device_type.slug = {deviceType}` and `brand_slug = {brand}` |
+| Device cards | `Device` entries filtered by `device_type` and `brand_slug`, paginated with infinite scroll |
+| Release year badge | `Device.release_year` |
+| Card link | `/finder/{DeviceType.slug}/{Device.brand_slug}/{Device.slug}` |
+
+### Device detail — `/finder/{deviceType}/{brand}/{model-slug}`
+
+| UI element | Data source |
+| --- | --- |
+| Breadcrumb | `DeviceType.name`, `Device.brand`, and `Device.name` |
+| Device image | `Device.image` |
+| Brand and category labels | `Device.brand` and `DeviceType.name` |
+| Device name | `Device.name` |
+| Availability note | `Device.availability_note` |
+| Release date | `Device.release_date_label` |
+| Market status | `Device.market_status` |
+| Spec highlight row | `Device.display_size_inches`, `Device.chipset`, `Device.ram_base_gb`, `Device.storage_options`, `Device.os_name`, `Device.os_version` |
+| Scores | `Device.score_*` fields |
+| Pros and cons | `Device.pros` and `Device.cons` |
+| Full specifications | All relevant `Device` spec fields per category |
+| Sell on Cashkr CTA | Links to the sell flow for the relevant device |
+
+### Device search — `/finder/search`
+
+| UI element | Data source |
+| --- | --- |
+| Category toggle | `DeviceType` collection |
+| Brand filter checkboxes | Distinct `Device.brand` values for selected `DeviceType` |
+| Price range slider | `Device.price_launch` range |
+| RAM filter | Distinct `Device.ram_base_gb` values |
+| Storage filter | Distinct `Device.storage_base_gb` values |
+| Operating system filter | Distinct `Device.os_name` values |
+| Search results grid | `Device` entries matching all applied filters |
+
+### Device compare — `/finder/compare`
+
+| UI element | Data source |
+| --- | --- |
+| Category selector dropdown | `DeviceType` collection |
+| Add Device modal | Searches `Device` collection by name |
+| Side-by-side spec rows | All `Device` spec fields for each added device |
+
+## User-facing page behavior
+
+### Finder Home — `/finder`
+
+**Page Title:** `Device Finder | Find Your Phone, Laptop or Tablet | Cashkr`
+
+Finder Home is the main discovery surface. It combines category browsing, brand shortcuts, device browsing, editorial content, and trending devices in a single landing page.
+
+#### Region 1 — Hero banner and featured articles carousel
+
+- Full-width image carousel showing featured articles
+- Each slide includes a background image, category badge such as `ARTICLE`, headline, short description, and `Read More` CTA button
+- Thumbnail strip below the main slide for quick navigation
+- Left and right arrow buttons for manual navigation
+
+#### Region 2 — Browse by category
+
+- Heading: `Browse by Category`
+- Subheading: `Select a category to explore the latest models`
+- Category toggle buttons: **Laptop**, **Smartphone**, **Tablet**
+- Freetext search input: `Search any device…`
+- **Compare** button links to `/finder/compare`
+- **Filter** button opens the filter drawer and links into `/finder/search`
+- Popular Brands sub-section shows a brand logo grid and a `View all →` link
+- Device cards grid shows image, brand label, and device name, with links to detail pages
+
+#### Region 3 — Latest Tech News
+
+- Heading: `Latest Tech News`
+- Subheading: `Stay updated with the latest tech articles`
+- Up to 6 article cards with image, title, and publish date
+- `View All Articles →` links to `/articles`
+- Right sidebar includes **Popular Right Now** with up to 5 device cards, including image, name, brand, and `Hot` badge
+- Right sidebar also includes **Quick Links** for Laptop, Smartphone, Tablet, and All Articles
+
+#### Region 4 — Trending Devices
+
+- Heading: `Trending Devices`
+- Subheading: `Most searched devices right now`
+- Horizontal scrolling carousel with left and right arrow buttons
+- Device cards show image, brand, and name, and link to device detail pages
+- Powered by `Device` entries where `is_trending = true`
+
+#### Region 5 — Related Articles
+
+- Heading: `Related Articles`
+- Subheading: `Editors' picks and in-depth reviews`
+- Up to 6 article cards with image, title, excerpt, and date
+- `Browse All Articles` CTA links to `/articles`
+
+### Category page — `/finder/{deviceType}`
+
+**Title Pattern:** `{Category} Brands | Cashkr`  
+**Example:** `Laptop Brands | Cashkr`
+
+This page helps users move from a top-level category into a specific brand.
+
+- Breadcrumb: `Home / Devices / {Category}`
+- `Compare` button at the top right links to `/finder/compare`
+- Heading: `{DeviceType.name} Brands`
+- Subheading: `Select a brand to browse {deviceType} models.`
+- Brand card grid shows brand logo and brand name
+- Each brand card links to `/finder/{deviceType}/{brand_slug}`
+
+#### Available brands by DeviceType
+
+| DeviceType | Brands |
+| --- | --- |
+| Laptop | Apple, Acer, Asus, Avita, Dell, HP, Lenovo, Microsoft, MSI, Nokia, Realme, Samsung, Xiaomi |
+| Smartphone | Apple, Asus, Google, Honor, Huawei, Infinix, IQOO, Motorola, Nokia, Nothing, OnePlus, Oppo, Poco, Realme, Samsung, Tecno, Vivo, Xiaomi |
+| Tablet | Apple, Honor, Huawei, Lenovo, Motorola, Nokia, OnePlus, Oppo, Poco, Realme, Samsung, Xiaomi |
+
+### Brand listing — `/finder/{deviceType}/{brand}`
+
+**Title Pattern:** `{Brand} {Category}s | Cashkr`  
+**Example:** `Asus Laptops | Cashkr`, `Apple Smartphones | Cashkr`
+
+This page lists all models for a brand within a selected category.
+
+- Breadcrumb: `Home / Devices / {Category} / {Brand}`
+- `Compare` button at the top right
+- Heading: `{Brand} {Category}s`
+- Model count: `{N} models found`
+- Infinite-scroll device card grid with device image, device name, and release year badge
+- Each card links to `/finder/{deviceType}/{brand}/{model-slug}`
+
+### Device detail — `/finder/{deviceType}/{brand}/{model-slug}`
+
+**Title Pattern:** `{Device Name} Price & Specs | Cashkr`
+
+This page is the most detailed device reference view in Finder. It combines summary information, review data, and full specification groups.
+
+#### Header
+
+- Breadcrumb: `Home / Devices / {Category} / {Brand} / {Device Name}`
+- `Compare` button at the top right
+
+#### Hero block
+
+- Device image in the left panel
+- Brand label and category label such as `APPLE · SMARTPHONE`
+- Device name as the page H1 in the UI
+- Release date or market status note
+- Availability note
+- `Add to Compare` button
+- One-line spec summary
+
+#### Spec highlight row
+
+For **Smartphones**:
+- Display size and resolution
+- Processor
+- Front Camera
+- Rear Camera
+- RAM
+- Storage
+- Available Colours
+
+For **Laptops**:
+- Display resolution
+- Processor
+- RAM
+- Storage
+- OS
+- Market Status
+- Release Date Label
+
+#### Scores block
+
+For Smartphones, the page shows:
+
+- Design
+- Display
+- Camera
+- Performance
+- Battery Life
+- Software
+- Value for Money
+- Overall Expert Review Score
+
+#### Pros and cons block
+
+For Smartphones, the page shows green checkmarks for pros and red crosses for cons.
+
+#### Buy and sell CTAs
+
+- `Buy` button
+- `Sell on Cashkr` button linking to the Cashkr sell flow for the device
+
+#### Full specification groups
+
+- **Key Specifications** — Display, Processor, Camera if applicable, RAM, Storage, OS, Market Status, Release Date Label
+- **Display Specifications** — Panel Type, Screen Size in inches, Resolution, Refresh Rate in Hz, Peak Brightness in nits, Touch Screen, PPI
+- **Camera Specifications** for Smartphone and Tablet only — Rear Setup, Selfie Camera, Video Recording, OIS, Rear Lens Count, Front Lens Count
+- **Battery and Charging** — Battery Wh for Laptop, Wireless Charging W for Smartphone, Reverse Charging, Removable
+- **Performance** — Chipset, CPU, GPU, RAM Base in GB, Storage Base in GB, Is Discrete GPU, GPU VRAM in GB
+- **Connectivity** — Network 5G, WiFi, Bluetooth, NFC, USB Type, SIM Type, SIM Count, eSIM, USB-A Ports, HDMI Port, Ethernet Port, Headphone Jack
+- **Build and Design** — Weight in grams, Dimensions in mm, IP Rating, Body Material, In-Display Fingerprint, Face Unlock
+- **Software** — OS Name, OS Version, AI Enabled
+
+At the bottom, the page includes a back link in the format `← Back to {Brand} {Category}s`.
+
+### Device Search — `/finder/search`
+
+**Page Title:** `Search Devices | Get Instant Buyback Price | Cashkr`  
+**URL:** `/finder/search?deviceType={laptop|smartphone|tablet}`
+
+Search is the filtering interface for Finder. It lets users narrow the device catalog by category, brand, price, RAM, storage, and OS.
+
+- Breadcrumb: `Home / Finder / Search`
+- Heading: `Device Search`
+- Category toggle buttons: Laptop, Smartphone, Tablet
+- `Compare` button at the top right links to `/finder/compare`
+- Empty state text: `Apply filters and click Search to find devices`
+- `Filters` button opens a drawer on mobile
+
+#### Empty state info block
+
+- Heading: `Select your filters`
+- Subtext: `Choose your preferred brand, price range, RAM, and other specs, then click to find matching devices.`
+
+#### Filter panel
+
+| Filter | Type | Data source |
+| --- | --- | --- |
+| Brand | Multi-select checkboxes, collapsible | Distinct `Device.brand` for selected DeviceType |
+| Price Range | Dual-handle range slider plus numeric inputs | Min: ₹0 — Max: ₹200,000 |
+| RAM | Collapsible multi-select | Distinct `Device.ram_base_gb` |
+| Storage | Collapsible multi-select | Distinct `Device.storage_base_gb` |
+| Operating System | Collapsible multi-select | Distinct `Device.os_name` |
+
+**Full brand list in filter (Laptop):** Acer, Alienware, Apple, Asus, Avita, Corsair, Dell, Fujitsu, Gigabyte, HP, Honor, Huawei, Infinix, Jio, Lenovo, MSI, Microsoft, Motorola, Nokia, Razer, Realme, Redmi, Samsung, Sony, TCL, Tecno, Toshiba, Vaio, Xiaomi, iBall
+
+- `Search Devices` is the primary CTA button and triggers the filtered API call
+
+### Device Compare — `/finder/compare`
+
+**Page Title:** `Compare Devices Side by Side | Cashkr`
+
+Compare lets users review multiple devices in a side-by-side layout using the same specification groups stored on `Device`.
+
+- Heading: `Compare Devices`
+- Dropdown: `Comparing: [Laptop ▾]` with options from `DeviceType`
+- `+ Add Device` placeholder slots where users search and add devices by name
+- Horizontal scrolling layout for side-by-side comparison
+- Empty state: `Please add devices to compare their specifications.`
+- When devices are added, all spec groups from `Device` are shown in a comparison table
+
+## CMS operations
+
+### Add or update Finder content in Strapi
+
+<Steps>
+  <Step title="Add a new DeviceType" icon="plus">
+
+  DeviceTypes define the top-level categories such as Laptop, Smartphone, and Tablet. This is usually a one-time action unless Finder adds a new device category.
+
+  1. Go to **Strapi Admin → Content Manager → DeviceType → Create new entry**
+  2. Enter `name`, for example `Smartwatch`, and `slug`, for example `smartwatch`
+  3. Optionally upload an `icon` and add a `description`
+  4. Click **Save → Publish**
+  5. The new category appears on Finder Home and in Search and Compare selectors
+
+  </Step>
+
+  <Step title="Add a new Device" icon="plus">
+
+  1. Go to **Strapi Admin → Content Manager → Device → Create new entry**
+  2. Fill in the required identity fields:
+     - `name`
+     - `slug`
+     - `device_type`
+     - `brand`
+     - `brand_slug`
+     - `image`
+  3. Fill in optional classification fields such as `release_year`, `release_date_label`, `market_status`, `availability_note`, `available_colours`, `price_launch`, and `summary`
+  4. Fill in the spec fields relevant to the device category:
+     - **Laptop:** Display, Performance, Battery Wh, Connectivity, Build and Design, Software
+     - **Smartphone / Tablet:** Display, Camera, Battery and Charging, Performance, Connectivity, Build and Design, Software
+  5. If the device is a smartphone or tablet, fill in Scores and Pros or Cons for the Expert Review block
+  6. Toggle `is_trending: true` if the device should appear in Trending Devices
+  7. Click **Save → Publish**
+
+  After publishing, the device appears on:
+  - `/finder/{deviceType}/{brand_slug}`
+  - `/finder/{deviceType}/{brand_slug}/{slug}`
+  - Search results when filters match
+  - The Trending carousel if `is_trending = true`
+
+  </Step>
+
+  <Step title="Edit an existing Device" icon="edit">
+
+  1. Go to **Strapi Admin → Content Manager → Device**
+  2. Use search or filters to find the device by name or slug
+  3. Open the entry
+  4. Update any fields, including specs, scores, market status, or images
+  5. Click **Save → Publish**
+
+  Changes are reflected immediately on the live Finder pages.
+
+  </Step>
+
+  <Step title="Mark a device as trending" icon="check-circle">
+
+  1. Open the `Device` entry in Strapi
+  2. Set `is_trending` to **true**
+  3. Click **Save → Publish**
+  4. The device appears in the Trending Devices carousel and the Popular Right Now widget
+  5. To remove it, set `is_trending` back to **false**
+
+  </Step>
+</Steps>
+
+### Additional content operations
+
+#### Update market status
+
+Devices move through lifecycle stages using `market_status`.
+
+| Status | Meaning | Where it appears |
+| --- | --- | --- |
+| `upcoming` | Not yet released | Detail page shows expected release date label |
+| `available` | Currently on sale | Detail page shows `Available in India` and Buy or Sell CTAs |
+| `discontinued` | No longer sold | Detail page reflects discontinued status |
+
+To update it, open the `Device` entry, change `market_status`, then save and publish.
+
+#### Add a new brand
+
+Brands are not a separate collection. Finder derives them from the `brand` and `brand_slug` fields on `Device`.
+
+- Create one or more `Device` entries with the new `brand` name and `brand_slug`
+- Upload a `brand_logo` image on each device entry, or at minimum on the first entry
+- Publish the entries
+- The brand appears automatically on `/finder/{deviceType}` and in Search filters
+
+#### Manage the hero carousel
+
+The Finder Home hero carousel shows featured articles. This content is managed separately through the Articles CMS or a `FinderPageConfig` single type.
+
+- Go to **Strapi Admin → Single Types → FinderPageConfig**
+- Add, remove, or reorder featured articles linked to the carousel
+- Each item references an Article entry with image, title, excerpt, and link
+- Save and publish
+
+## Strapi REST API reference
+
+| Purpose | Endpoint |
+| --- | --- |
+| All DeviceTypes | `GET /api/device-types?populate=*` |
+| All Devices for a DeviceType | `GET /api/devices?filters[device_type][slug][$eq]=laptop&populate=*` |
+| All Devices for a Brand within a DeviceType | `GET /api/devices?filters[device_type][slug][$eq]=laptop&filters[brand_slug][$eq]=asus&populate=*` |
+| Single Device by slug | `GET /api/devices?filters[slug][$eq]=iphone-15&populate=*` |
+| Trending Devices | `GET /api/devices?filters[is_trending][$eq]=true&populate=*` |
+| Distinct brands for a DeviceType | `GET /api/devices?filters[device_type][slug][$eq]=smartphone&fields[0]=brand&fields[1]=brand_slug&fields[2]=brand_logo` |
+| Search with Brand plus Price plus RAM filters | `GET /api/devices?filters[device_type][slug][$eq]=laptop&filters[brand][$in][0]=Apple&filters[ram_base_gb][$gte]=16&filters[price_launch][$lte]=150000&populate=*` |
+| Compare multiple devices | `GET /api/devices?filters[slug][$in][0]=iphone-15&filters[slug][$in][1]=iphone-16&populate=*` |
+
+## URL structure
+
+```typescript
+/finder
+  └── /{deviceType}                          → Brand listing  (DeviceType.slug)
+       └── /{brand_slug}                     → Model listing  (Device.brand_slug)
+            └── /{slug}                      → Device detail  (Device.slug)
+
+/finder/search?deviceType={deviceType}       → Filtered search
+/finder/compare                              → Side-by-side compare
+```
+
+## SEO notes
+
+| Page | Title pattern | Meta description pattern |
+| --- | --- | --- |
+| Finder Home | `Device Finder \| Find Your Phone, Laptop or Tablet \| Cashkr` | Static |
+| Category | `{DeviceType.name} Brands \| Cashkr` | `Browse all {DeviceType.name} brands and models on Cashkr` |
+| Brand Listing | `{Brand} {DeviceType.name}s \| Cashkr` | `Find {Brand} {DeviceType.name} specs and prices on Cashkr` |
+| Device Detail | `{Device.name} Price & Specs \| Cashkr` | Auto-generated from `Device.summary` |
+| Search | `Search Devices \| Get Instant Buyback Price \| Cashkr` | Static |
+| Compare | `Compare Devices Side by Side \| Cashkr` | Static |
+
+Recommended: add `meta_title`, `meta_description`, and `og_image` fields to the `Device` content type in Strapi using the Strapi SEO Plugin or a custom SEO component. This allows per-device SEO control from the CMS.
