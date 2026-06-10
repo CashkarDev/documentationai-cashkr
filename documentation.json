@@ -19,6 +19,10 @@
             "icon": "rocket",
             "pages": [
               {
+                "title": "Cashkr product Bibal",
+                "path": "cashkr-product-bibal"
+              },
+              {
                 "title": "Introduction",
                 "path": "introduction",
                 "icon": "home"
@@ -132,6 +136,10 @@
           {
             "group": "Customer App",
             "pages": [
+              {
+                "title": "Refund policy",
+                "path": "refund-policy"
+              },
               {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"

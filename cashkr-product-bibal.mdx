@@ -1,0 +1,1339 @@
+---
+'0': '1'
+'1': .
+'2': ' '
+'3': C
+'4': o
+'5': m
+'6': p
+'7': a
+'8': 'n'
+'9': 'y'
+'10': ' '
+'11': O
+'12': v
+'13': e
+'14': r
+'15': v
+'16': i
+'17': e
+'18': w
+'19': |+
+
+'20': '2'
+'21': .
+'22': ' '
+'23': P
+'24': r
+'25': o
+'26': d
+'27': u
+'28': c
+'29': t
+'30': ' '
+'31': A
+'32': r
+'33': c
+'34': h
+'35': i
+'36': t
+'37': e
+'38': c
+'39': t
+'40': u
+'41': r
+'42': e
+'43': ' '
+'44': '&'
+'45': ' '
+'46': C
+'47': o
+'48': m
+'49': p
+'50': o
+'51': 'n'
+'52': e
+'53': 'n'
+'54': t
+'55': s
+'56': |+
+
+'57': '3'
+'58': .
+'59': ' '
+'60': C
+'61': a
+'62': s
+'63': h
+'64': k
+'65': r
+'66': ' '
+'67': W
+'68': e
+'69': b
+'70': s
+'71': i
+'72': t
+'73': e
+'74': |+
+
+'75': '4'
+'76': .
+'77': ' '
+'78': C
+'79': u
+'80': s
+'81': t
+'82': o
+'83': m
+'84': e
+'85': r
+'86': ' '
+'87': A
+'88': p
+'89': p
+'90': |+
+
+'91': '5'
+'92': .
+'93': ' '
+'94': V
+'95': e
+'96': 'n'
+'97': d
+'98': o
+'99': r
+'100': ' '
+'101': A
+'102': p
+'103': p
+'104': |+
+
+'105': '6'
+'106': .
+'107': ' '
+'108': A
+'109': d
+'110': m
+'111': i
+'112': 'n'
+'113': ' '
+'114': P
+'115': a
+'116': 'n'
+'117': e
+'118': l
+'119': |+
+
+'120': '7'
+'121': .
+'122': ' '
+'123': C
+'124': o
+'125': r
+'126': e
+'127': ' '
+'128': S
+'129': 'y'
+'130': s
+'131': t
+'132': e
+'133': m
+'134': s
+'135': ' '
+'136': '&'
+'137': ' '
+'138': L
+'139': o
+'140': g
+'141': i
+'142': c
+'143': |+
+
+'144': '8'
+'145': .
+'146': ' '
+'147': R
+'148': e
+'149': f
+'150': e
+'151': r
+'152': r
+'153': a
+'154': l
+'155': ' '
+'156': '&'
+'157': ' '
+'158': W
+'159': a
+'160': l
+'161': l
+'162': e
+'163': t
+'164': ' '
+'165': S
+'166': 'y'
+'167': s
+'168': t
+'169': e
+'170': m
+'171': |+
+
+'172': '9'
+'173': .
+'174': ' '
+'175': 'N'
+'176': o
+'177': t
+'178': i
+'179': f
+'180': i
+'181': c
+'182': a
+'183': t
+'184': i
+'185': o
+'186': 'n'
+'187': s
+'188': |+
+
+'189': '1'
+'190': '0'
+'191': .
+'192': ' '
+'193': T
+'194': o
+'195': o
+'196': l
+'197': s
+'198': ' '
+'199': '&'
+'200': ' '
+'201': I
+'202': 'n'
+'203': f
+'204': r
+'205': a
+'206': s
+'207': t
+'208': r
+'209': u
+'210': c
+'211': t
+'212': u
+'213': r
+'214': e
+'215': |+
+
+'216': '1'
+'217': '1'
+'218': .
+'219': ' '
+'220': K
+'221': e
+'222': 'y'
+'223': ' '
+'224': B
+'225': u
+'226': s
+'227': i
+'228': 'n'
+'229': e
+'230': s
+'231': s
+'232': ' '
+'233': R
+'234': u
+'235': l
+'236': e
+'237': s
+'238': ' '
+'239': '&'
+'240': ' '
+'241': P
+'242': o
+'243': l
+'244': i
+'245': c
+'246': i
+'247': e
+'248': s
+title: Cashkr Product Bible
+description: 'Version: 1.0 | Last Updated: May 2026 | Source: Official Cashkr Documentation'
+---
+
+---
+
+## 1. Company Overview
+
+**Cashkr** is an India-based platform for selling used smartphones, laptops, Macs, tablets, and other electronics. Founded in **2020**, Cashkr started as a mobile phone buyback service and has grown into one of India's most trusted platforms for all types of consumer electronics resale.
+
+**Mission:** To make device resale as simple, transparent, and instant as ordering food online — while promoting sustainable recycling by extending the life of electronics.
+
+**Our Promise:**
+
+- Instant Payouts 💰
+
+- Verified Pickups 🚚
+
+- Fair & Transparent Pricing 📊
+
+- Trust Built with Every Transaction 🤝
+
+**Company:** Operated by BigBold Technologies Pvt. Ltd.
+
+---
+
+## 2. Product Architecture & Components
+
+Cashkr is a multi-surface ecosystem with four core product surfaces, all connected to shared backend services:
+
+### The Four Surfaces
+
+| Surface            | Description                                                             | Primary Users                      |
+| ------------------ | ----------------------------------------------------------------------- | ---------------------------------- |
+| **Cashkr Website** | Public entry point for discovering, pricing, and selling devices online | Customers (B2C), Businesses (B2B)  |
+| **Customer App**   | Mobile app for managing the full trade-in lifecycle                     | Individual customers               |
+| **Vendor App**     | Mobile app for agents/vendors to manage pickups and fulfill orders      | Field agents, store partners       |
+| **Admin Panel**    | Internal command center for operations, finance, vendors, and payments  | Operations, Finance, Support teams |
+
+### Shared Backend Services
+
+All four surfaces share:
+
+- **Authentication:** Phone number + OTP (same identity across Website & Customer App)
+
+- **Device Catalog & Pricing Rules:** Drive quotes across all surfaces
+
+- **Order, Payment & Vendor Management:** Keep requests in sync end-to-end
+
+Updates on any surface reflect in near real-time across all others.
+
+### Official Email Addresses
+
+| Address                                                                                                         | Purpose                                                          | Tool          |
+| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------- |
+| <a href="mailto:noreply@cashkr.com" target="_blank" rel="noopener noreferrer">noreply\@cashkr.com</a>           | Transactional emails (order confirmations, OTPs, status updates) | Engine Mailer |
+| <a href="mailto:hello@mail.cashkr.com" target="_blank" rel="noopener noreferrer">hello\@mail.cashkr.com</a>     | Welcome series, nurture flows, newsletters                       | Pabbly SMTP   |
+| <a href="mailto:offers@promo.cashkr.com" target="_blank" rel="noopener noreferrer">offers\@promo.cashkr.com</a> | Marketing campaigns, promotions, re-engagement                   | Pabbly SMTP   |
+| <a href="mailto:support@cashkr.com" target="_blank" rel="noopener noreferrer">support\@cashkr.com</a>           | Customer support replies                                         | TBD           |
+| <a href="mailto:dmarc@cashkr.com" target="_blank" rel="noopener noreferrer">dmarc\@cashkr.com</a>               | Technical DMARC reporting only                                   | N/A           |
+
+---
+
+## 3. Cashkr Website
+
+### 3.1 Overview
+
+The Cashkr Website (<a href="http://cashkr.com" target="_blank" rel="noopener noreferrer">cashkr.com</a>) is the public-facing entry point for device resale. It focuses on acquisition, education, and conversion into trade-in requests. The website serves three audiences: individual consumers (B2C), businesses (B2B/corporate), and SEO-driven visitors.
+
+### 3.2 Primary User Journeys
+
+**Consumer Device Trade-in:** Discover → Evaluate → Configure → Commit → Handoff to Customer App
+
+**Corporate Buyback:** Discover → Review offering → Submit lead → Route to Admin Panel
+
+**SEO Content to Qualified Session:** Search → Land on device/brand/city page → Engage → Convert to order or lead
+
+### 3.3 Core Features
+
+#### Login & Registration
+
+- Phone number + OTP authentication, shared with the Customer App
+
+- New users: collect First Name, Last Name, Email, Date of Birth after OTP verification
+
+- Existing users: skip registration, go straight to session
+
+- Phone number is the unique, permanent identifier
+
+#### My Profile
+
+- Editable: First Name, Last Name, Email
+
+- Non-editable: Phone Number (immutable)
+
+- Changes sync across Website, Customer App, and Admin Panel
+
+#### Address Management
+
+- Maximum **3 pickup addresses** per customer
+
+- Types: Home, Office, Other
+
+- City is auto-fetched from pincode (via Area module)
+
+- Addresses sync across Website and Customer App
+
+- On order confirmation, a **snapshot** of the address is stored in the order (edits don't affect existing orders)
+
+#### Track Orders
+
+Order statuses shown to customers: **Generated → In Progress → Completed / Failed**
+
+- **Reschedule:** Only available when status is `Generated` and no vendor is assigned
+
+- **Call Agent:** Only available after a vendor is assigned
+
+#### Payment (Payout Details)
+
+- Stored at profile level: Bank Account (Bank Name, IFSC, Account Number) or UPI ID
+
+- Default payment mode is **Cash** if nothing is selected
+
+- Used during payout after order completion
+
+#### Sell Device Flow
+
+1. Device type → Brand → Model → Variant selection
+
+2. Serviceability check by area/pincode (blocks if unsupported)
+
+3. Condition Q\&A (screen, battery, accessories, damage)
+
+4. Price calculation + optional coupon
+
+5. Pickup address & time slot selection
+
+6. Order placement
+
+7. Payment method selection
+
+#### Device Price Calculator
+
+- Instant resale estimate without creating an order
+
+- Categories: Mobile, Laptop, Mac, Tablet
+
+- Uses the same pricing logic as the main Sell Device flow
+
+- Data pulled from Admin Panel: Products, Classes, Pricing
+
+#### Search Functionality
+
+- Universal homepage search bar with type-to-search autosuggestions
+
+- Shows only **active products** with valid pricing and class
+
+- Selecting a result routes directly to that device's Q\&A flow
+
+#### Lead Creation
+
+- Triggers when a logged-in customer reaches the final price screen but does NOT confirm an order
+
+- Stores: selected device, Q\&A answers, pincode, customer contact info
+
+- Appears in Admin Panel → Leads for Operations follow-up
+
+#### Articles
+
+- Dynamic content from Strapi CMS
+
+- Grid/list of article cards with thumbnail, title, preview
+
+- Real-time updates from Strapi
+
+#### Device Finder
+
+A dedicated device discovery section powered by Strapi, separate from the Sell flow. Covers Laptops, Smartphones, and Tablets.
+
+**Page Types:**
+
+- Finder Home (`/finder`)
+
+- Category Page (`/finder/{deviceType}`)
+
+- Brand Page (`/finder/{deviceType}/{brand_slug}`)
+
+- Device Detail Page (`/finder/{deviceType}/{brand_slug}/{slug}`)
+
+- Search Page (`/finder/search`)
+
+- Compare Page (`/finder/compare`)
+
+**Data Sources:**
+
+- `DeviceType` collection: top-level categories (Laptop, Smartphone, Tablet)
+
+- `Device` collection: brand, model, specs, scores, images, trending flag
+
+**Supported Brands by Category:**
+
+- Laptops: Apple, Acer, Asus, Dell, HP, Lenovo, Samsung, Xiaomi, and more
+
+- Smartphones: Apple, Samsung, OnePlus, Vivo, Realme, Nothing, and more
+
+- Tablets: Apple, Samsung, Lenovo, Xiaomi, and more
+
+#### Refer & Earn
+
+- Customers share a permanent referral code via WhatsApp, SMS, social media
+
+- Referee uses the code at registration — code is locked to their account forever
+
+- Referee reward: applied automatically at checkout after order completion
+
+- Referrer reward: generated as pending → credited to Cashkr Wallet after admin approval
+
+#### Partner With Us
+
+- Static informational page for vendor partnership
+
+- Primary CTA: Download Vendor App (links to Google Play)
+
+#### Corporate Buyback
+
+- Lead capture form (no login required)
+
+- Required fields: name, phone, email, state, pincode, city, subject, query
+
+- Submissions appear in Admin Panel → Buyback section
+
+- Ops team manages status: In Progress → Approved → Completed
+
+#### Logout & Account Deletion
+
+- **Logout:** Clears session token from browser and backend; redirects to homepage
+
+- **Account Deletion:** Requires phone + OTP verification → data anonymized → soft delete → consistent across all platforms; irreversible
+
+---
+
+## 4. Customer App
+
+### 4.1 Overview
+
+The Customer App gives individuals a mobile environment to manage the full device trade-in lifecycle. It shares authentication and backend services with the Website — the same identity works across both.
+
+### 4.2 Login & Registration
+
+- Phone number (10-digit Indian mobile) + OTP
+
+- **New user:** registration collects First Name (required), Last Name (required), Email (required), Birthdate (optional)
+
+- **Existing user:** logged in directly after OTP
+
+- Session persists until explicit logout
+
+- Cross-channel: users registered on Website can log in on App with the same phone
+
+### 4.3 HomeScreen & Device Selection
+
+- Device categories (Phone, Laptop, Mac, Tablet) as tappable tiles
+
+- Promotional banners (from Admin Panel Banner module)
+
+- Universal search bar
+
+- Serviceability check via pincode — **blocks selling journey if not serviceable**
+
+- Only active products with valid class & pricing shown
+
+### 4.4 Sell Device Flow
+
+1. Enter pincode for serviceability gate
+
+2. Select device type → Brand → Model → Variant
+
+3. Answer device condition Q\&A (warranty, battery, screen, physical/technical issues, accessories)
+
+4. View quote; optionally apply coupon
+
+5. Select or add pickup address
+
+6. Choose pickup date & time slot
+
+7. Confirm Order → Order created with unique Order ID → lead OTP sent to WhatsApp
+
+8. Select payment method (UPI / Bank / Cash default)
+
+**If the customer reaches the price screen but doesn't confirm → Lead is created in Admin Panel**
+
+### 4.5 My Profile
+
+- Editable: First Name, Last Name, Email
+
+- Non-editable: Phone Number
+
+- Synced with Website profile and Admin Panel
+
+### 4.6 Pickup Address
+
+- Up to 3 saved pickup addresses
+
+- City auto-fetched from pincode via Area module
+
+- Address snapshot copied to order on confirmation (edits don't retroactively change existing orders)
+
+- Synced between Customer App and Website
+
+### 4.7 Reschedule Pickup
+
+- Available only when order status is `Generated` AND no vendor is assigned
+
+- Hidden once order moves to `Assigned` or later
+
+- Updated schedule syncs across all systems
+
+- Triggers reschedule confirmation notification to customer
+
+### 4.8 Apply Coupon
+
+- Optional, on the final quote screen
+
+- Platform targeting: each coupon targets Mobile, Web, or Both
+
+- Discount is a **flat amount added** to device value (not percentage, does not stack)
+
+- Validation checks: platform, user eligibility (first-time vs all), device type, expiry, usage limits
+
+- Invalid coupons show inline error; price stays unchanged
+
+### 4.9 Payment Method
+
+- Manage UPI ID or Bank Account (Bank Name, IFSC, Account Number) at profile level
+
+- Changes apply to future orders; completed orders retain original payment mode
+
+- Default: Cash if no method selected
+
+- Synced with Website Payment page
+
+### 4.10 Order Confirmation & Tracking
+
+**Order Statuses (Active):** Generated → Assigned → Out for Pickup → In Progress
+
+**Order Statuses (History):** Completed, Failed
+
+**Key Rules:**
+
+- Reschedule: only in `Generated` with no vendor assigned
+
+- Call Agent: only after `Assigned`
+
+- Lead OTP sent to customer's WhatsApp on order confirmation
+
+- Real-time status sync across Customer App, Website, Vendor App, Admin Panel
+
+- Emails sent to customer and vendor at key status changes
+
+### 4.11 Refer & Earn (App)
+
+- Generate unique permanent referral code
+
+- Share via WhatsApp, SMS, social media
+
+- Track referred users and reward status
+
+- Rewards: referee (instant approval), referrer (pending → admin approval → wallet)
+
+### 4.12 Cashkr Wallet
+
+- Stores referral reward earnings only (not device sale payouts)
+
+- **Total Balance:** Available to withdraw
+
+- **Total Earned:** Lifetime credited rewards
+
+- **Total Withdrawn:** Total withdrawals to date
+
+- **Withdrawal rules:**
+
+  - Minimum balance: ₹100
+
+  - Minimum withdrawal: ₹100
+
+  - UPI only (no bank account withdrawals)
+
+  - Manual approval by Cashkr team
+
+  - 1 credit = ₹10
+
+### 4.13 Lead Creation (App)
+
+- Triggers when: user is logged in + reached final price + did NOT confirm order
+
+- Does NOT trigger if: not logged in, pincode not serviceable, or order is confirmed
+
+- Stored in Admin Panel → Leads with device details, Q\&A answers, pincode, contact info
+
+### 4.14 Logout
+
+- From Profile tab → Logout button
+
+- Clears session token on device and backend
+
+- Redirects to Home screen
+
+### 4.15 Delete Account
+
+- Profile → Settings → Delete Account
+
+- Hands off to Website (email/deep link); app does NOT perform deletion directly
+
+- Website handles: phone + OTP verification → anonymization → soft delete
+
+---
+
+## 5. Vendor App
+
+### 5.1 Registration & Login
+
+- **Registration:** Enter business details + upload documents + OTP verification → submitted for admin approval
+
+- Vendor type is set by Admin only (not by vendor)
+
+- **Login:** OTP-based, but only admin-approved vendors can log in
+
+- Rejected/inactive vendors are blocked from login
+
+### 5.2 Available Orders
+
+Orders are shown to a vendor only if ALL four filters match:
+
+1. **Device Type match** (phones, tablets, laptops, etc.)
+
+2. **Pincode/Service Area match** (vendor's coverage vs customer pickup pincode)
+
+3. **Vendor Type match** (Type 1, 2, etc.)
+
+4. **Tier match** (vendor tier must meet order's minimum tier requirement)
+
+### 5.3 Unlock Lead
+
+- Vendor taps Unlock on an available lead
+
+- System checks:
+
+  1. **Available credits** ≥ required credits for the lead
+
+  2. **Max Lead cap** not exceeded
+
+- On success: credits deducted, order moves to **In Progress**; disappears from Available Orders
+
+- On failure: no credits deducted, order stays Available
+
+- Same customer auto-assignment: if the same customer has multiple orders, system auto-assigns to the same vendor
+
+### 5.4 InProgress Orders
+
+- Only orders the vendor has unlocked appear here
+
+- Vendor actions:
+
+  - **Call Customer** + update Call Disposition
+
+  - **Assign to Agent** (agent sees it in their In Progress)
+
+  - **Mark Out for Pickup**
+
+  - **Start Inspection** (requires customer OTP verification)
+
+  - **Requote** (re-evaluate if condition differs from declaration)
+
+  - **Complete Order** (successful pickup)
+
+  - **Fail Order** (condition mismatch, customer cancellation, etc.)
+
+### 5.5 Call Disposition
+
+Records the outcome of vendor calls: connected, not reachable, customer asked to reschedule/cancel, etc.
+
+### 5.6 Add Agents
+
+Vendors can add agents under their account. Agents handle pickups on the vendor's behalf and see orders assigned to them.
+
+### 5.7 Requote Order
+
+If device condition at pickup differs from customer's declaration, vendor can requote (adjust price). Customer can accept or decline. If declined → Fail After Requote.
+
+### 5.8 Reserved Order
+
+An order is Reserved when:
+
+- A vendor already has an InProgress lead for the same customer at the same address
+
+- Additional leads for that customer auto-link to the same vendor
+
+- But vendor lacks enough credits to fully assign them
+
+Once vendor adds credits and unlocks → order moves to InProgress.
+
+### 5.9 Max Lead
+
+The Max Lead limit controls how many active leads a vendor can hold simultaneously. Configured by admin. Reaching this limit blocks further unlocks until existing orders are completed or failed.
+
+### 5.10 Buy Credits
+
+- Vendors purchase credits via QR payment
+
+- Credits become available only after **admin approval**
+
+- 1 credit = ₹10
+
+- Credits are deducted only on successful unlocks (not on failed attempts)
+
+**Credit calculation:**
+
+- **Other devices:** based on device class
+
+- **Laptops:** based on price range; vendor type can override the base credit requirement
+
+### 5.11 Vendor Logout
+
+- From Vendor App profile/settings
+
+---
+
+## 6. Admin Panel
+
+### 6.1 Authentication
+
+OTP-based admin login, separate from customer authentication.
+
+### 6.2 Dashboard Modules
+
+| Dashboard            | Purpose                     |
+| -------------------- | --------------------------- |
+| CEO Report           | High-level business metrics |
+| TV Display           | Operations screen/dashboard |
+| Overview             | General platform overview   |
+| Growth               | Growth metrics              |
+| Funnel               | Conversion funnel           |
+| Marketing            | Marketing performance       |
+| Operations & SLA     | SLA tracking                |
+| Expansion            | Geographic expansion        |
+| Pricing              | Pricing analytics           |
+| Failed Report        | Failed orders analysis      |
+| Data Quality         | Data hygiene                |
+| Reviews & Reputation | Platform reviews            |
+| Trust & Safety       | Fraud & safety signals      |
+| Sales & Pipelines    | Pipeline management         |
+| Inventory            | Device inventory            |
+| Finance              | Financial reporting         |
+| Coupons              | Coupon analytics            |
+| Referrals            | Referral program analytics  |
+
+### 6.3 Orders — B2C
+
+**Order Views:**
+
+- All Orders
+
+- In Progress
+
+- Not Assigned (unassigned orders)
+
+- No Action (stalled orders)
+
+- Delayed
+
+- Reserved
+
+- Flagged
+
+**Admin order actions include:** manual reschedule, vendor reassignment, cancellation, escalation, override.
+
+### 6.4 Leads
+
+- **New Leads:** Customers who reached final price but didn't confirm (from Website & App)
+
+- **Callbacks:** Leads requiring callback
+
+- Operations team uses these for manual follow-up and conversion
+
+### 6.5 Vendors — B2C
+
+- **B2C Vendor Tiers:** Configure tier levels and access rules
+
+- **B2C Vendors:** View and manage all active vendors
+
+- **New Vendors B2C / Onboarding B2C / Area:** Expansion and geographic management
+
+### 6.6 Finance
+
+| Module            | Description                            |
+| ----------------- | -------------------------------------- |
+| Credits           | Vendor credit management and approvals |
+| Device Purchases  | Purchase records                       |
+| Device Sales      | Sales records                          |
+| B2B               | Business-to-business transactions      |
+| Returns           | Return management                      |
+| Expenses          | Operational expenses                   |
+| Cash In Hand      | Cash tracking                          |
+| Reports — Finance | Financial reports                      |
+
+### 6.7 Devices
+
+Admin manages the device catalog for: **Phone, Tablet, Laptop, Mac**
+
+Each device is associated with:
+
+- Brand, model, variant
+
+- Class & Pricing
+
+- Tier (1 = Premium, 2 = Mid-range, 3 = Budget)
+
+### 6.8 Coupons — Marketing
+
+**Coupon configuration fields:**
+
+- Platform targeting: Mobile, Web, or Both
+
+- User eligibility: First-time users only, or All users
+
+- Device type compatibility
+
+- Discount type: Flat amount (added to device value)
+
+- Expiry date
+
+- Usage limits (global and per-user)
+
+### 6.9 Referrals
+
+- **Programs:** Configure referral programs with discount type, value, max discount, minimum order value
+
+- **Transactions:** View referee (auto-approved) and referrer (pending → admin approval) transactions
+
+- **Payouts:** Approve referrer wallet withdrawal requests
+
+### 6.10 Banners — Marketing
+
+Configure banners for Customer App and Website by device type and platform.
+
+### 6.11 Push Notifications
+
+Send targeted push notifications to customers.
+
+### 6.12 Platform Reviews
+
+- Reviews: Manage customer reviews
+
+- Widgets: Review widget management
+
+### 6.13 Quality — B2C
+
+- **To Be Failed:** Orders flagged for failure
+
+- **Fines:** Vendor fines management
+
+### 6.14 Store
+
+- **Leads:** Walk-in leads
+
+- **Completed:** Completed store orders
+
+- **Failed:** Failed store orders
+
+### 6.15 Buyback — B2B
+
+- **Deals:** Corporate buyback deals
+
+- **Leads — Buyback:** Corporate leads from the website form
+
+- **Clients:** Corporate clients
+
+- **Inspection:** Inspection management
+
+### 6.16 Fraud & Safety
+
+- **Stolen Devices:** Manage stolen device reports and blocks
+
+### 6.17 Settings
+
+- Connections, Master Logs, Admin Users, Demo Users, Terms & Conditions
+
+---
+
+## 7. Core Systems & Logic
+
+### 7.1 Device Price Evaluation Logic
+
+The pricing engine computes a final device price using a **base price minus deductions plus additions (laptops only)** formula.
+
+**Formula:** `Final Price = Base Price − Total Deductions + Total Additions (laptops)`
+
+**Key rule — Deduction Resolution:** All deductions use `resolveDeduction(value, basePrice)`:
+
+- Flat value (e.g., `500` or `"500"`) → subtracted directly
+
+- Percentage string (e.g., `"10%"`) → calculated as % of **base price** (not running total)
+
+**Dead device:** If device doesn't turn on → return `deadPrice` immediately, skip all logic.
+
+**Floor check:** If final price ≤ 0 → return `deadPrice` (or 0 if undefined).
+
+#### Deduction Categories
+
+| Code   | Category                  | Values                                                      |
+| ------ | ------------------------- | ----------------------------------------------------------- |
+| W1–W4  | Warranty Status           | W1 = 0–3 months (lowest), W4 = 11+ months (highest)         |
+| B1–B4  | Body Condition            | B1 = Flawless, B4 = Major damage                            |
+| S1–S5  | Screen Condition (Mobile) | S1 = Flawless, S5 = Heavily damaged                         |
+| S1–S4  | Screen Size (Laptop)      | Size-based deduction                                        |
+| P1–P4  | Physical Conditions       | Multiple can be selected; each applies independently        |
+| T1–T15 | Technical Faults          | WiFi, Bluetooth, Speaker, Mic, Camera, Touch, FaceID, etc.  |
+| A1–A4  | Accessories               | A1=Bill, A2=Box, A3=Charger, A4=Other — deducted if MISSING |
+
+#### Laptop Add-ons (Additions)
+
+- Processor (from lookup table) → adds to price
+
+- RAM (from lookup table) → adds to price
+
+- Storage (from lookup table) → adds to price
+
+- Graphics Card (optional, from lookup table)
+
+#### Supported Device Types
+
+Mobile, Laptop, Tablet, Camera, Headphone, Console, Drone, TV, AC, Desktop, Mac, Watch
+
+### 7.2 Tiers System
+
+Devices are classified into three tiers:
+
+| Tier   | Level     | Description                                                             |
+| ------ | --------- | ----------------------------------------------------------------------- |
+| Tier 1 | Premium   | High-demand, flagship devices (e.g., iPhone 16 Pro Max, Samsung Z Fold) |
+| Tier 2 | Mid-range | Mid-segment devices                                                     |
+| Tier 3 | Budget    | Budget devices                                                          |
+
+**Impact:** Controls vendor access to orders. Vendor tier must meet order's minimum tier requirement to see it in Available Orders.
+
+### 7.3 Credit System
+
+- 1 Credit = ₹10
+
+- Credits are a prepaid balance in the vendor wallet
+
+- Deducted only on **successful** unlocks
+
+- Purchase → QR payment → Admin approval → Available for use
+
+- Laptop credits: based on price range (with vendor type override option)
+
+- Credit check, Max Lead check, and order limit check are all independent gates at unlock time
+
+### 7.4 Order Status System
+
+**Primary Statuses:**
+
+| Status     | Meaning                                     |
+| ---------- | ------------------------------------------- |
+| New        | Pre-confirmation state                      |
+| Generated  | Order confirmed, awaiting vendor assignment |
+| InProgress | Vendor actively working on the order        |
+| Completed  | Successfully completed                      |
+| Failed     | Order failed                                |
+| Reserved   | On hold for vendor (insufficient credits)   |
+
+**Secondary Statuses (more granular):** Initiated → OrderGenerated → Assigned → OutForPickup → InspectionStarted → Completed / Failed / Reserved
+
+**Key gating rules:**
+
+- Customer can reschedule: only in `Generated` with no vendor assigned
+
+- Call Agent button: only after `Assigned`
+
+- Lead OTP sent to WhatsApp: on `OrderGenerated`
+
+- Vendor starts inspection: only after OTP verification with customer
+
+### 7.5 Vendor Types (1–3)
+
+Admin assigns vendor type (Type 1, 2, 3) based on submitted registration details. This controls:
+
+- Which orders vendors can access
+
+- Credit requirements for laptop unlocks
+
+### 7.6 Customer Account Blocking
+
+Admins can block customer accounts from the Admin Panel. Blocked customers cannot proceed through order flows.
+
+### 7.7 Customer Order Flow Blocking System
+
+System-level rules that can block customers from creating new orders based on configurable criteria (e.g., outstanding issues, fraud signals).
+
+### 7.8 Reserved Order Feature
+
+When a vendor has an active order for a customer and the same customer creates more orders:
+
+- The new leads auto-link to that vendor (same customer flow)
+
+- If vendor lacks credits → new orders go to `Reserved` status
+
+- Once credits are added and vendor unlocks → orders move to `InProgress`
+
+### 7.9 Body Condition Selection Logic
+
+Customer-facing condition selection UI maps to internal condition codes (B1–B4), which map to deduction values stored in class data.
+
+### 7.10 Device Assessment Workflow
+
+Structured Q\&A workflow for both customers (at order creation) and vendors (at inspection). Condition answers map to device class and drive final pricing.
+
+### 7.11 Classes System
+
+Each device variant belongs to a **class**, which contains:
+
+- Dead price
+
+- Warranty deduction values (W1–W4)
+
+- Body condition deductions (B1–B4)
+
+- Screen condition deductions (S1–S5 or S1–S4 for laptops)
+
+- Physical condition deductions (P1–P4)
+
+- Technical fault deductions (T1–T15)
+
+- Accessory deductions (A1–A4)
+
+### 7.12 Pricing System
+
+Admin-configured pricing per device variant and class. Prices flow dynamically to Website, Customer App, and Device Price Calculator.
+
+### 7.13 Vendor Tier Access Control
+
+Controls which device types (Phone, Mac, Tablet) specific vendor tiers can access and work with.
+
+---
+
+## 8. Referral & Wallet System
+
+### Core Referral Rules
+
+| Rule          | Detail                                                                   |
+| ------------- | ------------------------------------------------------------------------ |
+| Referral code | One permanent code per customer; works across all active programs        |
+| Usage         | Each new customer can use a referral code exactly once in their lifetime |
+| Permanence    | Deleting account and re-registering does NOT reset referral eligibility  |
+| Enforcement   | Based on phone number                                                    |
+
+### Reward Flow
+
+**Referee (new customer):**
+
+- Reward applied automatically at checkout
+
+- Based on device-generated price
+
+- Discount type: percentage or flat amount (with optional max cap)
+
+- Status: **Approved instantly**
+
+**Referrer (existing customer):**
+
+- Reward created after referee completes order
+
+- Based on **final completed order value** (vendor's completion price)
+
+- Status: **Pending → Admin approval → Credited to Wallet**
+
+### Cashkr Wallet
+
+- Stores only referral reward earnings
+
+- Withdrawals: UPI only, minimum ₹100, manually approved
+
+- Completely separate from device sale payouts
+
+---
+
+## 9. Notifications
+
+Cashkr communicates with customers across **4 channels**: WhatsApp, Push, SMS, Email.
+
+| Notification          | Status   | Description                                         |
+| --------------------- | -------- | --------------------------------------------------- |
+| Order Placed          | Live     | Order confirmed; vendor to be assigned              |
+| Vendor Assigned       | Live     | Verified pickup partner assigned                    |
+| Vendor Out for Pickup | Live     | Vendor on the way                                   |
+| Pickup Reminder       | Live     | Morning of pickup day; prep checklist               |
+| Requote Done          | Live     | New quote after inspection                          |
+| Unable to Reach       | Live     | Vendor couldn't connect; call back prompt           |
+| Order Rescheduled     | Live     | Pickup rescheduled confirmation                     |
+| Order Completed       | Live     | Payout confirmed; review request                    |
+| Inspection Started    | Live     | Inspection code sent to customer (WhatsApp + Email) |
+| Pickup Delayed        | Live     | Delay due to high load                              |
+| Sign Up/Login OTP     | Live     | OTP for authentication                              |
+| Delete Account        | Live     | Account deletion confirmation                       |
+| Order Failed          | Not live | —                                                   |
+| Abandoned Cart 1      | Not live | First cart abandonment (EXTRA200 code)              |
+| Abandoned Cart 2      | Not live | Second cart abandonment follow-up (EXTRA350 code)   |
+| Payment OTP           | Not live | —                                                   |
+| Payment Confirmation  | Not live | —                                                   |
+
+**Inspection Code flow:** Customer receives a unique inspection code on WhatsApp and email. They share it with the vendor on-site to authorize the inspection to begin — a security measure to ensure only the official Cashkr partner proceeds.
+
+---
+
+## 10. Store App
+
+The Store App is for store-based vendor partners who handle walk-in customers.
+
+- **Store Vendor Login:** Separate login for store partners
+
+- **Cashkr Store Flow:** Store-based device intake flow
+
+- **Customer Walk-In Flow — Sell Device:** In-person assessment and order creation
+
+- Completed and failed store orders tracked in Admin Panel → Store section
+
+---
+
+## 11. Content & CMS Systems
+
+### Cashkr Web Article Strapi
+
+Content management for the Cashkr website articles:
+
+- **Articles** — Published marketing/editorial content
+
+- **Media Library** — Image and asset management
+
+- **Categories / Authors / Comments** — Content organization
+
+- **Users** — CMS user management
+
+- **Content Type Builder** — Schema management
+
+### BigBoldTech Website (BBT)
+
+Separate Strapi instance for the BigBoldTech corporate website:
+
+- Articles, Categories, Authors, Comments, Users, Media Library
+
+- Special Offers and Deals management
+
+- Similar structure to Cashkr Web Strapi
+
+### BigBoldTech Website Features
+
+- Browse Articles, Comment on Articles
+
+- Special Offers and Deals pages
+
+- Search Functionality
+
+- Newsletter Subscription
+
+---
+
+## 12. Analytics & Events
+
+### Event Implementation Guide
+
+Structured analytics tracking across Web and App using a common event schema. Events cover:
+
+- User actions (login, registration, device selection, order placement)
+
+- Funnel steps (serviceability check, Q\&A completion, price shown, order confirmed)
+
+- Engagement (coupon applied, reschedule, referral shared)
+
+---
+
+## 13. Tools & Infrastructure
+
+### AI Tools
+
+Used for content creation, research, and automation.
+
+### Marketing Stack
+
+- **SEO & Analytics:** SEO tools, Google Analytics, Tag Manager, Reporting
+
+- **Advertising:** Paid advertising platforms
+
+- **Social Media:** Platform management
+
+- **ASO:** App Store Optimization for both apps
+
+- **Marketing & CX Automation:** CRM/automation tools
+
+- **Link & Engagement Utilities:** Short links, tracking
+
+### Tech Operations
+
+- **Hosting, Domains & Security:** Infrastructure management
+
+- **Monitoring & Automation:** Uptime and process automation
+
+- **App Release & Management:** CI/CD and release management
+
+- **Analytics, Tagging & Reporting:** Data pipeline
+
+### Team Tools
+
+- **Productivity & Team Tools:** Collaboration
+
+- **HR & Payroll:** People management
+
+- **Learning Platforms:** Internal training
+
+- **Document & Knowledge Management:** This documentation platform and others
+
+---
+
+## 14. Website SOPs (Standard Operating Procedures)
+
+The following documented SOPs exist for common website flows:
+
+- **Device Search & Sell Flow**
+
+- **User Registration & Login**
+
+- **Corporate Buyback**
+
+- **Reschedule Pickup**
+
+- **Track Order & Order Stages**
+
+- **Manage Payment Methods**
+
+- **Update User Details**
+
+- **Manage Addresses**
+
+- **Partner with Cashkr**
+
+- **Coupon Application**
+
+- **Logout and Delete Account**
+
+---
+
+## 15. Key Business Rules Quick Reference
+
+| Rule                    | Detail                                                                    |
+| ----------------------- | ------------------------------------------------------------------------- |
+| Login method            | Phone number + OTP only; no passwords                                     |
+| Phone immutability      | Phone number can never be changed after registration                      |
+| Max addresses           | 3 per customer                                                            |
+| Address snapshot        | Copied to order at confirmation; later edits don't affect existing orders |
+| Default payment         | Cash, if customer doesn't select UPI/Bank                                 |
+| Lead creation           | Triggered when logged-in user sees price but doesn't confirm order        |
+| Coupon discount         | Flat amount added to device value; never stacks                           |
+| Coupon platforms        | Each coupon targets Mobile, Web, or Both separately                       |
+| Reschedule availability | Only in `Generated` status with no vendor assigned                        |
+| Vendor unlock           | Requires sufficient credits AND below Max Lead cap                        |
+| Credit deduction        | Only on successful unlock, never on failed attempts                       |
+| Vendor type             | Set by admin only; vendors cannot select their own type                   |
+| Tier system             | 3 tiers; vendor tier must meet order's minimum tier                       |
+| Referral code           | Permanent; one per customer; usable once per new customer                 |
+| Referral eligibility    | Phone-number based; account deletion doesn't reset eligibility            |
+| Wallet withdrawals      | UPI only; min ₹100; manual approval                                       |
+| Dead device pricing     | If device doesn't turn on → return configured deadPrice immediately       |
+| Price floor             | If computed price ≤ 0 → return deadPrice                                  |
+| % deductions            | Always calculated from BASE price, not running total                      |
+
+---
+
+
+
