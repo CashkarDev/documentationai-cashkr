@@ -19,10 +19,6 @@
             "icon": "rocket",
             "pages": [
               {
-                "title": "Cashkr product Bibal",
-                "path": "cashkr-product-bibal"
-              },
-              {
                 "title": "Introduction",
                 "path": "introduction",
                 "icon": "home"
@@ -41,6 +37,16 @@
                 "title": "Emails of cashkr",
                 "path": "emails-of-cashkr",
                 "icon": "file-text"
+              },
+              {
+                "title": "Refund policy",
+                "path": "refund-policy",
+                "icon": "album"
+              },
+              {
+                "title": "Cashkr product Bibal",
+                "path": "cashkr-product-bibal",
+                "icon": "arrow-up-az"
               },
               {
                 "title": "Components",
@@ -136,10 +142,6 @@
           {
             "group": "Customer App",
             "pages": [
-              {
-                "title": "Refund policy",
-                "path": "refund-policy"
-              },
               {
                 "title": "Customer App Overview",
                 "path": "customer-app-overview"
