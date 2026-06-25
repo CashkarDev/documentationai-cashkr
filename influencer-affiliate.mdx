@@ -1,0 +1,395 @@
+---
+title: Influencer Affiliate System
+description: Understand how influencer codes, bonuses, commissions, tracking, and dashboard reporting work across the full affiliate lifecycle.
+---
+
+## Overview
+
+The Influencer Affiliate System lets the CASHKR team partner with influencers to drive customers to the platform. Each influencer is given a unique **code** (and a matching **referral link**). When a customer places an order using that code or link, the customer receives an **extra bonus**, and every interaction — from the first click to the completed order — is tracked and reported back to the admin panel.
+
+The system answers three questions for every influencer:
+
+<Columns cols={3}>
+  <Card title="Traffic & Orders" href="#admin-dashboard--influencer-affiliate" icon="users">
+    How much traffic and how many orders did they bring? Track funnel performance and compare codes on the leaderboard.
+  </Card>
+  <Card title="Conversion" href="#admin-dashboard--influencer-affiliate" icon="bar-chart">
+    See how well traffic converts through visits, leads, orders, and completed orders, including device split.
+  </Card>
+  <Card title="Cost" href="#admin-dashboard--influencer-affiliate" icon="wallet">
+    Measure what it costs through customer bonus paid and influencer payout.
+  </Card>
+</Columns>
+
+At a high level, the lifecycle works like this:
+
+<Steps>
+<Step title="Admin creates the code" icon="plus">
+
+The admin opens **Influencers** and creates a new influencer code with the bonus, commission, and optional validity window.
+
+</Step>
+<Step title="Influencer shares the code or link" icon="upload">
+
+The admin or influencer shares the code and referral link across channels such as Instagram, YouTube, WhatsApp, or a website.
+
+</Step>
+<Step title="Customer applies the code" icon="check-circle">
+
+The customer either clicks the link so the code is applied automatically or enters the code manually at checkout on the website or customer app.
+
+</Step>
+<Step title="Order and bonus are tracked" icon="database">
+
+When the customer places an order, the extra customer bonus is attached to that order and the visit, lead, and order are recorded against the code.
+
+</Step>
+<Step title="Admin reviews dashboard reporting" icon="bar-chart">
+
+The Influencer dashboard and per-influencer page show visits, leads, orders, conversions, bonus paid, and payout.
+
+</Step>
+</Steps>
+
+## Key Concepts & Glossary
+
+<Expandable title="View full glossary" default-open="false">
+
+| Term                        | Meaning                                                                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Influencer code**         | A unique alphanumeric code (e.g. `SHARU20`) tied to one influencer.                                                        |
+| **Influencer link**         | A shareable URL carrying the code so it is applied automatically when the customer arrives.                                |
+| **Customer bonus**          | The extra amount (₹) a customer receives for ordering through the code. Set per influencer when the code is created.       |
+| **Commission %**            | The percentage payout owed to the influencer (separate from the customer bonus).                                           |
+| **Visit**                   | A click/landing on the platform through the code or link.                                                                  |
+| **Unique visitor**          | A distinct visitor (de-duplicated), regardless of how many times they clicked.                                             |
+| **Lead**                    | A visitor who started/expressed intent (e.g. requested a quote) but has not yet placed an order.                           |
+| **Order**                   | A submitted order attached to the influencer code.                                                                         |
+| **Completed / Done**        | An order that has reached its final, successful state.                                                                     |
+| **Failed**                  | An order that did not complete.                                                                                            |
+| **Quote / Requote / Final** | The price journey of a CASHKR order: the initial quoted amount, an optional vendor revision, and the final settled amount. |
+| **Payout**                  | The amount owed to the influencer based on commission.                                                                     |
+| **Bonus paid**              | The total customer bonus disbursed against the code.                                                                       |
+| **UTM source**              | The traffic source label captured from the link (e.g. Instagram, direct).                                                  |
+
+</Expandable>
+
+## Roles in the System
+
+| Role           | Responsibility                                                                                              |
+| -------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Admin**      | Creates influencer codes, sets the bonus/commission, shares codes/links, and monitors performance.          |
+| **Influencer** | Shares their code/link on social media or anywhere else to drive customers.                                 |
+| **Customer**   | Applies the influencer code at checkout (web or app) to receive the bonus.                                  |
+| **Vendor**     | Reviews the order and may revise (requote) the price. The requote does **not** affect the influencer bonus. |
+
+## End-to-End Lifecycle
+
+1. **Create** — The admin opens *Influencers* and clicks **+ New code**, fills the form, and creates a code.
+
+2. **Share** — The admin (or influencer) copies the code and the influencer link and shares them. The influencer can post **anywhere** — Instagram, YouTube, WhatsApp, a website, etc. The platform field is just a label and is optional.
+
+3. **Apply** — A customer either clicks the link (code applied automatically) or types the code in the **checkout page of the website or customer app**.
+
+4. **Order & bonus** — When the customer places the order, the **extra customer bonus** is attached to that order. The visit/lead/order is recorded against the influencer code.
+
+5. **Report** — Everything (visits, leads, orders, conversions, bonus, payout) appears in the Influencer dashboard and the per-influencer drill-down page.
+
+## Creating an Influencer Code
+
+Open **Dashboards → Influencers** and click **+ New code** (top-right). The *New influencer code* form appears.
+
+> *"The code is auto-generated from the name unless you provide one."*
+
+<Steps>
+<Step title="Open Influencers" icon="home">
+
+Open **Dashboards → Influencers**.
+
+</Step>
+<Step title="Click + New code" icon="plus">
+
+Click **+ New code** in the top-right corner.
+
+</Step>
+<Step title="Fill the form" icon="edit">
+
+Enter the influencer details, optional custom code, platform label, contact information, customer bonus, commission percentage, and any validity dates.
+
+</Step>
+<Step title="Click Create code" icon="check-circle">
+
+Click **Create code** to save, or **Cancel** to discard.
+
+</Step>
+</Steps>
+
+### Field reference
+
+| Field                  | Required | Description                                                                                                    | Notes / Default                       |
+| ---------------------- | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| **Name**               | ✅ Yes    | The influencer's display name (e.g. *Riya Sharma*). Used to auto-generate the code.                            | —                                     |
+| **Code (optional)**    | No       | A custom code. If left blank, it is auto-generated from the name.                                              | Placeholder shows **Auto**.           |
+| **Platform**           | No       | The social platform label (dropdown). Purely informational — the influencer can still share the code anywhere. | **Select** (optional)                 |
+| **Contact**            | No       | The influencer's phone, email, or social handle.                                                               | Placeholder: *Phone / email / handle* |
+| **Customer bonus (₹)** | No       | The extra amount the **customer** receives when ordering through this code.                                    | Default **500**                       |
+| **Commission %**       | No       | The percentage payout owed to the **influencer**.                                                              | Default **0**                         |
+| **Valid from**         | No       | The date the code becomes active.                                                                              | `mm/dd/yyyy`                          |
+| **Valid until**        | No       | The date the code expires.                                                                                     | `mm/dd/yyyy`                          |
+
+<Callout kind="info">
+
+### Important distinctions
+
+- **Customer bonus** benefits the *customer*. **Commission %** is what the *influencer* earns. A code can have a customer bonus of ₹0 (e.g. `SHAHID21` in the leaderboard) — it still tracks traffic and orders, just without giving the customer an extra bonus.
+
+- **Code is unique.** Auto-generated codes combine the name with a number (e.g. `SHARU20`, `SHAHID21`, `TESTCODE63`) to keep them distinct.
+
+- **Platform is a label only.** Leaving it as *Select* does not restrict sharing.
+
+</Callout>
+
+## Sharing the Code & Link
+
+After creation, every code can be distributed in two ways:
+
+1. **Code** — e.g. `SHARU20`. The customer types this manually at checkout.
+
+2. **Influencer link** — a URL that carries the code so it is applied automatically when the customer lands on the site/app.
+
+On the dashboard **Leaderboard**, each row has an **Actions** column with quick controls to **copy**, **edit**, and **open** the influencer's page. On the per-influencer page, a **Share link** button (top-right) provides the shareable link directly.
+
+The influencer then posts the code/link on their channels. Because the **Platform** field is optional and non-restrictive, the same code works regardless of where it was shared. The actual source of each visit is captured separately as a **UTM source** (see §8.4).
+
+## Customer Experience
+
+A customer can redeem an influencer code in two ways:
+
+- **Via the link** — Clicking the influencer link opens the website/app with the code already applied.
+
+- **Manually** — Entering the code in the **checkout page of the website or customer app**.
+
+When a valid code is applied, the **customer bonus** configured for that code is added to the order. This is the customer's incentive to use the influencer's code.
+
+## Bonus Mechanism & the Requote Rule
+
+CASHKR orders move through a price journey: an initial **Quote**, an optional vendor **Requote**, and a settled **Final** amount.
+
+<Callout kind="alert">
+
+### Requote Rule
+
+**If the vendor requotes (revises) the order, the influencer code bonus stays the same on that order.**
+
+</Callout>
+
+In other words, the customer bonus is **locked at the value set on the code** at the time the order is placed. A vendor lowering or changing the quote does **not** reduce or remove the bonus the customer is entitled to. This keeps the customer's promised reward stable even when the order's underlying price changes during vendor review.
+
+**Example (from the per-influencer Customers table):**
+
+| Quoted  | Requote | Final        | Bonus                    |
+| ------- | ------- | ------------ | ------------------------ |
+| ₹49,740 | ₹44,590 | ₹0 (pending) | unchanged by the requote |
+
+Even though the vendor requoted ₹49,740 down to ₹44,590, the influencer bonus on the order is unaffected.
+
+## Admin Dashboard — *Influencer Affiliate*
+
+The main dashboard is titled **Influencer Affiliate** with the subtitle *"Funnel, payouts and code performance across all influencers."* A **date-range picker** (top-right, e.g. *Jun 01, 2026 – Jun 25, 2026*) scopes every metric on the page, alongside a **refresh** button and **+ New code**.
+
+<Tabs>
+<Tab title="KPI Cards" icon="bar-chart">
+
+### Top KPI cards
+
+A row of summary cards aggregates all codes for the selected date range:
+
+| Card                | Meaning                                         |
+| ------------------- | ----------------------------------------------- |
+| **Visits**          | Total clicks/landings across all codes.         |
+| **Unique visitors** | Distinct visitors (de-duplicated).              |
+| **Leads**           | Visitors who showed intent.                     |
+| **Orders placed**   | Orders attributed to influencer codes.          |
+| **Completed**       | Orders that reached the final successful state. |
+| **Payout**          | Total influencer payout owed (₹).               |
+| **Bonus paid**      | Total customer bonus disbursed (₹).             |
+
+</Tab>
+<Tab title="Funnel" icon="arrow-right">
+
+### Funnel (Visits → Completed)
+
+A bar chart visualizes drop-off through the stages:
+
+```typescript
+Visits  →  Unique  →  Leads  →  Orders  →  Completed
+```
+
+This makes it easy to see where customers fall out of the journey (for example, many leads but few completed orders).
+
+</Tab>
+<Tab title="Conversion & Devices" icon="monitor">
+
+### Conversion & Devices
+
+Three conversion ratios plus a device breakdown:
+
+| Ratio            | Meaning                            |
+| ---------------- | ---------------------------------- |
+| **Visit → Lead** | Share of visits that became leads. |
+| **Lead → Order** | Share of leads that became orders. |
+| **Order → Done** | Share of orders that completed.    |
+
+> **Note on >100% conversion:** Visit → Lead can exceed 100% (e.g. *181.8%*) because a single visit/visitor can generate multiple leads, and leads may also arrive from sources not counted as a tracked "visit". Treat these as directional indicators rather than strict percentages.
+
+The **device** rows show how leads and orders split by device, e.g.:
+
+- *Mobile — 18 leads · 13 orders*
+
+- *Tablet — 2 leads · 2 orders*
+
+</Tab>
+<Tab title="Leaderboard" icon="users">
+
+### Leaderboard
+
+One row per code — *"click to drill down"*. Columns:
+
+| Column         | Meaning                                                           |
+| -------------- | ----------------------------------------------------------------- |
+| **Influencer** | Influencer display name.                                          |
+| **Code**       | The unique code.                                                  |
+| **Status**     | Code status (e.g. **ACTIVE**).                                    |
+| **Bonus**      | The customer bonus configured on the code (₹).                    |
+| **Visits**     | Clicks/landings via the code.                                     |
+| **Unique**     | Distinct visitors.                                                |
+| **Leads**      | Leads generated.                                                  |
+| **Orders**     | Orders placed.                                                    |
+| **Done**       | Completed orders.                                                 |
+| **Failed**     | Orders that did not complete.                                     |
+| **Payout**     | Influencer payout owed (₹).                                       |
+| **Conv.**      | Conversion indicator for the code.                                |
+| **Actions**    | Quick controls: **copy**, **edit**, **open** the influencer page. |
+
+**Example rows:**
+
+| Influencer   | Code       | Status | Bonus | Visits | Unique | Leads | Orders | Done | Failed | Payout | Conv.  |
+| ------------ | ---------- | ------ | ----- | ------ | ------ | ----- | ------ | ---- | ------ | ------ | ------ |
+| TestCode     | TESTCODE63 | ACTIVE | ₹500  | 6      | 3      | 12    | 8      | 0    | 0      | ₹0     | 200.0% |
+| Sharukh Khan | SHARU20    | ACTIVE | ₹300  | 1      | 1      | 6     | 5      | 0    | 0      | ₹0     | 600.0% |
+| Shahid       | SHAHID21   | ACTIVE | ₹0    | 4      | 2      | 2     | 0      | 0    | 0      | ₹0     | 50.0%  |
+
+Clicking any row opens that influencer's detailed page (§10).
+
+</Tab>
+</Tabs>
+
+## Influencer Drill-Down Page
+
+Reached by clicking a leaderboard row (or the **open** action). It shows everything for a single code.
+
+<Tabs>
+<Tab title="Header & KPIs" icon="users">
+
+### Header
+
+- Influencer name and status (e.g. **Sharukh Khan — ACTIVE**)
+
+- Code, platform, and bonus summary line (e.g. *SHARU20 · Instagram · Bonus ₹300*)
+
+- **Share link** button (top-right) to copy the influencer's shareable URL
+
+- The same **date-range picker** scopes this page
+
+### KPI cards
+
+Same metric family as the dashboard, scoped to this one code: **Visits, Unique, Leads, Orders, Completed, Failed, Payout, Bonus paid.**
+
+</Tab>
+<Tab title="Charts & Traffic" icon="bar-chart">
+
+### Conversion ratios
+
+- **Visit → Lead**
+
+- **Lead → Order**
+
+- **Order → Completed**
+
+### Daily activity
+
+A time-series area chart plotting **Clicks · Leads · Orders** day by day over the selected range, so you can see momentum and spikes.
+
+### Traffic sources (by UTM source)
+
+A breakdown of where the traffic came from (e.g. *(direct)*). This is how the system records the *actual* origin of visits, independent of the optional Platform label on the code.
+
+</Tab>
+<Tab title="Customers Table" icon="database">
+
+### Customers table — *"The people behind this code"*
+
+Lists every customer who used the code (with a **record count** and an **All statuses** filter). Columns:
+
+| Column       | Meaning                                                         |
+| ------------ | --------------------------------------------------------------- |
+| **Customer** | Name and email of the customer.                                 |
+| **Phone**    | Customer phone number.                                          |
+| **Status**   | Order status (e.g. **InProgress**).                             |
+| **Device**   | Device used (e.g. Mobile).                                      |
+| **City**     | Customer city.                                                  |
+| **Quoted**   | Initial quoted amount (₹).                                      |
+| **Requote**  | Vendor-revised amount, if any (₹), else **—**.                  |
+| **Final**    | Final settled amount (₹).                                       |
+| **Bonus**    | Influencer bonus on the order (locked — unaffected by requote). |
+| **Date**     | Order date.                                                     |
+
+This table is where the **Requote Rule** (§8) is observed in practice: the **Quoted**, **Requote**, and **Final** columns show the price journey, while **Bonus** remains tied to the code's configured value.
+
+</Tab>
+</Tabs>
+
+## Metric Definitions & Formulas
+
+| Metric                       | Definition                                                                   |
+| ---------------------------- | ---------------------------------------------------------------------------- |
+| **Visit → Lead**             | Leads ÷ Visits, shown as a percentage. Can exceed 100% (see §9.3).           |
+| **Lead → Order**             | Orders ÷ Leads, as a percentage.                                             |
+| **Order → Done / Completed** | Completed orders ÷ Orders, as a percentage.                                  |
+| **Bonus paid**               | Sum of customer bonuses disbursed for completed/eligible orders on the code. |
+| **Payout**                   | Influencer earnings, derived from **Commission %** and qualifying orders.    |
+| **Conv. (leaderboard)**      | A single conversion indicator summarizing the code's funnel performance.     |
+
+> All metrics respect the active **date range**. Changing the range recalculates every card, chart, and table.
+
+## Status Reference
+
+| Entity    | Status               | Meaning                                                     |
+| --------- | -------------------- | ----------------------------------------------------------- |
+| **Code**  | ACTIVE               | The code is live and can be used.                           |
+| **Code**  | (Inactive / Expired) | Outside its *Valid from / Valid until* window, or disabled. |
+| **Order** | InProgress           | Order placed but not yet completed.                         |
+| **Order** | Completed / Done     | Order finished successfully.                                |
+| **Order** | Failed               | Order did not complete.                                     |
+
+## Business Rules Summary
+
+<Callout kind="info">
+
+### Business Rules
+
+- **Codes are unique.** Auto-generated from the name (with a number) unless a custom code is provided.
+
+- **Platform is optional and non-restrictive.** The influencer may share the code/link anywhere; the real source is captured as a UTM source.
+
+- **Customer bonus ≠ Commission.** The bonus rewards the customer; the commission pays the influencer. Either can be zero.
+
+- **Bonus is locked at order time.** A vendor **requote does not change** the influencer bonus on that order.
+
+- **Two redemption paths.** Customers can use the influencer link (auto-applied) or type the code at checkout on the website or customer app.
+
+- **Validity window.** A code is only usable between *Valid from* and *Valid until* (if set).
+
+- **Everything is date-scoped.** All dashboard and drill-down metrics follow the selected date range.
+
+</Callout>

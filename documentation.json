@@ -343,6 +343,10 @@
                 "path": "cashkr-referral-system"
               },
               {
+                "title": "Influencer Affiliate",
+                "path": "influencer-affiliate"
+              },
+              {
                 "title": "Device Pricing Fields Overview",
                 "path": "device-pricing-fields-overview"
               }
