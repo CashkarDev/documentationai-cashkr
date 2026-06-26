@@ -1,0 +1,319 @@
+---
+title: Influencers
+description: Find the Influencers dashboard, create and manage influencer codes, review performance metrics, and investigate code-level customer activity.
+---
+
+## Accessing the Section
+
+Use the Influencers dashboard to monitor funnel performance, payouts, and code performance across all influencers.
+
+<Steps>
+<Step title="Log in">
+
+Log in to the CASHKR admin panel.
+
+</Step>
+<Step title="Open Dashboards">
+
+In the left sidebar, open **Dashboards**.
+
+</Step>
+<Step title="Click Influencers">
+
+Under the **OPERATING** group, click **Influencers**.
+
+The **Influencer Affiliate** page opens, subtitled *"Funnel, payouts and code performance across all influencers."*
+
+</Step>
+</Steps>
+
+<Callout kind="info">
+
+The Influencers item sits alongside Growth, Operations / SLA, CX & Reviews, Vendors, Inventory & Pricing, Coupons, and Referrals in the same Dashboards group.
+
+</Callout>
+
+## Page Layout at a Glance
+
+The Influencers section has two screens.
+
+| Screen | How you reach it | What it shows |
+| --- | --- | --- |
+| **Affiliate dashboard** | Default screen on opening Influencers | All codes combined — KPIs, funnel, conversions, leaderboard. |
+| **Influencer drill-down** | Click any leaderboard row (or its *open* action) | A single code — its KPIs, daily activity, traffic sources, and customers. |
+
+## Top Toolbar Controls
+
+The top-right toolbar controls the reporting window and page actions.
+
+| Control | Function |
+| --- | --- |
+| **Date range** (e.g. *Jun 01, 2026 – Jun 25, 2026*) | Scopes every card, chart, and table on the page. Changing it recalculates all metrics. |
+| **Refresh** (circular arrow) | Reloads the latest data for the current date range. |
+| **+ New code** | Opens the *New influencer code* form (see Creating a New Code). |
+
+<Callout kind="tip">
+
+Always confirm the date range before reading numbers — a low "Visits" or "Orders" figure is often just a narrow date window, not poor performance.
+
+</Callout>
+
+## KPI Cards
+
+A row of summary cards aggregates every code for the selected date range.
+
+| Card | What it tells you |
+| --- | --- |
+| **Visits** | Total clicks/landings through all codes and links. |
+| **Unique visitors** | Distinct visitors (de-duplicated). |
+| **Leads** | Visitors who showed intent (e.g. requested a quote). |
+| **Orders placed** | Orders attributed to influencer codes. |
+| **Completed** | Orders that reached the final successful state. |
+| **Payout** | Total influencer payout owed (₹). |
+| **Bonus paid** | Total customer bonus disbursed (₹). |
+
+## Funnel
+
+The funnel chart shows how customers move from first visit to completed order.
+
+```typescript
+Visits  →  Unique  →  Leads  →  Orders  →  Completed
+```
+
+<Callout kind="info">
+
+Use the funnel to spot bottlenecks. For example, plenty of leads but very few completed orders points to a drop-off after the order stage.
+
+</Callout>
+
+## Conversion & Devices
+
+Three conversion ratios and a device split help you read traffic quality and order completion.
+
+| Ratio | Reads as |
+| --- | --- |
+| **Visit → Lead** | Leads ÷ Visits |
+| **Lead → Order** | Orders ÷ Leads |
+| **Order → Done** | Completed ÷ Orders |
+
+The **device** lines below show how leads and orders break down by device, e.g. *Mobile — 18 leads · 13 orders* and *Tablet — 2 leads · 2 orders*.
+
+<Callout kind="info">
+
+**Why a rate can exceed 100%**
+
+Visit → Lead may read above 100% (e.g. *181.8%*) because one visit/visitor can create multiple leads, and some leads aren't tied one-to-one to a tracked visit. Treat these as directional indicators.
+
+</Callout>
+
+## Creating a New Code
+
+Create a new influencer code from the toolbar when you need to onboard a new influencer or issue a new campaign code.
+
+<Steps>
+<Step title="Click + New code">
+
+Click **+ New code** in the top-right toolbar.
+
+</Step>
+<Step title="Review the dialog">
+
+The *New influencer code* dialog opens — *"The code is auto-generated from the name unless you provide one."*
+
+</Step>
+<Step title="Fill the fields">
+
+Enter the code details.
+
+| Field | Required | What to enter |
+| --- | --- | --- |
+| **Name** | ✅ Yes | Influencer's display name (e.g. *Riya Sharma*). The code is generated from this. |
+| **Code (optional)** | No | A custom code. Leave blank to auto-generate (placeholder: **Auto**). |
+| **Platform** | No | Social platform label (dropdown). Informational only — sharing isn't restricted. |
+| **Contact** | No | Phone, email, or social handle. |
+| **Customer bonus (₹)** | No | Extra amount the **customer** gets for ordering through this code. Default **500**. |
+| **Commission %** | No | Percentage payout owed to the **influencer**. Default **0**. |
+| **Valid from** | No | Date the code activates (`mm/dd/yyyy`). |
+| **Valid until** | No | Date the code expires (`mm/dd/yyyy`). |
+
+<Callout kind="info">
+
+*Customer bonus* rewards the customer; *Commission %* pays the influencer. Either can be set to 0.
+
+</Callout>
+
+</Step>
+<Step title="Create or cancel">
+
+Click **Create code** to save, or **Cancel** to discard.
+
+</Step>
+</Steps>
+
+## Leaderboard
+
+The leaderboard shows one row per code and lets you compare performance across all influencers.
+
+Subtitle: *"One row per code — click to drill down."*
+
+| Column | Meaning |
+| --- | --- |
+| **Influencer** | Influencer name. |
+| **Code** | The unique code. |
+| **Status** | e.g. **ACTIVE**. |
+| **Bonus** | Customer bonus configured on the code (₹). |
+| **Visits** | Clicks/landings via the code. |
+| **Unique** | Distinct visitors. |
+| **Leads** | Leads generated. |
+| **Orders** | Orders placed. |
+| **Done** | Completed orders. |
+| **Failed** | Orders that did not complete. |
+| **Payout** | Influencer payout owed (₹). |
+| **Conv.** | Conversion indicator for the code. |
+| **Actions** | Quick controls (see Row Actions). |
+
+**Sample rows:**
+
+| Influencer | Code | Status | Bonus | Visits | Unique | Leads | Orders | Done | Failed | Payout | Conv. |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TestCode | TESTCODE63 | ACTIVE | ₹500 | 6 | 3 | 12 | 8 | 0 | 0 | ₹0 | 200.0% |
+| Sharukh Khan | SHARU20 | ACTIVE | ₹300 | 1 | 1 | 6 | 5 | 0 | 0 | ₹0 | 600.0% |
+| Shahid | SHAHID21 | ACTIVE | ₹0 | 4 | 2 | 2 | 0 | 0 | 0 | ₹0 | 50.0% |
+
+Click a row to open that influencer's drill-down page.
+
+### Row Actions
+
+Each leaderboard row has an **Actions** column with three controls.
+
+| Action | Icon | Use it to |
+| --- | --- | --- |
+| **Copy** | ⧉ | Copy the influencer's code/link for sharing. |
+| **Edit** | ✎ | Open the code to change its details (bonus, commission, validity, etc.). |
+| **Open** | ⬈ | Jump to the influencer's drill-down page. |
+
+## Influencer Drill-Down Page
+
+The drill-down page opens from a leaderboard row and scopes every metric to one code.
+
+<Tabs>
+<Tab title="Header & KPIs" icon="bar-chart">
+
+### Header
+
+- Influencer name + status (e.g. **Sharukh Khan — ACTIVE**)
+- Summary line: code, platform, bonus (e.g. *SHARU20 · Instagram · Bonus ₹300*)
+- **Share link** button (top-right) to copy the shareable URL
+- The same **date-range picker** as the dashboard
+- A **back arrow** to return to the leaderboard
+
+### KPI cards
+
+Scoped to this code: **Visits, Unique, Leads, Orders, Completed, Failed, Payout, Bonus paid.**
+
+### Conversion ratios
+
+**Visit → Lead**, **Lead → Order**, **Order → Completed**.
+
+</Tab>
+<Tab title="Charts & Traffic" icon="bar-chart">
+
+### Daily activity
+
+A time-series chart plotting **Clicks · Leads · Orders** by day across the selected range.
+
+### Traffic sources (by UTM source)
+
+Where the traffic actually came from (e.g. *(direct)*) — captured independently of the optional Platform label on the code.
+
+</Tab>
+<Tab title="Customers Table" icon="users">
+
+### Customers table — *"The people behind this code"*
+
+Shows a **record count** and an **All statuses** filter. Columns:
+
+| Column | Meaning |
+| --- | --- |
+| **Customer** | Name and email. |
+| **Phone** | Customer phone. |
+| **Status** | Order status (e.g. **InProgress**). |
+| **Device** | Device used. |
+| **City** | Customer city. |
+| **Quoted** | Initial quoted amount (₹). |
+| **Requote** | Vendor-revised amount, if any (else **—**). |
+| **Final** | Final settled amount (₹). |
+| **Bonus** | Influencer bonus on the order (stays the same even if the order is requoted). |
+| **Date** | Order date. |
+
+<Callout kind="alert">
+
+When a vendor requotes an order, the influencer bonus on that order does **not** change — it's locked to the value set on the code at order time.
+
+</Callout>
+
+</Tab>
+</Tabs>
+
+## Common Admin Tasks
+
+<ExpandableGroup>
+<Expandable title="Onboard a new influencer">
+
+**Steps:** + New code → enter Name (and optional Code/Platform/Contact) → set Customer bonus & Commission % → set validity → Create code.
+
+</Expandable>
+<Expandable title="Share a code">
+
+**Steps:** Leaderboard → row **Copy** action, or open the drill-down → **Share link**.
+
+</Expandable>
+<Expandable title="Change a code's bonus or validity">
+
+**Steps:** Leaderboard → row **Edit** action → update fields → save.
+
+</Expandable>
+<Expandable title="Check a single influencer's performance">
+
+**Steps:** Click the leaderboard row (or **Open**) → review KPIs, daily activity, and customers.
+
+</Expandable>
+<Expandable title="Compare all influencers">
+
+**Steps:** Stay on the dashboard → scan the leaderboard's Visits/Leads/Orders/Conv. columns.
+
+</Expandable>
+<Expandable title="Investigate a customer's order">
+
+**Steps:** Drill-down → Customers table → review Quoted/Requote/Final and Status.
+
+</Expandable>
+<Expandable title="Report on a period">
+
+**Steps:** Set the date range → read KPI cards, funnel, and leaderboard for that window.
+
+</Expandable>
+</ExpandableGroup>
+
+## Tips & Troubleshooting
+
+<Callout kind="tip">
+
+- **Numbers look low?** Check the date range first — it scopes the entire section.
+- **Stale data?** Use the **Refresh** button to pull the latest figures.
+- **Code didn't auto-generate as expected?** It's derived from the **Name**; supply a custom **Code** if you need a specific value.
+- **Influencer shared on a platform you didn't set?** That's fine — Platform is a label only; the real origin appears under **Traffic sources (UTM)** on the drill-down page.
+- **Conversion above 100%?** Expected in some cases (see Conversion & Devices) — interpret directionally.
+- **Bonus didn't change after a requote?** Correct — bonus is intentionally locked at order time.
+
+</Callout>
+
+## Quick Reference — Statuses
+
+| Entity | Status | Meaning |
+| --- | --- | --- |
+| **Code** | ACTIVE | Live and usable. |
+| **Code** | Inactive / Expired | Outside its Valid from/until window or disabled. |
+| **Order** | InProgress | Placed, not yet completed. |
+| **Order** | Completed / Done | Finished successfully. |
+| **Order** | Failed | Did not complete. |

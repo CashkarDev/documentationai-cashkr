@@ -56,8 +56,14 @@ Use this SOP when implementing or QA-ing the coupon field on the checkout page s
   - **Device type**: Restrict coupons to specific device categories or models when required.
   - **Platform**: Apply rules based on where the user is placing the order (for example, web vs app vs other supported platforms).
 
+- **Code-only (Private) coupons**
+
+  - These coupons do not appear in checkout offers — customers must type the code manually to apply them.
+  - Device, price, and brand restrictions are not enforced; any customer who enters the code can redeem it.
+
 ### Edge cases
 
 - Invalid or expired coupon code entered.
 - Coupon already used by the same user where the rule allows single use only.
 - Coupon conditions not met (for example, wrong device type, user type, or platform) even if the code itself is valid.
+- Code-only (Private) coupon entered by a customer who did not receive it through the intended channel — the system still validates and applies it since restrictions are not enforced for this type.

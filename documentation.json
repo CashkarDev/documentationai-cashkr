@@ -713,6 +713,10 @@
                     "path": "coupons"
                   },
                   {
+                    "title": "Influencers",
+                    "path": "influencers"
+                  },
+                  {
                     "title": "Referrals",
                     "path": "referrals"
                   }
