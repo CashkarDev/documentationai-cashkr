@@ -1,0 +1,246 @@
+---
+title: Merchandise Store
+description: Browse the catalogue, add products to your cart, pay with PhonePe, and track your merchandise orders — all from the vendor app.
+---
+
+## Overview
+
+Buy company-branded merchandise such as uniforms, banners, signage, promotional kits, and packaging directly from the Vendor App. The store lets you browse available products, place orders, pay through PhonePe, and track delivery status without leaving the app.
+
+PhonePe is the only payment method for merchandise orders. The app shows product availability and order status in real time, so you can see what is available before you place an order.
+
+For the full feature overview, data model, and business rules, see [Merchandise Store](/merchandise-store).
+
+## Accessing the store
+
+Open **Merchandise** from the bottom navigation or the side menu in the Vendor App. The store opens with a search bar, filters, sorting options, and a cart icon that shows your current item count.
+
+<Callout kind="info">
+
+Only approved, active vendors can access the Merchandise section. If you do not see **Merchandise** in the app, contact your admin to verify your vendor status.
+
+</Callout>
+
+## Browsing the catalogue
+
+Browse all active products from the catalogue screen. Products appear in a grid or list view and load as you scroll, with pull-to-refresh available when you want to check for stock or price updates.
+
+Each product card shows:
+- Primary image
+- Product name
+- Price
+- Availability tag such as **In Stock**, **Only X left**, or **Out of Stock**
+- **Add to Cart** button
+
+If a product is out of stock, the **Add to Cart** button is disabled. If no products match your search or filters, the app shows an empty state instead of a blank list.
+
+Use the controls at the top of the page to narrow the catalogue:
+- Search by product name or SKU
+- Filter by category
+- Filter by price range
+- Filter by availability
+- Sort by newest
+- Sort by price
+
+## Product detail page
+
+Open any product to see the full product detail page before adding it to your cart. This view gives you the information you need to confirm the right item, quantity, and current stock.
+
+The product detail page includes:
+- Image carousel
+- Product name
+- SKU
+- Price with tax note
+- Full description
+- Category
+- Available stock
+- Quantity selector
+- **Add to Cart** button
+
+The quantity selector starts at a minimum of 1. The maximum quantity is limited by current available stock or the product's maximum order quantity, whichever is lower.
+
+<Callout kind="tip">
+
+If a product becomes inactive or goes out of stock while you are viewing it, **Add to Cart** fails and the page refreshes with the latest product state.
+
+</Callout>
+
+## Cart management
+
+Your cart is stored per vendor and persists across sessions. If you leave the app and come back later, your cart remains available until you place a successful order or remove the items.
+
+The cart shows each line item with:
+- Product image
+- Product name
+- Unit price
+- Quantity stepper
+- Line total
+- Remove option
+
+Below the line items, the cart shows:
+- Subtotal
+- Tax
+- Shipping
+- Grand total
+- **Proceed to Checkout** button
+
+When you open the cart, the app re-validates stock and pricing against the server. If a product price changed after you added it, the cart updates the price and shows a notice so you can review the new total before checkout.
+
+A few rules affect cart behavior:
+- Quantity cannot exceed available stock or the allowed maximum order quantity
+- Removing the last item returns the cart to its empty state
+- The cart is cleared only after a successful order
+- Stock and pricing always come from the server, not the app cache
+
+## Checkout and PhonePe payment
+
+Review your delivery details, confirm the order summary, and complete payment in PhonePe.
+
+<Steps>
+<Step title="Confirm delivery address" icon="map-pin">
+
+The checkout screen pre-fills your registered delivery address. Edit the address if you need the order delivered to a different valid location.
+
+</Step>
+
+<Step title="Confirm contact person and phone number" icon="phone">
+
+The app also pre-fills your contact person and phone number. Update these details if someone else will receive the shipment.
+
+</Step>
+
+<Step title="Review order summary" icon="clipboard-list">
+
+Check the item list, subtotal, tax, shipping, and grand total before you continue. This is the final review step before payment.
+
+</Step>
+
+<Step title="Add remarks (optional)" icon="message-square">
+
+Optionally add remarks or notes for the admin before placing the order. These notes appear in the order detail view on the admin side and can help communicate special instructions such as delivery preferences or sizing requirements. This field is optional — you can skip it and proceed directly to payment.
+
+</Step>
+
+<Step title="Pay via PhonePe" icon="credit-card">
+
+PhonePe is the only available payment method and is pre-selected at checkout. Tap **Pay Now** to start the payment flow.
+
+</Step>
+
+<Step title="Payment success" icon="check-circle">
+
+If payment succeeds, the order is confirmed and your cart is cleared. You then see the order confirmation screen with order and payment details.
+
+</Step>
+
+<Step title="Payment failure" icon="x-circle">
+
+If payment fails, is cancelled, or times out, the order is not placed and your cart remains intact. The app offers **Retry Payment** so you can attempt the payment again without rebuilding the cart.
+
+</Step>
+</Steps>
+
+<Callout kind="info">
+
+All pricing and totals are computed server-side at checkout. The amount sent to PhonePe is always calculated from the cart on the backend, never from the client. If the app closes during payment, the order still resolves correctly. Check **My Orders** for the final status.
+
+</Callout>
+
+## Order confirmation
+
+After a successful payment, the app shows a confirmation screen so you can verify that the order was created correctly. This screen is the first place to check if you want the order ID or payment reference immediately.
+
+The success screen shows:
+- Order ID, such as `MRC-2026-000184`
+- Amount paid
+- PhonePe transaction ID
+- Estimated delivery note
+
+From here, you can choose **View Order** to open the order details or **Continue Shopping** to return to the catalogue.
+
+If payment fails, the app shows the failure reason and offers **Retry Payment**. In that case, the cart remains available.
+
+## My Orders and tracking
+
+Open **My Orders** to see all merchandise orders in one place. Orders appear newest first so your latest activity is always at the top.
+
+Each row in the order list shows:
+- Order ID
+- Order date
+- Item count
+- Total amount
+- Status badge
+
+Open an order to view the full order detail. The detail screen includes the status timeline, item list with quantities and prices, delivery address, payment details, and shipping information when available.
+
+Once the admin adds shipment details, the order also shows the courier name and tracking or AWB number. If an invoice is available, you can download it from the same screen.
+
+Use the following table to understand each order state:
+
+| Status | Meaning | What happens next |
+| --- | --- | --- |
+| PENDING_PAYMENT | Order created, awaiting payment result | System resolves and moves to **PLACED** or **FAILED** |
+| FAILED | Payment failed, cancelled, or timed out | Retry payment or place a new order |
+| PLACED | Payment successful, order received | Admin will confirm |
+| CONFIRMED | Admin verified and accepted | Admin will pack and ship |
+| PACKED | Items packed, ready to dispatch | Admin will ship with tracking |
+| SHIPPED | Dispatched with tracking number | Track using the courier info |
+| DELIVERED | Received by you | Order complete |
+| CANCELLED | Cancelled by you or admin | Refund initiated if already paid |
+| REFUNDED | Refund completed via PhonePe | Refund settles in 3-7 business days |
+
+## Cancelling an order
+
+Cancel an order directly from the order detail page only while the status is **PLACED** or **CONFIRMED**. After the order moves past that window, the cancel option no longer appears in the app.
+
+If you need to stop an order after dispatch preparation has started, contact support. Vendors cannot cancel dispatched orders from the app.
+
+<Callout kind="info">
+
+Cancelling a paid order triggers a refund through PhonePe. Refund settlement typically takes 3-7 business days.
+
+</Callout>
+
+## Notifications
+
+You receive push notifications for important merchandise order updates so you do not need to keep checking the order page manually. Some events also trigger email notifications.
+
+You are notified when:
+- Your order is placed successfully
+- Payment fails
+- The order is confirmed
+- The order is packed
+- The order is shipped
+- The order is delivered
+- The order is cancelled
+- A refund is processed
+
+## Common issues
+
+Use this table to quickly identify the cause of common Merchandise Store problems and what to do next.
+
+| Issue | Cause | What to do |
+| --- | --- | --- |
+| Merchandise section not visible | Not an approved or active vendor | Contact admin to verify your vendor status |
+| Add to Cart disabled | Product is out of stock | Wait for restock or choose another product |
+| Quantity won't increase | Exceeds available stock or maximum order quantity | Reduce quantity to within the allowed limit |
+| Price changed at checkout | Product price was updated while the item was in your cart | Review the updated price and confirm to continue |
+| Payment failed | PhonePe transaction failed or was cancelled | Use **Retry Payment**. If money was debited, it will be refunded automatically |
+| App closed during payment | Payment was interrupted | Check **My Orders**. The system resolves the final status automatically |
+| Cancel button missing | Order has moved past the cancellable window | Contact support to request cancellation |
+
+## Related pages
+
+<Columns cols={3}>
+<Card title="Feature overview" href="/merchandise-store" icon="book-open">
+Review the full merchandise store feature overview and business rules.
+</Card>
+
+<Card title="Admin Panel" href="/admin-merchandise-store" icon="settings">
+See how merchandise products, stock, shipping, and orders are managed.
+</Card>
+
+<Card title="Review Refund" href="/vendor-review-refund" icon="rotate-ccw">
+Check how refund review works after cancellation or payment issues.
+</Card>
+</Columns>

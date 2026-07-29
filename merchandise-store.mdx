@@ -1,0 +1,552 @@
+---
+title: Merchandise Store
+description: >-
+  A unified overview of the Cashkr merchandise store — data model, payment flow,
+  business rules, and configuration for the vendor shopping and admin management
+  surfaces.
+---
+## 1. Overview
+
+The Merchandise Store lets registered vendors browse and purchase company-branded merchandise (uniforms, banners, signage, promotional kits, packaging, etc.) directly from within the Vendor App. The Admin Panel gives the internal team full control over the catalogue and over every order placed by vendors.
+
+There are two surfaces:
+
+| Surface                       | Users                         | Purpose                                                                         |
+| ----------------------------- | ----------------------------- | ------------------------------------------------------------------------------- |
+| **Vendor App → Merchandise**  | Vendors (approved, logged in) | Browse listed products, add to cart, place order, pay via PhonePe, track orders |
+| **Admin Panel → Merchandise** | Admin / Store Manager         | Manage products (add, update, delete) and manage incoming vendor orders         |
+
+**Key constraints**
+
+- Payment is **PhonePe only**. No cash on delivery, no other gateways, no wallet/credit.
+- Only **approved/active vendors** can access the Merchandise section.
+- An order is created only after a **successful payment confirmation** from PhonePe (see §7).
+- Products are visible to vendors only when status = `Active` **and** stock > 0 (configurable — see §5.3).
+
+## Related pages
+
+This is the master concept page. For role-specific guides, see:
+
+- [Vendor App: Merchandise Store](/vendor-merchandise-store) — how vendors browse the catalogue, place orders, pay via PhonePe, and track deliveries
+- [Admin Panel: Merchandise Store](/admin-merchandise-store) — how admins manage products, fulfil orders, and process refunds
+
+---
+
+## 2. Roles and Permissions
+
+| Capability                       | Vendor | Store Manager | Super Admin |
+| -------------------------------- | ------ | ------------- | ----------- |
+| View merchandise catalogue       | ✅      | ✅             | ✅           |
+| Add to cart / place order        | ✅      | ❌             | ❌           |
+| View own orders                  | ✅      | —             | —           |
+| View all vendor orders           | ❌      | ✅             | ✅           |
+| Add / update product             | ❌      | ✅             | ✅           |
+| Delete product                   | ❌      | ❌             | ✅           |
+| Update order status              | ❌      | ✅             | ✅           |
+| Issue refund / cancel paid order | ❌      | ❌             | ✅           |
+| Export orders report             | ❌      | ✅             | ✅           |
+
+> Adjust this matrix to match your actual role setup. If your system has only a single `admin` role, treat every ✅ in the two right columns as belonging to that role.
+
+---
+
+## 3. Vendor App — Merchandise Section
+
+<Callout kind="info" collapsed="false">
+  For a step-by-step walkthrough of the vendor experience — browsing the catalogue, placing orders, paying via PhonePe, and tracking deliveries — see [Vendor App: Merchandise Store](/vendor-merchandise-store).
+</Callout>
+
+### 3.1 Entry point
+
+The vendor opens the app → bottom navigation / side menu → **Merchandise**.
+
+Header of the section shows:
+
+- Search field (search by product name / SKU)
+- Filter (category, price range, availability)
+- Sort (newest, price low→high, price high→low)
+- Cart icon with live item-count badge
+
+### 3.2 Product Listing page
+
+Displays all products that admin has marked `Active`, in a grid or list.
+
+Each product card shows:
+
+- Product image (primary image)
+- Product name
+- Price (₹, inclusive/exclusive of tax as configured)
+- Availability tag — `In Stock`, `Only X left`, or `Out of Stock`
+- **Add to Cart** button (disabled when out of stock)
+
+Behaviour:
+
+- Infinite scroll or paginated (default 20 per page).
+- Pull-to-refresh re-fetches the catalogue.
+- Tapping a card opens the Product Detail page.
+- If the catalogue is empty → empty state: "No merchandise available right now."
+
+### 3.3 Product Detail page
+
+Shows:
+
+- Image carousel (all product images)
+- Name, SKU, price, tax note
+- Full description
+- Category
+- Available stock
+- Quantity selector (min 1, max = available stock or `max_order_qty`, whichever is lower)
+- **Add to Cart** button
+
+Rules:
+
+- Quantity cannot exceed available stock.
+- If the product goes inactive/out of stock while the page is open, the Add to Cart action fails with a clear message and the page refreshes.
+
+### 3.4 Cart
+
+The cart is **per vendor** and persists across sessions (server-side), so a vendor can add items on one device and check out later.
+
+The cart page shows:
+
+- Line items: image, name, unit price, quantity stepper, line total, remove (🗑) action
+- Subtotal
+- Tax (if applicable)
+- Shipping / delivery charge (if applicable)
+- **Grand total**
+- **Proceed to Checkout** button
+
+Rules:
+
+- Increasing quantity beyond stock is blocked with an inline message.
+- Removing the last item returns the cart to its empty state.
+- On opening the cart, the app **re-validates** every line item against current price and stock. If anything changed, the vendor is shown a summary of the changes and must confirm before continuing.
+- Cart is cleared automatically after a successful order.
+
+### 3.5 Checkout
+
+Checkout collects/confirms:
+
+1. **Delivery address** — pre-filled from the vendor's registered address; vendor may edit or add a new address.
+2. **Contact person + phone number** — pre-filled, editable.
+3. **Order summary** — items, subtotal, tax, shipping, grand total.
+4. **Payment method** — PhonePe (fixed, shown as the only option and pre-selected).
+5. Optional **remarks / notes to admin** field.
+
+Then: **Pay Now** → triggers the PhonePe flow (§7).
+
+### 3.6 Order confirmation
+
+On successful payment the vendor sees a confirmation screen with:
+
+- ✅ Success indicator
+- Order ID (e.g. `MRC-2026-000184`)
+- Amount paid + PhonePe transaction ID
+- Estimated delivery note (if configured)
+- Buttons: **View Order** · **Continue Shopping**
+
+On failure/cancellation the vendor sees the failure screen with the reason and a **Retry Payment** button (see §7.5).
+
+### 3.7 My Orders
+
+List of the vendor's own orders, newest first. Each row: Order ID, date, item count, total amount, status badge.
+
+Order Detail page shows:
+
+- Order ID, placed-on date/time
+- Status timeline (Placed → Confirmed → Packed → Shipped → Delivered)
+- Item list with quantities and prices
+- Delivery address and contact
+- Payment details: method (PhonePe), transaction ID, payment status, amount
+- Tracking/AWB number and courier, once admin adds it
+- **Cancel Order** button — only available while status is `Placed` or `Confirmed` (configurable). After that the vendor must contact support.
+- Invoice download (if invoicing is enabled)
+
+---
+
+## 4. Admin Panel — Merchandise Section
+
+The Admin Panel's Merchandise menu contains exactly two pages: **Products** and **Orders**.
+
+<Callout kind="info" collapsed="false">
+  For a detailed guide on managing products, fulfilling orders, and processing refunds in the admin panel — see [Admin Panel: Merchandise Store](/admin-merchandise-store).
+</Callout>
+
+### 4.1 Products page
+
+A table of all products with server-side search, filter and pagination.
+
+**Columns:** Image · Name · SKU · Category · Price · Stock · Status · Created on · Actions (View / Edit / Delete)
+
+**Filters:** category, status (Active / Inactive), stock (In stock / Low stock / Out of stock) **Search:** by name or SKU **Bulk actions (optional):** activate, deactivate, delete
+
+#### 4.1.1 Add Product
+
+Form fields:
+
+| Field              | Type                 | Required | Notes                                                 |
+| ------------------ | -------------------- | -------- | ----------------------------------------------------- |
+| Product name       | Text                 | ✅        | 3–120 characters                                      |
+| SKU / Product code | Text                 | ✅        | Unique across catalogue                               |
+| Category           | Dropdown             | ✅        | Managed list                                          |
+| Description        | Rich text / textarea | ✅        | Shown on detail page                                  |
+| Price              | Number               | ✅        | > 0, two decimals                                     |
+| Tax rate (%)       | Number               | ❌        | Default from settings                                 |
+| Stock quantity     | Integer              | ✅        | ≥ 0                                                   |
+| Min order qty      | Integer              | ❌        | Default 1                                             |
+| Max order qty      | Integer              | ❌        | Blank = no cap                                        |
+| Images             | File upload (multi)  | ✅        | JPG/PNG/WebP, ≤ 2 MB each, ≥ 1 image, first = primary |
+| Status             | Toggle               | ✅        | Active / Inactive (default Active)                    |
+
+Validation: duplicate SKU rejected; price and stock must be non-negative; at least one image required. On save → product appears in the vendor app immediately if `Active`.
+
+#### 4.1.2 Update Product
+
+Same form, pre-filled. Admin can edit any field, reorder/replace images, adjust stock, and toggle status.
+
+Important rules:
+
+- Changing the price does **not** change the price of already-placed orders — orders store a price snapshot.
+- Items sitting in vendors' carts are re-priced at checkout with an explicit "price changed" notice.
+- Setting status to `Inactive` hides the product from the vendor app instantly but leaves historical orders untouched.
+
+#### 4.1.3 Delete Product
+
+- Deletion asks for confirmation ("This will remove the product from the vendor app. Continue?").
+- **Soft delete is recommended.** If the product appears in any existing order, it must not be hard-deleted — otherwise order history breaks. In that case the system either blocks the delete with a message ("This product exists in N orders; deactivate it instead.") or performs a soft delete (`is_deleted = true`).
+- A soft-deleted product is hidden from the vendor app and from the default admin list, but still resolvable inside old orders.
+
+### 4.2 Orders page
+
+Lists every order received from the Vendor App.
+
+**Columns:** Order ID · Vendor name · Date & time · Items count · Total amount · Payment status · Order status · Actions (View / Update status / Invoice)
+
+**Filters:** date range, order status, payment status, vendor **Search:** Order ID, vendor name, PhonePe transaction ID **Export:** CSV / Excel of the filtered result set
+
+#### 4.2.1 Order Detail view
+
+- **Vendor block:** name, vendor code, phone, email
+- **Delivery block:** address, contact person, phone, vendor remarks
+- **Items block:** image, name, SKU, unit price at time of order, quantity, line total
+- **Amount block:** subtotal, tax, shipping, grand total
+- **Payment block:** method (PhonePe), merchant transaction ID, PhonePe transaction ID, payment status, paid-at timestamp, amount
+- **Status block:** current status + full status-change history with timestamps and the admin who made each change
+- **Actions:** update status, add tracking number/courier, add internal note, download invoice, initiate refund (Super Admin only)
+
+#### 4.2.2 Order status lifecycle
+
+```typescript
+PENDING_PAYMENT ──► PLACED ──► CONFIRMED ──► PACKED ──► SHIPPED ──► DELIVERED
+       │                │            │
+       ▼                ▼            ▼
+    FAILED          CANCELLED    CANCELLED
+                        │
+                        ▼
+                    REFUNDED
+
+```
+
+| Status            | Meaning                                       | Set by         |
+| ----------------- | --------------------------------------------- | -------------- |
+| `PENDING_PAYMENT` | Order record created, awaiting PhonePe result | System         |
+| `FAILED`          | Payment failed / cancelled / timed out        | System         |
+| `PLACED`          | Payment successful, order received            | System         |
+| `CONFIRMED`       | Admin has verified and accepted the order     | Admin          |
+| `PACKED`          | Items packed, ready to dispatch               | Admin          |
+| `SHIPPED`         | Dispatched; tracking number added             | Admin          |
+| `DELIVERED`       | Received by vendor                            | Admin          |
+| `CANCELLED`       | Cancelled by vendor (allowed window) or admin | Vendor / Admin |
+| `REFUNDED`        | Refund completed via PhonePe                  | Super Admin    |
+
+Rules:
+
+- Status can only move forward, except to `CANCELLED`.
+- `DELIVERED` is terminal — nothing follows it.
+- Moving to `SHIPPED` requires courier name + tracking number.
+- Cancelling a paid order requires selecting a reason and triggers the refund workflow.
+- Every status change is logged (who, when, old → new) and, if notifications are enabled, pushes a notification to the vendor.
+
+---
+
+## 5. Data Model
+
+### 5.1 `merchandise_products`
+
+| Column                    | Type              | Notes                      |
+| ------------------------- | ----------------- | -------------------------- |
+| id                        | UUID / BIGINT     | PK                         |
+| name                      | VARCHAR(120)      |                            |
+| sku                       | VARCHAR(50)       | Unique                     |
+| category\_id              | FK                | → `merchandise_categories` |
+| description               | TEXT              |                            |
+| price                     | DECIMAL(10,2)     |                            |
+| tax\_rate                 | DECIMAL(5,2)      | Nullable                   |
+| stock\_quantity           | INT               |                            |
+| min\_order\_qty           | INT               | Default 1                  |
+| max\_order\_qty           | INT               | Nullable                   |
+| status                    | ENUM              | `active`, `inactive`       |
+| is\_deleted               | BOOLEAN           | Soft delete                |
+| created\_by / updated\_by | FK → admin\_users |                            |
+| created\_at / updated\_at | TIMESTAMP         |                            |
+
+### 5.2 `merchandise_product_images`
+
+`id`, `product_id` (FK), `image_url`, `is_primary`, `sort_order`, `created_at`
+
+### 5.3 `merchandise_categories`
+
+`id`, `name`, `status`, `sort_order`, `created_at`
+
+### 5.4 `merchandise_cart_items`
+
+`id`, `vendor_id` (FK), `product_id` (FK), `quantity`, `created_at`, `updated_at` Unique constraint on (`vendor_id`, `product_id`) — adding an existing product increments quantity instead of creating a duplicate row.
+
+### 5.5 `merchandise_orders`
+
+| Column                                                    | Type          | Notes                                      |
+| --------------------------------------------------------- | ------------- | ------------------------------------------ |
+| id                                                        | UUID / BIGINT | PK                                         |
+| order\_number                                             | VARCHAR(30)   | Human-readable, e.g. `MRC-2026-000184`     |
+| vendor\_id                                                | FK            |                                            |
+| subtotal                                                  | DECIMAL(10,2) |                                            |
+| tax\_amount                                               | DECIMAL(10,2) |                                            |
+| shipping\_amount                                          | DECIMAL(10,2) |                                            |
+| total\_amount                                             | DECIMAL(10,2) |                                            |
+| order\_status                                             | ENUM          | See §4.2.2                                 |
+| payment\_status                                           | ENUM          | `pending`, `success`, `failed`, `refunded` |
+| delivery\_name / delivery\_phone                          | VARCHAR       |                                            |
+| delivery\_address\_line1 / line2 / city / state / pincode | VARCHAR       |                                            |
+| vendor\_remarks                                           | TEXT          | Nullable                                   |
+| courier\_name / tracking\_number                          | VARCHAR       | Nullable                                   |
+| placed\_at / cancelled\_at / delivered\_at                | TIMESTAMP     | Nullable                                   |
+| created\_at / updated\_at                                 | TIMESTAMP     |                                            |
+
+### 5.6 `merchandise_order_items`
+
+`id`, `order_id` (FK), `product_id` (FK), `product_name` (snapshot), `sku` (snapshot), `unit_price` (snapshot), `quantity`, `line_total`
+
+> Snapshots are essential: they keep old orders correct even after a product is renamed, re-priced or deleted.
+
+### 5.7 `merchandise_payments`
+
+`id`, `order_id` (FK), `gateway` (`phonepe`), `merchant_transaction_id` (unique), `phonepe_transaction_id`, `amount`, `status` (`initiated`, `pending`, `success`, `failed`, `refunded`), `payment_instrument` (UPI / card / netbanking as returned by PhonePe), `response_code`, `raw_response` (JSON), `paid_at`, `created_at`
+
+### 5.8 `merchandise_order_status_history`
+
+`id`, `order_id`, `from_status`, `to_status`, `changed_by` (admin/vendor/system), `remarks`, `created_at`
+
+---
+
+## 6. Payment Flow — PhonePe
+
+PhonePe is the only payment method. The vendor never sees a method chooser with alternatives.
+
+### 6.1 Sequence
+
+```typescript
+Vendor App            Backend                PhonePe               Admin
+    │                    │                      │                    │
+    │ 1. Pay Now ───────►│                      │                    │
+    │                    │ 2. Create order      │                    │
+    │                    │    (PENDING_PAYMENT) │                    │
+    │                    │ 3. Pay API ─────────►│                    │
+    │                    │◄──── redirect URL ───│                    │
+    │◄─ 4. redirect URL ─│                      │                    │
+    │ 5. Open PhonePe ─────────────────────────►│                    │
+    │                    │                      │                    │
+    │                    │◄─ 6. S2S callback ───│                    │
+    │                    │ 7. Verify via        │                    │
+    │                    │    Status API ──────►│                    │
+    │                    │◄─────────────────────│                    │
+    │                    │ 8. Mark PLACED,      │                    │
+    │                    │    deduct stock,     │                    │
+    │                    │    clear cart        │                    │
+    │◄─ 9. Redirect back │                      │                    │
+    │ 10. Verify ───────►│                      │                    │
+    │◄─ final result ────│                      │ 11. Order visible ►│
+
+```
+
+### 6.2 Steps in detail
+
+1. **Order creation** — backend validates the cart (stock, prices, active status), computes totals server-side, creates the order with `order_status = PENDING_PAYMENT`, `payment_status = pending`, and generates a unique `merchant_transaction_id`.
+2. **Payment initiation** — backend calls PhonePe's Pay API with `merchantId`, `merchantTransactionId`, `merchantUserId` (vendor id), `amount` **in paise**, `redirectUrl`, `redirectMode`, `callbackUrl`, and the `X-VERIFY` checksum. Returns the PhonePe payment URL / intent.
+3. **Vendor pays** — app opens the PhonePe page or intent. Vendor completes payment.
+4. **Callback (source of truth)** — PhonePe calls the backend's configured callback URL. The backend verifies the `X-VERIFY` header, decodes the payload, and then **always re-confirms with the Check Status API** before treating the payment as successful. Never trust the client redirect alone.
+5. **Fulfilment on success** — payment marked `success`, order moves to `PLACED`, stock is decremented atomically, cart cleared, notifications sent to vendor and admin.
+6. **Client verification** — after redirect, the app calls the backend's payment-verification route with the `merchant_transaction_id` to render the correct success/failure screen.
+
+### 6.3 Amount handling
+
+- PhonePe works in **paise**. Always send `total_amount × 100` as an integer.
+- The amount sent to PhonePe must be computed **server-side** from the cart. Never accept a total from the client.
+
+### 6.4 Security requirements
+
+- `X-VERIFY` = `SHA256(base64Payload + endpoint + saltKey) + "###" + saltIndex` — computed and validated on the server only.
+- Salt key and merchant ID live in server environment variables, never in the mobile app.
+- Callback endpoint must validate the checksum and reject anything that fails.
+- Callbacks are **idempotent**: a repeated callback for an already-successful transaction must not double-deduct stock or duplicate the order.
+- Log the full raw gateway response in `merchandise_payments.raw_response` for audit and dispute handling.
+
+### 6.5 Failure and edge cases
+
+| Case                                         | Handling                                                                                                               |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Vendor cancels on PhonePe page               | Payment `failed`, order stays `FAILED`, stock untouched, cart preserved, Retry Payment offered                         |
+| Payment times out                            | Reconciliation job polls Check Status API; resolves within the retry window                                            |
+| App closes before redirect                   | Callback still resolves the order; vendor sees the correct status in My Orders                                         |
+| Callback never arrives                       | Scheduled job re-checks all `pending` payments older than 5 minutes (retry at 20s, 1m, 5m, 15m, 30m, 1h)               |
+| Money debited but order not placed           | Reconciliation catches it; if PhonePe says success the order is completed automatically, otherwise refund is initiated |
+| Stock ran out between initiation and success | Order accepted but flagged for admin; admin either fulfils partially or refunds                                        |
+| Duplicate `merchant_transaction_id`          | Rejected — IDs must be unique per attempt; a retry generates a fresh ID against the same order                         |
+
+### 6.6 Refunds
+
+Initiated by Super Admin from the order detail page. Backend calls PhonePe's Refund API with the original transaction reference and a new `merchantTransactionId`. On confirmation: `payment_status = refunded`, `order_status = REFUNDED`, stock restored, vendor notified. Refund settlement typically takes 3–7 business days, and this is shown to the vendor.
+
+---
+
+## 7. Notifications
+
+| Event                                          | Vendor       | Admin                        |
+| ---------------------------------------------- | ------------ | ---------------------------- |
+| Order placed successfully                      | Push + email | Push/email + dashboard badge |
+| Payment failed                                 | Push         | —                            |
+| Order confirmed / packed / shipped / delivered | Push         | —                            |
+| Order cancelled                                | Push         | Push                         |
+| Refund processed                               | Push + email | —                            |
+| Low stock (below threshold)                    | —            | Dashboard alert              |
+
+---
+
+## 8. Business Rules Summary
+
+1. Only active, non-deleted, in-stock products are visible to vendors.
+2. All pricing and totals are computed server-side at checkout time.
+3. Order line items store snapshots of product name, SKU and price.
+4. Stock is decremented only after confirmed payment success, inside a transaction.
+5. Stock is restored on cancellation or refund.
+6. An order without a successful payment is never shown as a real order to the admin's fulfilment queue (it sits in `PENDING_PAYMENT` / `FAILED`).
+7. Vendors can cancel only before dispatch; after that, admin handles it.
+8. Products referenced by existing orders cannot be hard-deleted.
+9. Every admin action on products and orders is written to an audit log.
+
+---
+
+## 9. Validation Rules Quick Reference
+
+**Product**
+
+- name: required, 3–120 chars
+- sku: required, unique, alphanumeric + dash/underscore
+- price: required, > 0
+- stock\_quantity: required, ≥ 0
+- images: at least 1, max 5, ≤ 2 MB each, JPG/PNG/WebP
+
+**Cart**
+
+- quantity: integer ≥ min\_order\_qty, ≤ min(stock, max\_order\_qty)
+- product must be active and not deleted
+
+**Checkout**
+
+- cart must not be empty
+- delivery address, contact name and 10-digit phone required
+- pincode: 6 digits
+
+---
+
+## 10. Error Codes
+
+| Code                          | HTTP | Meaning                                  |
+| ----------------------------- | ---- | ---------------------------------------- |
+| `UNAUTHORIZED`                | 401  | Missing/invalid token                    |
+| `FORBIDDEN`                   | 403  | Role not permitted                       |
+| `PRODUCT_NOT_FOUND`           | 404  | Product missing or deleted               |
+| `PRODUCT_INACTIVE`            | 409  | Product no longer available              |
+| `INSUFFICIENT_STOCK`          | 409  | Requested qty > available                |
+| `CART_EMPTY`                  | 400  | Checkout with empty cart                 |
+| `PRICE_CHANGED`               | 409  | Cart re-validation found a price change  |
+| `DUPLICATE_SKU`               | 409  | SKU already exists                       |
+| `PRODUCT_IN_USE`              | 409  | Delete blocked; product exists in orders |
+| `PAYMENT_INITIATION_FAILED`   | 502  | PhonePe Pay API error                    |
+| `PAYMENT_VERIFICATION_FAILED` | 400  | Checksum mismatch or invalid callback    |
+| `PAYMENT_FAILED`              | 402  | Transaction unsuccessful                 |
+| `INVALID_STATUS_TRANSITION`   | 409  | Illegal order status change              |
+| `ORDER_NOT_CANCELLABLE`       | 409  | Cancel attempted after dispatch          |
+
+---
+
+## 11. Testing Checklist
+
+**Vendor app**
+
+- \[ ] Catalogue loads; inactive and deleted products are absent
+- \[ ] Out-of-stock product cannot be added to cart
+- \[ ] Cart persists after logout/login and across devices
+- \[ ] Quantity cannot exceed stock or max order quantity
+- \[ ] Price change is surfaced before checkout
+- \[ ] Checkout blocked with empty cart or incomplete address
+- \[ ] PhonePe page opens with the correct amount
+- \[ ] Successful payment → order placed, cart cleared, stock reduced
+- \[ ] Failed payment → order not placed, cart intact, retry works
+- \[ ] App killed mid-payment → status resolves correctly afterwards
+- \[ ] Order status updates from admin reflect in the vendor app
+- \[ ] Cancel allowed before dispatch, blocked after
+
+**Admin panel**
+
+- \[ ] Add product with all fields and multiple images
+- \[ ] Duplicate SKU rejected
+- \[ ] Update product; existing orders keep old price
+- \[ ] Deactivate product hides it from vendors instantly
+- \[ ] Delete blocked/soft-deleted when product exists in orders
+- \[ ] Orders list filters, search and pagination work
+- \[ ] Order detail shows correct items, totals and payment info
+- \[ ] Status transitions follow the allowed lifecycle
+- \[ ] Shipping requires courier + tracking number
+- \[ ] Refund updates payment status and restores stock
+- \[ ] Export produces the filtered rows correctly
+- \[ ] Role permissions enforced on every endpoint (not just hidden in the UI)
+
+**Payment / integration**
+
+- \[ ] Checksum generation and validation
+- \[ ] Callback idempotency (replay the same callback twice)
+- \[ ] Tampered callback rejected
+- \[ ] Amount tampering from client rejected
+- \[ ] Reconciliation job resolves stuck pending payments
+
+---
+
+## 12. Configuration
+
+| Key                            | Description                                    | Example             |
+| ------------------------------ | ---------------------------------------------- | ------------------- |
+| `PHONEPE_MERCHANT_ID`          | Merchant ID from PhonePe                       | `MERCHANTUAT`       |
+| `PHONEPE_SALT_KEY`             | Salt key (secret)                              | —                   |
+| `PHONEPE_SALT_INDEX`           | Salt index                                     | `1`                 |
+| `PHONEPE_BASE_URL`             | UAT or production endpoint                     | —                   |
+| `PHONEPE_REDIRECT_URL`         | Where PhonePe returns the vendor after payment | Your redirect route |
+| `PHONEPE_CALLBACK_URL`         | Server-to-server callback route                | Your callback route |
+| `MERCH_TAX_RATE`               | Default tax percentage                         | `18`                |
+| `MERCH_SHIPPING_CHARGE`        | Flat shipping charge                           | `0`                 |
+| `MERCH_LOW_STOCK_THRESHOLD`    | Low-stock alert level                          | `10`                |
+| `MERCH_CANCEL_WINDOW_STATUSES` | Statuses where vendor cancel is allowed        | `PLACED,CONFIRMED`  |
+
+---
+
+## 13. Glossary
+
+- **Vendor** — a registered partner/business with an approved account in the Vendor App.
+- **SKU** — stock keeping unit; unique product code.
+- **Merchant Transaction ID** — the ID your system generates per payment attempt and sends to PhonePe.
+- **PhonePe Transaction ID** — the ID PhonePe returns for the completed transaction.
+- **Snapshot** — a copy of product data stored on the order so history stays accurate.
+- **Idempotency** — processing the same callback more than once produces the same result.
+
+---
+
+_Note: sections marked "configurable" and the exact status names, role names and field names should be aligned with your actual implementation before publishing this document._

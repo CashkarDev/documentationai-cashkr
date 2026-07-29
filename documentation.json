@@ -257,6 +257,14 @@
                 "path": "complete"
               },
               {
+                "title": "Review Refund",
+                "path": "vendor-review-refund"
+              },
+              {
+                "title": "Merchandise Store",
+                "path": "vendor-merchandise-store"
+              },
+              {
                 "title": "Same Customer Order",
                 "path": "same-customer-order"
               },
@@ -286,6 +294,14 @@
           {
             "group": "Core Features",
             "pages": [
+              {
+                "title": "Merchandise Store",
+                "path": "merchandise-store"
+              },
+              {
+                "title": "Review Refund — Vendor Review-Credit Feature",
+                "path": "review-refund-vendor-review-credit-feature"
+              },
               {
                 "title": "In Depth Device Price Evaluation Logic",
                 "path": "in-depth-device-price-evaluation-logic"
@@ -791,6 +807,10 @@
                   {
                     "title": "B2C Vendors",
                     "path": "b2c-vendors"
+                  },
+                  {
+                    "title": "Review Refund",
+                    "path": "admin-review-refund"
                   }
                 ]
               },
@@ -871,6 +891,15 @@
                   {
                     "title": "Failed",
                     "path": "failed"
+                  }
+                ]
+              },
+              {
+                "group": "Merchandise",
+                "pages": [
+                  {
+                    "title": "Merchandise Store",
+                    "path": "admin-merchandise-store"
                   }
                 ]
               },

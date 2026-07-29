@@ -1,0 +1,239 @@
+---
+title: Review Refund — Vendor Review-Credit Feature
+description: >-
+  A vendor incentive system that rewards a 5% credit for uploading a review
+  photo after order completion, with admin-verified approval, rejection, and
+  full audit trail.
+---
+### 1. Overview
+
+Review Refund is a vendor-incentive feature. After a vendor completes a device order, they can upload a photo of the review the customer provided. Operations verifies that photo in the Admin panel. If approved, the vendor is rewarded with credit equal to 5% of the device's credit value, added to the vendor's total available credit. If rejected, no credit is granted.
+
+The feature exists to encourage vendors to collect genuine customer reviews — improving review volume and social proof — while keeping a human verification step to prevent fraudulent or invalid submissions from earning credit.
+
+Worked example: if a device carries a credit value of 30, an approved review earns the vendor 30 × 5% = 1.5 credit, added to their running total. Because this result is fractional, the exact rounding/precision behavior must be defined (see 5.2 and 11).
+
+Goals and non-goals:
+
+| In scope                                                 | Out of scope                                      |
+| -------------------------------------------------------- | ------------------------------------------------- |
+| Vendor upload of a customer-review photo post-completion | Customer-facing review submission on marketplaces |
+| Ops verification (approve / reject) in Admin             | Payout / withdrawal of accumulated credit         |
+| 5% credit award on approval                              | Device pricing / credit-value calculation itself  |
+| Vendor credit ledger update & audit                      | The original order completion workflow            |
+
+## Related pages
+
+This is the master concept page. For role-specific guides, see:
+
+- [Vendor App: Review Refund](/vendor-review-refund) — step-by-step guide for vendors uploading review photos and tracking credit rewards
+- [Admin Panel: Review Refund](/admin-review-refund) — verification workflow for ops admins approving or rejecting submissions
+
+### 2. Actors & roles
+
+| Actor           | Where                       | Responsibility                                                              |
+| --------------- | --------------------------- | --------------------------------------------------------------------------- |
+| Vendor          | Vendor app / portal         | Completes order; uploads the customer-review photo.                         |
+| Operations team | Admin panel → Review Refund | Verifies the uploaded review; approves or rejects.                          |
+| System          | Backend                     | Computes 5% credit on approval; updates vendor total; records audit.        |
+| Customer        | — (indirect)                | Provides the review the vendor photographs. Not a system user in this flow. |
+
+### 3. End-to-end flow
+
+Happy path:
+
+1. Vendor completes the device order. The Upload Review option becomes available for that order.
+2. Vendor captures/uploads a photo of the customer's review and submits it. Review state → SUBMITTED.
+3. The submission appears in Admin → Review Refund for the Operations team.
+4. Ops opens the submission, verifies the review photo, and records a decision.
+5. If Approved: system computes 5% of the device credit value and adds it to the vendor's total available credit. State → APPROVED.
+6. If Rejected: no credit is granted. State → REJECTED (with reason, if captured).
+7. Vendor sees the updated credit (on approval) and/or the decision status for the order.
+
+Flow diagram:
+
+```typescript
+Vendor completes order
+        |
+        v
+[Upload Review] --photo--> Review = SUBMITTED
+        |
+        v
+Admin > Review Refund  (Ops sees pending submission)
+        |
+   Ops verifies
+        |
+    +---+-----------------------------+
+    |                                 |
+ APPROVED                          REJECTED
+    |                                 |
+ credit = 5% x device_credit      no credit
+    |                             (reason logged)
+    v
+ vendor.total_credit += credit
+    |
+    v
+ audit entry written
+```
+
+For the vendor's step-by-step perspective on this flow, see [Vendor App: Review Refund](/vendor-review-refund).
+
+### 4. Review lifecycle (state machine)
+
+| State         | Meaning                                           | Terminal? |
+| ------------- | ------------------------------------------------- | --------- |
+| (none)        | Order completed; no review uploaded yet.          | —         |
+| SUBMITTED     | Vendor uploaded a review photo; awaiting Ops.     | No        |
+| UNDER\_REVIEW | Ops has opened/claimed the submission (optional). | No        |
+| APPROVED      | Verified valid; 5% credit granted to vendor.      | Yes       |
+| REJECTED      | Verified invalid; no credit granted.              | Yes       |
+
+Valid transitions:
+
+```typescript
+(none)        -> SUBMITTED
+SUBMITTED     -> UNDER_REVIEW | APPROVED | REJECTED
+UNDER_REVIEW  -> APPROVED | REJECTED
+APPROVED      -> (terminal)
+REJECTED      -> (terminal)   [confirm: is re-upload allowed? see 11]
+```
+
+Invariant: credit is granted only on the transition to APPROVED, and exactly once per review. No other transition may modify vendor credit.
+
+### 5. Business rules & credit calculation
+
+5.1 The rule — Award = device\_credit\_value × 5%, granted to the vendor's total available credit on approval. The percentage (5%) should be configurable rather than hard-coded, so Ops/Product can change it without a release.
+
+5.2 Rounding & precision (must be confirmed) — Because 5% of many credit values is fractional (e.g. 30 → 1.5), the system must define one consistent behavior across backend calculation, database storage, API response, and vendor-facing display:
+
+| Behavior              | 30 × 5%      | Impact                                                  |
+| --------------------- | ------------ | ------------------------------------------------------- |
+| Store exact decimal   | 1.5          | Most accurate; requires decimal-safe storage & display. |
+| Round half up         | 2 (from 1.5) | Favors vendor; platform cost grows at scale.            |
+| Round down / truncate | 1 (from 1.5) | Favors platform; low-value devices may earn 0.          |
+| Round to 2 decimals   | 1.50         | Common for wallet balances; define tie-breaking.        |
+
+Decision required: pick one rule and apply it identically everywhere. A frequent bug is the DB storing 1.5 while the UI shows 2 — the vendor's visible balance then drifts from the real one.
+
+5.3 Boundary values:
+
+| Device credit | 5% raw | What it probes                                 |
+| ------------- | ------ | ---------------------------------------------- |
+| 30            | 1.5    | The .5 rounding boundary (primary example)     |
+| 20            | 1.0    | Clean whole number (control)                   |
+| 10            | 0.5    | Rounds to 0 or 1? risk of zero reward          |
+| 5             | 0.25   | Sub-half fraction                              |
+| 1             | 0.05   | Minimum; likely rounds to 0                    |
+| 0             | 0      | Zero-credit device — is approval even allowed? |
+| 99            | 4.95   | Awkward near-whole decimal                     |
+| 33            | 1.65   | Two-decimal precision                          |
+
+5.4 Accumulation rule — The vendor's total must equal the exact sum of individual awards. Three approvals of 1.5 must total 4.5, not 4 or 5. Decide whether rounding happens per award or only on display of the total; mixing the two causes drift.
+
+### 6. Admin panel — verification
+
+> Admin verification details — pending submissions queue, approve/reject workflow, audit trail, and concurrency safeguards — have moved to [Admin Panel: Review Refund](/admin-review-refund).
+
+### 7. Data model
+
+Illustrative — adapt names/types to the real schema.
+
+| Entity            | Key fields                                                                               | Notes                                  |
+| ----------------- | ---------------------------------------------------------------------------------------- | -------------------------------------- |
+| ReviewRefund      | id, order\_id, vendor\_id, device\_id, device\_credit, photo\_url, status, submitted\_at | One per review submission.             |
+| ReviewDecision    | id, review\_id, outcome, decided\_by, reason, decided\_at                                | Ops verification record.               |
+| CreditLedgerEntry | id, vendor\_id, review\_id, amount, type=REVIEW\_REWARD, created\_at                     | Append-only; sums to vendor total.     |
+| Vendor            | id, …, total\_credit                                                                     | total\_credit = sum of ledger entries. |
+
+Credit handling: whatever precision is chosen (5.2), store credit in a decimal-safe type — never a float — and derive total\_credit from the ledger rather than mutating a running counter, so it can always be reconciled.
+
+### 8. Edge cases & failure handling
+
+| Scenario                              | Expected behavior                                          |
+| ------------------------------------- | ---------------------------------------------------------- |
+| Upload before order completed         | Upload option unavailable; direct API attempt rejected.    |
+| Duplicate upload for same order       | Blocked, or replaces prior SUBMITTED — confirm rule (11).  |
+| Re-upload after rejection             | Confirm whether allowed; if yes, prevent multiple credits. |
+| Approve double-click / retry          | Idempotent — credit granted exactly once.                  |
+| Two Ops approve simultaneously        | Only one succeeds; no double credit (locking/idempotency). |
+| Invalid / corrupt / oversized image   | Rejected at upload with a clear error; not submittable.    |
+| Zero-credit device                    | Define: allow approval with 0 award, or block? (11)        |
+| Order cancelled/reversed after credit | Define reversal: claw back the awarded credit or not.      |
+| Vendor deactivated before approval    | Define: hold, reject, or credit on reactivation.           |
+
+### 9. QA test suite
+
+IDs grouped by area: SUB submission, VER verification, CALC credit calc, CON concurrency/idempotency, SEC security. Priority: P1 critical, P2 high, P3 medium.
+
+9.1 Review submission (vendor)
+
+| ID         | Scenario                                        | Expected result                                          | Pri |
+| ---------- | ----------------------------------------------- | -------------------------------------------------------- | --- |
+| RR-SUB-001 | Upload review after order is completed          | Upload succeeds; review = SUBMITTED; appears in Admin.   | P1  |
+| RR-SUB-002 | Upload option not shown before completion       | Option hidden/disabled until order is completed.         | P1  |
+| RR-SUB-003 | Submit for a not-completed order via direct API | Rejected with clear error; no review created.            | P1  |
+| RR-SUB-004 | Upload valid image (jpg/png) within size limit  | Accepted; stored; visible to Ops at full resolution.     | P2  |
+| RR-SUB-005 | Upload oversized image                          | Rejected with size-limit error; not submitted.           | P2  |
+| RR-SUB-006 | Upload invalid/corrupt/non-image file           | Rejected with file-type error.                           | P2  |
+| RR-SUB-007 | Duplicate upload for same order                 | Handled per rule (blocked or replaces); never 2 credits. | P1  |
+| RR-SUB-008 | Re-upload after a rejection                     | Behaves per confirmed rule (11); no double-credit path.  | P2  |
+
+9.2 Ops verification (admin)
+
+| ID         | Scenario                         | Expected result                                           | Pri |
+| ---------- | -------------------------------- | --------------------------------------------------------- | --- |
+| RR-VER-001 | Approve a valid submission       | State = APPROVED; 5% credit added to vendor total.        | P1  |
+| RR-VER-002 | Reject a submission              | State = REJECTED; no credit; reason captured.             | P1  |
+| RR-VER-003 | Reject without a reason          | Blocked if reason mandatory; else recorded empty.         | P3  |
+| RR-VER-004 | Act on an already-decided item   | Action blocked server-side; no state/credit change.       | P1  |
+| RR-VER-005 | Audit trail after decision       | Records actor, outcome, reason, timestamp.                | P2  |
+| RR-VER-006 | Admin list shows correct context | Order, vendor, device, credit value, photo, time correct. | P2  |
+
+9.3 Credit calculation & boundaries
+
+| ID          | Scenario                              | Expected result                                         | Pri |
+| ----------- | ------------------------------------- | ------------------------------------------------------- | --- |
+| RR-CALC-001 | Approve device credit = 30            | Award = 1.5 per confirmed rounding rule; total updated. | P1  |
+| RR-CALC-002 | Approve device credit = 20            | Award = 1.0; clean control case.                        | P2  |
+| RR-CALC-003 | Approve device credit = 10            | Award = 0.5; verify 0-vs-1 rounding behavior.           | P1  |
+| RR-CALC-004 | Approve device credit = 5             | Award = 0.25; sub-half handling correct.                | P2  |
+| RR-CALC-005 | Approve device credit = 1             | Award = 0.05; no unintended 0 unless defined.           | P2  |
+| RR-CALC-006 | Approve device credit = 0             | Behaves per rule: 0 award or blocked.                   | P2  |
+| RR-CALC-007 | DB value == API == UI displayed value | All three match exactly; no display drift.              | P1  |
+| RR-CALC-008 | Accumulate 3 awards of 1.5            | Total = 4.5 exactly (not 4 or 5).                       | P1  |
+| RR-CALC-009 | Total = sum of ledger entries         | Reconciles precisely after many awards.                 | P1  |
+
+9.4 Concurrency & idempotency
+
+| ID         | Scenario                            | Expected result                            | Pri |
+| ---------- | ----------------------------------- | ------------------------------------------ | --- |
+| RR-CON-001 | Double-click Approve                | Credit granted exactly once.               | P1  |
+| RR-CON-002 | Retry approve request after timeout | Idempotent; no second credit.              | P1  |
+| RR-CON-003 | Two Ops approve same item at once   | One succeeds; the other safely rejected.   | P1  |
+| RR-CON-004 | Approve then order gets reversed    | Claw-back behaves per confirmed rule (11). | P2  |
+
+9.5 Security & authorization
+
+| ID         | Scenario                                 | Expected result                                     | Pri |
+| ---------- | ---------------------------------------- | --------------------------------------------------- | --- |
+| RR-SEC-001 | Non-Ops user hits approve endpoint       | 403 / denied; no state or credit change.            | P1  |
+| RR-SEC-002 | Vendor approves their own review via API | Denied; vendors cannot self-approve.                | P1  |
+| RR-SEC-003 | Tamper device\_credit in request payload | Server uses trusted stored value, not client input. | P1  |
+| RR-SEC-004 | Access another vendor's submission       | Denied; proper ownership/authorization checks.      | P2  |
+
+### 10. Non-functional checks
+
+Performance: Admin Review Refund list loads within target even with a large pending backlog; photos load lazily. Reliability: if the credit write fails after approval, the whole approval rolls back (no APPROVED state without a matching ledger entry). Observability: metrics for submissions/day, approval rate, average verification time, total credit granted; alert on anomalies. Data integrity: vendor total\_credit always reconciles to the ledger sum. Usability: clear vendor feedback across submitted, pending, approved (credit shown), and rejected (reason shown) states.
+
+### 11. Open questions & assumptions
+
+1. Rounding rule: how is fractional 5% (e.g. 1.5) stored and displayed — exact decimal, round up, round down, or 2-dp?
+2. Per-award vs total rounding: where does rounding happen, if any?
+3. Percentage config: is 5% fixed, or configurable by Ops/Product?
+4. Zero-credit devices: is approval allowed when the award would be 0?
+5. Duplicate / re-upload: can a vendor upload again after rejection, or replace a pending submission?
+6. Reversal: if an order is cancelled after credit is granted, is the credit clawed back?
+7. Rejection reason: mandatory or optional?
+8. Time window: is there a deadline after completion for uploading the review?
+9. Image rules: accepted formats, max size, any duplicate-photo detection?
+10. Credit usage: what can vendors do with accumulated credit?

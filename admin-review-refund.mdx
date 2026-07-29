@@ -1,0 +1,127 @@
+---
+title: Review Refund
+description: Verify vendor review photo submissions, approve or reject them, and manage 5% credit rewards with full audit trails and concurrency safeguards.
+---
+
+## Overview
+
+Review Refund is where you verify vendor-submitted review photos and decide whether to grant a 5% credit reward. You can find this section under **Vendors — B2C** in the Admin Panel.
+
+## What this section is for
+
+Use Review Refund to control review-based credit rewards, validate that each submission is legitimate, and maintain a complete record of every decision. When you approve a valid review photo, the vendor earns a credit reward equal to 5% of the device credit value.
+
+## Pending submissions queue
+
+Pending submissions appear as a queue of review items in the `SUBMITTED` state. Each item shows the vendor name, order ID, device, device credit value, photo thumbnail, and submission timestamp so you can triage and review quickly.
+
+<Callout kind="info">
+
+Only `SUBMITTED` items appear in the pending queue by default. Items in `APPROVED` and `REJECTED` state are filtered out unless you view them through reporting or history tools.
+
+</Callout>
+
+## Verification flow
+
+<Steps>
+<Step title="Open Review Refund" icon="list">
+
+Open **Review Refund** under **Vendors — B2C** in the Admin Panel.
+
+</Step>
+
+<Step title="Open a pending submission" icon="image">
+
+Select a pending item and review the full-resolution photo together with the order details, vendor information, and device credit value.
+
+A valid review decision depends on both the uploaded photo and the order context, so check them together before you act.
+
+</Step>
+
+<Step title="Verify the review photo" icon="search">
+
+Confirm that the review is genuine, readable, and tied to the actual customer and completed order.
+
+If the photo is unclear, unrelated, or does not satisfy review requirements, do not approve it.
+
+</Step>
+
+<Step title="Approve a valid submission" icon="check">
+
+Approve the submission when the evidence is valid. The system grants the vendor 5% of the device credit value and closes the item.
+
+After approval, the submission moves to `APPROVED` and no further action is required on that item.
+
+</Step>
+
+<Step title="Reject an invalid submission" icon="x">
+
+Reject the submission when the photo or review details do not meet the criteria. No credit is granted.
+
+Capture a rejection reason when you reject the item so the decision is recorded clearly.
+
+</Step>
+</Steps>
+
+## Approve action
+
+<Callout kind="info">
+
+Approving a submission grants 5% of the device credit value to the vendor's total available credit. The submission state changes to `APPROVED`, and the system records your admin ID, the approval timestamp, and the credit amount.
+
+Example: if the device credit value is `30`, the vendor earns `1.5` credit.
+
+</Callout>
+
+## Reject action
+
+<Callout kind="warning">
+
+Rejecting a submission grants no credit and changes the state to `REJECTED`. You must capture a rejection reason.
+
+The vendor sees the rejection outcome and reason in the app. Whether the vendor can upload again depends on your operational policy.
+
+</Callout>
+
+## Audit trail
+
+Every review decision should be traceable without relying on memory or separate notes. The audit trail records what was submitted, who reviewed it, what decision was made, and what credit impact followed.
+
+| Field | Description |
+| --- | --- |
+| Submission ID | Unique identifier for the review submission |
+| Vendor ID | The vendor who submitted the review |
+| Order ID | The completed order associated with the review |
+| Submitted at | When the vendor uploaded the photo |
+| Reviewed by | Admin who made the decision |
+| Reviewed at | When the decision was made |
+| Decision | `APPROVED` or `REJECTED` |
+| Credit amount | Amount granted if approved |
+| Rejection reason | Reason captured if rejected |
+
+## Concurrency safeguards
+
+<Callout kind="warning">
+
+The system prevents double credit on the same submission. A single submission cannot be approved twice, even if someone double-clicks the action or two admins act at nearly the same time.
+
+Once a submission reaches a terminal state such as `APPROVED` or `REJECTED`, the action buttons are disabled and any further API attempts are rejected server-side. Only authorized Ops roles can approve or reject submissions, while other roles remain read-only.
+
+</Callout>
+
+## Common issues
+
+| Issue | Cause | Resolution |
+| --- | --- | --- |
+| Photo not loading in the submission | Network or storage issue | Refresh the page. If the photo still does not load, escalate to tech support. |
+| Credit not applied after approval | Credit write may have failed | Check the vendor credit ledger. An approval should have a matching ledger entry. If the entry is missing, escalate. |
+| Duplicate submissions from same vendor | Vendor attempted multiple uploads | Only one submission per order is valid. The system should block duplicates. |
+| Vendor disputes a rejection | Vendor believes the review was valid | Review the photo again. If the rejection was incorrect, consult your lead on remediation options. |
+| Two admins see the same pending item | Both may try to act | Only the first action succeeds. The second action is safely rejected by the system. |
+
+## Related pages
+
+<Columns cols={2}>
+<Card title="Feature overview" href="/review-refund-vendor-review-credit-feature" icon="book-open" cta="Open page" />
+<Card title="Vendor app perspective" href="/vendor-review-refund" icon="users" cta="Open page" />
+</Columns>
