@@ -10,11 +10,13 @@ description: >-
 The price evaluation module computes a final device price based on physical, technical, and warranty conditions, using device-type-specific strategies and class data lookup tables.
 
 <Callout kind="info" collapsed="false">
-  - All strategies start from a **base price** and apply **deductions** for issues and **additions** for laptop hardware upgrades. Deductions may be flat or percentage values and always resolve from `basePrice`.
 
-  - If a device is marked as **dead** (does not turn on), strategies immediately return the configured **deadPrice** from class data.
+- All strategies start from a **base price** and apply **deductions** for issues and **additions** for laptop hardware upgrades. Deductions may be flat or percentage values and always resolve from `basePrice`.
 
-  - After applying all deductions and additions, strategies perform a **floor check**. If the computed price is less than or equal to `0`, the strategy falls back to **deadPrice** (or `0` if deadPrice is not available).
+- If a device is marked as **dead** (does not turn on), strategies immediately return the configured **deadPrice** from class data.
+
+- After applying all deductions and additions, strategies perform a **floor check**. If the computed price is less than or equal to `0`, the strategy falls back to **deadPrice** (or `0` if deadPrice is not available).
+
 </Callout>
 
 Use this page as the backend reference for engineering and QA when validating evaluation flows, mappings, and edge cases.
@@ -74,7 +76,19 @@ Use this page as the backend reference for engineering and QA when validating ev
 </ParamField>
 
 <ParamField body="accessories" param-type="string[]" required="true" deprecated="false">
-  Array of accessory codes provided with the device (for example, `A1` to `A4` for bill, box, charger, other). Missing accessories are inferred by comparing against the full set; each missing accessory applies a deduction using `resolveDeduction(classData[code], basePrice)`.
+  Array of accessory codes provided with the device (for example, `A1` to `A4` for bill, box, charger, other). Missing accessories are inferred by comparing against the full set; each missing accessory applies a deduction using `resolveDeduction(classData[code], basePrice)`. For Watch devices, `accessories` must be an empty array `[]` — no accessory codes are evaluated.
+</ParamField>
+
+<ParamField body="extraLensIds" param-type="number[]" required="false" deprecated="false">
+  (Camera only) Array of CameraLens IDs. For each ID, the engine fetches the corresponding `CameraLens` record and adds its flat rupee value to `finalPrice`. The client sends lens IDs, not amounts — the server resolves amounts from the CameraLens table.
+</ParamField>
+
+<ParamField body="numberOfCDs" param-type="number" required="false" deprecated="false">
+  (Console only) Count of extra game CDs included with the console. Maps to CD* addition codes (CD1, CD2, CD3, ...). Each CD adds a flat rupee value to `finalPrice`. Can increase the final price above `basePrice`.
+</ParamField>
+
+<ParamField body="extraControllers" param-type="number" required="false" deprecated="false">
+  (Console only) Count of extra controllers included with the console. Maps to E* addition codes (E1, E2, ...). Each controller adds a flat rupee value to `finalPrice`. Can increase the final price above `basePrice`.
 </ParamField>
 
 <ParamField body="deviceType" param-type="string" required="true" deprecated="false">
@@ -215,6 +229,28 @@ The mapping object links each `deviceType` to its base table, class table, and s
 
 If a `deviceType` is not present in this mapping, the controller returns an unsupported device type error.
 
+## Per-Type Condition Code Ranges
+
+While all 12 device types use the same `mobilePriceEvaluation` strategy (except Laptop which uses `laptopPriceEvaluation`), each type applies a different subset of condition code dimensions. The table below shows exactly which codes are evaluated for the four newest device types: Camera, Headphone, Watch, and Console.
+
+| Dimension | Camera | Headphone | Watch | Console |
+|-----------|--------|-----------|-------|---------|
+| Age (W) | W1–W4 | W1–W4 | W1–W4 | W1–W4 |
+| Body (B) | B1–B4 | — (not assessed) | B1–B4 | B1–B4 |
+| Screen (S) | — (not assessed) | — (not assessed) | S1–S4 | — (not assessed) |
+| Functional/Physical (P) | P1–P8 | P1–P8 | P1–P8 | P1–P6 |
+| Technical (T) | — (not assessed) | — (not assessed) | T1–T10 | — (not assessed) |
+| Accessories (A) | A1–A8 (missing → deduct) | A1–A3 only (missing → deduct) | — (accessoryCodes = []) | A1–A3 (missing → deduct) |
+| Additions (+) | extraLensIds (ADD lens values) | — (no additions) | — (no additions) | numberOfCDs (CD* ADD) + extraControllers (E* ADD) |
+
+<Callout kind="warning">
+For Camera, Headphone, Watch, and Console, all deduction and addition amounts are **flat rupees** stored as Int columns in the database. Percentage-based deductions (such as `10%`) are NOT supported for these four device types. Do not enter percentage values for any condition code belonging to Camera, Headphone, Watch, or Console.
+</Callout>
+
+<Callout kind="info">
+Unknown or none codes (such as `P0`, `CD0`, `E0`, or any typo or invalid code) silently resolve to `0` rupees — no error is thrown. The evaluation engine treats unrecognized codes as zero-deduction or zero-addition, so a request with a misspelled code will not fail; it simply will not apply that deduction or addition.
+</Callout>
+
 ## Deduction value resolution
 
 Use a single helper rule, `resolveDeduction(value, basePrice)`, everywhere you apply class-data-based deductions.
@@ -320,17 +356,21 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
   </Step>
 
   <Step title="Apply warranty and cosmetic deductions" icon="settings" title-type="p">
+
     - If `request.warrantyStatus` is set, read `classData[request.warrantyStatus]`, resolve it with `resolveDeduction(classData[request.warrantyStatus], basePrice)`, and subtract the resolved amount from `finalPrice`.
 
     - If `request.bodyCondition` is provided, read `classData[request.bodyCondition]`, resolve it with `resolveDeduction(classData[request.bodyCondition], basePrice)`, and subtract the resolved amount from `finalPrice`.
 
     - For laptops, treat screen as **screen size code** rather than condition: if `request.screenSize` is provided, expect it to be one of `S1` to `S4`. Read `classData[request.screenSize]`, resolve it with `resolveDeduction(classData[request.screenSize], basePrice)`, and subtract the resolved amount from `finalPrice`. The laptop strategy does **not** use `request.screenCondition` for any calculation.
+
   </Step>
 
   <Step title="Apply physical and technical deductions" icon="settings" title-type="p">
+
     - For each code in `request.physicalCondition`, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
 
     - For each code in `request.technicalCondition`, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
+
   </Step>
 
   <Step title="Apply missing accessory deductions" icon="settings" title-type="p">
@@ -338,6 +378,7 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
   </Step>
 
   <Step title="Add hardware upgrades (processor, RAM, storage, optional graphic card)" icon="database" title-type="p">
+
     If `request.processorId`, `request.ramId`, or `request.storageId` are provided:
 
     - Fetch the matching processor, RAM, and storage records from their respective tables.
@@ -347,6 +388,7 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
     These are **additions** and can offset earlier deductions.
 
     Optionally, you may also introduce a dedicated **graphic card** lookup table and field in an internal laptop evaluation context. If present, fetch the graphic card record and add its numeric value to `finalPrice` in the same way as processor, RAM, and storage.
+
   </Step>
 
   <Step title="Final price fallback" icon="check-circle" title-type="p">
@@ -364,11 +406,13 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
 
 <Steps>
   <Step title="Parse and validate request" icon="terminal" title-type="p">
+
     - Read the incoming JSON payload as an `EvaluationRequest`.
 
     - Based on `deviceType`, validate the payload with the appropriate Zod schema (for example, `LaptopEvaluationRequestSchema`, `MacEvaluationRequestSchema`, `MobileEvaluationRequestSchema`).
 
     - If validation fails, return a `400` response with `"Invalid data"`.
+
   </Step>
 
   <Step title="Resolve device mapping" icon="settings" title-type="p">
@@ -376,6 +420,7 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
   </Step>
 
   <Step title="Fetch device and class data" icon="database" title-type="p">
+
     - Query the base device table (for example, `deviceMobiles`) using `deviceId`.
 
     - Include or join the corresponding class table row (for example, `classMobile`) that contains `deadPrice`, warranty codes, condition codes, and accessory deductions.
@@ -383,6 +428,7 @@ Used for `Laptop` (and can be reused for similar form factors such as desktops i
     - If the device record is not found, return `404` with `"Device not found"`.
 
     - If the class data is missing, return `404` with `"Class data not found for &lt;type&gt;"`.
+
   </Step>
 
   <Step title="Compute final price" icon="code" title-type="p">
@@ -515,6 +561,7 @@ To support a new device type using the same evaluation infrastructure:
 
 <Steps>
   <Step title="Create Prisma models" icon="database" title-type="p">
+
     Add base and class table models for the new type. For example:
 
     - Base table: `deviceSmartTVs`
@@ -522,6 +569,7 @@ To support a new device type using the same evaluation infrastructure:
     - Class table: `classSmartTV`
 
     Ensure the class table exposes `deadPrice`, warranty codes, condition codes, and accessory fields similar to existing class tables, and that the deduction fields follow the `resolveDeduction` flat-or-percentage pattern (including numeric strings).
+
   </Step>
 
   <Step title="Implement evaluation strategy" icon="code" title-type="p">
@@ -628,6 +676,111 @@ Price evolution:
 Final evaluated price is `₹39,600`.\
 Because `39,600` is greater than `0`, the strategy returns this value and does not fall back to `deadPrice`.
 
+### Camera example (deductions and lens additions)
+
+Assume the following for a camera with 2 extra lenses:
+
+- Base price: `₹30,000`
+- Device turns on: `true`
+- Warranty: `W2` → resolves to `₹500` deduction
+- Body: `B2` → resolves to `₹400` deduction
+- Physical condition: `P3` → resolves to `₹800` deduction
+- Accessories present: `A1`, `A2`, `A4` (missing: `A3`, `A5` from A1–A8 set) → `A3` = `₹300`, `A5` = `₹400` = `₹700` total deduction
+- Extra lens IDs: `[2, 5]` → CameraLens id 2 = `₹1,000`, id 5 = `₹1,500` = `₹2,500` total addition
+
+Price evolution:
+
+1. Start: `₹30,000`
+2. After warranty `W2`: `₹30,000 - 500 = ₹29,500`
+3. After body `B2`: `₹29,500 - 400 = ₹29,100`
+4. After physical `P3`: `₹29,100 - 800 = ₹28,300`
+5. After missing `A3` + `A5`: `₹28,300 - 700 = ₹27,600`
+6. After extra lenses (id 2 + id 5): `₹27,600 + 2,500 = ₹30,100`
+
+Final evaluated price is `₹30,100` — above the base price because lens additions exceed the total deductions. `deadPrice` is `₹2,000`, so `max(30,100, 2,000) = ₹30,100`.
+
+### Headphone example (simplified assessment)
+
+Assume the following for a headphone (no body, screen, or technical codes):
+
+- Base price: `₹8,000`
+- Device turns on: `true`
+- Warranty: `W3` → resolves to `₹300` deduction
+- Physical condition: `P1` → resolves to `₹500` deduction
+- Accessories present: `A1`, `A2` (missing: `A3` from A1–A3 set) → `A3` = `₹200` deduction
+
+Price evolution:
+
+1. Start: `₹8,000`
+2. After warranty `W3`: `₹8,000 - 300 = ₹7,700`
+3. After physical `P1`: `₹7,700 - 500 = ₹7,200`
+4. After missing `A3`: `₹7,200 - 200 = ₹7,000`
+
+Final evaluated price is `₹7,000`. No body, screen, or technical deductions are applied because headphones do not use those code dimensions. `deadPrice` is `₹300`, so `max(7,000, 300) = ₹7,000`.
+
+### Watch example (full assessment, no accessories)
+
+Assume the following for a smartwatch (screen + body + technical, but no accessories):
+
+- Base price: `₹20,000`
+- Device turns on: `true`
+- Warranty: `W2` → resolves to `₹600` deduction
+- Body: `B2` → resolves to `₹300` deduction
+- Screen: `S2` → resolves to `₹500` deduction
+- Physical condition: `P1`, `P2` → `₹400` + `₹500` = `₹900` total deduction
+- Technical faults: `T1`, `T5` → `₹300` + `₹400` = `₹700` total deduction
+- Accessories: `[]` (empty — no accessory deductions for Watch)
+
+Price evolution:
+
+1. Start: `₹20,000`
+2. After warranty `W2`: `₹20,000 - 600 = ₹19,400`
+3. After body `B2`: `₹19,400 - 300 = ₹19,100`
+4. After screen `S2`: `₹19,100 - 500 = ₹18,600`
+5. After physical `P1` + `P2`: `₹18,600 - 900 = ₹17,700`
+6. After technical `T1` + `T5`: `₹17,700 - 700 = ₹17,000`
+
+Final evaluated price is `₹17,000`. No accessory deductions because `accessoryCodes` is empty for Watch. `deadPrice` is `₹500`, so `max(17,000, 500) = ₹17,000`.
+
+### Console example (deductions and CD/controller additions)
+
+Assume the following for a gaming console with 3 extra CDs and 1 extra controller:
+
+- Base price: `₹4,200`
+- Device turns on: `true`
+- Warranty: `W1` → resolves to `₹100` deduction
+- Body: `B2` → resolves to `₹300` deduction
+- Physical condition: `P3` → resolves to `₹400` deduction
+- Accessories present: `A2`, `A3` (missing: `A1` from A1–A3 set) → `A1` = `₹300` deduction
+- Extra CDs: `numberOfCDs = 3` → CD1 = `₹500`, CD2 = `₹500`, CD3 = `₹500` = `₹1,500` total addition
+- Extra controllers: `extraControllers = 1` → E1 = `₹800` addition
+
+Price evolution:
+
+1. Start: `₹4,200`
+2. After warranty `W1`: `₹4,200 - 100 = ₹4,100`
+3. After body `B2`: `₹4,100 - 300 = ₹3,800`
+4. After physical `P3`: `₹3,800 - 400 = ₹3,400`
+5. After missing `A1`: `₹3,400 - 300 = ₹3,100`
+6. After CDs (3 × ₹500): `₹3,100 + 1,500 = ₹4,600`
+7. After extra controller E1: `₹4,600 + 800 = ₹5,400`
+
+Final evaluated price is `₹5,400` — above the base price because CD and controller additions exceed the total deductions. `deadPrice` is `₹500`, so `max(5,400, 500) = ₹5,400`.
+
+### Edge cases
+
+| Scenario | Expected behavior |
+|----------|-------------------|
+| `isDeviceTurnedOn = false` (any type) | Returns `deadPrice` immediately. No condition codes are evaluated. |
+| Unknown code `P0` sent for Camera | `P0` resolves to `₹0` — no error thrown. Other codes evaluate normally. |
+| Typo in code (e.g. `P3x` for Headphone) | Resolves to `₹0` — no error thrown. The misspelled code is silently ignored. |
+| All deductions maxed (Watch with W4, B4, S4, P8, T10) | `finalPrice` may go negative. `max(negative, deadPrice)` returns `deadPrice`. Price never drops below `deadPrice`. |
+| `accessoryCodes = ["A1"]` sent for Watch | Watch ignores accessories entirely — no deduction applied. `accessoryCodes` should always be `[]` for Watch. |
+| Console with `numberOfCDs = 0` and `extraControllers = 0` | No additions applied. Behaves like base minus deductions only. |
+| `accessories` array omitted entirely (any type) | Defaults to `[]`, meaning ALL accessory codes count as missing → heavy deduction. This is a known risk — always send the accessories array. |
+| `price` sent as string `"4200"` | Zod `z.coerce.number()` validates and converts to number `4200`. No error. |
+| Unsupported `deviceType` or missing class row | Controller returns `400` or `404` with `"Evaluation for X is not yet supported"` or `"Class data not found for X"`. |
+
 ## Summary formula
 
 Across all strategies, the conceptual formula is:
@@ -640,7 +793,12 @@ Where:
 
 - **Total Deductions** includes warranty, body, screen or screen-size, physical, technical, and missing accessory deductions, each computed as `resolveDeduction(classData[code], basePrice)` so that all percentages are based on `basePrice`.
 
-- **Total Additions** currently covers laptop hardware upgrades (processor, RAM, storage, and optionally graphic card if configured) as direct numeric additions.
+- **Total Additions** covers:
+  - Laptop hardware upgrades (processor, RAM, storage, and optionally graphic card if configured) as direct numeric additions
+  - Camera extra lenses (`extraLensIds` → `CameraLens.value` per ID, flat rupees)
+  - Console extra CDs (`numberOfCDs` → CD* codes, flat rupees each) and extra controllers (`extraControllers` → E* codes, flat rupees each)
+
+Camera lenses and Console CDs/controllers are the only additions (besides laptop hardware) that can push `finalPrice` above `basePrice`. For all other device types, additions are not applicable.
 
 If the evaluated `Final Price` is less than or equal to `0`, the system returns:
 
@@ -770,4 +928,3 @@ Value Resolution (Flat vs Percentage)
 ```
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1773141967597-hjeem1et6h7-summary-table--price-evaluation.summary table -price evaluation?q=85&fm=auto&auto=compress%2Cformat" width="1034" height="692" alt="" />
-

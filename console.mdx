@@ -1,0 +1,393 @@
+---
+title: Console
+description: Manage gaming console models, brands, condition classes, and pricing for Cashkr buyback, including CD and controller additions.
+---
+
+## Console overview
+
+The Console page in **Admin Panel → Devices** manages all gaming console models available for buyback. Use it to maintain console models, brands, condition classes, and pricing rules that determine the final offer shown during evaluation.
+
+Console devices use the `mobilePriceEvaluation` strategy with condition groups for age, body, physical or functional condition, and accessories. Console evaluations use `W1` to `W4` for age, `B1` to `B4` for body condition, `P1` to `P6` for physical or functional issues, and `A1` to `A3` for accessories. Consoles do not use screen condition codes or technical fault codes.
+
+Console pricing also supports two console-specific additions: `numberOfCDs` and `extraControllers`. These map to `CD*` and `E*` codes and add flat rupee amounts to the evaluated value. Console is one of only two device types, alongside Camera, where additions can push `finalPrice` above `basePrice`.
+
+<Tabs>
+  <Tab title="Models" icon="package">
+
+  ## What you see
+
+  The Models tab lists all gaming console models configured for buyback. Each row represents a model that can be selected during device evaluation.
+
+  The table includes these columns:
+
+  | Column | Description |
+  | --- | --- |
+  | Model name | The console model name |
+  | Brand | The associated brand |
+  | Base price | The starting price before deductions and additions |
+  | Class | The pricing class applied to the model |
+  | Status | Whether the model is active or inactive |
+
+  Common examples include **PlayStation 5**, **Xbox Series X**, and **Nintendo Switch**.
+
+  ## Search and filters
+
+  Search for a model by entering the model name. Use the brand filter to narrow the list to a specific manufacturer.
+
+  This combination is useful when you manage multiple variants across Sony, Microsoft, and Nintendo.
+
+  ## Add
+
+  Add a console model when you want it to appear in buyback flows and use an existing class and brand for pricing.
+
+  <Steps>
+    <Step title="Enter the model name" icon="edit">
+
+    Add the full model name exactly as you want it to appear in Admin Panel and evaluation flows.
+
+    Use a clear name such as `PlayStation 5` or `Xbox Series X`.
+
+    </Step>
+    <Step title="Select the brand" icon="folder">
+
+    Choose the correct console brand from the brand list.
+
+    If the brand does not exist yet, create it first in the Brands tab.
+
+    </Step>
+    <Step title="Set the base price" icon="bar-chart">
+
+    Enter the model's base buyback price as a flat rupee value.
+
+    This price acts as the starting point before condition deductions and console additions are applied.
+
+    </Step>
+    <Step title="Assign the class" icon="settings">
+
+    Select the console class that contains the dead price and all condition code amounts.
+
+    The class controls how age, body, physical or functional condition, accessories, CDs, and controllers affect the final price.
+
+    </Step>
+    <Step title="Save the model" icon="check-circle">
+
+    Save the new model to add it to the Console catalog.
+
+    After saving, the model appears in the table with its brand, base price, class, and status.
+
+    </Step>
+  </Steps>
+
+  ## Edit
+
+  Edit a model to update its name, brand, base price, assigned class, or status. This is the usual action when pricing changes or when you need to move a model to a different condition class.
+
+  Review the base price and class together before saving. A model's final evaluated value depends on both.
+
+  ## Delete
+
+  Delete a model when it should no longer be available for buyback. Use this action carefully because removing a model can affect active operational flows.
+
+  <Callout kind="alert">
+
+  Delete only after confirming the model is not needed in current evaluation or catalog workflows.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Brands" icon="book-open">
+
+  ## What you see
+
+  The Brands tab lists console manufacturers available for Console models. Each brand can be reused across multiple console models.
+
+  Common console brands include **Sony**, **Microsoft**, and **Nintendo**.
+
+  ## Search and filters
+
+  Search for a brand by name to find it quickly in larger device catalogs. If your Admin Panel supports device-type scoping in brand management, confirm the brand is associated with Console.
+
+  This helps prevent brand overlap across unrelated device categories.
+
+  ## Add
+
+  Add a brand before you create models that belong to that manufacturer.
+
+  <Steps>
+    <Step title="Enter the brand name" icon="edit">
+
+    Add the manufacturer name exactly as you want it displayed.
+
+    Use standard names such as `Sony`, `Microsoft`, or `Nintendo`.
+
+    </Step>
+    <Step title="Set the device type to Console" icon="settings">
+
+    Select **Console** as the device type.
+
+    This ensures the brand is available when you create or edit console models.
+
+    </Step>
+    <Step title="Add the brand URL" icon="external-link">
+
+    Enter the brand URL or slug used by your Admin Panel configuration.
+
+    Keep the value consistent with your existing brand naming and routing rules.
+
+    </Step>
+    <Step title="Upload the brand image" icon="upload">
+
+    Add the brand image used in the admin interface or device listings.
+
+    Confirm the uploaded image matches existing asset conventions before saving.
+
+    </Step>
+    <Step title="Enter SEO metadata" icon="code">
+
+    Add the required SEO metadata fields used by your content or listing setup.
+
+    Review titles and descriptions for consistency with the rest of the catalog.
+
+    </Step>
+    <Step title="Save the brand" icon="check-circle">
+
+    Save the new brand.
+
+    After saving, the brand becomes available when you add or edit Console models.
+
+    </Step>
+  </Steps>
+
+  ## Edit
+
+  Edit a brand to update its display name, URL, image, or SEO metadata. Changes usually apply anywhere that brand appears in the Console device catalog.
+
+  Update brand-level metadata carefully to avoid unintended inconsistencies across connected models.
+
+  ## Delete
+
+  Delete a brand only when no active console models depend on it. If models still reference the brand, reassign those models first.
+
+  <Callout kind="alert">
+
+  Deleting a brand before reassigning dependent models can break model configuration and catalog consistency.
+
+  </Callout>
+
+  </Tab>
+
+  <Tab title="Classes" icon="shield">
+
+  ## What you see
+
+  The Classes tab stores the pricing logic for Console devices. A class defines the dead price and every supported deduction or addition amount used during console evaluation.
+
+  Each class stores values for `deadPrice`, age codes `W1` to `W4`, body codes `B1` to `B4`, physical or functional codes `P1` to `P6`, and accessory codes `A1` to `A3`.
+
+  <Callout kind="info">
+
+  Console devices use the following condition code ranges: Age `W1` to `W4`, Body `B1` to `B4`, Functional or Physical `P1` to `P6`, and Accessories `A1` to `A3`. Consoles do not use screen codes or technical fault codes.
+
+  </Callout>
+
+  <Callout kind="alert">
+
+  All amounts for Console are flat rupees as integers. Percentage-based deductions are not supported.
+
+  </Callout>
+
+  <Callout kind="info">
+
+  Console-specific additions: `numberOfCDs` maps to `CD*` codes, where each extra CD adds flat rupees, and `extraControllers` maps to `E*` codes, where each extra controller adds flat rupees. These are the only additions, alongside Camera lenses, that can increase the final price above the base price.
+
+  </Callout>
+
+  ## Search and filters
+
+  Search for a class by name or internal identifier, depending on your Admin Panel setup. Use filters, if available, to isolate active classes or classes linked to Console.
+
+  This is useful when multiple device types use separate pricing classes.
+
+  ## Add
+
+  Add a class when you need a new pricing structure for a group of console models.
+
+  <Steps>
+    <Step title="Create the class record" icon="plus">
+
+    Enter the class name or identifier used internally for Console pricing.
+
+    Use a name that helps your team understand which models belong to the class.
+
+    </Step>
+    <Step title="Set the dead price" icon="bar-chart">
+
+    Enter the minimum fallback price as a flat rupee integer.
+
+    The evaluation result should never go below this value after deductions and additions are applied.
+
+    </Step>
+    <Step title="Enter age deductions" icon="edit">
+
+    Add values for `W1`, `W2`, `W3`, and `W4`.
+
+    These codes represent age-related deductions used in console evaluation.
+
+    </Step>
+    <Step title="Enter body deductions" icon="edit">
+
+    Add values for `B1`, `B2`, `B3`, and `B4`.
+
+    These codes represent cosmetic or body-condition deductions.
+
+    </Step>
+    <Step title="Enter physical or functional deductions" icon="edit">
+
+    Add values for `P1` through `P6`.
+
+    Consoles use only six `P` levels, not eight, so confirm you do not create unsupported `P7` or `P8` values.
+
+    </Step>
+    <Step title="Enter accessory deductions" icon="edit">
+
+    Add values for `A1`, `A2`, and `A3`.
+
+    These codes represent missing or incomplete accessory conditions.
+
+    </Step>
+    <Step title="Enter console addition values" icon="plus">
+
+    Add flat rupee values for `CD*` codes and `E*` codes if your class setup includes them.
+
+    Use `CD*` for extra CDs and `E*` for extra controllers.
+
+    </Step>
+    <Step title="Save the class" icon="check-circle">
+
+    Save the class and verify it appears in the class list.
+
+    After saving, the class is available for assignment to Console models.
+
+    </Step>
+  </Steps>
+
+  ## Edit
+
+  Edit a class when pricing policy changes or when deduction and addition values need correction. Review all supported code groups before saving because a single class controls every model assigned to it.
+
+  Pay special attention to `P` values and addition values. `P1` to `P6`, `CD*`, and `E*` serve different purposes and should not be mixed.
+
+  ## Delete
+
+  Delete a class only after reassigning every dependent console model to another valid class. Removing an in-use class can leave pricing incomplete for affected models.
+
+  ## Export
+
+  Export classes when you need to review pricing offline, share values with operations teams, or audit deduction and addition logic across console models.
+
+  Exports are especially useful for validating flat rupee amounts across `W`, `B`, `P`, `A`, `CD`, and `E` code groups.
+
+  </Tab>
+
+  <Tab title="Pricing" icon="bar-chart">
+
+  ## What you see
+
+  The Pricing tab documents how Console final prices are calculated from the model base price, class deductions, and console-specific additions.
+
+  Console pricing subtracts values for age, body, physical or functional condition, and missing accessories. It can also add value for extra CDs and extra controllers.
+
+  ## Deduction and addition groups
+
+  | Group | Codes | Effect on price | Notes |
+  | --- | --- | --- | --- |
+  | Age | `W1` to `W4` | Deduction | Age-related reduction |
+  | Body | `B1` to `B4` | Deduction | Cosmetic or body-condition reduction |
+  | Physical or functional | `P1` to `P6` | Deduction | Six levels only |
+  | Accessories | `A1` to `A3` | Deduction | Missing accessories reduce price |
+  | CDs | `CD1`, `CD2`, `CD3` and above | Addition | Each extra CD adds flat rupees |
+  | Controllers | `E1`, `E2` and above | Addition | Each extra controller adds flat rupees |
+
+  <Callout kind="info">
+
+  Console is one of only two device types, alongside Camera, where additions can push the final price above the base price. Extra CDs and controllers are valued as flat rupee additions, not deductions.
+
+  </Callout>
+
+  <Callout kind="alert">
+
+  Do not confuse `P1`, such as a CD drive not working or another functional issue, with `CD*` addition codes. `P1` is a deduction. `CD*` codes are additions. They are independent values that serve opposite purposes in the calculation.
+
+  </Callout>
+
+  ## Formula
+
+  Console pricing follows this calculation flow:
+
+  ```text
+  finalPrice = basePrice - age(W) - body(B) - functional(P) - missingAccessories(A) + CDs(CD*) + controllers(E*)
+  finalPrice = max(finalPrice, deadPrice)
+  ```
+
+  A console's final price can end higher than its `basePrice` when CD and controller additions exceed the selected deductions. That behavior is expected for Console pricing.
+
+  ## Search and filters
+
+  Use this tab to review how specific code groups affect pricing and to verify whether a class supports the expected Console deductions and additions. When troubleshooting price output, compare the model base price with the assigned class values.
+
+  This is the fastest way to isolate whether a pricing issue comes from the model or the class.
+
+  ## Add
+
+  Add pricing by configuring the model base price in Models and the deduction and addition values in Classes. Console pricing is complete only when both parts are configured correctly.
+
+  <Steps>
+    <Step title="Set the model base price" icon="bar-chart">
+
+    Open the Models tab and enter the console's base buyback value.
+
+    This is the starting amount used before any class-based adjustments.
+
+    </Step>
+    <Step title="Configure deduction values in the class" icon="settings">
+
+    Add flat rupee values for `W1` to `W4`, `B1` to `B4`, `P1` to `P6`, and `A1` to `A3`.
+
+    These values reduce the model's base price during evaluation.
+
+    </Step>
+    <Step title="Configure addition values for CDs and controllers" icon="plus">
+
+    Add flat rupee values for `CD*` and `E*` codes in the class.
+
+    These values increase the evaluated price when extra CDs or controllers are included.
+
+    </Step>
+    <Step title="Assign the class to the model" icon="folder">
+
+    Return to the Models tab and assign the completed class to the console model.
+
+    The model can now use the full Console pricing logic during evaluation.
+
+    </Step>
+  </Steps>
+
+  ## Edit
+
+  Edit pricing by changing either the model's `basePrice` or the assigned class values. Update the class when the deduction logic changes, and update the model when only the starting price changes.
+
+  Review addition values after every change. Console additions can raise the result above the base price, so small updates can materially change final offers.
+
+  ## Delete
+
+  Delete pricing by removing or replacing the related model or class configuration. Avoid leaving a model assigned to an incomplete class.
+
+  <Callout kind="alert">
+
+  If you remove class values or reassign pricing incorrectly, Console evaluations can return incorrect final prices.
+
+  </Callout>
+
+  </Tab>
+</Tabs>

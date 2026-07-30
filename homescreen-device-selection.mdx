@@ -17,12 +17,26 @@ HomeScreen does not contain hardcoded devices or areas. Device data, banners, an
 
 HomeScreen presents the key entry points into the selling flow:
 
-- **Device categories**: High-level device types (for example, mobile, laptop, Mac, tablet) as tappable tiles or icons.
+- **Device categories**: High-level device types as tappable tiles or icons. Supported categories include:
+  - **Mobile** — Smartphones
+  - **Laptop** — Laptops and notebooks
+  - **Tablet** — Tablets
+  - **Mac** — MacBooks and Apple computers
+  - **Camera** — Digital cameras and camera equipment
+  - **Headphone** — Audio headphones and earphones
+  - **Watch** — Smartwatches and wearable devices
+  - **Console** — Gaming consoles
 - **Promotional banners**: Swipeable banners highlighting offers, campaigns, or specific device categories.
 - **Search bar**: A free-text search entry that lets customers jump directly to a specific device model.
 - **Serviceability input**: A field (pincode/area) that checks whether the service is available for the customer location before they proceed.
 
 When everything is configured correctly in the Admin Panel, customers always see at least one active category and a working search entry point.
+
+<Callout kind="info">
+
+When a user selects one of the newer device types (Camera, Headphone, Watch, Console), the condition questions in the sell flow adapt based on the device type — not all condition dimensions apply to every type. For example, Headphone users are not asked about body damage or screen condition, and Watch users are not asked about accessories.
+
+</Callout>
 
 ## Step-by-step user flow
 

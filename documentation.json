@@ -1012,6 +1012,22 @@
                   {
                     "title": "Mac",
                     "path": "mac"
+                  },
+                  {
+                    "title": "Camera",
+                    "path": "camera"
+                  },
+                  {
+                    "title": "Headphone",
+                    "path": "headphone"
+                  },
+                  {
+                    "title": "Watch",
+                    "path": "watch"
+                  },
+                  {
+                    "title": "Console",
+                    "path": "console"
                   }
                 ]
               },

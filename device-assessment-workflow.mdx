@@ -232,6 +232,33 @@ This example shows the **shape** of the evaluation request, not real identifiers
 
 If `isDeviceTurnedOn` is `false`, the pricing engine skips the detailed deduction chain and returns the dead-device price immediately.
 
+## Per-Type Assessment Variations
+
+The assessment workflow adapts its questions based on device type. Not all SBWPTA dimensions apply to every device type. The table below shows which dimensions are assessed for Camera, Headphone, Watch, and Console — the four newest device types added to the buyback pricing engine.
+
+| Dimension | Camera | Headphone | Watch | Console |
+|-----------|--------|-----------|-------|---------|
+| Screen (S) | — (not assessed) | — (not assessed) | S1–S4 | — (not assessed) |
+| Body (B) | B1–B4 | — (not assessed) | B1–B4 | B1–B4 |
+| Functional/Physical (P) | P1–P8 | P1–P8 | P1–P8 | P1–P6 |
+| Technical (T) | — (not assessed) | — (not assessed) | T1–T10 | — (not assessed) |
+| Accessories (A) | A1–A8 (missing → deduct) | A1–A3 only (missing → deduct) | — (accessoryCodes = []) | A1–A3 (missing → deduct) |
+| Additions (+) | extraLensIds (ADD lens values) | — (no additions) | — (no additions) | numberOfCDs (CD* ADD) + extraControllers (E* ADD) |
+
+For Headphones, the customer is not asked about body damage or screen condition — only age, functional/physical issues, and missing accessories (A1–A3 only). For Watches, accessories are not assessed (`accessoryCodes` is always an empty array), but screen, body, and technical faults are evaluated. For Cameras, the workflow includes an extra step to capture additional lens IDs, which add value to the final price. For Consoles, the workflow includes steps to count extra CDs and extra controllers, which can increase the final price above the base.
+
+<Callout kind="info">
+
+Console additions (CDs and extra controllers) and Camera additions (extra lenses) are the only scenarios where the final price can exceed the base price. All other SBWPTA codes only deduct from `basePrice`.
+
+</Callout>
+
+<Callout kind="warning">
+
+For Camera, Headphone, Watch, and Console, all pricing amounts are flat rupees (Int columns). Percentage-based deductions are NOT supported for these device types.
+
+</Callout>
+
 ## Related pages
 
 - [Pricing system](/pricing-system)

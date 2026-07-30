@@ -21,6 +21,27 @@ Classes:
 
 Classes do not store per-order pricing; they provide shared pricing inputs that other flows reuse.
 
+## Supported device types
+
+Each device type has its own set of classes stored in a dedicated class table. The pricing engine resolves the correct class table based on the device type in the evaluation request.
+
+| Device type | Class table | Key notes |
+|-------------|-------------|-----------|
+| Mobile | `classMobile` | S1–S5 screen, B1–B4 body, P1–P4 physical, T1–T15 technical, A1–A4 accessories |
+| Laptop | `classLaptop` | Uses `laptopPriceEvaluation` strategy; screen size S1–S4; additions for processor, RAM, storage |
+| Tablet | `classTablet` | Same code ranges as Mobile |
+| Mac | `classMac` | Same code ranges as Mobile |
+| **Camera** | `classCamera` | P1–P8 physical, A1–A8 accessories; no screen/technical; `extraLensIds` additions (flat rupees) |
+| **Headphone** | `classHeadphone` | P1–P8 physical, A1–A3 accessories only; no body, screen, or technical codes |
+| **Watch** | `classWatch` | S1–S4 screen, B1–B4 body, P1–P8 physical, T1–T10 technical; no accessories (accessoryCodes = []) |
+| **Console** | `classConsole` | P1–P6 physical, A1–A3 accessories; no screen/technical; `numberOfCDs` and `extraControllers` additions (flat rupees) |
+
+<Callout kind="warning">
+
+For Camera, Headphone, Watch, and Console, all class deduction values are flat rupees (Int columns). Percentage-based deductions are NOT supported for these four device types.
+
+</Callout>
+
 ## Example class mapping
 
 Use classes to roughly separate premium, mid-range, and entry-level devices. The exact models inside each class can change over time; the pattern stays the same.

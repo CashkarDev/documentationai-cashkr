@@ -1,0 +1,360 @@
+---
+title: Watch
+description: Manage smartwatch and wearable models, brands, condition classes, and pricing for Cashkr buyback with watch-specific deductions and no accessories.
+---
+
+## Manage watch devices
+
+The Watch page in **Admin Panel → Devices** controls every smartwatch and wearable model available for buyback. Use it to maintain watch models, supported brands, condition classes, and the pricing rules that determine final buyback values.
+
+Watch devices use the `mobilePriceEvaluation` strategy. They also have the most deduction dimensions of the four new device types: **age** `W1–W4`, **screen** `S1–S4`, **body** `B1–B4`, **physical and functional** `P1–P8`, and **technical faults** `T1–T10`.
+
+<Callout kind="alert">
+
+Watch devices do **not** support accessories. The `accessoryCodes` value must always be an empty array `[]`. Do not configure accessory-based pricing or send non-empty accessory codes for Watch devices.
+
+</Callout>
+
+<Callout kind="info">
+
+Watch devices do not support additions. Pricing is calculated only from the base price and deduction values stored in the assigned class.
+
+</Callout>
+
+<Tabs>
+  <Tab title="Models" icon="watch">
+
+  ### What you see
+
+  The **Models** tab lists every watch model configured for buyback. Each row shows the data needed to control model availability and pricing setup.
+
+  The table includes these columns:
+
+  | Column | Description |
+  | --- | --- |
+  | Model name | The customer-facing name of the watch model |
+  | Brand | The brand assigned to the model |
+  | Base price | The starting buyback value before deductions |
+  | Class | The pricing and condition class assigned to the model |
+  | Status | Whether the model is active or inactive |
+
+  ### Search and filters
+
+  Find a model by typing part or all of the model name in the search field. Use the brand filter to narrow the list to one manufacturer when the catalog is large.
+
+  Search and filter together when you need to confirm whether a similar model already exists before adding a new one.
+
+  ### Add
+
+  Add a model when a new smartwatch or wearable becomes eligible for buyback.
+
+  <Steps>
+    <Step title="Enter the model name" icon="edit">
+
+    Add the full model name exactly as you want it to appear in Admin Panel and downstream buyback flows. Keep naming consistent with existing watch models to avoid duplicate entries.
+
+    </Step>
+    <Step title="Select the brand" icon="folder">
+
+    Choose the correct watch brand from the brand list. If the brand does not exist yet, add it in the **Brands** tab before creating the model.
+
+    </Step>
+    <Step title="Set the base price" icon="bar-chart">
+
+    Enter the starting buyback amount for the model in rupees. This value is the top-line price before age, screen, body, functional, and technical deductions are applied.
+
+    </Step>
+    <Step title="Assign the class" icon="settings">
+
+    Select the watch class that contains the dead price and all deduction values for this model. The class determines how condition inputs affect the final payout.
+
+    </Step>
+    <Step title="Save the model" icon="check-circle">
+
+    Save the record to add the model to the watch catalog. After saving, the new model appears in the table with its brand, base price, class, and status.
+
+    </Step>
+  </Steps>
+
+  <Callout kind="info">
+
+  Add the brand and class first if they are not already available. A watch model depends on both records.
+
+  </Callout>
+
+  ### Edit
+
+  Edit a model to update its name, brand, base price, class, or status. Use this when pricing changes, a model moves to a different class, or you need to deactivate a device without removing its history.
+
+  Confirm the updated values before saving. A changed base price or class affects future watch price evaluations.
+
+  ### Delete
+
+  Delete a model only when it was created by mistake or is no longer needed in the catalog. Removing a model can affect admin workflows and any process that depends on an exact device mapping.
+
+  <Callout kind="alert">
+
+  Delete with care. If the model is already referenced in pricing, reporting, or transaction history, deactivate it instead of deleting it.
+
+  </Callout>
+
+  </Tab>
+  <Tab title="Brands" icon="bookmark">
+
+  ### What you see
+
+  The **Brands** tab stores the watch manufacturers available when creating models. Use it to keep the watch catalog organized and ensure models can be grouped and filtered correctly.
+
+  Supported watch brands include:
+
+  - Apple
+  - Samsung
+  - Garmin
+  - Fossil
+  - Fitbit
+  - Amazfit
+
+  ### Search and filters
+
+  Search brands by name to find an existing manufacturer quickly. This is useful when you need to verify whether a brand already exists before adding another entry.
+
+  If your brand list grows, use search before creating a new brand to prevent duplicate records with slightly different spellings.
+
+  ### Add
+
+  Add a brand before adding any watch model that depends on it.
+
+  <Steps>
+    <Step title="Enter the brand name" icon="edit">
+
+    Add the manufacturer name exactly as it should appear across the device catalog. Use a single standard spelling for each brand.
+
+    </Step>
+    <Step title="Set the device type to Watch" icon="settings">
+
+    Select **Watch** as the device type so the brand appears in the correct device management flow. This keeps the brand scoped to watch records.
+
+    </Step>
+    <Step title="Add the brand URL" icon="external-link">
+
+    Enter the brand URL if your setup requires a destination page or reference link for the brand record.
+
+    </Step>
+    <Step title="Upload the brand image" icon="upload">
+
+    Add the brand image used by the admin experience or downstream display surfaces. Check that the image matches your standard brand asset format.
+
+    </Step>
+    <Step title="Fill in SEO metadata" icon="code">
+
+    Add the required SEO fields for the brand record, including title and description values if your workflow uses them.
+
+    </Step>
+    <Step title="Save the brand" icon="check-circle">
+
+    Save the record to make the brand available in the Watch model form. After saving, the brand should appear in the brands list and in the model brand selector.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Edit a brand to update its display name, URL, image, or metadata. Make these changes when brand assets or naming conventions are updated.
+
+  Review dependent models after a rename so the brand still appears as expected throughout the watch catalog.
+
+  ### Delete
+
+  Delete a brand only if it is unused or was added in error. If models already depend on it, deleting the brand can break model configuration and filtering.
+
+  <Callout kind="alert">
+
+  Do not delete a brand that is still assigned to watch models. Reassign dependent models first, or keep the brand record and stop using it for new entries.
+
+  </Callout>
+
+  </Tab>
+  <Tab title="Classes" icon="settings">
+
+  ### What you see
+
+  The **Classes** tab stores the pricing class used by watch models. A class contains the dead price and every deduction amount needed to evaluate watch condition.
+
+  Watch classes are more detailed than the other new device types because they support five separate deduction categories and no additions.
+
+  <Callout kind="info">
+
+  Watch devices use the following condition code ranges: Age `W1–W4`, Screen `S1–S4`, Body `B1–B4`, Functional and Physical `P1–P8`, Technical faults `T1–T10`. Watches have no accessories, so `accessoryCodes` must always be an empty array `[]`. Do not use addition fields.
+
+  </Callout>
+
+  <Callout kind="alert">
+
+  All amounts for Watch are flat rupee values stored as integers. Percentage-based deductions are not supported.
+
+  </Callout>
+
+  ### Search and filters
+
+  Search classes by class name or identifier to find the pricing profile you need. Use this when reviewing which deduction set is assigned to a model or before creating a new class.
+
+  Keep class names distinct so admins can tell at a glance which pricing structure a model uses.
+
+  ### Add
+
+  Create a class when you need a new set of watch deduction values.
+
+  <Steps>
+    <Step title="Enter the class name" icon="edit">
+
+    Add a clear class name that identifies the pricing profile. Use a naming pattern that matches other device classes in your admin setup.
+
+    </Step>
+    <Step title="Set the dead price" icon="bar-chart">
+
+    Enter the minimum payout floor for the class. The final evaluated price cannot go below this amount.
+
+    </Step>
+    <Step title="Add age deductions W1 to W4" icon="settings">
+
+    Enter flat rupee deductions for each age band from `W1` through `W4`. Higher deduction codes should reflect lower value due to age.
+
+    </Step>
+    <Step title="Add screen deductions S1 to S4" icon="monitor">
+
+    Enter flat rupee deductions for each screen condition code from `S1` through `S4`.
+
+    </Step>
+    <Step title="Add body deductions B1 to B4" icon="shield">
+
+    Enter flat rupee deductions for each body condition code from `B1` through `B4`.
+
+    </Step>
+    <Step title="Add functional and physical deductions P1 to P8" icon="tool">
+
+    Enter flat rupee deductions for each physical and functional condition code from `P1` through `P8`.
+
+    </Step>
+    <Step title="Add technical fault deductions T1 to T10" icon="alert-triangle">
+
+    Enter flat rupee deductions for each technical fault code from `T1` through `T10`. These values are used cumulatively when multiple technical faults apply.
+
+    </Step>
+    <Step title="Save the class" icon="check-circle">
+
+    Save the class to make it available in the Watch model form. After saving, you should be able to assign the class to one or more watch models.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Edit a class when deduction amounts change or when you need to correct an existing pricing profile. Changes apply to future evaluations that use that class.
+
+  Review updates carefully before saving. Watch classes affect multiple deduction categories, so small mistakes can change final prices significantly.
+
+  ### Delete
+
+  Delete a class only if it is unused or was created in error. If any watch model is assigned to the class, reassign that model first.
+
+  <Callout kind="alert">
+
+  Do not delete a class that is still attached to active watch models. Reassign the models to another valid class before removing the class.
+
+  </Callout>
+
+  ### Export
+
+  Export classes when you need to review deduction values outside Admin Panel or validate pricing in bulk. This is useful for audits, pricing reviews, and change approval workflows.
+
+  Confirm that exported data includes the dead price and every watch condition code range from `W1–W4`, `S1–S4`, `B1–B4`, `P1–P8`, and `T1–T10`.
+
+  </Tab>
+  <Tab title="Pricing" icon="bar-chart">
+
+  ### What you see
+
+  The **Pricing** tab explains how watch prices are derived from the model base price and the assigned class deductions. Watch pricing is deduction-only and does not use additions or accessory adjustments.
+
+  Watch devices have five deduction categories, which is the highest count among the four new device types.
+
+  <Callout kind="info">
+
+  Watches have the most deduction dimensions of the four new device types: age, screen, body, physical and functional, and technical. However, watches are the only new type where accessories are not assessed at all.
+
+  </Callout>
+
+  <Callout kind="alert">
+
+  Never send non-empty `accessoryCodes` for Watch devices. The engine expects an empty array `[]`. Sending accessory codes may cause unexpected behavior.
+
+  </Callout>
+
+  ### Deduction groups
+
+  Use the assigned class to look up flat rupee deductions for each condition category.
+
+  | Deduction group | Code range | Notes |
+  | --- | --- | --- |
+  | Age | `W1–W4` | One age deduction applies |
+  | Screen | `S1–S4` | One screen deduction applies |
+  | Body | `B1–B4` | One body deduction applies |
+  | Physical and functional | `P1–P8` | One physical or functional deduction applies |
+  | Technical faults | `T1–T10` | Sum all applicable technical fault deductions |
+
+  ### Pricing formula
+
+  Calculate the final watch price by subtracting all applicable deductions from the base price, then applying the dead price floor.
+
+  ```text
+  finalPrice = basePrice - age(W) - screen(S) - body(B) - functional(P) - technical(T)
+  finalPrice = max(finalPrice, deadPrice)
+  ```
+
+  The technical deduction is cumulative. If more than one technical fault applies, add all relevant `T` values before subtracting them from the base price.
+
+  ### Search and filters
+
+  Use pricing search and class-level filtering to find the rule set tied to a specific watch model or class. This helps when validating why a final quoted price changed.
+
+  Pricing review is usually easiest when you start from the model, then confirm its base price and assigned class deductions together.
+
+  ### Add
+
+  Watch pricing is created indirectly by adding a model and assigning a class with complete deduction values.
+
+  <Steps>
+    <Step title="Create or confirm the brand" icon="folder">
+
+    Make sure the required watch brand exists in the **Brands** tab.
+
+    </Step>
+    <Step title="Create or confirm the class" icon="settings">
+
+    Make sure the required class exists with dead price, age, screen, body, physical and functional, and technical deduction values.
+
+    </Step>
+    <Step title="Create the model and set the base price" icon="edit">
+
+    Add the watch model in the **Models** tab and enter its base price.
+
+    </Step>
+    <Step title="Assign the class and save" icon="check-circle">
+
+    Assign the correct class to the model and save the record. Pricing is now ready for watch evaluations.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Edit watch pricing by updating either the model base price or the assigned class deduction values. Change the model when only one device needs a new starting price.
+
+  Change the class when the deduction amounts themselves need to be updated across all models that use that class.
+
+  ### Delete
+
+  Delete pricing only by removing the underlying model or class record when it is safe to do so. In most cases, deactivating a model or replacing a class is safer than hard deletion.
+
+  </Tab>
+</Tabs>

@@ -1,0 +1,428 @@
+---
+title: Camera
+description: Manage camera models, brands, condition classes, and pricing for Cashkr buyback, including extra lens additions above base price.
+---
+
+## Manage camera buyback settings
+
+The Camera page in **Admin Panel → Devices** controls every camera model available for buyback. Use it to maintain the model catalog, brand records, condition classes, and pricing rules that determine how Cashkr evaluates camera trade-ins.
+
+Camera uses the `mobilePriceEvaluation` strategy, but its pricing inputs differ from phones and other device types. Camera condition classes use `W1–W4` for age, `B1–B4` for body, `P1–P8` for physical and functional condition, and `A1–A8` for accessories.
+
+Camera also supports `extraLensIds`, which add value instead of deducting it. Camera is one of only two device types where additions can increase the final price above the base price.
+
+<Tabs>
+  <Tab title="Models" icon="database">
+
+  ### What you see
+
+  The **Models** tab lists every camera model currently available for buyback. Each row represents one buyback-ready model tied to a brand, class, and base price.
+
+  Use this table to confirm that the correct camera models are available to operators and that each model points to the right pricing setup.
+
+  | Column | Description |
+  | --- | --- |
+  | Model name | The camera model name shown in the admin panel and buyback flow |
+  | Brand | The brand assigned to the model |
+  | Base price | The starting price before deductions or additions |
+  | Class | The condition class used to calculate final price |
+  | Status | Whether the model is active and available for use |
+
+  ### Search & filters
+
+  Find models faster by using the built-in table controls.
+
+  - **Search** by model name
+  - **Filter** by brand
+
+  Search is useful when you need to update one specific model. Brand filters help when you are reviewing or cleaning up an entire brand catalog.
+
+  ### Add
+
+  Add a new camera model when a buyback-eligible device is missing from the catalog.
+
+  <Steps>
+    <Step title="Enter the model name" icon="edit">
+
+    Type the camera model name exactly as you want it to appear in the admin panel and downstream buyback flows.
+
+    Use a consistent naming format so operators can search and identify models quickly.
+
+    </Step>
+    <Step title="Select the brand" icon="folder">
+
+    Choose the correct camera brand from the existing brand list.
+
+    If the brand does not exist yet, add the brand first in the **Brands** tab, then return to create the model.
+
+    </Step>
+    <Step title="Set the base price" icon="bar-chart">
+
+    Enter the base buyback price for the model.
+
+    This value is the starting point for all camera pricing calculations before age, body, condition, accessories, and extra lenses are applied.
+
+    </Step>
+    <Step title="Assign the class" icon="settings">
+
+    Select the condition class that contains the pricing values for this model.
+
+    The class determines how deductions and the dead price floor are applied during evaluation.
+
+    </Step>
+    <Step title="Save the model" icon="check-circle">
+
+    Save the new model to make it available in the camera device catalog.
+
+    After saving, the model should appear in the table with its brand, base price, class, and status.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Edit a camera model when you need to correct naming, move it to a different brand, change its base price, or assign a different class.
+
+  Update base prices carefully. Pricing changes affect future camera evaluations that use this model.
+
+  <Callout kind="info">
+
+  If you change the assigned class, the model immediately starts using the pricing values from the new class.
+
+  </Callout>
+
+  ### Delete
+
+  Delete a camera model only when it should no longer be used for buyback.
+
+  Removing a model from the catalog can affect operator workflows and reporting consistency, so confirm that the model is no longer needed before deletion.
+
+  <Callout kind="alert">
+
+  Deleting a model removes it from active admin use. Review any operational dependency before you delete it.
+
+  </Callout>
+
+  </Tab>
+  <Tab title="Brands" icon="book-open">
+
+  ### What you see
+
+  The **Brands** tab stores camera brand records used by camera models. Each brand can include presentation and SEO details in addition to its display name.
+
+  Camera brands typically include:
+
+  | Brand | Notes |
+  | --- | --- |
+  | Canon | Common DSLR and mirrorless catalog |
+  | Nikon | Common DSLR and mirrorless catalog |
+  | Sony | Includes mirrorless and compact camera lines |
+  | Fujifilm | Includes mirrorless and compact camera lines |
+  | Panasonic | Includes Lumix and related camera lines |
+  | Olympus | Includes digital and mirrorless camera lines |
+
+  ### Search & filters
+
+  Use the brand list to review existing records before creating a new one.
+
+  Search helps prevent duplicate brand entries, especially when multiple admins manage the catalog.
+
+  ### Add
+
+  Add a brand before adding models that belong to it.
+
+  <Steps>
+    <Step title="Enter the brand name" icon="edit">
+
+    Type the brand name as it should appear across the admin panel and buyback flow.
+
+    Keep naming consistent with existing brand records.
+
+    </Step>
+    <Step title="Set the device type to Camera" icon="settings">
+
+    Choose **Camera** as the device type.
+
+    This ensures the brand appears in the correct device catalog and is available when creating camera models.
+
+    </Step>
+    <Step title="Add the brand URL" icon="external-link">
+
+    Enter the brand URL or slug used for routing and brand-specific pages.
+
+    Use the same URL pattern used by other device brands in the admin panel.
+
+    </Step>
+    <Step title="Upload the brand image" icon="upload">
+
+    Add the brand image used in the admin interface or related public-facing flows.
+
+    Check that the image matches your existing brand asset standards before saving.
+
+    </Step>
+    <Step title="Enter SEO metadata" icon="code">
+
+    Fill in any required SEO fields such as title, description, or related metadata.
+
+    Use metadata that clearly identifies the camera brand and aligns with your existing content conventions.
+
+    </Step>
+    <Step title="Save the brand" icon="check-circle">
+
+    Save the brand record.
+
+    After saving, the brand should be available when you create or edit camera models.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Edit a brand to update its display name, URL, image, or metadata.
+
+  Brand updates apply everywhere that brand record is reused, so verify downstream usage before making broad changes.
+
+  ### Delete
+
+  Delete a brand only when it is no longer associated with any active camera model.
+
+  <Callout kind="alert">
+
+  Do not delete a brand that still has associated camera models. Reassign or remove the models first to avoid broken model references.
+
+  </Callout>
+
+  </Tab>
+  <Tab title="Classes" icon="shield">
+
+  ### What you see
+
+  The **Classes** tab defines the pricing matrix used to evaluate camera condition. Each class stores the deduction amounts and dead price floor that apply to any model assigned to that class.
+
+  Camera classes use a broader accessory range than most other device types and include support for extra lens additions during final price calculation.
+
+  <Callout kind="info">
+
+  Camera devices use the following condition code ranges: Age `W1–W4`, Body `B1–B4`, Functional/Physical `P1–P8`, Accessories `A1–A8`. Camera does not use screen codes or technical fault codes. Camera-specific addition: `extraLensIds` — each lens ID adds its flat rupee value from the CameraLens table to the final price, potentially exceeding `basePrice`.
+
+  </Callout>
+
+  <Callout kind="alert">
+
+  All amounts for Camera are flat rupees as integer values. Percentage-based deductions are not supported.
+
+  </Callout>
+
+  Classes store these values:
+
+  | Field group | Values stored |
+  | --- | --- |
+  | Dead price | Floor value applied when the calculated price drops too low |
+  | Age | `W1`, `W2`, `W3`, `W4` |
+  | Body | `B1`, `B2`, `B3`, `B4` |
+  | Physical and functional | `P1`, `P2`, `P3`, `P4`, `P5`, `P6`, `P7`, `P8` |
+  | Accessories | `A1`, `A2`, `A3`, `A4`, `A5`, `A6`, `A7`, `A8` |
+
+  ### Search & filters
+
+  Use this tab to review and compare pricing classes before assigning them to camera models.
+
+  If your admin panel includes table search or export controls, use them to verify that class names and values stay consistent across the catalog.
+
+  ### Add
+
+  Add a class when you need a new pricing matrix for a group of camera models.
+
+  <Steps>
+    <Step title="Create the class record" icon="plus">
+
+    Enter the class name or identifier used internally for camera pricing.
+
+    Use a naming pattern that makes it clear which camera lineup or pricing tier the class supports.
+
+    </Step>
+    <Step title="Set the dead price" icon="bar-chart">
+
+    Enter the dead price value.
+
+    This value acts as the minimum final payout when deductions would otherwise reduce the result too far.
+
+    </Step>
+    <Step title="Enter age values W1 to W4" icon="edit">
+
+    Add flat rupee deduction values for `W1`, `W2`, `W3`, and `W4`.
+
+    Use lower deductions for better age brackets and higher deductions for older brackets.
+
+    </Step>
+    <Step title="Enter body values B1 to B4" icon="edit">
+
+    Add flat rupee deduction values for `B1`, `B2`, `B3`, and `B4`.
+
+    These values represent cosmetic body condition impact.
+
+    </Step>
+    <Step title="Enter physical and functional values P1 to P8" icon="edit">
+
+    Add flat rupee deduction values for `P1` through `P8`.
+
+    These values cover the camera-specific physical and functional condition range.
+
+    </Step>
+    <Step title="Enter accessory values A1 to A8" icon="edit">
+
+    Add flat rupee deduction values for `A1` through `A8`.
+
+    Each missing accessory deducts its corresponding amount during evaluation.
+
+    </Step>
+    <Step title="Save the class" icon="check-circle">
+
+    Save the class record.
+
+    After saving, the class should be available to assign to camera models in the **Models** tab.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Edit a class when pricing assumptions change or when you need to correct a deduction value.
+
+  Because classes can be shared across multiple models, one class edit can affect a large part of the camera catalog.
+
+  <Callout kind="info">
+
+  Review all models assigned to the class before changing deduction values. A single update can change final payouts for every linked camera model.
+
+  </Callout>
+
+  ### Delete
+
+  Delete a class only when no camera model depends on it.
+
+  <Callout kind="alert">
+
+  Do not delete a class that is still assigned to active models. Reassign those models first to prevent incomplete pricing configuration.
+
+  </Callout>
+
+  ### Export
+
+  Export class data when you need to review pricing values outside the admin panel or share them for audit and approval.
+
+  Exported data is useful for validating dead price floors, comparing deduction ranges, and confirming that flat rupee values were entered correctly.
+
+  </Tab>
+  <Tab title="Pricing" icon="lock">
+
+  ### What you see
+
+  The **Pricing** tab explains how camera final prices are derived from the model base price and the assigned class values. Camera pricing combines multiple deduction groups with an optional addition group for extra lenses.
+
+  The final calculation starts from `basePrice`, subtracts condition-based deductions, adds approved lens values, and then applies the dead price floor.
+
+  ### Search & filters
+
+  Use this tab as the pricing reference when you review unexpected camera quotes or validate class setup.
+
+  Focus on the condition group involved in the quote first, then confirm whether any extra lenses were added to the evaluation.
+
+  ### Add
+
+  Pricing behavior is created by combining a model with a class and, where relevant, selected lens additions.
+
+  <Steps>
+    <Step title="Set the model base price" icon="bar-chart">
+
+    Start with the model `basePrice`.
+
+    This is the pre-deduction amount configured in the **Models** tab.
+
+    </Step>
+    <Step title="Apply age and body deductions" icon="minus">
+
+    Subtract the selected `W1–W4` age value and `B1–B4` body value from the class.
+
+    These values reflect the device age bracket and cosmetic body condition.
+
+    </Step>
+    <Step title="Apply physical and functional deductions" icon="minus">
+
+    Subtract the selected `P1–P8` value.
+
+    This range captures camera-specific physical and functional condition.
+
+    </Step>
+    <Step title="Apply accessory deductions" icon="minus">
+
+    Subtract the value for each missing accessory using the `A1–A8` accessory range.
+
+    Each missing accessory deducts its flat rupee amount from the running total.
+
+    </Step>
+    <Step title="Add extra lens values" icon="plus">
+
+    Resolve each `extraLensIds` entry against the CameraLens table and add that flat rupee value to the running total.
+
+    This is an addition, not a deduction.
+
+    </Step>
+    <Step title="Apply the dead price floor" icon="check-circle">
+
+    Compare the result against `deadPrice` and use the higher of the two values.
+
+    A saved evaluation should never return less than the configured dead price.
+
+    </Step>
+  </Steps>
+
+  ### Edit
+
+  Update camera pricing by editing the underlying model base price, class values, or supported lens additions.
+
+  If a quoted price looks wrong, review those three inputs first. Most pricing issues come from one incorrect class mapping, one outdated flat deduction, or one unintended lens addition.
+
+  ### Delete
+
+  Camera pricing is not usually deleted as a standalone record. Remove or change the underlying model, class, or related lens setup instead.
+
+  <Callout kind="alert">
+
+  Changing or removing class values, model assignments, or lens records affects future camera quotes immediately.
+
+  </Callout>
+
+  ### Pricing rules
+
+  Camera deductions and additions follow this structure:
+
+  | Group | Codes | Behavior |
+  | --- | --- | --- |
+  | Age | `W1–W4` | Flat rupee deduction |
+  | Body | `B1–B4` | Flat rupee deduction |
+  | Physical and functional | `P1–P8` | Flat rupee deduction |
+  | Accessories | `A1–A8` | Flat rupee deduction for each missing accessory |
+  | Extra lenses | `extraLensIds` | Flat rupee addition from CameraLens by lens ID |
+
+  The calculation formula is:
+
+  ```text
+  finalPrice = basePrice - age(W) - body(B) - functional(P) - missingAccessories(A) + extraLenses
+  finalPrice = max(finalPrice, deadPrice)
+  ```
+
+  <Callout kind="info">
+
+  Camera is one of only two device types, alongside Console, where additions can push the final price above the base price.
+
+  </Callout>
+
+  ### Warranty brackets and auto-update logic
+
+  Camera uses four warranty or age bracket values through the `W1–W4` range. Keep these brackets aligned with the same age logic used elsewhere in your device pricing setup so evaluations remain predictable across categories.
+
+  If your admin panel applies the same auto-update behavior used by other device types, base price changes and class updates flow into future camera evaluations automatically. Review quotes after major pricing updates to confirm the expected values are being returned.
+
+  </Tab>
+</Tabs>

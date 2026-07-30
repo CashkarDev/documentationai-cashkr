@@ -1,37 +1,32 @@
 ---
 title: Sell Device Flow - Customer App
-description: Understand the end-to-end sell device journey in the Customer App, including serviceability gate, pricing logic, orders, payments, and test scenarios.
+description: >-
+  Understand the end-to-end sell device journey in the Customer App, including
+  serviceability gate, pricing logic, orders, payments, and test scenarios.
 ---
-
 ## Overview
 
 Sell Device in the Customer App covers the full journey from HomeScreen entry to pickup order creation and payment selection.
 
 Customers start from the HomeScreen, pass the pincode serviceability gate, select their device, answer condition questions, get a price quote, and confirm a pickup order with address, slot, and payment method.
 
-<Callout kind="info">
-
-Customer App behavior matches the website Sell Device flow, with the same pricing and order logic, but uses mobile screens and the HomeScreen serviceability gate as the entry point.
-
+<Callout kind="info" collapsed="false">
+  Customer App behavior matches the website Sell Device flow, with the same pricing and order logic, but uses mobile screens and the HomeScreen serviceability gate as the entry point.
 </Callout>
 
 ## Key rules and behaviors
 
-<Callout kind="info">
-
-- **Serviceability gate first:** Always validate pincode via the Area module from the HomeScreen. Block the journey if the pincode is not serviceable.  
-- **Dynamic catalog and pricing:** Device types, brands, models, variants, and pricing come from Admin Panel configuration. Only show products that have valid class and pricing.  
-- **Condition-driven pricing:** Warranty, battery, screen, physical or technical issues, and accessories answers map to a device class, which drives the final price.  
-- **Optional coupon:** Apply a coupon on the quote screen at checkout. Skip if no coupon is entered.  
-- **Order before payment:** Create the order after the customer confirms the final quote and pickup details.  
-- **Default payment to cash:** If the customer does not select any digital payment method (UPI or Bank), set payment mode to cash by default.
-
+<Callout kind="info" collapsed="false">
+  - **Serviceability gate first:** Always validate pincode via the Area module from the HomeScreen. Block the journey if the pincode is not serviceable.
+  - **Dynamic catalog and pricing:** Device types, brands, models, variants, and pricing come from Admin Panel configuration. Only show products that have valid class and pricing.
+  - **Condition-driven pricing:** Warranty, battery, screen, physical or technical issues, and accessories answers map to a device class, which drives the final price.
+  - **Optional coupon:** Apply a coupon on the quote screen at checkout. Skip if no coupon is entered.
+  - **Order before payment:** Create the order after the customer confirms the final quote and pickup details.
+  - **Default payment to cash:** If the customer does not select any digital payment method (UPI or Bank), set payment mode to cash by default.
 </Callout>
 
-<Callout kind="tip">
-
-Align the Customer App wording and validations with the website [Sell Device Flow](/sell-device-flow) so operations and support teams can follow a single script across channels.
-
+<Callout kind="tip" collapsed="false">
+  Align the Customer App wording and validations with the website [Sell Device Flow](/sell-device-flow) so operations and support teams can follow a single script across channels.
 </Callout>
 
 ## Step-by-step customer journey (Customer App)
@@ -39,141 +34,130 @@ Align the Customer App wording and validations with the website [Sell Device Flo
 Use these steps to design, implement, and test the in-app journey.
 
 <Steps>
+  <Step title="Enter from HomeScreen" icon="home" title-type="p">
+    - Customer opens the Customer App and lands on the **HomeScreen**.
+    - Customer taps the **Sell Device** entry point (tile/button).
+    - App takes the customer into the sell flow, starting with pincode serviceability.
 
-<Step title="Enter from HomeScreen" icon="home">
+    For HomeScreen and entry behavior details, see [HomeScreen and Device Selection](/homescreen-device-selection).
+  </Step>
 
-- Customer opens the Customer App and lands on the **HomeScreen**.
-- Customer taps the **Sell Device** entry point (tile/button).
-- App takes the customer into the sell flow, starting with pincode serviceability.
+  <Step title="Check pincode serviceability" icon="map" title-type="p">
+    - Customer enters their **pincode** (or selects area).
+    - App calls the **Area** module to check if the entered pincode is serviceable.
+    - If the pincode is serviceable, continue to device selection.
+    - If not serviceable, show a clear message and block the rest of the flow.
 
-For HomeScreen and entry behavior details, see [HomeScreen and Device Selection](/homescreen-device-selection).
+    **Success signal:** The app shows device type options instead of an error after entering pincode.
+  </Step>
 
-</Step>
+  <Step title="Select device type, brand, model, and variant" icon="smartphone" title-type="p">
+    - App displays device types such as **Mobile**, **Laptop**, **Tablet**, **Mac**, **Camera**, **Headphone**, **Watch**, and **Console**.
+    - Customer selects a **device type**.
+    - App fetches and shows a filtered list of **brands**, then **models**, then **variants** from the **Product** module.
+    - Customer selects a specific **variant** as the target device.
 
-<Step title="Check pincode serviceability" icon="map">
+    **Success signal:** The app shows the Device Q\&A screen for the chosen variant.
+  </Step>
 
-- Customer enters their **pincode** (or selects area).
-- App calls the **Area** module to check if the entered pincode is serviceable.
-- If the pincode is serviceable, continue to device selection.
-- If not serviceable, show a clear message and block the rest of the flow.
+  <Step title="Answer device condition Q&A" icon="list-ordered" title-type="p">
+    - Customer answers structured questions covering:
+      - Warranty status
+      - Battery condition
+      - Screen condition
+      - Physical issues or technical issues
+      - Included accessories (box, charger, etc.)
+    - The app sends the answers to the pricing logic to classify the device.
 
-**Success signal:** The app shows device type options instead of an error after entering pincode.
+    **Success signal:** After submitting Q\&A, the app displays a final or near-final **price quote** for the selected device.
 
-</Step>
+    If a logged-in customer reaches this price screen but does not confirm the order, the system should create a **lead**. See [Lead Creation - Customer App](/lead-creation---customer-app) for exact rules.
+  </Step>
 
-<Step title="Select device type, brand, model, and variant" icon="smartphone">
+  <Step title="View quote and apply coupon (optional)" icon="tag" title-type="p">
+    - App shows the calculated **quote amount** based on the Q\&A answers.
+    - If coupon support is enabled, the screen includes a field to **enter a coupon code**.
+    - When the customer applies a coupon:
+      - Validate the coupon via the **Coupon** module.
+      - If valid, adjust the final price and show the discount.
+      - If invalid or expired, show an inline error and keep the original price.
 
-- App displays device types such as **Mobile**, **Laptop**, **Tablet**, **Mac**.
-- Customer selects a **device type**.
-- App fetches and shows a filtered list of **brands**, then **models**, then **variants** from the **Product** module.
-- Customer selects a specific **variant** as the target device.
+    **Success signal:** The customer sees a clear **final price** (with or without coupon) before proceeding to address.
+  </Step>
 
-**Success signal:** The app shows the Device Q&A screen for the chosen variant.
+  <Step title="Select or add pickup address" icon="map-pin" title-type="p">
+    - App shows the customer’s **saved addresses** (from Customer profile) if any exist.
+    - Customer either:
+      - Selects an existing address, or
+      - Adds a **new pickup address**, which should be validated against the Area module.
+    - The chosen address is attached to the pending order context.
 
-</Step>
+    **Success signal:** The app shows a confirmation of the selected pickup address and continues to slot selection.
+  </Step>
 
-<Step title="Answer device condition Q&A" icon="list-ordered">
+  <Step title="Choose pickup date and time slot" icon="calendar" title-type="p">
+    - App displays available **pickup dates and time slots** for the serviceable pincode.
+    - Customer selects a **date** and **time window**.
+    - App validates that the slot is available before confirming.
 
-- Customer answers structured questions covering:
+    **Success signal:** The app moves to an order confirmation screen with device, price, address, and pickup slot summarized.
+  </Step>
 
-  - Warranty status
-  - Battery condition
-  - Screen condition
-  - Physical issues or technical issues
-  - Included accessories (box, charger, etc.)
+  <Step title="Confirm order and create pickup request" icon="check-circle" title-type="p">
+    - Customer reviews:
+      - Device details and condition summary
+      - Final price (including any coupon)
+      - Pickup address
+      - Pickup date and time
+    - Customer taps **Confirm Order** (or similar CTA).
 
-- The app sends the answers to the pricing logic to classify the device.
+    At this point, the app creates an **Order** record in the backend using the configured Orders module.
 
-**Success signal:** After submitting Q&A, the app displays a final or near-final **price quote** for the selected device.
+    **Success signal:** The customer lands on an order success screen and the order appears under **My Orders / Track Orders**.
 
-If a logged-in customer reaches this price screen but does not confirm the order, the system should create a **lead**. See [Lead Creation - Customer App](/lead-creation---customer-app) for exact rules.
+    If the customer reached the price but did not confirm the order, ensure a **lead** is created instead of an order. See [Lead Creation - Customer App](/lead-creation---customer-app).
+  </Step>
 
-</Step>
+  <Step title="Select payment method or default to cash" icon="credit-card" title-type="p">
+    - After successful order creation, app prompts for **payment method** selection:
+      - Existing saved **UPI** or **Bank** account, or
+      - Add a new UPI or Bank details, or
+      - Skip selection (if allowed).
+    - If the customer explicitly selects UPI or Bank, attach that mode to the order for payout.
+    - If the customer does not select any payment method, set **Cash** as the **default** payment mode.
 
-<Step title="View quote and apply coupon (optional)" icon="tag">
+    **Success signal:** The order shows a non-empty payment mode (UPI, Bank, or Cash) in both Customer App and Admin Panel.
+  </Step>
 
-- App shows the calculated **quote amount** based on the Q&A answers.
-- If coupon support is enabled, the screen includes a field to **enter a coupon code**.
-- When the customer applies a coupon:
-
-  - Validate the coupon via the **Coupon** module.
-  - If valid, adjust the final price and show the discount.
-  - If invalid or expired, show an inline error and keep the original price.
-
-**Success signal:** The customer sees a clear **final price** (with or without coupon) before proceeding to address.
-
-</Step>
-
-<Step title="Select or add pickup address" icon="map-pin">
-
-- App shows the customer’s **saved addresses** (from Customer profile) if any exist.
-- Customer either:
-
-  - Selects an existing address, or  
-  - Adds a **new pickup address**, which should be validated against the Area module.
-
-- The chosen address is attached to the pending order context.
-
-**Success signal:** The app shows a confirmation of the selected pickup address and continues to slot selection.
-
-</Step>
-
-<Step title="Choose pickup date and time slot" icon="calendar">
-
-- App displays available **pickup dates and time slots** for the serviceable pincode.
-- Customer selects a **date** and **time window**.
-- App validates that the slot is available before confirming.
-
-**Success signal:** The app moves to an order confirmation screen with device, price, address, and pickup slot summarized.
-
-</Step>
-
-<Step title="Confirm order and create pickup request" icon="check-circle">
-
-- Customer reviews:
-
-  - Device details and condition summary
-  - Final price (including any coupon)
-  - Pickup address
-  - Pickup date and time
-
-- Customer taps **Confirm Order** (or similar CTA).
-
-At this point, the app creates an **Order** record in the backend using the configured Orders module.
-
-**Success signal:** The customer lands on an order success screen and the order appears under **My Orders / Track Orders**.
-
-If the customer reached the price but did not confirm the order, ensure a **lead** is created instead of an order. See [Lead Creation - Customer App](/lead-creation---customer-app).
-
-</Step>
-
-<Step title="Select payment method or default to cash" icon="credit-card">
-
-- After successful order creation, app prompts for **payment method** selection:
-
-  - Existing saved **UPI** or **Bank** account, or
-  - Add a new UPI or Bank details, or
-  - Skip selection (if allowed).
-
-- If the customer explicitly selects UPI or Bank, attach that mode to the order for payout.
-- If the customer does not select any payment method, set **Cash** as the **default** payment mode.
-
-**Success signal:** The order shows a non-empty payment mode (UPI, Bank, or Cash) in both Customer App and Admin Panel.
-
-</Step>
-
-<Step title="Notifications and confirmation" icon="mail">
-
-- After order creation:
-
-  - Customer receives an **order confirmation email** summarizing device, price, and pickup details.
-  - Vendor or operations team receives a **new order notification** via their workflow once the order is assigned.
-
-- Customer can view the order details and status in the **Track Orders** section of the app.
-
-</Step>
-
+  <Step title="Notifications and confirmation" icon="mail" title-type="p">
+    - After order creation:
+      - Customer receives an **order confirmation email** summarizing device, price, and pickup details.
+      - Vendor or operations team receives a **new order notification** via their workflow once the order is assigned.
+    - Customer can view the order details and status in the **Track Orders** section of the app.
+  </Step>
 </Steps>
+
+## Per-Type Condition Q\&A Variations
+
+The condition questionnaire adapts based on the selected device type. Not all condition dimensions apply to every device type. The table below shows which questions are asked for each supported device type.
+
+| Question Category       | Mobile | Laptop | Tablet | Mac | Camera   | Headphone | Watch | Console           |
+| ----------------------- | ------ | ------ | ------ | --- | -------- | --------- | ----- | ----------------- |
+| Age (W)                 | ✅      | ✅      | ✅      | ✅   | ✅        | ✅         | ✅     | ✅                 |
+| Body (B)                | ✅      | ✅      | ✅      | ✅   | ✅        | ❌         | ✅     | ✅                 |
+| Screen (S)              | ✅      | ✅      | ✅      | ✅   | ❌        | ❌         | ✅     | ❌                 |
+| Functional/Physical (P) | ✅      | ✅      | ✅      | ✅   | ✅        | ✅         | ✅     | ✅                 |
+| Technical faults (T)    | ✅      | ✅      | ✅      | ✅   | ❌        | ❌         | ✅     | ❌                 |
+| Accessories (A)         | ✅      | ✅      | ✅      | ✅   | ✅        | ✅         | ❌     | ✅                 |
+| Additions (+)           | ❌      | ✅      | ❌      | ✅   | ✅ lenses | ❌         | ❌     | ✅ CDs/controllers |
+
+<Callout kind="info" collapsed="false">
+  The condition questionnaire adapts based on the selected device type. For example, Headphone users are not asked about body damage or screen condition. Watch users are not asked about accessories. Camera users are asked about extra lenses. Console users are asked about extra CDs and controllers. This ensures users only see relevant questions for their device.
+</Callout>
+
+<Callout kind="alert" collapsed="false">
+  For Camera, Headphone, Watch, and Console, all pricing amounts are flat rupees. The app does not show percentage-based deductions for these device types.
+</Callout>
 
 ## System logic
 
@@ -183,57 +167,47 @@ This section describes the backend modules and rules that power the Customer App
 
 - Fetch **device types, brands, models, and variants** dynamically from the Admin Panel **Products** module.
 - Only show variants that have:
-
   - A valid **class** mapping.
   - Active **pricing** configured.
-
 - Hide or disable devices that are missing class or pricing to avoid zero or incorrect quotes.
 
 ### Class and pricing
 
-- Map the customer’s Q&A answers (warranty, battery, screen, issues, accessories) to a **device class**.
+- Map the customer’s Q\&A answers (warranty, battery, screen, issues, accessories) to a **device class**.
 - Use that class to look up the **base price** and any **adjustments** from the **Class and Pricing** module.
 - Calculate the final price before coupon as:
-
-  - Base price for the variant and class  
+  - Base price for the variant and class
   - Plus or minus any configured adjustments
-
 - Expose the final pre-coupon price clearly in the app before allowing coupon entry.
 
 ### Area and serviceability
 
 - On the HomeScreen and address forms, call the **Area** module with the pincode or area identifier.
 - If `serviceable = false`:
-
   - Show a clear non-serviceable message.
   - Do not show device selection or allow order creation.
-
 - When adding a new address, recheck serviceability to avoid creating orders for unsupported regions.
 
 ### Coupons
 
 - Integrate the **Coupons** module at the quote screen.
 - When the customer applies a code:
-
   - Validate code, eligibility, and expiry.
   - Apply the discount only if the coupon is valid and applicable to the device and price.
   - Show the new final price and savings amount.
-
 - If the coupon is invalid, leave the price unchanged and show an inline error.
 
 ### Orders
 
 - Create an **Order** only after the customer taps Confirm Order on the final summary screen.
 - Store:
-
   - Customer identity
   - Device (type, brand, model, variant)
-  - Q&A condition answers and resolved class
+  - Q\&A condition answers and resolved class
   - Pincode and pickup address
   - Pickup date and time slot
   - Calculated price and applied coupon (if any)
   - Initial payment mode (UPI, Bank, or default Cash)
-
 - Push the order into Admin Panel **Orders** for assignment to a vendor.
 
 If the customer sees a final price but exits before Confirm Order, create a **Lead** instead, as documented in [Lead Creation - Customer App](/lead-creation---customer-app).
@@ -243,9 +217,7 @@ If the customer sees a final price but exits before Confirm Order, create a **Le
 - Allow selection of **UPI**, **Bank**, or **Cash** as the payout mode.
 - Attach the selected payment method to the order after it is created.
 - If no method is selected by the end of the payment step:
-
   - Set **Cash** as the default mode on the order.
-
 - Ensure Admin and Vendor views always show a valid payment mode to avoid payout confusion.
 
 ## Connections
@@ -253,20 +225,15 @@ If the customer sees a final price but exits before Confirm Order, create a **Le
 The Sell Device flow in the Customer App touches multiple systems and profiles.
 
 - **Admin Panel modules**
-
   - **Products**: Device catalog (type, brand, model, variant).
-  - **Class and Pricing**: Q&A mapping and final price calculation.
+  - **Class and Pricing**: Q\&A mapping and final price calculation.
   - **Areas**: Pincode and address serviceability.
   - **Coupons**: Discount codes and rules.
   - **Orders**: Order storage, status, and assignment.
-
 - **Vendor App**
-
   - Once Admin assigns the order to a vendor, the order appears in the **Vendor App** for pickup execution and on-site device verification.
   - Vendor actions can update order status and, if needed, adjust price per operational rules.
-
 - **Customer profile, address, and payment**
-
   - **Customer profile** provides identity and contact details for the order.
   - **Address** book provides saved addresses; new addresses created in the flow should sync back to the profile.
   - **Payment details** (UPI/Bank) from the customer profile can be reused for payout selection, with Cash as the fallback.
@@ -276,63 +243,46 @@ The Sell Device flow in the Customer App touches multiple systems and profiles.
 Use this list as a test checklist for QA and for handling edge cases in implementation.
 
 - **Non-serviceable pincode**
-
   - Enter an unsupported pincode on the HomeScreen.
   - Expect a clear message and no access to device selection or subsequent steps.
-
 - **Missing pricing or class**
-
   - Configure a device variant in Admin without class or pricing.
   - Confirm the variant is:
-
-    - Not shown in the Customer App, or  
-    - Shown but cannot proceed to Q&A, with a clear error.
-
+    - Not shown in the Customer App, or
+    - Shown but cannot proceed to Q\&A, with a clear error.
 - **Invalid or ineligible coupon**
-
   - Apply an expired, invalid, or ineligible coupon code.
   - Expect an inline error, no price change, and the ability to continue without a coupon.
-
 - **Payment not selected (default cash)**
-
   - Complete the flow, create an order, then ignore the payment selection step.
   - Verify the order’s payment mode is set to **Cash** and surfaces correctly in Admin and Vendor views.
-
 - **Network errors**
-
   - Simulate API failures (Area, Products, Pricing, Coupons, Orders, Payment).
   - Confirm the app shows user-friendly error states and allows safe retry or exit without duplicate orders.
-
 - **Lead vs order behavior**
-
   - Reach the final price screen as a logged-in customer, then close the app before Confirm Order.
   - Verify a **Lead** is created in Admin → Leads and no order exists.
 
 ## Developer and tester notes
 
-<Callout kind="tip">
-
-- **Developers**
-
-  - Centralize calls to **Area**, **Products**, **Class and Pricing**, **Coupons**, and **Orders** modules so both website and Customer App share logic where possible.
-  - Implement a single **state machine** or flow controller that enforces step order: serviceability → device selection → Q&A → quote and coupon → address → slot → order → payment.
-  - Use strong typing or schemas so device Q&A answers and classes match Admin configuration, avoiding pricing mismatches.
-  - Ensure idempotent **order creation** to avoid duplicates if the confirmation request is retried.
-
+<Callout kind="tip" collapsed="false">
+  - **Developers**
+    - Centralize calls to **Area**, **Products**, **Class and Pricing**, **Coupons**, and **Orders** modules so both website and Customer App share logic where possible.
+    - Implement a single **state machine** or flow controller that enforces step order: serviceability → device selection → Q\&A → quote and coupon → address → slot → order → payment.
+    - Use strong typing or schemas so device Q\&A answers and classes match Admin configuration, avoiding pricing mismatches.
+    - Ensure idempotent **order creation** to avoid duplicates if the confirmation request is retried.
 </Callout>
 
-<Callout kind="tip">
-
-- **Testers**
-
-  - Run the **happy path** for each device type (Mobile, Laptop, Tablet, Mac) across at least one serviceable pincode.
-  - Verify that every change in Q&A answers updates the quote according to Admin **Class and Pricing** rules.
-  - Check that **order vs lead** behavior matches [Lead Creation - Customer App](/lead-creation---customer-app).
-  - Confirm payment mode is never empty and that **Cash** is set when the user does not pick UPI or Bank.
-  - Validate that orders created in the Customer App appear in Admin **Orders** with correct device, price, address, slot, and payment mode.
-
+<Callout kind="tip" collapsed="false">
+  - **Testers**
+    - Run the **happy path** for each device type (Mobile, Laptop, Tablet, Mac, Camera, Headphone, Watch, Console) across at least one serviceable pincode.
+    - Verify that every change in Q\&A answers updates the quote according to Admin **Class and Pricing** rules.
+    - Check that **order vs lead** behavior matches [Lead Creation - Customer App](/lead-creation---customer-app).
+    - Confirm payment mode is never empty and that **Cash** is set when the user does not pick UPI or Bank.
+    - Validate that orders created in the Customer App appear in Admin **Orders** with correct device, price, address, slot, and payment mode.
 </Callout>
 
 ## Snapshot
 
 <Video uid="20a2efe1-7295-4f26-b053-185eda82edbb" src="https://vento.so/view/843768e6-b286-4f40-beec-55f1a837d7ff/embed" render-type="iframe" width="560" height="315" controls="true" allow-full-screen="true" title="Sell Device Flow - Customer App snapshot" />
+
