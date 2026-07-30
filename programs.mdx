@@ -23,6 +23,8 @@ Each row in the programs list represents one referral program with the following
 - **Referrer reward** — Reward given to the existing customer who shared the referral code.
 - **Referrer eligibility** — Condition that must be met for the referrer to receive their reward (for example, completed orders).
 - **Status** — Current status of the program: Active or Inactive.
+- **Start date & time** — When the program becomes active and rewards start applying.
+- **End date & time** — When the program expires and rewards stop applying.
 - **Created at** — Date the program was created.
 - **Actions** — Options to edit or manage the program.
 
@@ -47,6 +49,14 @@ Click **Add New Program** (top right) to create a referral program and configure
 
   - Set the **Title** — Name of the referral program (for example, Share and Earn ₹100 for Every Referral).
   - Add a **Description** — Short explanation of the program shown to customers.
+
+  </Step>
+
+  <Step title="Set program start and end date & time" icon="calendar">
+
+  - Set the **Start Date & Time** — When the program becomes active and rewards start applying to orders.
+  - Set the **End Date & Time** — When the program expires and rewards stop applying.
+  - Orders placed outside this date and time window do not receive referral rewards.
 
   </Step>
 
@@ -88,6 +98,12 @@ Click **Add New Program** (top right) to create a referral program and configure
   </Step>
 
 </Steps>
+
+<Callout kind="info">
+
+The system only applies referral rewards for orders placed within the program's start and end date & time window. Orders placed before the start date or after the end date do not receive referral rewards, even if the program status is Active.
+
+</Callout>
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774601043291-c7pgads066l-program-form.program form?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="692" alt="Add New Program form with basic details, minimum order value, and rewards configuration" />
 
@@ -159,7 +175,7 @@ Use search and filters to quickly find specific programs:
 On the Programs page, admins can:
 
 - **Add New Program** — Create a referral program with full reward configuration.
-- **Edit program** — Update any field of an existing program, including rewards, minimum order value, and status.
+- **Edit program** — Update any field of an existing program, including basic details, start and end date & time, rewards, minimum order value, and status.
 - **Toggle status** — Activate or deactivate a program without deleting it.
 - **Delete program** — Permanently remove a program from the system.
 
