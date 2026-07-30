@@ -19,6 +19,7 @@ The Payment screen under the customer profile shows the payout information store
 
 - Current **UPI ID**, if set.
 - Current **bank account details**, if set (bank name, IFSC code, account number).
+- **Amazon Gift Card** option (available only for orders under ₹10,000) — when selected, the customer receives gift card details after the vendor completes the order, instead of a direct payout.
 - Actions to **add** a new payment method or **edit** existing details.
 
 If no payment method exists yet, the screen prompts the user to add either a UPI ID or a bank account.
@@ -85,6 +86,16 @@ Use this flow to add or update payout details in the Customer App.
 
 Once an order is confirmed, the payment mode attached to that order stays fixed, even if the customer later edits their profile payment details.
 
+### Amazon Gift Card
+
+Customers can select Amazon Gift Card as their payment method during the Sell Device order flow, alongside Cash, UPI, and Bank. When Amazon Gift Card is selected, no payout is processed at order placement — instead, the system queues gift card issuance. Once the vendor completes the order, the system automatically issues Amazon Gift Card details (gift card code and redemption instructions) to the customer. The gift card is redeemable exclusively on Amazon.
+
+<Callout kind="warning">
+
+Amazon Gift Card is only available for orders with a total value less than ₹10,000 at the time of order creation. Orders of ₹10,000 or above will not show the gift card option — customers must choose Cash, UPI, or Bank transfer instead.
+
+</Callout>
+
 ## System logic
 
 System behavior around Payment Method is consistent across channels.
@@ -94,6 +105,7 @@ System behavior around Payment Method is consistent across channels.
 - Use the saved payment method during **payout processing** once the order is marked completed by the vendor.
 - Use **input validation** to block malformed UPI IDs and incorrect bank details.
 - Store sensitive fields with **backend encryption** and restrict visibility to systems that need them (Customer App display, Admin Panel, payout processing).
+- When Amazon Gift Card is selected as the payment mode, no payout is processed at order placement. The system issues Amazon Gift Card details to the customer automatically after the vendor completes the order.
 
 ## Connections
 
@@ -111,6 +123,9 @@ Payment Method in the Customer App is tightly connected to the website and to or
   Vendors use the **payment method attached to the order** when processing payouts after pickup and order completion:
   - If the order has UPI or Bank as payment mode, the vendor pays to those details.
   - If the order defaulted to Cash, the vendor pays out in cash.
+
+- **Amazon Gift Card**  
+  When a customer selects Amazon Gift Card as the payment method, payout is deferred until vendor completion. Upon order completion, the system issues Amazon Gift Card details directly to the customer — the vendor does not handle gift card delivery. See [Amazon Gift Card Payment Option](/amazon-gift-card-payment) for the full feature documentation.
 
 ## Common states and errors
 
@@ -171,11 +186,15 @@ Handle these states to keep the Payment Method experience predictable.
   - With UPI selected as payment method.
   - With Bank selected as payment method.
   - Without selecting a method, and confirm the order shows **Cash** as payment mode.
+- With Amazon Gift Card selected (for orders under ₹10,000), and confirm no payout is processed at order placement.
 
 - Confirm the order's payment mode is visible and consistent in:
   
   - Customer App order details
   - Admin Panel order details
+
+- Verify that Amazon Gift Card option appears only for orders with total value less than ₹10,000. Create an order above ₹10,000 and confirm the gift card option is not shown.
+- Complete an order with Amazon Gift Card selected (via vendor app) and verify that gift card details are delivered to the customer after completion.
 
 - After order completion, change profile payment details and confirm:
   

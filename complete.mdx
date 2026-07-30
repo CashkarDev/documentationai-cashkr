@@ -9,6 +9,12 @@ Complete marks the successful end of the vendor In Progress workflow and moves t
 
 When you complete an order, the app captures final inspection details and updates the order status across the Vendor App, Customer App/Website, and Admin Panel.
 
+<Callout kind="info">
+
+When a customer has selected **Amazon Gift Card** as their payment method, completing the order automatically triggers Amazon Gift Card delivery to the customer. You do not need to do anything extra — the system issues gift card details (gift card code and redemption instructions) to the customer upon order completion. The gift card is redeemable exclusively on Amazon.
+
+</Callout>
+
 ## When you can complete an order
 
 Completion is only available after you move the order into the final inspection state.
@@ -118,6 +124,7 @@ Key business rules on completion:
   - Customer App and website
   - Admin Panel
 - The In Progress workflow for this order ends at completion.
+- If the order's payment mode is **Amazon Gift Card**, completing the order triggers automatic gift card issuance to the customer instead of a standard payout (Bank/UPI) or cash settlement. No additional vendor action is required.
 
 </Callout>
 
@@ -147,6 +154,7 @@ Completion is connected to multiple surfaces so all parties see a consistent fin
 - **Customer App and website**
   - The customer sees the order as **Completed** in the Customer App and website.
   - Any subsequent payout or tracking flows reference this completed state.
+  - For Amazon Gift Card orders, the customer receives gift card details (gift card code and redemption instructions) after the vendor completes the order. The gift card is redeemable exclusively on Amazon. See [Amazon Gift Card Payment Option](/amazon-gift-card-payment) for full details.
 
 - **Vendor App**
   - The completed order is no longer listed under **InProgress Orders**.
@@ -220,6 +228,7 @@ Treat completion as the **single source of truth** for closing a vendor order. A
     - Admin Activity Log includes a completion entry.
     - Vendor credit balance registers a **credit deduction event** related to the order.
     - The order appears in the payout queue for further processing.
+    - If the order payment mode is Amazon Gift Card, verify that gift card details are issued to the customer upon completion (no manual payout needed).
 
 - **Negative coverage**
   - Test failure paths:

@@ -365,6 +365,10 @@
               {
                 "title": "Device Pricing Fields Overview",
                 "path": "device-pricing-fields-overview"
+              },
+              {
+                "title": "Amazon Gift Card Payment Option",
+                "path": "amazon-gift-card-payment"
               }
             ]
           },

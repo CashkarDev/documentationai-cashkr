@@ -120,13 +120,13 @@ Use these steps to design, implement, and test the in-app journey.
 
   <Step title="Select payment method or default to cash" icon="credit-card" title-type="p">
     - After successful order creation, app prompts for **payment method** selection:
-      - Existing saved **UPI** or **Bank** account, or
+      - Existing saved **UPI** or **Bank** account, Amazon Gift Card (available only for orders under ₹10,000), or
       - Add a new UPI or Bank details, or
       - Skip selection (if allowed).
-    - If the customer explicitly selects UPI or Bank, attach that mode to the order for payout.
+    - If the customer explicitly selects UPI, Bank, or Amazon Gift Card, attach that mode to the order for payout.
     - If the customer does not select any payment method, set **Cash** as the **default** payment mode.
 
-    **Success signal:** The order shows a non-empty payment mode (UPI, Bank, or Cash) in both Customer App and Admin Panel.
+    **Success signal:** The order shows a non-empty payment mode (UPI, Bank, Amazon Gift Card, or Cash) in both Customer App and Admin Panel.
   </Step>
 
   <Step title="Notifications and confirmation" icon="mail" title-type="p">
@@ -136,6 +136,10 @@ Use these steps to design, implement, and test the in-app journey.
     - Customer can view the order details and status in the **Track Orders** section of the app.
   </Step>
 </Steps>
+
+<Callout kind="info" collapsed="false">
+  Amazon Gift Card is available only for orders with a total value less than ₹10,000. Gift card details are shared with the customer after the vendor completes the order — not at payment selection. See [Amazon Gift Card Payment Option](/amazon-gift-card-payment) for full details.
+</Callout>
 
 ## Per-Type Condition Q\&A Variations
 
@@ -219,6 +223,7 @@ If the customer sees a final price but exits before Confirm Order, create a **Le
 - If no method is selected by the end of the payment step:
   - Set **Cash** as the default mode on the order.
 - Ensure Admin and Vendor views always show a valid payment mode to avoid payout confusion.
+- If the customer selects **Amazon Gift Card** and the order value is less than ₹10,000, no payout is processed at order placement. The system issues Amazon Gift Card details (gift card code and redemption instructions) to the customer automatically after the vendor completes the order. The gift card is redeemable exclusively on Amazon.
 
 ## Connections
 
@@ -279,6 +284,7 @@ Use this list as a test checklist for QA and for handling edge cases in implemen
     - Verify that every change in Q\&A answers updates the quote according to Admin **Class and Pricing** rules.
     - Check that **order vs lead** behavior matches [Lead Creation - Customer App](/lead-creation---customer-app).
     - Confirm payment mode is never empty and that **Cash** is set when the user does not pick UPI or Bank.
+    - Test the Amazon Gift Card path: create an order under ₹10,000, select Amazon Gift Card as the payment method, complete the order via the Vendor App, and verify gift card details are delivered to the customer. Also create an order above ₹10,000 and confirm the gift card option is not shown.
     - Validate that orders created in the Customer App appear in Admin **Orders** with correct device, price, address, slot, and payment mode.
 </Callout>
 

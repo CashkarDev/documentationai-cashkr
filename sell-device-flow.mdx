@@ -80,9 +80,15 @@ A guided, step-by-step journey where customers select their device, confirm serv
 
       - Add new bank account details or UPI details.
 
+      - Choose **Amazon Gift Card** (available only for orders with total value under ₹10,000).
+
     - If the user does not select any payment method, **cash** is selected as the default payment mode.
   </Step>
 </Steps>
+
+<Callout kind="info">
+Amazon Gift Card is available only for orders with a total value less than ₹10,000. Gift card details are shared with the customer after the vendor completes the order — not at payment selection. See [Amazon Gift Card Payment Option](/amazon-gift-card-payment) for full details.
+</Callout>
 
 ## System logic
 
@@ -100,6 +106,9 @@ A guided, step-by-step journey where customers select their device, confirm serv
 
 - **Orders**\
   The Orders system creates the final order record and passes it to the Admin Panel after confirmation.
+
+- **Amazon Gift Card**\
+  When a customer selects Amazon Gift Card as the payment method (orders under ₹10,000 only), no payout is processed at order placement. Upon vendor completion, the system automatically issues Amazon Gift Card details to the customer.
 
 ## Connections
 
@@ -150,6 +159,8 @@ A guided, step-by-step journey where customers select their device, confirm serv
   - New bank/UPI details save and can be used for payout.
 
   - If no payment method is selected, **cash** appears as the default mode.
+
+  - Verify that **Amazon Gift Card** option appears only for orders under ₹10,000. Create an order above ₹10,000 and confirm the gift card option is not shown.
 
 ## Snapshot
 

@@ -5,7 +5,7 @@ description: Define and manage user payout details for the Cashkr Website Paymen
 
 ## What the Payment screen shows
 
-The Payment screen shows the user's stored payout details that Cashkr uses to send money after a device pickup and order completion. Users can add or update either bank account details or a UPI ID.
+The Payment screen shows the user's stored payout details that Cashkr uses to send money after a device pickup and order completion. Users can add or update either bank account details or a UPI ID. Customers can also choose Amazon Gift Card as a payment method during the Sell Device order flow (available only for orders under ₹10,000).
 
 <Callout kind="info">
 
@@ -38,6 +38,16 @@ Payment details are stored on the user's profile and used during payout processi
   </Step>
 </Steps>
 
+### Amazon Gift Card
+
+Customers can choose Amazon Gift Card as their payment method during the Sell Device order flow on the website, alongside Bank, UPI, and Cash. When Amazon Gift Card is selected, no payout is processed at order placement — the system queues gift card issuance. Once the vendor completes the order, the system automatically issues Amazon Gift Card details (gift card code and redemption instructions) to the customer. The gift card is redeemable exclusively on Amazon.
+
+<Callout kind="warning">
+
+Amazon Gift Card is only available for orders with a total value less than ₹10,000 at the time of order creation. Orders of ₹10,000 or above will not show the gift card option — customers must choose Cash, UPI, or Bank transfer instead. The gift card is issued after the vendor completes the order, not at payment selection.
+
+</Callout>
+
 ## System behavior and connections
 
 Payment information is part of the user profile and feeds into payout processing and related surfaces.
@@ -47,6 +57,7 @@ Payment information is part of the user profile and feeds into payout processing
 - Link the same payment details into:
   - The **admin/vendor payout flow** for calculating and executing payouts.
   - The **customer app**, so changes made on the website appear consistently across platforms.
+- When Amazon Gift Card is selected as the payment method, the system does not process a payout at order placement. Upon vendor completion, the system automatically issues Amazon Gift Card details to the customer. See [Amazon Gift Card Payment Option](/amazon-gift-card-payment) for the full feature documentation.
 
 <Callout kind="tip">
 
@@ -84,6 +95,8 @@ Treat payment detail changes as profile-level updates so all future payouts see 
     - Are available in the Admin Panel and any payout-related views.
     - Appear correctly in the Customer App.
 - During an **end-to-end order flow**, confirm that after order completion, payout processing is linked to the stored Bank/UPI details on the user's profile.
+- Verify that Amazon Gift Card option appears only for orders with total value less than ₹10,000. Create an order above ₹10,000 and confirm the gift card option is not shown.
+- Complete an order with Amazon Gift Card selected (via vendor app) and verify that gift card details are delivered to the customer after completion, not at order placement.
 
 ## Screenshot
 
