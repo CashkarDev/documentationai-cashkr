@@ -1,0 +1,160 @@
+---
+title: Inspection Timer
+description: Track vendor inspection time with configurable per-device-type durations and automatic delay reason capture on timer expiry.
+---
+
+## Overview
+
+Inspection Timer tracks how long a vendor takes to inspect a device during the Out for Pickup flow. The timer starts when the vendor begins inspection in the Vendor App after customer verification, then runs against a duration configured for that device type.
+
+The feature adds accountability and visibility to inspection time. Operations teams can see whether inspections finish within the expected window, product teams can analyze where delays happen, and developers have a clear model for when timing data and delay reasons are captured.
+
+Each device type has its own configurable inspection duration managed from the Admin Panel. When an inspection runs past the configured limit, the system requires the vendor to provide a structured delay reason before they can finish the order flow.
+
+## How it works
+
+<Steps>
+<Step title="Start inspection after OTP verification" icon="play-circle">
+
+The timer begins when the vendor taps **Inspection Started** in the Vendor App during the Out for Pickup flow. This happens after the order is marked for pickup and the customer lead OTP is entered successfully.
+
+</Step>
+
+<Step title="Show the countdown for the device type" icon="terminal">
+
+The app displays a countdown timer using the inspection duration configured for that device type. A phone, laptop, watch, or other supported device starts with its own configured time limit.
+
+</Step>
+
+<Step title="Record normal completion within time" icon="check-circle">
+
+If the vendor completes the order or fails the order before the timer expires, the inspection continues through the normal flow. The system records the total time taken from inspection start to final action.
+
+</Step>
+
+<Step title="Require a delay reason after expiry" icon="alert-triangle">
+
+If the countdown reaches zero before the vendor completes or fails the order, the app blocks the final action. The vendor must choose a delay reason from a predefined list.
+
+</Step>
+
+<Step title="Resume the complete or fail flow" icon="arrow-right">
+
+After the vendor selects a delay reason, they can continue with the normal Complete or Fail flow. The delay reason becomes part of the inspection record for that order.
+
+</Step>
+
+<Step title="Store timer data in order details" icon="database">
+
+The system stores the configured duration, the total time taken, and any selected delay reason with the order. Admin users can review this data in order details alongside other inspection information.
+
+</Step>
+</Steps>
+
+<Callout kind="info">
+
+The countdown timer is visible to the vendor throughout the inspection. The vendor can see exactly how much time remains.
+
+</Callout>
+
+<Callout kind="alert">
+
+If the timer expires, the vendor cannot complete or fail the order without first selecting a delay reason. This ensures every overdue inspection has a documented explanation.
+
+</Callout>
+
+## Admin configuration
+
+Admins configure the inspection duration for each device type from the Admin Panel on the [Inspection Duration](/inspection-duration) page under Settings. Changes apply immediately to all new inspections that start after the configuration update.
+
+## Vendor app behavior
+
+The countdown timer appears on the inspection screen as soon as the vendor taps **Inspection Started**. The timer counts down from the configured duration for the device type attached to the order.
+
+If the timer reaches zero, the app shows a delay reason selection screen before allowing the vendor to continue. This keeps the inspection flow moving while ensuring the delay is explained in a consistent, structured way.
+
+Common delay reasons can include:
+
+- Customer had questions about pricing
+- Device condition required deeper inspection
+- Customer was not ready at pickup location
+- Network or app issues during inspection
+
+After selecting a reason, the vendor returns to the normal Complete or Fail flow and finishes the order as usual.
+
+## Data captured
+
+| Data Point | Description | When Captured |
+|---------|-------------|---------------|
+| Inspection timer duration | The configured maximum inspection time for the device type | When inspection starts |
+| Total time taken | Actual elapsed time from Inspection Started to order completion or failure | When vendor completes or fails |
+| Delay reason | The reason selected by the vendor for exceeding the timer | Only if the timer expired before completion or failure |
+| Timer status (within/exceeded) | Derived flag indicating whether the vendor finished within or beyond the configured duration | When vendor completes or fails |
+
+## Device type durations
+
+Each supported device type uses a configurable inspection duration set by admins from **Admin Panel > Settings > Inspection Duration**. The values below represent configurable duration slots, not fixed defaults.
+
+| Device Type | Configurable Duration |
+|------------|------------------------|
+| Phone | Admin-defined |
+| Tablet | Admin-defined |
+| Laptop | Admin-defined |
+| Mac | Admin-defined |
+| Camera | Admin-defined |
+| Headphone | Admin-defined |
+| Watch | Admin-defined |
+| Console | Admin-defined |
+
+## Where timer data appears
+
+Inspection timing data is stored with the order and becomes part of order-level operational visibility. In Admin order details, timer-related information appears alongside the rest of the inspection record, including device details, inspection images, and failure information when the order is failed.
+
+This makes the feature useful beyond vendor enforcement. Teams can review overdue inspections, identify common causes of delay, and compare inspection patterns across device types and order outcomes.
+
+## Related pages
+
+<Columns cols={3}>
+  <Card
+    title="Out for Pickup or Fail"
+    href="/out-for-pickup-or-fail"
+    icon="arrow-right"
+  >
+    Vendor app flow where the inspection timer activates.
+  </Card>
+  <Card
+    title="Complete"
+    href="/complete"
+    icon="check-circle"
+  >
+    How order completion interacts with the inspection timer.
+  </Card>
+  <Card
+    title="InProgress Orders"
+    href="/inprogress-orders"
+    icon="terminal"
+  >
+    Where vendors start inspections and the timer begins.
+  </Card>
+  <Card
+    title="Inspection Duration"
+    href="/inspection-duration"
+    icon="settings"
+  >
+    Admin settings for configuring per-device-type durations.
+  </Card>
+  <Card
+    title="Device Assessment Workflow"
+    href="/device-assessment-workflow"
+    icon="database"
+  >
+    How device condition assessment maps to pricing.
+  </Card>
+  <Card
+    title="All Orders"
+    href="/all-orders"
+    icon="folder"
+  >
+    Where inspection timer data appears in order details.
+  </Card>
+</Columns>

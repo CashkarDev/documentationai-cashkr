@@ -1,0 +1,98 @@
+---
+title: Inspection Duration
+description: Configure per-device-type inspection time limits from the admin panel to control how long vendors have to inspect devices.
+---
+
+## Overview
+
+Inspection Duration lets you set the maximum time a vendor has to complete a device inspection for each device type. Admins configure these values from the Admin Panel on the Inspection Duration page under Settings.
+
+When a vendor starts an inspection in the Out for Pickup flow, a countdown timer begins based on the duration set for that device type. If the timer expires, the vendor must select a delay reason before proceeding to complete or fail the order.
+
+## How to access
+
+Use the Admin Panel to open the Inspection Duration settings page.
+
+<Callout kind="info">
+
+This page is located under Admin Panel > Settings > Inspection Duration.
+
+</Callout>
+
+<Steps>
+  <Step title="Log in to the Admin Panel" icon="log-in">
+
+  Sign in with an account that has access to admin settings.
+
+  </Step>
+  <Step title="Navigate to Settings" icon="settings">
+
+  Open the **Settings** section from the Admin Panel navigation.
+
+  </Step>
+  <Step title="Click Inspection Duration" icon="timer">
+
+  Select **Inspection Duration** to view and update time limits for each device type.
+
+  </Step>
+</Steps>
+
+## Device type configuration
+
+Set a separate inspection duration for each supported device type.
+
+| Device Type | Inspection Duration | Description |
+| --- | --- | --- |
+| Phone | 15 minutes | Standard inspection time for smartphones |
+| Tablet | 15 minutes | Standard inspection time for tablets |
+| Laptop | 20 minutes | Extended time for laptop hardware checks |
+| Mac | 20 minutes | Extended time for Mac device checks |
+| Camera | 15 minutes | Inspection time for cameras and lenses |
+| Headphone | 10 minutes | Shorter inspection for headphones and earbuds |
+| Watch | 10 minutes | Shorter inspection for smartwatches |
+| Console | 20 minutes | Extended time for gaming console checks |
+
+These durations are configurable. The values shown above are examples — admins can set any duration in minutes for each device type based on operational requirements.
+
+## How changes take effect
+
+Changes to inspection durations apply immediately to all new inspections. Any vendor who starts an inspection after the configuration change will use the new duration. The updated value is used the moment the vendor taps `Inspection Started` in the Vendor App.
+
+## Important notes
+
+<Callout kind="info">
+
+Existing ongoing inspections are not affected by duration changes. They continue with the duration that was in effect when the inspection started.
+
+</Callout>
+
+<Callout kind="alert">
+
+Setting very short durations may cause vendors to frequently hit the timer expiry and need to select delay reasons. Ensure durations are realistic for each device type to avoid unnecessary friction during pickup.
+
+</Callout>
+
+## Related pages
+
+<Columns cols={2}>
+  <Card
+    title="Inspection Timer"
+    href="/inspection-timer"
+    icon="timer"
+    cta="Read page"
+  >
+  
+  Core feature overview of how the inspection timer works.
+  
+  </Card>
+  <Card
+    title="Out for Pickup or Fail"
+    href="/out-for-pickup-or-fail"
+    icon="arrow-right"
+    cta="Read page"
+  >
+  
+  Vendor app flow where the timer activates.
+  
+  </Card>
+</Columns>

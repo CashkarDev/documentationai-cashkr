@@ -38,6 +38,9 @@ In Progress is the working queue for each vendor. For every order in this list, 
   - Device condition mismatch when compared to the customer’s declared condition
   - Customer cancellation or refusal at pickup time
 
+- **Start Inspection**
+  After marking the order **Out for Pickup** and reaching the customer, the vendor taps **Inspection Started** and verifies the customer's lead OTP. The **inspection timer** starts automatically at this point, displaying a countdown based on the device type's configured inspection duration.
+
 These actions keep the order lifecycle clear for operations, QA, and reporting.
 
 ## Agent assignment and visibility
@@ -114,6 +117,12 @@ Use this workflow for each unlocked order that appears in In Progress.
 </Callout>
 
 These rules are critical for QA and support when validating that the In Progress behavior matches expectations.
+
+<Callout kind="info">
+
+When a vendor starts an inspection, an **inspection timer** begins automatically with a countdown based on the device type's configured duration. If the timer expires before the inspection is completed or failed, the vendor must select a **delay reason** before proceeding. See the [Inspection Timer](/inspection-timer) page for full details.
+
+</Callout>
 
 ## Common states and issues
 

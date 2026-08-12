@@ -52,6 +52,7 @@ Use Out for Pickup when the customer agrees to sell and you will proceed with pi
   - Visit the customer, start inspection, and tap **Inspection Started**.
   - Ask the customer for the **lead OTP** they received.
   - Enter the lead OTP into the app to verify the customer and the lead.
+  - The **inspection timer** starts automatically when you tap **Inspection Started**, displaying a countdown based on the device type's configured inspection duration.
 
   After successful OTP verification, the app unlocks final order actions.
 
@@ -112,6 +113,22 @@ Failing an order is **final for this lead flow**. To re-open or re-create a lead
 
 </Callout>
 
+## Inspection timer and delay reasons
+
+<Callout kind="info">
+
+The inspection timer starts when the vendor taps **Inspection Started**. It shows a countdown based on the configured inspection duration for the device type. If the timer expires before the vendor completes or fails the order, the vendor must select a **delay reason** from a predefined list before proceeding to complete or fail. Total time taken and the selected delay reason are stored with the order.
+
+</Callout>
+
+- The timer is visible to the vendor throughout the inspection as a countdown.
+- If the vendor finishes within the configured duration, no delay reason is needed.
+- If the timer expires, the app shows a delay reason selection screen and blocks Complete/Fail until a reason is chosen.
+- Common delay reasons include customer questions about pricing, device condition requiring deeper inspection, customer not ready at pickup location, or network/app issues.
+- After selecting a delay reason, the vendor proceeds with the normal Complete or Fail flow.
+
+See the [Inspection Timer](/inspection-timer) page for the full feature overview and configuration details.
+
 ## Inputs captured
 
 The system records specific inputs at this step for tracking and audit.
@@ -124,6 +141,9 @@ The system records specific inputs at this step for tracking and audit.
   - **Inspection Started timestamp** when you start inspection.
   - **Lead OTP value** entered by the vendor.
   - **OTP verification outcome** (success or failure) including time of verification.
+  - **Inspection timer duration** (configured maximum duration for the device type).
+  - **Total time taken** (actual elapsed time from Inspection Started to completion or failure).
+  - **Delay reason** (selected by vendor if the inspection timer expired before completion or failure).
 
 These inputs feed into reporting, Admin views, and customer-visible status.
 
@@ -143,6 +163,11 @@ The app drives different system behavior depending on the action you choose.
   - Makes **Inspection Started** available in the vendor app.
   - After OTP verification, unlocks **Complete Order** and **Requote** actions.
   - Syncs status updates to the **Customer App** and **website** for tracking.
+
+- **Inspection timer**
+  - The timer runs during the inspection phase, starting when **Inspection Started** is tapped.
+  - If the timer expires, the system requires a **delay reason** before allowing completion or failure.
+  - The **total time taken** and **delay reason** are recorded in the order data and visible in Admin order details.
 
 ## Connections
 
