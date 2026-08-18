@@ -1,114 +1,84 @@
 ---
 title: Quickstart
-description: Get started with Cashkr in minutes, whether you are selling your first device on the website or exploring the API for integrations.
+description: >-
+  Get started with Cashkr in minutes, whether you are selling your first device
+  on the website or exploring the API for integrations.
 ---
-
 ## Get started with Cashkr
 
-<Callout kind="info">
-
-Cashkr operates in India and focuses on buying used smartphones, laptops, Macs, tablets, and other electronics. Use the Website track if you are a customer selling a device. Use the API track if you are a developer evaluating integrations.
-
+<Callout kind="info" collapsed="false">
+  Cashkr operates in India and focuses on buying used smartphones, laptops, Macs, tablets, and other electronics. Use the Website track if you are a customer selling a device. Use the API track if you are a developer evaluating integrations.
 </Callout>
 
 <Tabs>
   <Tab title="Sell on Website" icon="monitor">
+    Cashkr Website is the public entry point for customers who want to sell used devices online, from instant quotes to order creation....
 
-  Cashkr Website is the public entry point for customers who want to sell used devices online, from instant quotes to order creation.
+    <Steps>
+      <Step title="Open the Cashkr Website" icon="home" title-type="p">
+        Go to the Cashkr Website and choose the route that fits your need: consumer trade-in for individual devices or corporate buyback if you are representing a business.
+      </Step>
 
-  <Steps>
-    <Step title="Open the Cashkr Website" icon="home" title-type="p">
+      <Step title="Select your device" icon="smartphone" title-type="p">
+        Pick the correct category such as smartphone, laptop, Mac, or tablet, then choose the exact brand and model you want to sell so Cashkr can price it accurately.
+      </Step>
 
-      Go to the Cashkr Website and choose the route that fits your need: consumer trade-in for individual devices or corporate buyback if you are representing a business.
+      <Step title="Answer condition questions" icon="check-circle" title-type="p">
+        Fill in basic details about the device condition, including physical state, functionality, and accessories, to generate an instant quote or indicative value.
+      </Step>
 
-    </Step>
+      <Step title="Log in with phone and OTP" icon="lock" title-type="p">
+        Enter your mobile number and complete the one-time password login so Cashkr can create your trade-in order, track history, and allow rescheduling or account actions.
+      </Step>
 
-    <Step title="Select your device" icon="smartphone" title-type="p">
-
-      Pick the correct category such as smartphone, laptop, Mac, or tablet, then choose the exact brand and model you want to sell so Cashkr can price it accurately.
-
-    </Step>
-
-    <Step title="Answer condition questions" icon="check-circle" title-type="p">
-
-      Fill in basic details about the device condition, including physical state, functionality, and accessories, to generate an instant quote or indicative value.
-
-    </Step>
-
-    <Step title="Log in with phone and OTP" icon="lock" title-type="p">
-
-      Enter your mobile number and complete the one-time password login so Cashkr can create your trade-in order, track history, and allow rescheduling or account actions.
-
-    </Step>
-
-    <Step title="Confirm pickup or drop-off" icon="truck" title-type="p">
-
-      Review the offer, select a pickup slot or available drop-off option where supported, and submit the order to complete your initial journey on the Cashkr Website.
-
-    </Step>
-  </Steps>
-
+      <Step title="Confirm pickup or drop-off" icon="truck" title-type="p">
+        Review the offer, select a pickup slot or available drop-off option where supported, and submit the order to complete your initial journey on the Cashkr Website.
+      </Step>
+    </Steps>
   </Tab>
 
   <Tab title="Explore the API" icon="code">
+    Use the Cashkr API to integrate trade-in flows, pricing, or lead capture from your own apps or systems.
 
-  Use the Cashkr API to integrate trade-in flows, pricing, or lead capture from your own apps or systems.
+    <Steps>
+      <Step title="Review API capabilities" icon="book-open" title-type="p">
+        Skim the API overview and sample endpoints to understand what you can do programmatically, such as creating trade-in requests or syncing device data from your systems.
+      </Step>
 
-  <Steps>
-    <Step title="Review API capabilities" icon="book-open" title-type="p">
+      <Step title="Set up authentication" icon="key" title-type="p">
+        Read the authentication guide to see how to send secure requests, including supported auth methods and any required headers or tokens for calling Cashkr APIs.
+      </Step>
 
-      Skim the API overview and sample endpoints to understand what you can do programmatically, such as creating trade-in requests or syncing device data from your systems.
+      <Step title="Call a sample endpoint" icon="terminal" title-type="p">
+        Use your preferred HTTP client or API tool to hit a sample endpoint from the reference, verify that you receive a valid response, and confirm network access from your environment.
+      </Step>
 
-    </Step>
-
-    <Step title="Set up authentication" icon="key" title-type="p">
-
-      Read the authentication guide to see how to send secure requests, including supported auth methods and any required headers or tokens for calling Cashkr APIs.
-
-    </Step>
-
-    <Step title="Call a sample endpoint" icon="terminal" title-type="p">
-
-      Use your preferred HTTP client or API tool to hit a sample endpoint from the reference, verify that you receive a valid response, and confirm network access from your environment.
-
-    </Step>
-
-    <Step title="Map Cashkr flows to your app" icon="settings" title-type="p">
-
-      Decide where Cashkr fits into your product: for example, embedding pricing before checkout, capturing corporate buyback leads, or automating order creation from your internal tools.
-
-    </Step>
-  </Steps>
-
+      <Step title="Map Cashkr flows to your app" icon="settings" title-type="p">
+        Decide where Cashkr fits into your product: for example, embedding pricing before checkout, capturing corporate buyback leads, or automating order creation from your internal tools.
+      </Step>
+    </Steps>
   </Tab>
 </Tabs>
 
 ## Next steps
 
-<Columns cols={2}>
+<Columns cols="2">
   <Card title="Learn about Cashkr" href="/introduction" icon="home" horizontal="false">
-
     Get the high-level overview of how Cashkr connects customers, vendors, and businesses across the Website, apps, and admin panel.
-
   </Card>
 
   <Card title="Cashkr Website overview" href="/overview" icon="monitor" horizontal="false">
-
     Understand the main journeys on the Website, including consumer trade-in, corporate buyback leads, and how visitors convert into orders.
-
   </Card>
 </Columns>
 
-<Columns cols={2}>
+<Columns cols="2">
   <Card title="Login and OTP flow" href="/login-registration" icon="phone" horizontal="false">
-
     See how phone-number plus OTP login works and why the logged-in state matters for orders, history, and account changes.
-
   </Card>
 
   <Card title="API authentication" href="/authentication" icon="lock" horizontal="false">
-
     Learn how to authenticate API requests securely when integrating Cashkr into your own applications.
-
   </Card>
 </Columns>
+
