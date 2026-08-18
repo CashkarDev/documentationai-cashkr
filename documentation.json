@@ -1,5 +1,5 @@
 {
-  "name": "Cashkr",
+  "name": "Cashkr Documentation",
   "colors": {
     "light": {
       "brand": "#F97316"
@@ -1166,5 +1166,5 @@
     "sitemap:enabled": false,
     "llms-txt:enabled": false
   },
-  "title": "Cashkr"
+  "title": "Cashkr Documentation"
 }
