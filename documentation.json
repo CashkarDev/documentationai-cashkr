@@ -1,5 +1,5 @@
 {
-  "name": "Starter Kit",
+  "name": "Cashkr",
   "colors": {
     "light": {
       "brand": "#F97316"
@@ -1165,5 +1165,6 @@
     "robots:follow": false,
     "sitemap:enabled": false,
     "llms-txt:enabled": false
-  }
+  },
+  "title": "Cashkr"
 }
