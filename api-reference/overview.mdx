@@ -1,0 +1,109 @@
+---
+title: API Overview
+description: Base URLs, authentication, conventions, and how the Cashkr API reference is organised for the internal tech team.
+---
+
+<Callout kind="alert">
+This reference is generated from the internal Postman export of the Cashkr backend. It documents the **staging** environment only. Production base URLs are deliberately not published here — get them from the platform team.
+</Callout>
+
+## Base URL
+
+All modules share one server definition:
+
+```
+https://internalstg-bk.cashkr.com/api/v1
+```
+
+Every path in this reference is relative to that base. A path shown as `/otp/sendotptocustomer` resolves to `https://internalstg-bk.cashkr.com/api/v1/otp/sendotptocustomer`.
+
+## Authentication
+
+The API uses JWT bearer tokens. Tokens are issued by the OTP verification endpoints and sent on every authenticated request.
+
+<ParamField header="Authorization" param-type="string" required="true">
+  `Bearer <YOUR_ACCESS_TOKEN>`
+</ParamField>
+
+<Steps>
+  <Step title="Request an OTP" icon="message-square">
+    `POST /otp/sendotptocustomer` with the customer's phone number and user type. The response carries a `sessionid` you need for the next call.
+
+    ```json
+    { "phone": "9000000000", "userType": "customer" }
+    ```
+  </Step>
+  <Step title="Verify the OTP" icon="shield-check">
+    `POST /otp/verifyotpforcustomer` with the phone, the `sessionid` from step one, and the code the user received.
+
+    ```json
+    { "phone": "9000000000", "sessionid": "<SESSION_ID>", "otp": "424174" }
+    ```
+  </Step>
+  <Step title="Send the token" icon="key">
+    Attach the returned JWT to subsequent requests.
+
+    ```bash
+    curl https://internalstg-bk.cashkr.com/api/v1/user/getcustomer \
+      -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>"
+    ```
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+Customers, vendors, and store vendors authenticate through **separate** endpoints and receive tokens with different claims. A customer token will not work against vendor routes.
+</Callout>
+
+## Modules
+
+The reference is split by domain rather than served as one flat list of 246 operations.
+
+| Module | Operations | Covers |
+| --- | ---: | --- |
+| Auth & Customer | 17 | OTP login, registration, profile, addresses, payout methods, push tokens |
+| Devices & Pricing | 15 | Catalog, variants, search, issue images, price evaluation |
+| Leads & Orders | 17 | Lead capture, order creation and tracking, coupons, invoices |
+| Vendor | 62 | Vendor and agent auth, order queues, credits, payments, attendance |
+| Store Vendor | 15 | Store partner auth and walk-in leads |
+| Referral & Wallet | 49 | Programs, transactions, withdrawals, wallets, affiliates |
+| Payments & Settlement | 11 | PhonePe and Razorpay, vendor settlement |
+| Admin Panel | 27 | Fraud, customers, activity logs, terms, vendor notifications |
+| Platform & Content | 33 | Analytics, newsletter, articles, reviews, banners, uploads, chat |
+
+## Known gaps in this reference
+
+The source export was built from Postman request history, not from server-side annotations. That leaves real limitations you should know about before trusting it.
+
+<Expandable title="Request and response bodies are mostly examples, not schemas" default-open="false">
+Most operations carry a concrete JSON **example** but a loose schema. The playground will show you a working payload shape, but for many endpoints there is no field-level typing, no required-field marking, and no enum documentation.
+
+Treat examples as illustrative of one valid call, not as the contract.
+</Expandable>
+
+<Expandable title="Only 200 responses are documented" default-open="false">
+All 246 operations document a `200` response and nothing else. Error shapes, status codes for validation failures, auth failures, and rate limits are undocumented.
+
+If you are integrating against these endpoints, confirm error handling against the actual service.
+</Expandable>
+
+<Expandable title="No operationIds" default-open="false">
+None of the operations in the source export carried an `operationId`. Generated SDK method names will be derived from paths and may be unstable across regenerations.
+</Expandable>
+
+<Expandable title="Long examples were truncated" default-open="false">
+Some response examples in the original export ran to tens of kilobytes — one was 41 KB for a single endpoint. Arrays in examples are capped so the reference stays readable.
+</Expandable>
+
+<Expandable title="Credentials and personal data were removed" default-open="false">
+The source export embedded 14 real JWTs as example values, along with employee names, work emails, a personal Gmail address, customer phone numbers, and local filesystem paths from a developer machine.
+
+All of it has been replaced with placeholders. The tokens were expired, but this is worth a secret-scanning step before any future Postman export is committed.
+</Expandable>
+
+<Expandable title="Third-party collections were removed" default-open="false">
+The original export contained 32 operations from Google Maps Platform (tagged *Go Map PRo*) and the Push Lap Growth affiliate service. They inherited the Cashkr staging server URL, which would have rendered them as Cashkr endpoints. They are excluded from this reference.
+</Expandable>
+
+<Callout kind="tip">
+The fastest way to close these gaps is to annotate the source service rather than hand-editing the spec. Anything hand-edited here is lost on the next export.
+</Callout>

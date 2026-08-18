@@ -1,12 +1,8 @@
 {
   "name": "Cashkr Documentation",
   "colors": {
-    "light": {
-      "brand": "#F97316"
-    },
-    "dark": {
-      "brand": "#FDBA74"
-    }
+    "light": { "brand": "#F97316" },
+    "dark": { "brand": "#FDBA74" }
   },
   "navigation": {
     "tabs": [
@@ -18,1063 +14,366 @@
             "group": "About Cashkr",
             "icon": "rocket",
             "pages": [
-              {
-                "title": "Introduction",
-                "path": "introduction",
-                "icon": "home"
-              },
-              {
-                "title": "Quickstart",
-                "path": "quickstart",
-                "icon": "zap"
-              },
-              {
-                "title": "Authentication",
-                "path": "authentication",
-                "icon": "lock"
-              },
-              {
-                "title": "Emails of cashkr",
-                "path": "emails-of-cashkr",
-                "icon": "file-text"
-              },
-              {
-                "title": "Refund policy",
-                "path": "refund-policy",
-                "icon": "album"
-              },
-              {
-                "title": "Cashkr product Bible",
-                "path": "cashkr-product-bible",
-                "icon": "arrow-up-az"
-              },
-              {
-                "title": "Components",
-                "path": "components",
-                "icon": "code"
-              }
+              { "title": "Introduction", "path": "introduction", "icon": "home" },
+              { "title": "Quickstart", "path": "quickstart", "icon": "zap" },
+              { "title": "Authentication", "path": "authentication", "icon": "lock" },
+              { "title": "Emails of cashkr", "path": "emails-of-cashkr", "icon": "file-text" },
+              { "title": "Refund policy", "path": "refund-policy", "icon": "album" },
+              { "title": "Cashkr product Bible", "path": "cashkr-product-bible", "icon": "arrow-up-az" },
+              { "title": "Components", "path": "components", "icon": "code" }
             ]
           },
           {
             "group": "Cashkr Website",
+            "icon": "file-text",
             "pages": [
-              {
-                "title": "Overview",
-                "path": "overview"
-              },
-              {
-                "title": "Key Pages / Sections",
-                "path": "key-pages/sections"
-              },
-              {
-                "title": "Core Features",
-                "path": "core-features"
-              },
-              {
-                "title": "Login & Registration",
-                "path": "login-registration",
-                "badge": "Profile"
-              },
-              {
-                "title": "My Profile",
-                "path": "my-profile",
-                "badge": "Profile"
-              },
-              {
-                "title": "Address",
-                "path": "address",
-                "badge": "Profile"
-              },
-              {
-                "title": "Track Orders",
-                "path": "track-orders"
-              },
-              {
-                "title": "Payment",
-                "path": "payment",
-                "badge": "Profile"
-              },
-              {
-                "title": "Sell Device Flow",
-                "path": "sell-device-flow"
-              },
-              {
-                "title": "Lead Creation",
-                "path": "lead-creation"
-              },
-              {
-                "title": "Search Functionality",
-                "path": "search-functionality"
-              },
-              {
-                "title": "Device Price Calculator",
-                "path": "device-price-calculator",
-                "badge": "Price Calculator"
-              },
-              {
-                "title": "Articles",
-                "path": "articles"
-              },
-              {
-                "title": "Finder",
-                "path": "finder"
-              },
-              {
-                "title": "Refer & Earn",
-                "path": "refer-earn"
-              },
-              {
-                "title": "Partner With Us",
-                "path": "partner-with-us"
-              },
-              {
-                "title": "Corporate Buyback",
-                "path": "corporate-buyback"
-              },
-              {
-                "title": "Logout and Account deletion",
-                "path": "logout-and-account-deletion",
-                "badge": "Profile"
-              }
-            ],
-            "icon": "file-text"
+              { "title": "Overview", "path": "overview" },
+              { "title": "Key Pages / Sections", "path": "key-pages/sections" },
+              { "title": "Core Features", "path": "core-features" },
+              { "title": "Login & Registration", "path": "login-registration", "badge": "Profile" },
+              { "title": "My Profile", "path": "my-profile", "badge": "Profile" },
+              { "title": "Address", "path": "address", "badge": "Profile" },
+              { "title": "Track Orders", "path": "track-orders" },
+              { "title": "Payment", "path": "payment", "badge": "Profile" },
+              { "title": "Sell Device Flow", "path": "sell-device-flow" },
+              { "title": "Lead Creation", "path": "lead-creation" },
+              { "title": "Search Functionality", "path": "search-functionality" },
+              { "title": "Device Price Calculator", "path": "device-price-calculator", "badge": "Price Calculator" },
+              { "title": "Articles", "path": "articles" },
+              { "title": "Finder", "path": "finder" },
+              { "title": "Refer & Earn", "path": "refer-earn" },
+              { "title": "Partner With Us", "path": "partner-with-us" },
+              { "title": "Corporate Buyback", "path": "corporate-buyback" },
+              { "title": "Logout and Account deletion", "path": "logout-and-account-deletion", "badge": "Profile" }
+            ]
           },
           {
             "group": "Customer App",
+            "icon": "file-text",
             "pages": [
-              {
-                "title": "Customer App Overview",
-                "path": "customer-app-overview"
-              },
-              {
-                "title": "Core Features - Customer App",
-                "path": "core-features---customer-app"
-              },
-              {
-                "title": "Key Screens/Sections",
-                "path": "key-screens/sections"
-              },
-              {
-                "title": "Customer App Login & Registration",
-                "path": "customer-app-login-registration"
-              },
-              {
-                "title": "HomeScreen & Device Selection",
-                "path": "homescreen-device-selection"
-              },
-              {
-                "title": "Sell Device Flow - Customer App",
-                "path": "sell-device-flow---customer-app"
-              },
-              {
-                "title": "Customer App My Profile",
-                "path": "customer-app-my-profile"
-              },
-              {
-                "title": "Lead Creation - Customer App",
-                "path": "lead-creation---customer-app"
-              },
-              {
-                "title": "Pickup Address",
-                "path": "pickup-address"
-              },
-              {
-                "title": "Reschedule Pickup",
-                "path": "reschedule-pickup"
-              },
-              {
-                "title": "Apply Coupon",
-                "path": "apply-coupon"
-              },
-              {
-                "title": "Payment Method",
-                "path": "payment-method"
-              },
-              {
-                "title": "Order Confirmation & Tracking",
-                "path": "order-confirmation-tracking"
-              },
-              {
-                "title": "Refer & Earn - customer app",
-                "path": "refer-earn---customer-app"
-              },
-              {
-                "title": "💰 Cashkr Wallet",
-                "path": "cashkr-wallet"
-              },
-              {
-                "title": "Logout",
-                "path": "logout"
-              },
-              {
-                "title": "Delete Account",
-                "path": "delete-account"
-              }
-            ],
-            "icon": "file-text"
+              { "title": "Customer App Overview", "path": "customer-app-overview" },
+              { "title": "Core Features - Customer App", "path": "core-features---customer-app" },
+              { "title": "Key Screens/Sections", "path": "key-screens/sections" },
+              { "title": "Customer App Login & Registration", "path": "customer-app-login-registration" },
+              { "title": "HomeScreen & Device Selection", "path": "homescreen-device-selection" },
+              { "title": "Sell Device Flow - Customer App", "path": "sell-device-flow---customer-app" },
+              { "title": "Customer App My Profile", "path": "customer-app-my-profile" },
+              { "title": "Lead Creation - Customer App", "path": "lead-creation---customer-app" },
+              { "title": "Pickup Address", "path": "pickup-address" },
+              { "title": "Reschedule Pickup", "path": "reschedule-pickup" },
+              { "title": "Apply Coupon", "path": "apply-coupon" },
+              { "title": "Payment Method", "path": "payment-method" },
+              { "title": "Order Confirmation & Tracking", "path": "order-confirmation-tracking" },
+              { "title": "Refer & Earn - customer app", "path": "refer-earn---customer-app" },
+              { "title": "💰 Cashkr Wallet", "path": "cashkr-wallet" },
+              { "title": "Logout", "path": "logout" },
+              { "title": "Delete Account", "path": "delete-account" }
+            ]
           },
           {
             "group": "Vendor App",
+            "icon": "file-text",
             "pages": [
-              {
-                "title": "Vendor Registration & Login",
-                "path": "vendor-registration-login"
-              },
-              {
-                "title": "Available Orders",
-                "path": "available-orders"
-              },
-              {
-                "title": "Unlock Lead",
-                "path": "unlock-lead"
-              },
-              {
-                "title": "InProgress Orders",
-                "path": "inprogress-orders"
-              },
-              {
-                "title": "Call Disposition",
-                "path": "call-disposition"
-              },
-              {
-                "title": "Add Agents",
-                "path": "add-agents"
-              },
-              {
-                "title": "Fail After Requote",
-                "path": "fail-after-requote"
-              },
-              {
-                "title": "Buy Credits",
-                "path": "buy-credits"
-              },
-              {
-                "title": "Out for Pickup or Fail",
-                "path": "out-for-pickup-or-fail"
-              },
-              {
-                "title": "Complete",
-                "path": "complete"
-              },
-              {
-                "title": "Review Refund",
-                "path": "vendor-review-refund"
-              },
-              {
-                "title": "Merchandise Store",
-                "path": "vendor-merchandise-store"
-              },
-              {
-                "title": "Same Customer Order",
-                "path": "same-customer-order"
-              },
-              {
-                "title": "Requote Order",
-                "path": "requote-order"
-              },
-              {
-                "title": "Reserved Order",
-                "path": "reserved-order"
-              },
-              {
-                "title": "Reschedule",
-                "path": "reschedule"
-              },
-              {
-                "title": "Max Lead",
-                "path": "max-lead"
-              },
-              {
-                "title": "Logout - Vendor App",
-                "path": "logout---vendor-app"
-              }
-            ],
-            "icon": "file-text"
+              { "title": "Vendor Registration & Login", "path": "vendor-registration-login" },
+              { "title": "Available Orders", "path": "available-orders" },
+              { "title": "Unlock Lead", "path": "unlock-lead" },
+              { "title": "InProgress Orders", "path": "inprogress-orders" },
+              { "title": "Call Disposition", "path": "call-disposition" },
+              { "title": "Add Agents", "path": "add-agents" },
+              { "title": "Fail After Requote", "path": "fail-after-requote" },
+              { "title": "Buy Credits", "path": "buy-credits" },
+              { "title": "Out for Pickup or Fail", "path": "out-for-pickup-or-fail" },
+              { "title": "Complete", "path": "complete" },
+              { "title": "Review Refund", "path": "vendor-review-refund" },
+              { "title": "Merchandise Store", "path": "vendor-merchandise-store" },
+              { "title": "Same Customer Order", "path": "same-customer-order" },
+              { "title": "Requote Order", "path": "requote-order" },
+              { "title": "Reserved Order", "path": "reserved-order" },
+              { "title": "Reschedule", "path": "reschedule" },
+              { "title": "Max Lead", "path": "max-lead" },
+              { "title": "Logout - Vendor App", "path": "logout---vendor-app" }
+            ]
           },
           {
             "group": "Core Features",
             "pages": [
-              {
-                "title": "Merchandise Store",
-                "path": "merchandise-store"
-              },
-              {
-                "title": "Review Refund — Vendor Review-Credit Feature",
-                "path": "review-refund-vendor-review-credit-feature"
-              },
-              {
-                "title": "In Depth Device Price Evaluation Logic",
-                "path": "in-depth-device-price-evaluation-logic"
-              },
-              {
-                "title": "Body Condition Selection Logic",
-                "path": "body-condition-selection-logic"
-              },
-              {
-                "title": "Reserved Order Feature",
-                "path": "reserved-order-feature"
-              },
-              {
-                "title": "Tiers System",
-                "path": "tiers-system"
-              },
-              {
-                "title": "Pricing system",
-                "path": "pricing-system"
-              },
-              {
-                "title": "Vendor Tier Access Control System(phone,mac,tablet)",
-                "path": "vendor-tier-access-control-systemphonemactablet"
-              },
-              {
-                "title": "Customer order flow Blocking system",
-                "path": "customer-order-flow-blocking-system"
-              },
-              {
-                "title": "Credit System",
-                "path": "credit-system"
-              },
-              {
-                "title": "Classes",
-                "path": "classes"
-              },
-              {
-                "title": "Device Assessment Workflow",
-                "path": "device-assessment-workflow"
-              },
-              {
-                "title": "Inspection Timer",
-                "path": "inspection-timer"
-              },
-              {
-                "title": "Vendor Types (1 → 3)",
-                "path": "vendor-types-1-5"
-              },
-              {
-                "title": "Customer Account Blocking Feature",
-                "path": "customer-account-blocking-feature"
-              },
-              {
-                "title": "Order Status",
-                "path": "order-status"
-              },
-              {
-                "title": "Cashkr Referral System",
-                "path": "cashkr-referral-system"
-              },
-              {
-                "title": "Influencer Affiliate",
-                "path": "influencer-affiliate"
-              },
-              {
-                "title": "Device Pricing Fields Overview",
-                "path": "device-pricing-fields-overview"
-              },
-              {
-                "title": "Amazon Gift Card Payment Option",
-                "path": "amazon-gift-card-payment"
-              }
+              { "title": "Merchandise Store", "path": "merchandise-store" },
+              { "title": "Review Refund — Vendor Review-Credit Feature", "path": "review-refund-vendor-review-credit-feature" },
+              { "title": "In Depth Device Price Evaluation Logic", "path": "in-depth-device-price-evaluation-logic" },
+              { "title": "Body Condition Selection Logic", "path": "body-condition-selection-logic" },
+              { "title": "Reserved Order Feature", "path": "reserved-order-feature" },
+              { "title": "Tiers System", "path": "tiers-system" },
+              { "title": "Pricing system", "path": "pricing-system" },
+              { "title": "Vendor Tier Access Control System(phone,mac,tablet)", "path": "vendor-tier-access-control-systemphonemactablet" },
+              { "title": "Customer order flow Blocking system", "path": "customer-order-flow-blocking-system" },
+              { "title": "Credit System", "path": "credit-system" },
+              { "title": "Classes", "path": "classes" },
+              { "title": "Device Assessment Workflow", "path": "device-assessment-workflow" },
+              { "title": "Inspection Timer", "path": "inspection-timer" },
+              { "title": "Vendor Types (1 → 3)", "path": "vendor-types-1-5" },
+              { "title": "Customer Account Blocking Feature", "path": "customer-account-blocking-feature" },
+              { "title": "Order Status", "path": "order-status" },
+              { "title": "Cashkr Referral System", "path": "cashkr-referral-system" },
+              { "title": "Influencer Affiliate", "path": "influencer-affiliate" },
+              { "title": "Device Pricing Fields Overview", "path": "device-pricing-fields-overview" },
+              { "title": "Amazon Gift Card Payment Option", "path": "amazon-gift-card-payment" }
             ]
           },
           {
             "group": "Cashkr Notifications",
             "pages": [
-              {
-                "title": "customer notifications",
-                "path": "customer-notification"
-              }
+              { "title": "customer notifications", "path": "customer-notification" }
             ]
           },
           {
             "group": "BigboldTech Website",
             "pages": [
-              {
-                "title": "Browse Articles",
-                "path": "browse-articles"
-              },
-              {
-                "title": "Commenting on Articles",
-                "path": "commenting-on-articles"
-              },
-              {
-                "title": "Special offers and deals",
-                "path": "special-offers-and-deals"
-              },
-              {
-                "title": "Search Functionality - BBT",
-                "path": "search-functionality---bbt"
-              },
-              {
-                "title": "Subscribe to Newsletter",
-                "path": "subscribe-to-newsletter"
-              }
+              { "title": "Browse Articles", "path": "browse-articles" },
+              { "title": "Commenting on Articles", "path": "commenting-on-articles" },
+              { "title": "Special offers and deals", "path": "special-offers-and-deals" },
+              { "title": "Search Functionality - BBT", "path": "search-functionality---bbt" },
+              { "title": "Subscribe to Newsletter", "path": "subscribe-to-newsletter" }
             ]
           },
           {
             "group": "Cashkr Web Article Strapi",
             "pages": [
-              {
-                "title": "Homepage",
-                "path": "homepage"
-              },
-              {
-                "title": "Articles - CK Web",
-                "path": "articles---ck-web"
-              },
-              {
-                "title": "Media Library",
-                "path": "media-library"
-              },
-              {
-                "title": "User",
-                "path": "user"
-              },
-              {
-                "title": "LogIn and Forgot Password",
-                "path": "login-and-forgot-password"
-              },
-              {
-                "title": "Comments",
-                "path": "comments"
-              },
-              {
-                "title": "Content Type Builder",
-                "path": "content-type-builder"
-              },
-              {
-                "title": "Categories",
-                "path": "categories"
-              },
-              {
-                "title": "Authors",
-                "path": "authors"
-              },
-              {
-                "title": "LogOut and Profile Management",
-                "path": "logout-and-profile-management"
-              }
+              { "title": "Homepage", "path": "homepage" },
+              { "title": "Articles - CK Web", "path": "articles---ck-web" },
+              { "title": "Media Library", "path": "media-library" },
+              { "title": "User", "path": "user" },
+              { "title": "LogIn and Forgot Password", "path": "login-and-forgot-password" },
+              { "title": "Comments", "path": "comments" },
+              { "title": "Content Type Builder", "path": "content-type-builder" },
+              { "title": "Categories", "path": "categories" },
+              { "title": "Authors", "path": "authors" },
+              { "title": "LogOut and Profile Management", "path": "logout-and-profile-management" }
             ]
           },
           {
             "group": "BigboldTech Strapi",
             "pages": [
-              {
-                "title": "HomePage - BBT",
-                "path": "homepage---bbt"
-              },
-              {
-                "title": "LogIn and Forgot Password - BBT",
-                "path": "login-and-forgot-password---bbt"
-              },
-              {
-                "title": "Categories - BBT",
-                "path": "categories---bbt"
-              },
-              {
-                "title": "Content Type Builder - BBT",
-                "path": "content-type-builder---bbt"
-              },
-              {
-                "title": "Offers and Deals",
-                "path": "offers-and-deals"
-              },
-              {
-                "title": "User - BBT",
-                "path": "user---bbt"
-              },
-              {
-                "title": "Media Library - BBT",
-                "path": "media-library---bbt"
-              },
-              {
-                "title": "Comments - BBT",
-                "path": "comments---bbt"
-              },
-              {
-                "title": "Author",
-                "path": "author"
-              },
-              {
-                "title": "Articles - BBT",
-                "path": "articles---bbt"
-              },
-              {
-                "title": "Logout and Profile Management - BBT",
-                "path": "logout-and-profile-management---bbt"
-              }
+              { "title": "HomePage - BBT", "path": "homepage---bbt" },
+              { "title": "LogIn and Forgot Password - BBT", "path": "login-and-forgot-password---bbt" },
+              { "title": "Categories - BBT", "path": "categories---bbt" },
+              { "title": "Content Type Builder - BBT", "path": "content-type-builder---bbt" },
+              { "title": "Offers and Deals", "path": "offers-and-deals" },
+              { "title": "User - BBT", "path": "user---bbt" },
+              { "title": "Media Library - BBT", "path": "media-library---bbt" },
+              { "title": "Comments - BBT", "path": "comments---bbt" },
+              { "title": "Author", "path": "author" },
+              { "title": "Articles - BBT", "path": "articles---bbt" },
+              { "title": "Logout and Profile Management - BBT", "path": "logout-and-profile-management---bbt" }
             ]
           },
           {
             "group": "Analytics and Events",
             "pages": [
-              {
-                "title": "Event Implementation Guide for Tech Team (Web & App)",
-                "path": "event-implementation-guide-for-tech-team-web-app"
-              }
+              { "title": "Event Implementation Guide for Tech Team (Web & App)", "path": "event-implementation-guide-for-tech-team-web-app" }
             ]
           },
           {
             "group": "Tools Used in Cashkr",
             "pages": [
-              {
-                "title": "AI Tools (Content, Research & Automation)",
-                "path": "ai-tools-content-research-automation"
-              },
-              {
-                "title": "Link & Engagement Utilities",
-                "path": "link-engagement-utilities"
-              },
-              {
-                "title": "App Store Optimization (ASO)",
-                "path": "app-store-optimization-aso"
-              },
-              {
-                "title": "Social Media Platforms",
-                "path": "social-media-platforms"
-              },
-              {
-                "title": "Advertising Platforms",
-                "path": "advertising-platforms"
-              },
-              {
-                "title": "Productivity & Team Tools",
-                "path": "productivity-team-tools"
-              },
-              {
-                "title": "App Release & Management",
-                "path": "app-release-management"
-              },
-              {
-                "title": "HR & Payroll",
-                "path": "hr-payroll"
-              },
-              {
-                "title": "SEO & Analytics Tools",
-                "path": "seo-analytics-tools"
-              },
-              {
-                "title": "Marketing & CX Automation",
-                "path": "marketing-cx-automation"
-              },
-              {
-                "title": "Analytics, Tagging & Reporting",
-                "path": "analytics-tagging-reporting"
-              },
-              {
-                "title": "Hosting, Domains & Security",
-                "path": "hosting-domains-security"
-              },
-              {
-                "title": "Monitoring & Automation",
-                "path": "monitoring-automation"
-              },
-              {
-                "title": "Learning Platforms",
-                "path": "learning-platforms"
-              },
-              {
-                "title": "Document & Knowledge Management",
-                "path": "document-knowledge-management"
-              }
+              { "title": "AI Tools (Content, Research & Automation)", "path": "ai-tools-content-research-automation" },
+              { "title": "Link & Engagement Utilities", "path": "link-engagement-utilities" },
+              { "title": "App Store Optimization (ASO)", "path": "app-store-optimization-aso" },
+              { "title": "Social Media Platforms", "path": "social-media-platforms" },
+              { "title": "Advertising Platforms", "path": "advertising-platforms" },
+              { "title": "Productivity & Team Tools", "path": "productivity-team-tools" },
+              { "title": "App Release & Management", "path": "app-release-management" },
+              { "title": "HR & Payroll", "path": "hr-payroll" },
+              { "title": "SEO & Analytics Tools", "path": "seo-analytics-tools" },
+              { "title": "Marketing & CX Automation", "path": "marketing-cx-automation" },
+              { "title": "Analytics, Tagging & Reporting", "path": "analytics-tagging-reporting" },
+              { "title": "Hosting, Domains & Security", "path": "hosting-domains-security" },
+              { "title": "Monitoring & Automation", "path": "monitoring-automation" },
+              { "title": "Learning Platforms", "path": "learning-platforms" },
+              { "title": "Document & Knowledge Management", "path": "document-knowledge-management" }
             ]
           },
           {
             "group": "Meetings",
             "pages": [
-              {
-                "title": "Tech Team - Standup Meet",
-                "path": "tech-team---standup-meet"
-              }
+              { "title": "Tech Team - Standup Meet", "path": "tech-team---standup-meet" }
             ]
           },
           {
             "group": "Website SOPs",
             "pages": [
-              {
-                "title": "Device Search & Sell Flow",
-                "path": "device-search-sell-flow"
-              },
-              {
-                "title": "User Registration & Login",
-                "path": "user-registration-login"
-              },
-              {
-                "title": "Corporate Buyback - SOPs",
-                "path": "corporate-buyback---sops"
-              },
-              {
-                "title": "Reschedule Pickup - SOPs",
-                "path": "reschedule-pickup---sops"
-              },
-              {
-                "title": "Track Order & Order Stages",
-                "path": "track-order-order-stages"
-              },
-              {
-                "title": "Manage Payment Methods",
-                "path": "manage-payment-methods"
-              },
-              {
-                "title": "Update User Details",
-                "path": "update-user-details"
-              },
-              {
-                "title": "Manage Addresses",
-                "path": "manage-addresses"
-              },
-              {
-                "title": "Partner with Cashkr",
-                "path": "partner-with-cashkr"
-              },
-              {
-                "title": "Coupon Application",
-                "path": "coupon-application"
-              },
-              {
-                "title": "Logout and Delete Account",
-                "path": "logout-and-delete-account"
-              }
+              { "title": "Device Search & Sell Flow", "path": "device-search-sell-flow" },
+              { "title": "User Registration & Login", "path": "user-registration-login" },
+              { "title": "Corporate Buyback - SOPs", "path": "corporate-buyback---sops" },
+              { "title": "Reschedule Pickup - SOPs", "path": "reschedule-pickup---sops" },
+              { "title": "Track Order & Order Stages", "path": "track-order-order-stages" },
+              { "title": "Manage Payment Methods", "path": "manage-payment-methods" },
+              { "title": "Update User Details", "path": "update-user-details" },
+              { "title": "Manage Addresses", "path": "manage-addresses" },
+              { "title": "Partner with Cashkr", "path": "partner-with-cashkr" },
+              { "title": "Coupon Application", "path": "coupon-application" },
+              { "title": "Logout and Delete Account", "path": "logout-and-delete-account" }
             ]
           },
           {
             "group": "Store App",
             "pages": [
-              {
-                "title": "Store vendor login",
-                "path": "store-vendor-login"
-              },
-              {
-                "title": "Cashkr Store Flow",
-                "path": "cashkr-store-flow"
-              },
-              {
-                "title": "Customer Walk-In Flow – Sell Device",
-                "path": "customer-walk-in-flow-sell-device"
-              },
-              {
-                "title": "Logout - store app",
-                "path": "logout---store-app"
-              }
+              { "title": "Store vendor login", "path": "store-vendor-login" },
+              { "title": "Cashkr Store Flow", "path": "cashkr-store-flow" },
+              { "title": "Customer Walk-In Flow – Sell Device", "path": "customer-walk-in-flow-sell-device" },
+              { "title": "Logout - store app", "path": "logout---store-app" }
             ]
           },
           {
             "group": "Admin Panel",
             "icon": "layers",
             "pages": [
-              {
-                "title": "Authentication - Admin Panel",
-                "path": "authentication---admin-panel"
-              },
+              { "title": "Authentication - Admin Panel", "path": "authentication---admin-panel" },
               {
                 "group": "Dashboard",
                 "pages": [
-                  {
-                    "title": "CEO Report",
-                    "path": "ceo-report"
-                  },
-                  {
-                    "title": "TV Display",
-                    "path": "tv-display"
-                  },
-                  {
-                    "title": "Overview - Dashboard",
-                    "path": "overview---dashboard"
-                  },
-                  {
-                    "title": "Growth",
-                    "path": "growth"
-                  },
-                  {
-                    "title": "Funnel",
-                    "path": "funnel"
-                  },
-                  {
-                    "title": "Marketing - Dashboard",
-                    "path": "marketing---dashboard"
-                  },
-                  {
-                    "title": "Operations & SLA",
-                    "path": "operations-sla"
-                  },
-                  {
-                    "title": "Expansion",
-                    "path": "expansion"
-                  },
-                  {
-                    "title": "Pricing",
-                    "path": "pricing"
-                  },
-                  {
-                    "title": "Failed Report",
-                    "path": "failed-report"
-                  },
-                  {
-                    "title": "Data Quality",
-                    "path": "data-quality"
-                  },
-                  {
-                    "title": "Reviews & Reputation",
-                    "path": "reviews-reputation"
-                  },
-                  {
-                    "title": "Trust & Safety",
-                    "path": "trust-safety"
-                  },
-                  {
-                    "title": "Sales & Pipelines",
-                    "path": "sales-pipelines"
-                  },
-                  {
-                    "title": "Inventory",
-                    "path": "inventory"
-                  },
-                  {
-                    "title": "Finance - Dashboard",
-                    "path": "finance---dashboard"
-                  },
-                  {
-                    "title": "Coupons",
-                    "path": "coupons"
-                  },
-                  {
-                    "title": "Influencers",
-                    "path": "influencers"
-                  },
-                  {
-                    "title": "Referrals",
-                    "path": "referrals"
-                  }
+                  { "title": "CEO Report", "path": "ceo-report" },
+                  { "title": "TV Display", "path": "tv-display" },
+                  { "title": "Overview - Dashboard", "path": "overview---dashboard" },
+                  { "title": "Growth", "path": "growth" },
+                  { "title": "Funnel", "path": "funnel" },
+                  { "title": "Marketing - Dashboard", "path": "marketing---dashboard" },
+                  { "title": "Operations & SLA", "path": "operations-sla" },
+                  { "title": "Expansion", "path": "expansion" },
+                  { "title": "Pricing", "path": "pricing" },
+                  { "title": "Failed Report", "path": "failed-report" },
+                  { "title": "Data Quality", "path": "data-quality" },
+                  { "title": "Reviews & Reputation", "path": "reviews-reputation" },
+                  { "title": "Trust & Safety", "path": "trust-safety" },
+                  { "title": "Sales & Pipelines", "path": "sales-pipelines" },
+                  { "title": "Inventory", "path": "inventory" },
+                  { "title": "Finance - Dashboard", "path": "finance---dashboard" },
+                  { "title": "Coupons", "path": "coupons" },
+                  { "title": "Influencers", "path": "influencers" },
+                  { "title": "Referrals", "path": "referrals" }
                 ]
               },
-              {
-                "group": "Inventory",
-                "pages": [
-                  {
-                    "title": "All Inventory",
-                    "path": "vendors---b2c"
-                  }
-                ]
-              },
+              { "group": "Inventory", "pages": [ { "title": "All Inventory", "path": "vendors---b2c" } ] },
               {
                 "group": "Finance",
                 "pages": [
-                  {
-                    "title": "Credits",
-                    "path": "credits"
-                  },
-                  {
-                    "title": "Device Purchases",
-                    "path": "device-purchases"
-                  },
-                  {
-                    "title": "Device Sales",
-                    "path": "device-sales"
-                  },
-                  {
-                    "title": "B2B",
-                    "path": "b2b"
-                  },
-                  {
-                    "title": "Returns",
-                    "path": "returns"
-                  },
-                  {
-                    "title": "Expenses",
-                    "path": "expenses"
-                  },
-                  {
-                    "title": "Cash In Hand",
-                    "path": "cash-in-hand"
-                  },
-                  {
-                    "title": "Reports - Finance",
-                    "path": "reports---finance"
-                  }
+                  { "title": "Credits", "path": "credits" },
+                  { "title": "Device Purchases", "path": "device-purchases" },
+                  { "title": "Device Sales", "path": "device-sales" },
+                  { "title": "B2B", "path": "b2b" },
+                  { "title": "Returns", "path": "returns" },
+                  { "title": "Expenses", "path": "expenses" },
+                  { "title": "Cash In Hand", "path": "cash-in-hand" },
+                  { "title": "Reports - Finance", "path": "reports---finance" }
                 ]
               },
               {
                 "group": "Leads",
                 "pages": [
-                  {
-                    "title": "New Leads",
-                    "path": "new-leads"
-                  },
-                  {
-                    "title": "Callbacks",
-                    "path": "callbacks"
-                  }
+                  { "title": "New Leads", "path": "new-leads" },
+                  { "title": "Callbacks", "path": "callbacks" }
                 ]
               },
               {
                 "group": "Vendors - B2C",
                 "pages": [
-                  {
-                    "title": "B2C Vendor Tiers",
-                    "path": "b2c-vendor-tiers"
-                  },
-                  {
-                    "title": "B2C Vendors",
-                    "path": "b2c-vendors"
-                  },
-                  {
-                    "title": "Review Refund",
-                    "path": "admin-review-refund"
-                  }
+                  { "title": "B2C Vendor Tiers", "path": "b2c-vendor-tiers" },
+                  { "title": "B2C Vendors", "path": "b2c-vendors" },
+                  { "title": "Review Refund", "path": "admin-review-refund" }
                 ]
               },
               {
                 "group": "Expansion",
                 "pages": [
-                  {
-                    "title": "Area",
-                    "path": "area"
-                  },
-                  {
-                    "title": "New Vendors - B2C",
-                    "path": "new-vendors---b2c"
-                  },
-                  {
-                    "title": "Onboarding B2C",
-                    "path": "onboarding-b2c"
-                  }
+                  { "title": "Area", "path": "area" },
+                  { "title": "New Vendors - B2C", "path": "new-vendors---b2c" },
+                  { "title": "Onboarding B2C", "path": "onboarding-b2c" }
                 ]
               },
               {
                 "group": "Orders -B2C",
                 "pages": [
-                  {
-                    "title": "All Orders",
-                    "path": "all-orders"
-                  },
-                  {
-                    "title": "In Progress",
-                    "path": "in-progress"
-                  },
-                  {
-                    "title": "Not Assigned",
-                    "path": "not-assigned"
-                  },
-                  {
-                    "title": "No Action",
-                    "path": "no-action"
-                  },
-                  {
-                    "title": "Delayed",
-                    "path": "delayed"
-                  },
-                  {
-                    "title": "Reserved",
-                    "path": "reserved"
-                  },
-                  {
-                    "title": "Flagged",
-                    "path": "flagged"
-                  }
+                  { "title": "All Orders", "path": "all-orders" },
+                  { "title": "In Progress", "path": "in-progress" },
+                  { "title": "Not Assigned", "path": "not-assigned" },
+                  { "title": "No Action", "path": "no-action" },
+                  { "title": "Delayed", "path": "delayed" },
+                  { "title": "Reserved", "path": "reserved" },
+                  { "title": "Flagged", "path": "flagged" }
                 ]
               },
               {
                 "group": "Quality - B2C",
                 "pages": [
-                  {
-                    "title": "To Be Failed",
-                    "path": "to-be-failed"
-                  },
-                  {
-                    "title": "Fines",
-                    "path": "fines"
-                  }
+                  { "title": "To Be Failed", "path": "to-be-failed" },
+                  { "title": "Fines", "path": "fines" }
                 ]
               },
               {
                 "group": "Store",
                 "pages": [
-                  {
-                    "title": "leads - store",
-                    "path": "store"
-                  },
-                  {
-                    "title": "Completed",
-                    "path": "completed"
-                  },
-                  {
-                    "title": "Failed",
-                    "path": "failed"
-                  }
+                  { "title": "leads - store", "path": "store" },
+                  { "title": "Completed", "path": "completed" },
+                  { "title": "Failed", "path": "failed" }
                 ]
               },
-              {
-                "group": "Merchandise",
-                "pages": [
-                  {
-                    "title": "Merchandise Store",
-                    "path": "admin-merchandise-store"
-                  }
-                ]
-              },
+              { "group": "Merchandise", "pages": [ { "title": "Merchandise Store", "path": "admin-merchandise-store" } ] },
               {
                 "group": "Buyback - B2B",
                 "pages": [
-                  {
-                    "title": "Deals",
-                    "path": "deals"
-                  },
-                  {
-                    "title": "Leads - Buyback",
-                    "path": "leads---buyback"
-                  },
-                  {
-                    "title": "Clients",
-                    "path": "clients"
-                  },
-                  {
-                    "title": "Inspection",
-                    "path": "inspection"
-                  }
+                  { "title": "Deals", "path": "deals" },
+                  { "title": "Leads - Buyback", "path": "leads---buyback" },
+                  { "title": "Clients", "path": "clients" },
+                  { "title": "Inspection", "path": "inspection" }
                 ]
               },
-              {
-                "group": "Banners - Marketing",
-                "pages": [
-                  {
-                    "title": "Banner",
-                    "path": "banner"
-                  }
-                ]
-              },
+              { "group": "Banners - Marketing", "pages": [ { "title": "Banner", "path": "banner" } ] },
               {
                 "group": "Coupons - Marketing",
                 "pages": [
-                  {
-                    "title": "Dashboard",
-                    "path": "dashboard"
-                  },
-                  {
-                    "title": "Coupon",
-                    "path": "coupon"
-                  }
+                  { "title": "Dashboard", "path": "dashboard" },
+                  { "title": "Coupon", "path": "coupon" }
                 ]
               },
               {
                 "group": "Referrals",
                 "pages": [
-                  {
-                    "title": "Programs",
-                    "path": "programs"
-                  },
-                  {
-                    "title": "Transactions",
-                    "path": "transactions"
-                  },
-                  {
-                    "title": "Payouts",
-                    "path": "payouts"
-                  }
+                  { "title": "Programs", "path": "programs" },
+                  { "title": "Transactions", "path": "transactions" },
+                  { "title": "Payouts", "path": "payouts" }
                 ]
               },
-              {
-                "group": "Push Notifications",
-                "pages": [
-                  {
-                    "title": "Notifications",
-                    "path": "notifications"
-                  }
-                ]
-              },
+              { "group": "Push Notifications", "pages": [ { "title": "Notifications", "path": "notifications" } ] },
               {
                 "group": "Platform Reviews",
                 "pages": [
-                  {
-                    "title": "Reviews",
-                    "path": "reviews"
-                  },
-                  {
-                    "title": "Widgets",
-                    "path": "widgets"
-                  }
+                  { "title": "Reviews", "path": "reviews" },
+                  { "title": "Widgets", "path": "widgets" }
                 ]
               },
-              {
-                "group": "users",
-                "pages": [
-                  {
-                    "title": "Cashkr",
-                    "path": "cashkr"
-                  }
-                ]
-              },
+              { "group": "users", "pages": [ { "title": "Cashkr", "path": "cashkr" } ] },
               {
                 "group": "Devices",
                 "pages": [
-                  {
-                    "title": "Phone",
-                    "path": "phone"
-                  },
-                  {
-                    "title": "Tablet",
-                    "path": "tablet"
-                  },
-                  {
-                    "title": "Laptop",
-                    "path": "laptop"
-                  },
-                  {
-                    "title": "Mac",
-                    "path": "mac"
-                  },
-                  {
-                    "title": "Camera",
-                    "path": "camera"
-                  },
-                  {
-                    "title": "Headphone",
-                    "path": "headphone"
-                  },
-                  {
-                    "title": "Watch",
-                    "path": "watch"
-                  },
-                  {
-                    "title": "Console",
-                    "path": "console"
-                  }
+                  { "title": "Phone", "path": "phone" },
+                  { "title": "Tablet", "path": "tablet" },
+                  { "title": "Laptop", "path": "laptop" },
+                  { "title": "Mac", "path": "mac" },
+                  { "title": "Camera", "path": "camera" },
+                  { "title": "Headphone", "path": "headphone" },
+                  { "title": "Watch", "path": "watch" },
+                  { "title": "Console", "path": "console" }
                 ]
               },
-              {
-                "group": "Fraud & Safety",
-                "pages": [
-                  {
-                    "title": "Stolen Devices",
-                    "path": "stolen-devices"
-                  }
-                ]
-              },
+              { "group": "Fraud & Safety", "pages": [ { "title": "Stolen Devices", "path": "stolen-devices" } ] },
               {
                 "group": "Settings",
                 "pages": [
-                  {
-                    "title": "Connections",
-                    "path": "connections"
-                  },
-                  {
-                    "title": "Master Logs",
-                    "path": "master-logs"
-                  },
-                  {
-                    "title": "Admin Users",
-                    "path": "admin-users"
-                  },
-                  {
-                    "title": "Demo Users",
-                    "path": "demo-users"
-                  },
-                  {
-                    "title": "Terms & Conditions",
-                    "path": "terms-conditions"
-                  },
-                  {
-                    "title": "Inspection Duration",
-                    "path": "inspection-duration"
-                  }
+                  { "title": "Connections", "path": "connections" },
+                  { "title": "Master Logs", "path": "master-logs" },
+                  { "title": "Admin Users", "path": "admin-users" },
+                  { "title": "Demo Users", "path": "demo-users" },
+                  { "title": "Terms & Conditions", "path": "terms-conditions" },
+                  { "title": "Inspection Duration", "path": "inspection-duration" }
                 ]
               }
             ]
@@ -1087,18 +386,33 @@
         "groups": [
           {
             "group": "Overview",
-            "icon": "file-text",
+            "icon": "book-open",
             "pages": [
-              {
-                "title": "Authentication",
-                "path": "authentication",
-                "icon": "lock"
-              }
+              { "title": "API Overview", "path": "api-reference/overview", "icon": "book-open" }
             ]
           },
           {
-            "group": "Sample Endpoints",
-            "openapi": "api-reference/openapi.yaml",
+            "group": "Auth & Customer",
+            "icon": "user",
+            "openapi": "api-reference/auth-and-customer.json",
+            "pages": []
+          },
+          {
+            "group": "Store Vendor",
+            "icon": "store",
+            "openapi": "api-reference/store-vendor.json",
+            "pages": []
+          },
+          {
+            "group": "Payments & Settlement",
+            "icon": "banknote",
+            "openapi": "api-reference/payments-and-settlement.json",
+            "pages": []
+          },
+          {
+            "group": "Admin Panel",
+            "icon": "layers",
+            "openapi": "api-reference/admin-panel.json",
             "pages": []
           }
         ]
@@ -1107,56 +421,31 @@
         "tab": "Help Center",
         "icon": "help-circle",
         "pages": [
-          {
-            "title": "Help Center",
-            "path": "help-center",
-            "icon": "home"
-          },
+          { "title": "Help Center", "path": "help-center", "icon": "home" },
           {
             "group": "FAQs",
             "icon": "help-circle",
             "expandable": false,
-            "pages": [
-              {
-                "title": "Documentation Source",
-                "path": "help-center/faq/getting-started"
-              }
-            ]
+            "pages": [ { "title": "Documentation Source", "path": "help-center/faq/getting-started" } ]
           },
           {
             "group": "Troubleshooting",
             "icon": "alert-circle",
             "expandable": false,
-            "pages": [
-              {
-                "title": "Page Missing in Sidebar",
-                "path": "help-center/troubleshooting/install-error"
-              }
-            ]
+            "pages": [ { "title": "Page Missing in Sidebar", "path": "help-center/troubleshooting/install-error" } ]
           },
           {
             "group": "Guides",
             "icon": "book-open",
             "expandable": false,
-            "pages": [
-              {
-                "title": "Create Your First Page",
-                "path": "help-center/guides/setup-project"
-              }
-            ]
+            "pages": [ { "title": "Create Your First Page", "path": "help-center/guides/setup-project" } ]
           }
         ]
       },
       {
         "tab": "Changelog",
         "icon": "clock",
-        "pages": [
-          {
-            "title": "Changelog",
-            "path": "changelog",
-            "icon": "history"
-          }
-        ]
+        "pages": [ { "title": "Changelog", "path": "changelog", "icon": "history" } ]
       }
     ]
   },
