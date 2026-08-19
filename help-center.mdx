@@ -1,33 +1,56 @@
 ---
-title: Help Center (Sample)
+title: Help Center
+description: Where to look first when something in Cashkr is not behaving, and how to get help from the right team.
 ---
 
-<Callout kind="alert">
-This Help Center is sample content. Replace the cards and contact details with your real support paths.
+This Help Center is for the **internal tech and ops teams**. It answers "why is this happening" questions about live Cashkr behaviour, and points you at the canonical page when the answer is longer than a paragraph.
+
+<Callout kind="tip">
+Before opening a ticket, search this site. Most "bugs" reported against Cashkr turn out to be documented business rules — tier gating, credit limits, or the reschedule window.
 </Callout>
 
+## Start here
+
 <Columns cols={2}>
-  <Card title="FAQs" icon="help-circle" href="/help-center/faq/getting-started" horizontal>
-    Starter answers you can rewrite.
+  <Card title="Common questions" icon="help-circle" href="/help-center/faq/common-questions" horizontal>
+    The questions that come up every week, with the actual rule behind each one.
   </Card>
-  <Card title="Troubleshooting" icon="alert-triangle" href="/help-center/troubleshooting/install-error" horizontal>
-    Common issues and fixes.
+  <Card title="Orders & leads not behaving" icon="clipboard-list" href="/help-center/troubleshooting/order-and-lead-issues" horizontal>
+    Order missing from a vendor's queue, stuck status, reschedule unavailable.
   </Card>
-  <Card title="Guides" icon="book-open" href="/help-center/guides/setup-project" horizontal>
-    How-to guides for setup and onboarding.
+  <Card title="Pricing & coupon issues" icon="calculator" href="/help-center/troubleshooting/pricing-and-coupon-issues" horizontal>
+    Price mismatches between surfaces, coupons rejected, unexpected deductions.
+  </Card>
+  <Card title="Reporting a bug" icon="bug" href="/help-center/guides/reporting-a-bug" horizontal>
+    What to include so the issue is actionable on first read.
+  </Card>
+</Columns>
+
+## Contributing
+
+<Columns cols={2}>
+  <Card title="Editing these docs" icon="pencil" href="/help-center/guides/contributing-to-docs" horizontal>
+    Conventions, components, and how changes get published.
   </Card>
   <Card title="Changelog" icon="clock" href="/changelog" horizontal>
-    Track updates after you go live.
+    What changed in this documentation and when.
   </Card>
 </Columns>
 
-## Contact Support
+## Escalation paths
 
-<Columns cols={2}>
-  <Card title="Email Support" icon="mail" href="mailto:support@yourcompany.com">
-    Replace with your support email.
-  </Card>
-  <Card title="Community" icon="users" href="https://community.yourcompany.com" target="_blank">
-    Link to your community space.
-  </Card>
-</Columns>
+Match the problem to the owning team rather than broadcasting to everyone.
+
+| Symptom | Owner | Where it is documented |
+| --- | --- | --- |
+| Wrong quote, deduction, or dead price | Pricing | [Price evaluation logic](/in-depth-device-price-evaluation-logic) |
+| Vendor cannot see or unlock an order | Vendor ops | [Tiers](/tiers-system), [Credits](/credit-system) |
+| Pincode not serviceable | Expansion | [Area](/area) |
+| Customer blocked or flagged | Trust & safety | [Customer blocking](/customer-account-blocking-feature) |
+| Payout or settlement discrepancy | Finance | [Credits](/credits) |
+| Notification not delivered | Platform | [Customer notifications](/customer-notification) |
+| Analytics event missing | Data | [Event implementation guide](/event-implementation-guide-for-tech-team-web-app) |
+
+<Callout kind="alert">
+Anything involving a **stolen device**, a suspected fraudulent order, or customer data exposure goes to trust and safety immediately — do not sit on it while you investigate.
+</Callout>

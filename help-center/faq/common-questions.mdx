@@ -1,0 +1,82 @@
+---
+title: Common Questions
+description: The Cashkr questions that come up every week, answered with the actual rule behind each one.
+---
+
+## Orders and leads
+
+<Expandable title="What is the difference between a lead and an order?" default-open="false">
+A **lead** is a logged-in customer who reached the final price screen and did not confirm. It captures the device, condition answers, pincode, and contact details, and lands in Admin Panel → Leads for follow-up.
+
+An **order** is a confirmed request with an Order ID. Only orders enter the vendor queue.
+
+If someone reports "the order disappeared," check first whether it was ever an order at all.
+</Expandable>
+
+<Expandable title="Why can a customer not reschedule their pickup?" default-open="false">
+Reschedule is available only while the order is in `Generated` status **and** no vendor has been assigned. Once a vendor is assigned, the customer-facing reschedule action disappears by design.
+
+After assignment, rescheduling has to go through the vendor or admin.
+</Expandable>
+
+<Expandable title="Why does the Call Agent button not appear?" default-open="false">
+It only renders after a vendor is assigned. Before assignment there is no agent to call. This is expected behaviour, not a missing button.
+</Expandable>
+
+<Expandable title="What is a reserved order?" default-open="false">
+An order auto-linked to a vendor under the same-customer rule, which the vendor cannot take yet because they lack the credits. It moves to `InProgress` as soon as credits are added.
+
+See [Reserved order feature](/reserved-order-feature).
+</Expandable>
+
+## Vendors
+
+<Expandable title="Why can a vendor not see an order in Available Orders?" default-open="false">
+Four independent filters have to pass at once: device type, service pincode, vendor type, and tier. If any one fails, the order simply will not appear.
+
+Tier is the one people forget — a Tier 3 vendor cannot see a Tier 1 device. Check that before assuming a bug.
+</Expandable>
+
+<Expandable title="A vendor says credits were deducted but they did not get the lead" default-open="false">
+Credits are deducted only on a **successful** unlock. If the unlock failed, no credits should have moved.
+
+If the balance genuinely dropped without an unlock, that is a real bug — capture the vendor ID, the timestamp, and the order ID, and escalate to vendor ops.
+</Expandable>
+
+<Expandable title="What blocks a vendor from unlocking even with enough credits?" default-open="false">
+The **Max Lead** cap. It is an admin-configured ceiling on how many active leads a vendor may hold at once. When it is hit, further unlocks are blocked until existing orders close.
+
+Order limits and vendor-type restrictions can also apply independently.
+</Expandable>
+
+## Money
+
+<Expandable title="Is the Cashkr Wallet where device payouts go?" default-open="false">
+No. The Wallet holds **referral earnings only**. Withdrawals are UPI-only, minimum ₹100, and manually approved.
+
+Device payouts are a completely separate flow — UPI, bank transfer, or cash, with cash as the default when nothing is selected. Confusing the two is the single most common support misdiagnosis.
+</Expandable>
+
+<Expandable title="How many credits does an unlock cost?" default-open="false">
+One credit is ₹10. Cost per unlock is derived from the device class; for laptops it derives from the price range instead, and vendor type can override the base requirement.
+
+See [Credit system](/credit-system) and [Vendor types](/vendor-types-1-5).
+</Expandable>
+
+<Expandable title="Why is a referral reward still pending?" default-open="false">
+Referee rewards approve instantly at checkout. **Referrer** rewards are created only after the referee's order completes, and then stay pending until admin approval. Pending is the normal state, not a stuck state.
+</Expandable>
+
+## Accounts
+
+<Expandable title="Can a customer change their phone number?" default-open="false">
+No. The phone number is the permanent primary key for a customer and cannot be changed after registration.
+</Expandable>
+
+<Expandable title="Can someone delete their account to reset referral eligibility?" default-open="false">
+No. Eligibility is enforced on the phone number, so deleting and re-registering does not reset it.
+</Expandable>
+
+<Expandable title="How many pickup addresses can a customer save?" default-open="false">
+Three. Note also that the pickup address is snapshotted into the order at confirmation — editing the address book later does not change existing orders.
+</Expandable>

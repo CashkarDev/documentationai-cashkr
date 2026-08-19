@@ -1,0 +1,63 @@
+---
+title: Reporting a Bug
+description: What to include in a Cashkr bug report so it is actionable on first read.
+---
+
+Most rejected bug reports fail for the same reason: not enough identifiers to reproduce. This page is the minimum bar.
+
+<Callout kind="tip">
+Before filing, check [Order & lead issues](/help-center/troubleshooting/order-and-lead-issues) and [Pricing & coupon issues](/help-center/troubleshooting/pricing-and-coupon-issues). A large share of reports are documented business rules working as designed.
+</Callout>
+
+## Always include
+
+<Steps>
+  <Step title="Which surface" icon="layout-grid">
+    Website, Customer App, Vendor App, Store App, or Admin Panel — plus app version and platform if mobile. The same backend behaves differently across surfaces and the fix location depends on this.
+  </Step>
+  <Step title="Identifiers" icon="hash">
+    Order ID, lead ID, customer phone, vendor ID, device variant — whichever apply. Without at least one, nobody can look at the actual record.
+  </Step>
+  <Step title="Timestamp with timezone" icon="clock">
+    Log correlation needs the time the action happened, not the time you filed the report.
+  </Step>
+  <Step title="Expected versus actual" icon="git-compare">
+    State both. "It is broken" is not reproducible. "Vendor with 40 credits could not unlock a Tier 2 phone in 400093" is.
+  </Step>
+  <Step title="Reproduction steps" icon="repeat">
+    Numbered, from a clean session. Note whether it reproduces every time or intermittently.
+  </Step>
+  <Step title="Evidence" icon="image">
+    Screenshot or screen recording. For pricing issues, capture the full condition answer set, not just the final number.
+  </Step>
+</Steps>
+
+## Never include
+
+<Callout kind="alert">
+Do not paste **access tokens, JWTs, passwords, or full payment details** into a ticket, chat, or document.
+
+If a token is genuinely needed to reproduce, say so and share it through whatever secret-sharing path your team uses — never in plain text in a ticket body. Tokens pasted into tickets outlive the ticket.
+</Callout>
+
+Also avoid pasting full customer records. An order ID is enough for anyone with access to pull the record themselves; a screenshot of personal data is not.
+
+## Severity
+
+| Level | Means | Examples |
+| --- | --- | --- |
+| **Critical** | Money moves wrongly, or data is exposed | Wrong payout amount, credits lost without unlock, customer data visible to the wrong account |
+| **High** | A core flow is blocked for many users | Sell flow broken in a city, vendors cannot unlock any orders, OTP not delivering |
+| **Medium** | A flow is degraded or wrong for some users | Price mismatch on one device family, coupon rejected incorrectly |
+| **Low** | Cosmetic or single-record | Label wrong, one order in an odd state |
+
+Anything involving suspected fraud, a stolen device, or customer data exposure goes straight to trust and safety at critical, regardless of how many users it affects.
+
+## Before you file
+
+A quick self-check that saves a round trip:
+
+- Does it reproduce on a second account or device?
+- Does it reproduce on staging as well as production?
+- Is there a documented rule that explains it? Search this site for the exact term first.
+- Has it been reported already? Duplicate reports fragment the investigation.

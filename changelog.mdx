@@ -1,22 +1,40 @@
 ---
-title: Sample Changelog
-description: Sample release notes you can replace with your real updates.
+title: Changelog
+description: Notable changes to the Cashkr internal documentation.
 ---
 
-## Sample updates
+Changes to this documentation site. Product release notes live with the owning team — this tracks the docs themselves.
 
-<Callout kind="alert">
-This changelog is example content. Replace every entry with your real releases.
+<Callout kind="info">
+History before August 2026 has not been backfilled. Entries below start from the documentation restructure.
 </Callout>
 
-<Update label="2026-01-26" description="Sample Update" tags={["sample"]}>
+<Update label="2026-08-19" description="Help Center and Changelog rebuilt" tags={["help-center", "content"]}>
 ## What changed
-- Cleaned up placeholder copy across the starter kit.
-- Added clearer "sample" messaging to avoid confusion.
+
+- Replaced the starter-kit Help Center with real internal content: common questions, order and lead troubleshooting, pricing and coupon troubleshooting.
+- Added a bug reporting guide covering required identifiers, severity levels, and what must never be pasted into a ticket.
+- Added a contributing guide covering branch workflow, components, and naming conventions.
+- Replaced sample changelog entries with real history.
+- Standardised on two working branches, `docs-updates` and `api-reference`, replacing the previous branch-per-change approach.
 </Update>
 
-<Update label="2025-12-10" description="Sample Update" tags={["sample"]}>
+<Update label="2026-08-19" description="API Reference rebuilt from the backend Postman export" tags={["api", "security"]}>
 ## What changed
-- Simplified the Quickstart steps.
-- Trimmed Help Center examples.
+
+- Imported 246 backend operations, split into nine domain modules instead of one flat list.
+- Fixed the navigation path that pointed at a non-existent `api-reference/openapi.yaml`, which is why the API Reference tab had always rendered empty.
+- Added a `bearerAuth` JWT security scheme. The source export had an empty `securitySchemes` block and 246 per-operation `security: []` overrides, so every endpoint would have rendered as requiring no authentication.
+- Replaced the placeholder Authentication page with a real API Overview documenting the OTP-to-JWT flow.
+
+## Removed from the import
+
+- 32 operations belonging to Google Maps Platform and the Push Lap Growth affiliate service. They inherited the Cashkr staging server URL and would have rendered as Cashkr endpoints.
+- Oversized response examples, one of which was 41 KB for a single endpoint.
+
+<Callout kind="alert">
+**Security note.** The source export contained 14 real JWTs as example values, along with employee names, work emails, a personal email address, customer phone numbers, and local filesystem paths from a developer machine. All were replaced with placeholders before import.
+
+The tokens had expired, but a future export generated a week earlier would have committed working vendor and admin session tokens to Git. Add a secret-scanning step before any Postman export is committed.
+</Callout>
 </Update>

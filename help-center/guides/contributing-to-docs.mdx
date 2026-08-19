@@ -1,0 +1,103 @@
+---
+title: Contributing to These Docs
+description: Conventions and components for writing Cashkr documentation, and how changes get published.
+---
+
+This documentation is built on Documentation.AI and backed by a Git repository. Pages are MDX — Markdown plus components.
+
+## How changes get published
+
+<Steps>
+  <Step title="Work on a branch" icon="git-branch">
+    Two long-lived branches are used: **`docs-updates`** for content and structure, and **`api-reference`** for API specs. Do not create a new branch per change.
+  </Step>
+  <Step title="Preview" icon="eye">
+    Switch the branch selector in the dashboard to see your changes rendered before they go live.
+  </Step>
+  <Step title="Merge to main" icon="git-merge">
+    Merging into the deployment branch publishes immediately. There is no separate deploy step.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+Editing `documentation.json` controls the sidebar. A page that exists as a file but is not listed there is invisible to readers — this is the most common reason a new page "does not show up".
+</Callout>
+
+## Writing conventions
+
+- **Write for the internal tech team.** Assume the reader needs to change or debug something, not be sold on it.
+- **State the rule, then the reason.** "Reschedule is only available in `Generated` with no vendor assigned" beats a paragraph of context.
+- **Link to the canonical page rather than restating it.** Duplicated business rules drift apart and then contradict each other.
+- **Use real values in examples.** Never real tokens, customer phone numbers, or employee emails.
+
+## Components
+
+<Tabs>
+  <Tab title="Callout" icon="info">
+    Use `info` for context, `tip` for shortcuts, `alert` for things that cause damage or confusion if missed.
+
+    ```mdx
+    <Callout kind="alert">
+      Credits are deducted only on a successful unlock.
+    </Callout>
+    ```
+  </Tab>
+  <Tab title="Steps" icon="list-ordered">
+    For genuinely ordered procedures. Do not use for unordered lists.
+
+    ```mdx
+    <Steps>
+      <Step title="Verify the OTP" icon="shield-check">
+        Send the session ID and the code.
+      </Step>
+    </Steps>
+    ```
+  </Tab>
+  <Tab title="Expandable" icon="chevron-down">
+    For reference material the reader scans rather than reads — FAQ answers, edge cases.
+
+    ```mdx
+    <Expandable title="Why is the reward pending?" default-open="false">
+      Referrer rewards wait on admin approval.
+    </Expandable>
+    ```
+  </Tab>
+  <Tab title="Cards" icon="square">
+    For navigation between sections, not for prose.
+
+    ```mdx
+    <Columns cols={2}>
+      <Card title="Credit system" icon="coins" href="/credit-system">
+        How unlock costs are derived.
+      </Card>
+    </Columns>
+    ```
+  </Tab>
+  <Tab title="Mermaid" icon="git-branch">
+    For flows and state machines. Preferred over describing a diagram in prose.
+
+    ````mdx
+    ```mermaid
+    stateDiagram-v2
+        Generated --> InProgress: vendor unlocks
+    ```
+    ````
+  </Tab>
+</Tabs>
+
+## Frontmatter
+
+Every page needs a title and description. The description is what search and the AI assistant use to decide whether the page answers a question, so make it specific.
+
+```mdx
+---
+title: Credit System
+description: How vendor credits are purchased, approved, and consumed when unlocking leads.
+---
+```
+
+## Naming and placement
+
+- File paths are lowercase and hyphenated, and the sidebar path mirrors the file path minus `.mdx`.
+- Group related pages in a folder rather than at repository root.
+- Avoid near-duplicate filenames. Pairs like `banner.mdx` and `banners.mdx` already exist in this repo and are a persistent source of confusion — do not add more.

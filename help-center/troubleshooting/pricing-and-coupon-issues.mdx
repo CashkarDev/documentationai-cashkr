@@ -1,0 +1,77 @@
+---
+title: Pricing & Coupon Issues
+description: Diagnosing price mismatches, unexpected deductions, and coupons that will not apply.
+---
+
+## Price differs between the website and the app
+
+It should not. The Website calculator, the Website sell flow, and the Customer App sell flow all call the same pricing engine over the same class data.
+
+<Steps>
+  <Step title="Confirm the exact same variant" icon="smartphone">
+    Storage, RAM, and connectivity all resolve to different variants with different base prices. Most reported mismatches are two different variants.
+  </Step>
+  <Step title="Compare the condition answers" icon="list-checks">
+    A single different answer changes the deduction set. Compare the full answer set, not just the headline price.
+  </Step>
+  <Step title="Check for a cached client" icon="refresh-cw">
+    A stale app session can hold an old quote. Reproduce fresh on both surfaces before escalating.
+  </Step>
+  <Step title="Then escalate" icon="triangle-alert">
+    If the variant and answers genuinely match and prices still differ, that is a real engine or data bug. Include both quotes, the variant ID, and the full condition set.
+  </Step>
+</Steps>
+
+## The deduction looks wrong
+
+<Expandable title="Percentage deductions are calculated on base price, not the running total" default-open="false">
+Every percentage deduction resolves against the **base price**. They do not compound.
+
+If someone has reimplemented pricing outside the engine — in a sheet, a dashboard, or a script — and applied percentages to a running total, their number will be wrong and the engine will be right.
+</Expandable>
+
+<Expandable title="Accessories deduct when missing, not when present" default-open="false">
+A1–A4 cover bill, box, charger, and other. The deduction applies for what the customer does **not** have. This reads backwards to people seeing it for the first time.
+</Expandable>
+
+<Expandable title="Multiple physical conditions each charge independently" default-open="false">
+P1–P4 can apply simultaneously and each is charged on its own. Two physical issues means two deductions.
+</Expandable>
+
+<Expandable title="On laptops, S1–S4 is screen size, not screen condition" default-open="false">
+On mobile, S1–S5 encodes screen condition. On laptops the same-looking codes encode screen **size**. Reading a laptop quote with the mobile mapping produces confusing results.
+</Expandable>
+
+<Expandable title="A dead device returns dead price and skips everything else" default-open="false">
+If the device does not power on, the engine returns `deadPrice` immediately and no other logic runs. Dead price also acts as the floor — if the computed price lands at or below zero, dead price is returned instead, or zero if none is configured.
+</Expandable>
+
+## Device is not appearing in search or the sell flow
+
+Usually the variant has no valid class attached. Without a class there are no deduction values, so the device cannot be priced and is withheld from the flow entirely.
+
+Check the variant in Admin Panel → Devices and confirm a class is assigned. See [Classes](/classes).
+
+## Coupon will not apply
+
+<Callout kind="alert">
+Cashkr coupons are not retail discounts. A coupon adds a **flat amount to the device value**. It is never a percentage and it never stacks.
+</Callout>
+
+Work through these:
+
+| Check | Why it fails |
+| --- | --- |
+| Platform targeting | Each coupon targets Mobile, Web, or Both. A valid app coupon can legitimately fail on the website. |
+| Another coupon already applied | Coupons do not stack. The second will be rejected. |
+| Validity window | Expired or not yet active. |
+| Order status | Coupons apply during the sell flow, not after confirmation. |
+| Customer eligibility | Some programs are restricted to new or referred customers. |
+
+See [Coupon application](/coupon-application) and [How the coupon system works](/how-coupon-system-works).
+
+## Referral reward did not arrive
+
+Referee rewards approve instantly at checkout. Referrer rewards are only created **after the referee's order completes**, then wait on admin approval.
+
+Also confirm the reward is being looked for in the right place: referral earnings sit in the Cashkr Wallet, which is separate from device payouts.
