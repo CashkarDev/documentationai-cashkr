@@ -1,0 +1,83 @@
+---
+title: Calling the Customer
+description: How vendors call customers from the Vendor App using their dedicated DID number, what the customer sees, and what to do when a call cannot be placed.
+---
+
+## Overview
+
+Vendors call customers from inside an in-progress order in the Vendor App. The call is placed through Cashkr's telephony provider using the vendor's **dedicated DID number**, so the customer sees that number rather than the vendor's personal phone.
+
+<Callout kind="info">
+The vendor does not need to know or dial the customer's number. The app initiates the call and the platform connects both parties.
+</Callout>
+
+## What the customer sees
+
+The customer's phone rings showing the vendor's dedicated DID number as the caller ID. They do not see the vendor's personal mobile number at any point.
+
+Because the same DID is used for every call that vendor makes, a customer who is called more than once during an order sees a consistent number.
+
+## Placing a call
+
+<Steps>
+  <Step title="Open the in-progress order" icon="play-circle">
+    Go to **In Progress** in the Vendor App and select the order you are working on.
+  </Step>
+  <Step title="Tap the call action" icon="phone">
+    Use the call option on the order. The app requests the call through the platform rather than opening your native dialler with the customer's number.
+  </Step>
+  <Step title="Speak to the customer" icon="message-square">
+    The call connects. The customer sees your dedicated DID number.
+  </Step>
+  <Step title="Submit the call disposition" icon="check-circle">
+    Record the outcome — Connected, Not Reachable, Reschedule Requested, or another configured option.
+
+    This is still mandatory. The app blocks further action on the lead until a disposition is submitted. See [Call Disposition](/call-disposition).
+  </Step>
+</Steps>
+
+## Rules to be aware of
+
+- **You cannot choose or change your DID number.** It is assigned by an admin, in the same way your vendor type and tier access are.
+- **Do not share your personal number with customers.** The DID exists so customers reach you through the platform. Giving out a personal number bypasses call traceability and breaks the privacy protection.
+- **The call action lives on the order.** There is no general dialler in the app — calls are always placed in the context of a specific in-progress order.
+- **Disposition is unchanged.** Nothing about the DID feature removes or alters the requirement to record what happened on the call.
+
+<Callout kind="alert">
+If a customer asks for a direct number to call you back, direct them to the number that called them. Do not give out your personal mobile.
+</Callout>
+
+## Troubleshooting
+
+<Expandable title="The call action is not working" default-open="false">
+Check the basics first: network connectivity, and whether the order is genuinely in **In Progress** status. The call action lives on in-progress orders.
+
+If the action is present but calls do not connect, report it with your vendor ID, the order ID, and the time of the attempt. See [Reporting a Bug](/help-center/guides/reporting-a-bug).
+</Expandable>
+
+<Expandable title="The customer says they saw an unknown number" default-open="false">
+That is expected. The number shown is your dedicated DID, not your personal mobile. Explain that it is a Cashkr number assigned to you.
+
+If the customer reports seeing a *personal* mobile number, that is worth escalating — it suggests the call did not route through the platform.
+</Expandable>
+
+<Expandable title="The customer called the number back" default-open="false">
+Inbound behaviour on the DID is **not currently documented**. If a customer tells you they called back and reached someone unexpected, or reached nobody, report it so the behaviour can be confirmed and documented.
+</Expandable>
+
+## Related pages
+
+<Columns cols={2}>
+  <Card title="Dedicated DID Number" href="/dedicated-did-number" icon="phone-call" cta="How it works">
+    The full explanation of DID assignment, routing, and the telephony integration behind this flow.
+  </Card>
+  <Card title="Call Disposition" href="/call-disposition" icon="check-circle" cta="Record the outcome">
+    What to submit after the call, and why the lead stays blocked until you do.
+  </Card>
+  <Card title="InProgress Orders" href="/inprogress-orders" icon="loader" cta="Open workflow">
+    The wider in-progress order workflow that calling sits inside.
+  </Card>
+  <Card title="Add Agents" href="/add-agents" icon="user-plus" cta="Manage agents">
+    Agents who handle pickups on your behalf. DID behaviour for agents is not yet confirmed.
+  </Card>
+</Columns>
