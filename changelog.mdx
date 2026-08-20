@@ -9,6 +9,32 @@ Changes to this documentation site. Product release notes live with the owning t
 History before August 2026 has not been backfilled. Entries below start from the documentation restructure.
 </Callout>
 
+<Update label="2026-08-19" description="Dedicated DID Number documented" tags={["vendor-app", "admin-panel", "telephony"]}>
+## What changed
+
+- Documented the **Dedicated DID Number** feature for the first time. Admins assign a dedicated DID number to each vendor, and outbound calls from the Vendor App present that number to the customer instead of the vendor's personal mobile.
+- Added three pages: the feature overview under Core Features, a Vendor App calling guide, and an Admin Panel management guide.
+- Cross-linked from Call Disposition and Vendors - B2C so the feature is reachable from where people already work.
+
+<Callout kind="alert">
+This feature was live and integrated with Acefone but had **zero documentation coverage** — no page mentioned DID, call masking, or number provisioning, and Acefone was absent from the tools inventory.
+
+Several behaviours remain unconfirmed and are listed as open questions on the feature page: inbound calls to the DID, the fallback when no DID is assigned, whether agents share the parent vendor's number, call recording and retention, and what happens to the number when a vendor goes on Hold. The fallback question matters most — a silent fallback to direct dialling would expose personal numbers without anyone noticing.
+</Callout>
+</Update>
+
+<Update label="2026-08-19" description="Navigation restructured, ~180 orphaned pages surfaced" tags={["navigation", "structure"]}>
+## What changed
+
+- Added **Playbooks** and **Team** tabs, making roughly 180 existing files reachable for the first time. Every calling script, SOP, and team page was written and committed but referenced nowhere in the navigation config, so none of it appeared in the sidebar.
+- Moved Core Features to second position in the Documentation tab, above the per-surface sections.
+- Added icons to every page across all tabs.
+
+<Callout kind="info">
+Pages in Playbooks and Team were grouped by filename rather than by reading each file. Titles are cleaned-up filenames and may not match each page's frontmatter. Worth a skim by the owning team.
+</Callout>
+</Update>
+
 <Update label="2026-08-19" description="Help Center and Changelog rebuilt" tags={["help-center", "content"]}>
 ## What changed
 

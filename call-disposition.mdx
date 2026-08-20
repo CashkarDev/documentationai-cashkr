@@ -9,6 +9,12 @@ Call disposition records what happened when the vendor contacted the customer ab
 
 It exists so operations and Admin teams can see, for each lead, whether the customer was connected, not reachable, or requested a reschedule or other outcome.
 
+<Callout kind="info">
+
+Calls to customers are placed through the vendor's **dedicated DID number**, so the customer sees a Cashkr-controlled caller ID rather than the vendor's personal mobile. That routing does not change anything on this page — disposition is still required once per lead. See [Dedicated DID Number](/dedicated-did-number).
+
+</Callout>
+
 ## Where call disposition appears
 
 Call disposition appears inside an **In Progress** lead or order in the Vendor App.
@@ -39,6 +45,8 @@ Your screen shows the lead or order details with call-related actions.
 
 - Use the call option from the in-progress lead to contact the customer.
 - Complete the call attempt.
+
+The call routes through the platform and presents your dedicated DID number to the customer. See [Calling the Customer](/vendor-app-calling).
 
 You should now be ready to record what happened on this call.
 
@@ -113,6 +121,7 @@ For development, ensure the same disposition payload is used for both the Vendor
 
 Call disposition is closely tied to other parts of the Vendor App and Admin flows:
 
+- **Calling the customer** — The call itself is placed through the vendor's dedicated DID number. Disposition records the outcome of that call.
 - **In Progress orders workflow** — Vendors open an in-progress lead, call the customer, and then update the call disposition to record what happened before continuing.
 - **Operations monitoring** — The operations team uses Admin activity logs to monitor orders, check if customers were reachable, and see if reschedules or cancellations were requested.
 - **Reporting and analytics** — Saved dispositions feed Admin Panel reports for reachability rates, reschedule trends, and cancellation patterns per vendor or region.
@@ -162,3 +171,21 @@ Use these notes to align Vendor App, API, and Admin Panel behavior during implem
 
 - **Alignment with In Progress orders docs**  
   When updating the In Progress orders flow, keep the call disposition behavior and wording consistent with this page so vendors see the same concepts across screens and documentation.
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card title="Calling the Customer" href="/vendor-app-calling" icon="phone" cta="See calling flow">
+
+How the call is placed from the Vendor App and what caller ID the customer sees.
+
+</Card>
+
+<Card title="Dedicated DID Number" href="/dedicated-did-number" icon="phone-call" cta="How it works">
+
+The DID assignment model, telephony routing, and open questions on inbound calls and recording.
+
+</Card>
+
+</Columns>
