@@ -1,6 +1,6 @@
 ---
 title: Add Agents
-description: Manage vendor pickup agents by adding their name, phone number, and Gmail, with validation, duplicate checks, and admin visibility for auditing.
+description: Manage vendor pickup agents by adding their name, phone number, and Gmail, with validation, duplicate checks, internal-vendor rules for rejected applicant numbers, and admin visibility.
 ---
 
 ## Overview
@@ -62,6 +62,78 @@ The Add Agents screen focuses on the vendor's agent list and the action to creat
 
 </Steps>
 
+## Rejected vendor applicant numbers (internal vendors only)
+
+<Callout kind="alert">
+
+**This capability is restricted to internal vendors.** A vendor not marked as internal cannot add the phone number of a rejected vendor applicant as an agent, and should continue to see the normal duplicate or conflict error.
+
+</Callout>
+
+When someone applies to become a vendor and the application is **rejected**, their phone number remains in the system attached to that closed application. Internal vendors can add such a number as one of their agents.
+
+This exists because a rejected applicant is often still a viable field operative — they wanted to work in device buyback but did not meet the criteria to run their own vendor account. Internal vendors can bring them on as agents working under the internal vendor's account instead.
+
+### Who can do this
+
+A vendor is internal when an admin has enabled the **Internal Vendor** toggle on their profile. That toggle is set either during approval on [New Vendors - B2C](/new-vendors---b2c) or later from the vendor detail panel on [Vendors - B2C](/b2c-vendors).
+
+<Columns cols={2}>
+
+<Card title="Internal vendor" icon="check-circle">
+
+Can add a rejected applicant's phone number as an agent. The number is accepted rather than blocked as a conflict.
+
+</Card>
+
+<Card title="External vendor" icon="x-circle">
+
+Cannot. Attempting to add a rejected applicant's number should fail with the standard conflict error.
+
+</Card>
+
+</Columns>
+
+### What this does not change
+
+- **Rejection still stands.** Adding the number as an agent does not reverse, reopen, or re-approve the rejected vendor application. The person does not gain vendor access.
+- **The agent works under the internal vendor.** They are an agent on that vendor's account, with the same scoping as any other agent — they see orders their vendor assigns to them.
+- **All other validation still applies.** Name, phone format, and email format rules are unchanged, as are duplicate checks within the same vendor's own agent list.
+
+### Open questions
+
+<Callout kind="alert">
+
+The following behaviours are **not yet confirmed**. They are listed so the gaps are visible rather than assumed. Someone with implementation knowledge should confirm and remove this section.
+
+</Callout>
+
+<Expandable title="What happens to the rejected vendor record itself?" default-open="false">
+Unknown. It is not documented whether the closed application is left untouched, marked as converted to an agent, or linked to the new agent record.
+
+This matters for auditing — without a link, there is no trail showing that an agent was previously a rejected applicant.
+</Expandable>
+
+<Expandable title="Can two internal vendors add the same rejected number?" default-open="false">
+Unknown. Duplicate checks are documented as scoped to a single vendor, so the same number could potentially become an agent under two different internal vendors at once. It is not documented whether this is blocked.
+</Expandable>
+
+<Expandable title="Does the email have to be reused too, or only the phone?" default-open="false">
+Unknown. The rejected applicant registered with both a phone number and an email. It is not documented whether the email is also freed for reuse, or whether a fresh email must be supplied for the agent record.
+</Expandable>
+
+<Expandable title="Can a rejected applicant who is now an agent re-apply as a vendor?" default-open="false">
+Unknown. It is not documented whether being an active agent blocks a fresh vendor application on the same number, or what happens to the agent record if a later application is approved.
+</Expandable>
+
+<Expandable title="Is the rejected applicant notified?" default-open="false">
+Unknown. It is not documented whether the person receives any notification when their number is added as an agent by an internal vendor, or whether any consent step exists.
+</Expandable>
+
+<Expandable title="Is there a time limit after rejection?" default-open="false">
+Unknown. It is not documented whether a number becomes available immediately on rejection, or only after a waiting period, or whether very old rejections remain eligible indefinitely.
+</Expandable>
+
 ## Field rules and validation
 
 Field-level validation ensures that only usable and consistent agent data is stored.
@@ -75,6 +147,8 @@ Agent's full name. Must not be empty and should contain readable characters (no 
 <ParamField body="phoneNumber" param-type="string" required="true" show-location="false">
 
 Agent's contact phone number. Required and must be in a valid phone format with the correct number of digits for the supported region. Reject clearly invalid patterns such as alphabetic characters or too few digits.
+
+If the number belongs to a rejected vendor applicant, it is accepted only when the logged-in vendor is an internal vendor.
 
 </ParamField>
 
@@ -96,6 +170,7 @@ The system applies consistent backend rules when a vendor adds an agent.
 
 - **Scoped to vendor**: The app creates each agent record under the currently logged-in vendor's ID so agents do not leak across vendors.
 - **Duplicate checks**: Before saving, the system checks for existing agents for the same vendor with the same phone number or email and rejects duplicates.
+- **Internal vendor check for rejected numbers**: When the submitted phone number matches a rejected vendor application, the backend allows the agent to be created only if the requesting vendor is flagged as internal. Enforce this server-side, not only in the app.
 - **Invalid entry prevention**: The backend revalidates phone and email formats and rejects invalid submissions even if the client-side validation is bypassed.
 - **Auditability**: Vendor–agent relationships are stored so admins can review which agents belong to which vendor and when they were created or updated.
 
@@ -110,6 +185,7 @@ Admins can see the list of agents linked to a vendor in the vendor details secti
 The Add Agents feature links vendor-side operations with admin oversight and pickup handling.
 
 - **Admin Panel**: In the Admin Panel, vendor details include a section that displays all agents associated with that vendor, using the same data entered in the Vendor App.
+- **New Vendors - B2C**: Rejected applications on that page are the source of the numbers internal vendors can reuse as agents.
 - **Pickups and orders**: When a vendor uses agents to manage pickups or handle orders, the stored agent information can be used to attribute actions or communication to specific agents, improving traceability and support.
 - **Reporting**: Because each agent is tied to a vendor ID, reporting and analytics can group activity by both vendor and agent where needed.
 
@@ -132,6 +208,10 @@ The Add Agents flow should clearly communicate both success and failure states.
   - Error when the email already exists for an agent under the same vendor.
   - Show a message such as: `An agent with this email already exists for this vendor.`
 
+- **Rejected applicant number, non-internal vendor**:
+  - Error when the number belongs to a rejected vendor application and the requesting vendor is not internal.
+  - Show a message that does not disclose why the number is in the system, for example: `This phone number cannot be added as an agent.`
+
 - **Invalid phone format**:
   - Error when the phone field contains non-numeric characters (beyond allowed symbols) or an incorrect length.
   - Show a targeted message and keep focus on the phone field.
@@ -144,6 +224,12 @@ The Add Agents flow should clearly communicate both success and failure states.
   - Error when the backend cannot create the agent record.
   - Show a non-technical message and allow retry, for example: `Something went wrong while saving the agent. Try again.`
 
+<Callout kind="alert">
+
+Do not tell an external vendor that a number was rejected as a vendor application. That would leak another person's application outcome to an unrelated party. Keep the error generic.
+
+</Callout>
+
 ## Developer and tester notes
 
 <Callout kind="tip">
@@ -155,6 +241,12 @@ Use these checks to validate that the Add Agents implementation behaves consiste
 - **Vendor scoping**:
   - Confirm that agents created while logged in as Vendor A do not appear for Vendor B.
   - Inspect stored data to ensure the vendor ID is correctly linked to each agent.
+
+- **Internal vendor gating**:
+  - As an **internal** vendor, add an agent using the phone number of a rejected vendor application. Confirm it succeeds.
+  - As an **external** vendor, attempt the same number. Confirm it is rejected, and that the error message does not reveal the application outcome.
+  - Bypass the client and call the API directly as an external vendor. Confirm the backend still blocks it.
+  - Flip a vendor from internal to external and confirm the behaviour changes accordingly.
 
 - **Duplicate prevention**:
   - Attempt to create two agents for the same vendor with the same phone number.
@@ -172,3 +264,21 @@ Use these checks to validate that the Add Agents implementation behaves consiste
 - **Resilience**:
   - Simulate network failures or server errors during save.
   - Confirm that the app handles failures gracefully, does not create duplicate agents on retry, and surfaces a clear message to the user.
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card title="New Vendors - B2C" href="/new-vendors---b2c" icon="user-plus" cta="See rejection flow">
+
+Where vendor applications are accepted or rejected, and where the Internal Vendor toggle is first set.
+
+</Card>
+
+<Card title="Vendors - B2C" href="/b2c-vendors" icon="users" cta="Open vendor list">
+
+The vendor detail panel where the Internal Vendor toggle lives and where a vendor's agents are visible to admins.
+
+</Card>
+
+</Columns>
