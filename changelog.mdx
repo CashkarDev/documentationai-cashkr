@@ -9,6 +9,22 @@ Changes to this documentation site. Product release notes live with the owning t
 History before August 2026 has not been backfilled. Entries below start from the documentation restructure.
 </Callout>
 
+<Update label="2026-08-19" description="Internal vendors can add rejected applicant numbers as agents" tags={["vendor-app", "admin-panel"]}>
+## What changed
+
+- Documented that **internal vendors** can add the phone number of a **rejected vendor applicant** as one of their agents. External vendors cannot.
+- Updated [Add Agents](/add-agents) with the eligibility rule, validation behaviour, error handling, and QA checks for the internal-vendor gate.
+- Updated [New Vendors - B2C](/new-vendors---b2c) so the rejection step states this downstream effect — rejecting an application no longer just closes it.
+
+<Callout kind="alert">
+Two things to watch. The internal-vendor check must be enforced **server-side**, not only in the app, or any vendor could add these numbers by calling the API directly.
+
+And the error shown to a non-internal vendor must stay generic. Telling an external vendor that a number "was rejected as a vendor application" leaks another person's application outcome to an unrelated party.
+
+Open questions on audit linkage, duplicate claims across internal vendors, email reuse, and applicant notification are listed on the Add Agents page.
+</Callout>
+</Update>
+
 <Update label="2026-08-19" description="Dedicated DID Number documented" tags={["vendor-app", "admin-panel", "telephony"]}>
 ## What changed
 

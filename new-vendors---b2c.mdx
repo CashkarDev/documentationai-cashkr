@@ -1,6 +1,6 @@
 ---
 title: New Vendors - B2C
-description: Review and approve new B2C vendor registration requests from the vendor app, including filters, detail panel, documents, and onboarding lifecycle.
+description: Review and approve new B2C vendor registration requests from the vendor app, including filters, detail panel, documents, rejection consequences, and onboarding lifecycle.
 ---
 
 ## Overview
@@ -167,10 +167,34 @@ Use the following sequence to review and decide on each new vendor application.
 - After rejection:
   - The application is closed and the vendor cannot access the vendor app.
   - Rejected applications cannot be reversed from this page; contact the system administrator if a rejection was made in error.
+  - The applicant's phone number becomes available for **internal vendors** to add as an agent. See below.
 
 </Step>
 
 </Steps>
+
+## What rejection means downstream
+
+Rejecting an application closes it permanently from this page, but the applicant's phone number does not simply disappear from the system.
+
+<Callout kind="info">
+
+**Internal vendors can add a rejected applicant's phone number as one of their agents.** External vendors cannot. This lets a rejected applicant still work in the field as an agent under an internal vendor's account, without holding a vendor account of their own.
+
+See [Add Agents](/add-agents) for the vendor-side flow and the rules that apply.
+
+</Callout>
+
+Two things worth being clear about when rejecting:
+
+- **Rejection is not reversed by this.** Someone added as an agent does not regain vendor access, and their application stays closed.
+- **Only internal vendors are eligible.** The Internal Vendor toggle — set here during approval, or later on [Vendors - B2C](/b2c-vendors) — is what gates the capability.
+
+<Callout kind="alert">
+
+Several behaviours around this are **not yet confirmed**, including whether the closed application is linked to the resulting agent record for audit purposes, whether two internal vendors can claim the same number, and whether the applicant is notified. The full list is on [Add Agents](/add-agents).
+
+</Callout>
 
 ## Connections to other modules
 
@@ -179,6 +203,7 @@ New Vendors - B2C works closely with other vendor and order modules:
 - **Vendor app** — All registration requests originate from the vendor onboarding section of the vendor app.
 - **B2C Vendors** — Accepted vendors move to the [B2C Vendors](/b2c-vendors) page and become active on the platform.
 - **Onboarding B2C** — Accepted vendors contribute to the Live Vendors count in the [Onboarding B2C](/onboarding-b2c) tab.
+- **Add Agents** — Rejected applications here are the source of phone numbers that internal vendors can add as agents.
 - **Orders - B2C** — Once live and configured with pincode and device type, accepted vendors begin receiving orders through the B2C orders modules.
 
 ## Important notes
@@ -189,6 +214,7 @@ New Vendors - B2C works closely with other vendor and order modules:
 - Once a vendor is accepted, they can immediately log in to the vendor app, so ensure their pincode and device type assignments are configured in the B2C Vendors page after approval.
 - Rejected applications cannot be reversed from the New Vendors - B2C page; contact the system administrator if a rejection was made in error.
 - Vendors with a Pending status do not appear in the B2C Vendors list and cannot receive any leads or orders until their application is approved.
+- A rejected applicant's phone number can be added as an agent by an internal vendor, which does not reopen or reverse the rejection.
 
 </Callout>
 
@@ -203,18 +229,18 @@ New Vendors - B2C works closely with other vendor and order modules:
   cta="Manage active vendors"
 >
 
-View and manage all live B2C vendors after their applications are accepted.
+View and manage all live B2C vendors after their applications are accepted, and set the Internal Vendor toggle.
 
 </Card>
 
 <Card
-  title="Onboarding B2C"
-  href="/onboarding-b2c"
-  icon="bar-chart"
-  cta="Track onboarding metrics"
+  title="Add Agents"
+  href="/add-agents"
+  icon="user-plus"
+  cta="See agent rules"
 >
 
-Monitor Live Vendors counts and onboarding performance for accepted vendors.
+How vendors add agents, and the internal-vendor-only rule for rejected applicant numbers.
 
 </Card>
 
