@@ -13,15 +13,17 @@ History before August 2026 has not been backfilled. Entries below start from the
 ## What changed
 
 - Documented that **internal vendors** can add the phone number of a **rejected vendor applicant** as one of their agents. External vendors cannot.
-- Updated [Add Agents](/add-agents) with the eligibility rule, validation behaviour, error handling, and QA checks for the internal-vendor gate.
+- **Only the phone number is freed for reuse.** The applicant's registered email stays tied to the closed application and must not be reused on the agent record.
+- The applicant is **not notified**, and there is no consent step. Knowledge of the capability is limited to internal vendors.
+- Updated [Add Agents](/add-agents) with the eligibility rule, per-field reuse behaviour, error handling, and QA checks for the internal-vendor gate.
 - Updated [New Vendors - B2C](/new-vendors---b2c) so the rejection step states this downstream effect — rejecting an application no longer just closes it.
 
 <Callout kind="alert">
 Two things to watch. The internal-vendor check must be enforced **server-side**, not only in the app, or any vendor could add these numbers by calling the API directly.
 
-And the error shown to a non-internal vendor must stay generic. Telling an external vendor that a number "was rejected as a vendor application" leaks another person's application outcome to an unrelated party.
+And the errors shown must stay generic. Naming a number or email as "rejected vendor application" would leak a third party's outcome and turn the agent form into a lookup tool for checking whether any given number applied and was refused.
 
-Open questions on audit linkage, duplicate claims across internal vendors, email reuse, and applicant notification are listed on the Add Agents page.
+Remaining open questions on audit linkage, duplicate claims across internal vendors, re-application, and time limits are listed on the Add Agents page.
 </Callout>
 </Update>
 

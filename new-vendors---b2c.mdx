@@ -167,7 +167,7 @@ Use the following sequence to review and decide on each new vendor application.
 - After rejection:
   - The application is closed and the vendor cannot access the vendor app.
   - Rejected applications cannot be reversed from this page; contact the system administrator if a rejection was made in error.
-  - The applicant's phone number becomes available for **internal vendors** to add as an agent. See below.
+  - The applicant's **phone number** becomes available for internal vendors to add as an agent. Their email does not. See below.
 
 </Step>
 
@@ -175,7 +175,7 @@ Use the following sequence to review and decide on each new vendor application.
 
 ## What rejection means downstream
 
-Rejecting an application closes it permanently from this page, but the applicant's phone number does not simply disappear from the system.
+Rejecting an application closes it permanently from this page, but the applicant's phone number does not disappear from the system.
 
 <Callout kind="info">
 
@@ -185,14 +185,16 @@ See [Add Agents](/add-agents) for the vendor-side flow and the rules that apply.
 
 </Callout>
 
-Two things worth being clear about when rejecting:
+Things to be clear about when rejecting:
 
+- **Only the phone number is freed.** The email address the applicant registered with stays tied to the closed application and cannot be reused on the agent record.
 - **Rejection is not reversed by this.** Someone added as an agent does not regain vendor access, and their application stays closed.
-- **Only internal vendors are eligible.** The Internal Vendor toggle — set here during approval, or later on [Vendors - B2C](/b2c-vendors) — is what gates the capability.
+- **Only internal vendors are eligible.** The Internal Vendor toggle — set here during approval, or later on [Vendors - B2C](/b2c-vendors) — gates the capability.
+- **The applicant is not notified.** There is no notification or consent step when their number is added as an agent. Knowledge of this capability is limited to internal vendors, so do not reference it when communicating a rejection.
 
 <Callout kind="alert">
 
-Several behaviours around this are **not yet confirmed**, including whether the closed application is linked to the resulting agent record for audit purposes, whether two internal vendors can claim the same number, and whether the applicant is notified. The full list is on [Add Agents](/add-agents).
+Some behaviours around this are **not yet confirmed**, including whether the closed application is linked to the resulting agent record for audit purposes, whether two internal vendors can claim the same number, whether the person can later re-apply as a vendor, and whether any time limit applies after rejection. The full list is on [Add Agents](/add-agents).
 
 </Callout>
 
@@ -214,7 +216,7 @@ New Vendors - B2C works closely with other vendor and order modules:
 - Once a vendor is accepted, they can immediately log in to the vendor app, so ensure their pincode and device type assignments are configured in the B2C Vendors page after approval.
 - Rejected applications cannot be reversed from the New Vendors - B2C page; contact the system administrator if a rejection was made in error.
 - Vendors with a Pending status do not appear in the B2C Vendors list and cannot receive any leads or orders until their application is approved.
-- A rejected applicant's phone number can be added as an agent by an internal vendor, which does not reopen or reverse the rejection.
+- A rejected applicant's phone number can be added as an agent by an internal vendor. This does not reopen or reverse the rejection, and the applicant is not notified.
 
 </Callout>
 
