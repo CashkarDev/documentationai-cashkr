@@ -45,6 +45,7 @@
               { "title": "Cashkr Referral System", "path": "cashkr-referral-system", "icon": "gift" },
               { "title": "Influencer Affiliate", "path": "influencer-affiliate", "icon": "megaphone" },
               { "title": "Amazon Gift Card Payment", "path": "amazon-gift-card-payment", "icon": "credit-card" },
+              { "title": "Email Verification", "path": "email-verification", "icon": "mail" },
               { "title": "Customer Order Flow Blocking", "path": "customer-order-flow-blocking-system", "icon": "ban" },
               { "title": "Customer Account Blocking", "path": "customer-account-blocking-feature", "icon": "user-x" }
             ]
