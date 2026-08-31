@@ -1,0 +1,148 @@
+---
+title: Email Verification
+description: How customers verify their email address with an OTP on the Cashkr Website and Customer App, and why an unverified email affects order communication.
+---
+
+## Overview
+
+Customers register with a phone number and provide an email address alongside it. Email verification confirms that address actually belongs to them, using a one-time code sent to the inbox.
+
+It is available on both the **Cashkr Website** and the **Customer App**, backed by the same endpoints.
+
+<Callout kind="alert">
+**Email OTP is not login.** The phone number remains the primary and permanent identifier for a customer account, and phone OTP remains the only way to log in. Verifying an email does not create a second login path and does not change the account identifier.
+
+These are two separate OTP flows that happen to look alike. Do not conflate them in code or in support conversations.
+</Callout>
+
+## Why it matters
+
+Email is not decorative in Cashkr — it is a delivery channel for things the customer needs.
+
+The **inspection code** is sent to the customer on WhatsApp *and* email at order confirmation. That code is what the customer reads to the vendor on-site to authorise inspection. Order notifications also reach customers by email.
+
+A mistyped or abandoned address means those messages silently go nowhere. The customer does not know they are missing anything, and the failure only surfaces at the doorstep when they cannot produce an inspection code.
+
+Verification turns a silent failure into one caught at the point the address is entered.
+
+## How it works
+
+<Steps>
+  <Step title="Customer requests a code" icon="mail">
+    From the profile area, the customer triggers verification for the email on their account. A one-time code is sent to that address.
+
+    Endpoint: `POST /otp/emailOtp`
+  </Step>
+  <Step title="Customer enters the code" icon="shield-check">
+    The customer types the code they received. The platform checks it against the one issued for that address.
+
+    Endpoint: `POST /otp/verifyEmailOtp`
+  </Step>
+  <Step title="Email is marked verified" icon="check-circle">
+    On success the address is recorded as verified on the customer profile. The same state is visible across the Website and the Customer App, since both read the same backend.
+  </Step>
+</Steps>
+
+## Where customers do this
+
+<Columns cols={2}>
+
+<Card title="Cashkr Website" icon="monitor" href="/my-profile" cta="See profile">
+
+From the profile section, where the email address is displayed and edited.
+
+</Card>
+
+<Card title="Customer App" icon="smartphone" href="/customer-app-my-profile" cta="See app profile">
+
+From the profile section of the app. Verification state carries across both surfaces.
+
+</Card>
+
+</Columns>
+
+<Callout kind="info">
+Because identity is shared, a customer who verifies on the Website is verified in the app as well. There is no need to repeat it per surface.
+</Callout>
+
+## What email verification does not change
+
+- **Login is unaffected.** Phone plus OTP remains the only login path.
+- **The phone number is still the primary key.** It cannot be changed after registration, verified email or not.
+- **Referral eligibility is still enforced on phone number.** Verifying an email does not create a new identity or reset anything.
+- **Payouts are unaffected.** Money still moves through UPI, bank transfer, or cash as configured on the account.
+
+## Open questions
+
+<Callout kind="alert">
+The following are **not yet confirmed** and are listed so the gaps are visible rather than assumed. Someone with implementation knowledge should confirm and remove this section.
+</Callout>
+
+<Expandable title="Is verification mandatory or optional?" default-open="false">
+Unknown. It is not documented whether a customer can complete registration, create a lead, or confirm an order with an unverified email, or whether any flow is blocked until the address is verified.
+
+This is the most consequential open question — it determines whether verification is a real control or a prompt customers can ignore.
+</Expandable>
+
+<Expandable title="What happens to existing customers?" default-open="false">
+Unknown. Customers who registered before this feature have unverified addresses. It is not documented whether they are prompted, backfilled, or simply left unverified.
+</Expandable>
+
+<Expandable title="Does changing the email reset verification?" default-open="false">
+Unknown. Email is editable from the profile. It is not documented whether editing it clears the verified flag and requires re-verification — if it does not, a verified badge could persist against an address that was never confirmed.
+</Expandable>
+
+<Expandable title="What are the expiry, attempt, and resend limits?" default-open="false">
+Unknown. Phone OTP has documented expiry and attempt-limiting rules. It is not documented whether email OTP shares those rules, has its own, or has a resend cooldown.
+
+Without a cooldown, the send endpoint can be used to send repeated mail to an arbitrary address.
+</Expandable>
+
+<Expandable title="Can the same email be verified on two accounts?" default-open="false">
+Unknown. Phone numbers are enforced as unique. It is not documented whether email has any uniqueness constraint, or whether one address can be verified against several customer accounts.
+</Expandable>
+
+<Expandable title="Does an unverified email still receive order mail?" default-open="false">
+Unknown. It is not documented whether inspection codes and order notifications are sent to unverified addresses, or suppressed until verification.
+
+Suppressing them would make verification load-bearing for order delivery, which changes how urgent the mandatory-versus-optional question is.
+</Expandable>
+
+## Backend endpoints
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /otp/emailOtp` | Send an email verification OTP to the customer's address. |
+| `POST /otp/verifyEmailOtp` | Verify the code the customer entered. |
+
+Both appear under **Email Verification** in the [Auth & Customer](/api-reference/overview) API module. Neither currently carries request or response schemas.
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card title="Login & Registration" href="/login-registration" icon="log-in" cta="See website login">
+
+Phone OTP login and the registration form that collects the email address.
+
+</Card>
+
+<Card title="Customer App Login" href="/customer-app-login-registration" icon="smartphone" cta="See app login">
+
+The app-side login flow, sharing the same OTP service and identity.
+
+</Card>
+
+<Card title="Emails of Cashkr" href="/emails-of-cashkr" icon="mail" cta="See mail inventory">
+
+What Cashkr sends by email, including order communication.
+
+</Card>
+
+<Card title="Customer Notifications" href="/customer-notification" icon="bell" cta="See channels">
+
+The four-channel notification matrix and what fires on each status change.
+
+</Card>
+
+</Columns>
