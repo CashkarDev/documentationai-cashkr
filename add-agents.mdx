@@ -66,7 +66,7 @@ The Add Agents screen focuses on the vendor's agent list and the action to creat
 
 <Callout kind="alert">
 
-**This capability is restricted to internal vendors.** A vendor not marked as internal cannot add the phone number of a rejected vendor applicant as an agent, and should continue to see the normal duplicate or conflict error.
+**This capability is restricted to internal vendors.** A vendor not marked as internal cannot add the phone number of a rejected vendor applicant as an agent, and should continue to see a generic conflict error.
 
 </Callout>
 
@@ -88,11 +88,37 @@ Can add a rejected applicant's phone number as an agent. The number is accepted 
 
 <Card title="External vendor" icon="x-circle">
 
-Cannot. Attempting to add a rejected applicant's number should fail with the standard conflict error.
+Cannot. Attempting to add a rejected applicant's number fails with a generic conflict error.
 
 </Card>
 
 </Columns>
+
+### Only the phone number is freed
+
+<Callout kind="alert">
+
+**The phone number is the only field released for reuse.** The email address the applicant registered with is **not** freed. Supply a different email for the agent record.
+
+</Callout>
+
+In practice, an internal vendor adding a rejected applicant fills the form like this:
+
+| Field | Behaviour |
+| --- | --- |
+| **Phone number** | The applicant's registered number can be reused. This is the point of the feature. |
+| **Email / Gmail** | Must be a different address. The applicant's registered email stays tied to the closed application and is rejected. |
+| **Agent name** | Entered normally, with the usual validation. |
+
+### Visibility
+
+<Callout kind="info">
+
+This capability is **known only to internal vendors**. The rejected applicant is **not notified** when their number is added as an agent, and there is no consent step in the flow.
+
+Do not surface the capability in external-vendor UI, help text, or error messages.
+
+</Callout>
 
 ### What this does not change
 
@@ -111,27 +137,19 @@ The following behaviours are **not yet confirmed**. They are listed so the gaps 
 <Expandable title="What happens to the rejected vendor record itself?" default-open="false">
 Unknown. It is not documented whether the closed application is left untouched, marked as converted to an agent, or linked to the new agent record.
 
-This matters for auditing — without a link, there is no trail showing that an agent was previously a rejected applicant.
+This matters for auditing — without a link, nobody reviewing an internal vendor's agent list can tell which agents were previously rejected applicants.
 </Expandable>
 
 <Expandable title="Can two internal vendors add the same rejected number?" default-open="false">
 Unknown. Duplicate checks are documented as scoped to a single vendor, so the same number could potentially become an agent under two different internal vendors at once. It is not documented whether this is blocked.
 </Expandable>
 
-<Expandable title="Does the email have to be reused too, or only the phone?" default-open="false">
-Unknown. The rejected applicant registered with both a phone number and an email. It is not documented whether the email is also freed for reuse, or whether a fresh email must be supplied for the agent record.
-</Expandable>
-
 <Expandable title="Can a rejected applicant who is now an agent re-apply as a vendor?" default-open="false">
 Unknown. It is not documented whether being an active agent blocks a fresh vendor application on the same number, or what happens to the agent record if a later application is approved.
 </Expandable>
 
-<Expandable title="Is the rejected applicant notified?" default-open="false">
-Unknown. It is not documented whether the person receives any notification when their number is added as an agent by an internal vendor, or whether any consent step exists.
-</Expandable>
-
 <Expandable title="Is there a time limit after rejection?" default-open="false">
-Unknown. It is not documented whether a number becomes available immediately on rejection, or only after a waiting period, or whether very old rejections remain eligible indefinitely.
+Unknown. It is not documented whether a number becomes available immediately on rejection, only after a waiting period, or whether very old rejections remain eligible indefinitely.
 </Expandable>
 
 ## Field rules and validation
@@ -156,6 +174,8 @@ If the number belongs to a rejected vendor applicant, it is accepted only when t
 
 Agent's Gmail or email address. Required and must follow a standard email format. Reject entries that do not contain a valid local part, `@` symbol, and domain.
 
+Unlike the phone number, an email tied to a rejected vendor application is **not** released for reuse. A different address is required, including for internal vendors.
+
 </ParamField>
 
 <Callout kind="info">
@@ -171,6 +191,7 @@ The system applies consistent backend rules when a vendor adds an agent.
 - **Scoped to vendor**: The app creates each agent record under the currently logged-in vendor's ID so agents do not leak across vendors.
 - **Duplicate checks**: Before saving, the system checks for existing agents for the same vendor with the same phone number or email and rejects duplicates.
 - **Internal vendor check for rejected numbers**: When the submitted phone number matches a rejected vendor application, the backend allows the agent to be created only if the requesting vendor is flagged as internal. Enforce this server-side, not only in the app.
+- **Phone only, never email**: The reuse exemption applies to the phone number field alone. An email belonging to a rejected application is still treated as taken, regardless of whether the requesting vendor is internal.
 - **Invalid entry prevention**: The backend revalidates phone and email formats and rejects invalid submissions even if the client-side validation is bypassed.
 - **Auditability**: Vendor–agent relationships are stored so admins can review which agents belong to which vendor and when they were created or updated.
 
@@ -212,6 +233,10 @@ The Add Agents flow should clearly communicate both success and failure states.
   - Error when the number belongs to a rejected vendor application and the requesting vendor is not internal.
   - Show a message that does not disclose why the number is in the system, for example: `This phone number cannot be added as an agent.`
 
+- **Rejected applicant email, any vendor**:
+  - Error when the email belongs to a rejected vendor application. Only the phone number is freed for reuse.
+  - Show a generic message such as: `This email cannot be used. Enter a different email address.`
+
 - **Invalid phone format**:
   - Error when the phone field contains non-numeric characters (beyond allowed symbols) or an incorrect length.
   - Show a targeted message and keep focus on the phone field.
@@ -226,7 +251,7 @@ The Add Agents flow should clearly communicate both success and failure states.
 
 <Callout kind="alert">
 
-Do not tell an external vendor that a number was rejected as a vendor application. That would leak another person's application outcome to an unrelated party. Keep the error generic.
+Never state that a number or email was rejected as a vendor application. That would leak another person's application outcome, and would turn the agent form into a lookup tool for checking whether any given number applied and was refused. Keep these errors generic.
 
 </Callout>
 
@@ -243,8 +268,9 @@ Use these checks to validate that the Add Agents implementation behaves consiste
   - Inspect stored data to ensure the vendor ID is correctly linked to each agent.
 
 - **Internal vendor gating**:
-  - As an **internal** vendor, add an agent using the phone number of a rejected vendor application. Confirm it succeeds.
-  - As an **external** vendor, attempt the same number. Confirm it is rejected, and that the error message does not reveal the application outcome.
+  - As an **internal** vendor, add an agent using the phone number of a rejected vendor application and a fresh email. Confirm it succeeds.
+  - As an **internal** vendor, attempt the same number with the applicant's **original email**. Confirm it fails — only the phone is freed.
+  - As an **external** vendor, attempt the rejected number. Confirm it is rejected, and that the error does not reveal the application outcome.
   - Bypass the client and call the API directly as an external vendor. Confirm the backend still blocks it.
   - Flip a vendor from internal to external and confirm the behaviour changes accordingly.
 
