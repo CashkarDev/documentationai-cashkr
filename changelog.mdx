@@ -9,6 +9,34 @@ Changes to this documentation site. Product release notes live with the owning t
 History before August 2026 has not been backfilled. Entries below start from the documentation restructure.
 </Callout>
 
+<Update label="2026-08-19" description="Vendor and cashboy attendance documented" tags={["vendor-app", "admin-panel", "attendance"]}>
+## What changed
+
+- Documented **vendor and cashboy attendance** for the first time. Logging into the Vendor App with a selfie records the punch-in. Vendors are punched out automatically by the 12:00 AM auto-logout; cashboys punch out manually with a selfie.
+- Added a Core Features page and a Vendor App page, and recorded that vendors can view their own cashboys' attendance while admins see everything under each vendor's detail panel.
+
+<Callout kind="alert">
+**Vendor session duration is not working time.** Every vendor day is closed by the midnight auto-logout regardless of when the vendor actually stopped, so vendor attendance answers "did they show up" and nothing more. Any report showing vendor hours worked or end-of-day time is measuring the auto-logout. Cashboy durations are meaningful because their punch-out is explicit.
+
+**Location tracking is unconfirmed.** The backend exposes `POST /attendance/heartbeat` ("Locationheartbeat") and `GET /attendance/live-map`, which together suggest position is reported on an interval and shown on a live map. This was not part of the feature description and is not documented anywhere. Interval, whether tracking is bounded by the shift, retention, who can view the map, and whether workers are told and consent all need answering.
+
+Selfie retention and viewer access are also undocumented, as is what `PATCH /attendance/{id}/override` does.
+</Callout>
+</Update>
+
+<Update label="2026-08-19" description="Model Requests documented" tags={["website", "admin-panel"]}>
+## What changed
+
+- Documented the **Request a model** feature. Customers submit a device type, brand, and model for devices Cashkr does not list; the request reaches the Admin Panel, an admin adds the device, and the customer is notified on their registered number.
+- Added a Core Features page and an Admin Panel page, and updated [Search Functionality](/search-functionality) with the no-results path that leads into the form.
+
+<Callout kind="alert">
+**Creating the device record does not fulfil the request.** Search returns only active products that have both pricing and an assigned class. A device created without them stays invisible, so a customer notified at that point returns, searches, and finds nothing. The admin guide makes verify-then-notify an explicit step.
+
+The decline path is also undefined. The form promises notification unconditionally, so a request quietly closed because the device is not worth adding leaves that promise unmet.
+</Callout>
+</Update>
+
 <Update label="2026-08-19" description="Internal vendors can add rejected applicant numbers as agents" tags={["vendor-app", "admin-panel"]}>
 ## What changed
 
@@ -19,11 +47,9 @@ History before August 2026 has not been backfilled. Entries below start from the
 - Updated [New Vendors - B2C](/new-vendors---b2c) so the rejection step states this downstream effect — rejecting an application no longer just closes it.
 
 <Callout kind="alert">
-Two things to watch. The internal-vendor check must be enforced **server-side**, not only in the app, or any vendor could add these numbers by calling the API directly.
+The internal-vendor check must be enforced **server-side**, not only in the app, or any vendor could add these numbers by calling the API directly.
 
-And the errors shown must stay generic. Naming a number or email as "rejected vendor application" would leak a third party's outcome and turn the agent form into a lookup tool for checking whether any given number applied and was refused.
-
-Remaining open questions on audit linkage, duplicate claims across internal vendors, re-application, and time limits are listed on the Add Agents page.
+Errors must stay generic. Naming a number or email as "rejected vendor application" would leak a third party's outcome and turn the agent form into a lookup tool for checking whether any given number applied and was refused.
 </Callout>
 </Update>
 
@@ -37,7 +63,7 @@ Remaining open questions on audit linkage, duplicate claims across internal vend
 <Callout kind="alert">
 This feature was live and integrated with Acefone but had **zero documentation coverage** — no page mentioned DID, call masking, or number provisioning, and Acefone was absent from the tools inventory.
 
-Several behaviours remain unconfirmed and are listed as open questions on the feature page: inbound calls to the DID, the fallback when no DID is assigned, whether agents share the parent vendor's number, call recording and retention, and what happens to the number when a vendor goes on Hold. The fallback question matters most — a silent fallback to direct dialling would expose personal numbers without anyone noticing.
+Open questions remain on inbound calls to the DID, the fallback when no DID is assigned, whether agents share the parent vendor's number, call recording and retention, and what happens to the number when a vendor goes on Hold. The fallback question matters most — a silent fallback to direct dialling would expose personal numbers without anyone noticing.
 </Callout>
 </Update>
 
