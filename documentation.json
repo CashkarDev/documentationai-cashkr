@@ -29,6 +29,7 @@
               { "title": "Device Pricing Fields Overview", "path": "device-pricing-fields-overview", "icon": "table" },
               { "title": "Classes", "path": "classes", "icon": "layers" },
               { "title": "Body Condition Selection Logic", "path": "body-condition-selection-logic", "icon": "scan-line" },
+              { "title": "Model Requests", "path": "model-requests", "icon": "clipboard-list" },
               { "title": "Order Status", "path": "order-status", "icon": "git-branch" },
               { "title": "Device Assessment Workflow", "path": "device-assessment-workflow", "icon": "clipboard-check" },
               { "title": "Inspection Timer", "path": "inspection-timer", "icon": "timer" },
@@ -37,6 +38,7 @@
               { "title": "Tiers System", "path": "tiers-system", "icon": "trending-up" },
               { "title": "Vendor Types (1 → 3)", "path": "vendor-types-1-5", "icon": "users" },
               { "title": "Vendor Tier Access Control", "path": "vendor-tier-access-control-systemphonemactablet", "icon": "shield-check" },
+              { "title": "Vendor & Cashboy Attendance", "path": "vendor-attendance", "icon": "clipboard-check" },
               { "title": "Dedicated DID Number", "path": "dedicated-did-number", "icon": "phone-call" },
               { "title": "Review Refund — Vendor Review-Credit", "path": "review-refund-vendor-review-credit-feature", "icon": "rotate-ccw" },
               { "title": "Merchandise Store", "path": "merchandise-store", "icon": "shopping-bag" },
@@ -99,6 +101,7 @@
             "icon": "truck",
             "pages": [
               { "title": "Vendor Registration & Login", "path": "vendor-registration-login", "icon": "log-in" },
+              { "title": "Attendance", "path": "vendor-app-attendance", "icon": "clipboard-check" },
               { "title": "Available Orders", "path": "available-orders", "icon": "inbox" },
               { "title": "Unlock Lead", "path": "unlock-lead", "icon": "key" },
               { "title": "Max Lead", "path": "max-lead", "icon": "gauge" },
@@ -156,7 +159,7 @@
               { "group": "Marketing", "icon": "megaphone", "pages": [ { "title": "Banner", "path": "banner", "icon": "image" }, { "title": "Coupon Dashboard", "path": "dashboard", "icon": "gauge" }, { "title": "Coupon", "path": "coupon", "icon": "ticket" }, { "title": "Notifications", "path": "notifications", "icon": "bell" } ] },
               { "group": "Referrals", "icon": "gift", "pages": [ { "title": "Programs", "path": "programs", "icon": "list" }, { "title": "Transactions", "path": "transactions", "icon": "repeat" }, { "title": "Payouts", "path": "payouts", "icon": "banknote" } ] },
               { "group": "Platform Reviews", "icon": "star", "pages": [ { "title": "Reviews", "path": "reviews", "icon": "message-square" }, { "title": "Widgets", "path": "widgets", "icon": "layout-grid" } ] },
-              { "group": "Devices", "icon": "smartphone", "pages": [ { "title": "Phone", "path": "phone", "icon": "smartphone" }, { "title": "Tablet", "path": "tablet", "icon": "tablet" }, { "title": "Laptop", "path": "laptop", "icon": "laptop" }, { "title": "Mac", "path": "mac", "icon": "monitor" }, { "title": "Camera", "path": "camera", "icon": "camera" }, { "title": "Headphone", "path": "headphone", "icon": "headphones" }, { "title": "Watch", "path": "watch", "icon": "watch" }, { "title": "Console", "path": "console", "icon": "gamepad-2" } ] },
+              { "group": "Devices", "icon": "smartphone", "pages": [ { "title": "Model Requests", "path": "admin-model-requests", "icon": "clipboard-list" }, { "title": "Phone", "path": "phone", "icon": "smartphone" }, { "title": "Tablet", "path": "tablet", "icon": "tablet" }, { "title": "Laptop", "path": "laptop", "icon": "laptop" }, { "title": "Mac", "path": "mac", "icon": "monitor" }, { "title": "Camera", "path": "camera", "icon": "camera" }, { "title": "Headphone", "path": "headphone", "icon": "headphones" }, { "title": "Watch", "path": "watch", "icon": "watch" }, { "title": "Console", "path": "console", "icon": "gamepad-2" } ] },
               { "group": "Fraud & Safety", "icon": "shield", "pages": [ { "title": "Stolen Devices", "path": "stolen-devices", "icon": "siren" } ] },
               { "group": "Users", "icon": "users", "pages": [ { "title": "Cashkr", "path": "cashkr", "icon": "user" } ] },
               { "group": "Settings", "icon": "settings", "pages": [ { "title": "Connections", "path": "connections", "icon": "plug" }, { "title": "Master Logs", "path": "master-logs", "icon": "scroll-text" }, { "title": "Admin Users", "path": "admin-users", "icon": "user-check" }, { "title": "Demo Users", "path": "demo-users", "icon": "user" }, { "title": "Terms & Conditions", "path": "terms-conditions", "icon": "scale" }, { "title": "Inspection Duration", "path": "inspection-duration", "icon": "timer" } ] }
