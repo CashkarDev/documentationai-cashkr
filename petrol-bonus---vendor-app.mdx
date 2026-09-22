@@ -1,0 +1,134 @@
+---
+title: Petrol Bonus
+description: Proposed trip bonus shown to pickup partners on long or low-value orders — what appears on the order card, how the amount is fixed at acceptance, and how it is paid out.
+---
+
+<Callout kind="warning">
+
+**Proposed — not built.** No part of the petrol bonus exists in the Vendor App today. Every rupee figure on this page is a placeholder. See [Petrol Surge](/petrol-surge---admin-panel) for the admin-side configuration and the open questions that gate the whole design.
+
+</Callout>
+
+## Overview
+
+A Cashkr pickup can be 15 km from the partner's base, and the agent spends 45 to 75 minutes on site running guided inspection, requote, payment and signature. On a low-value device that trip does not pay for itself, so it gets refused.
+
+The petrol bonus is an extra amount added to a qualifying order, shown to the partner **before** they accept it, and paid on completion. It is called a petrol bonus in the app deliberately — *petrol ka kharcha* is the language agents actually use. Internally the same thing is called trip compensation, because what it really covers is the whole trip, not just the fuel.
+
+<Callout kind="info">
+
+The word **surge** never appears in the Vendor App. It carries a price-gouging association in India and reads as something done to the partner rather than for them.
+
+</Callout>
+
+## What the partner sees
+
+The bonus appears as a line on the order card in Available Orders, alongside the device and quoted price:
+
+> iPhone 13 128GB · ₹18,400 · Andheri–Jogeshwari, 8–10 km · **+₹60 petrol bonus**
+
+| Element | Shown | Note |
+| --- | --- | --- |
+| Device and quoted price | Yes | Existing behaviour. |
+| Area label | Proposed | Coarse locality only, never a street address. |
+| Distance band | Proposed | A range such as 8–10 km, not an exact figure. |
+| Petrol bonus | Proposed | The amount the partner will receive on completion. |
+
+<Callout kind="warning">
+
+**This changes a standing rule.** Today, pre-acceptance shows device model and quoted price only — not location. The area label and distance band are a proposal, not current behaviour.
+
+The reasoning: an agent cannot price a trip without knowing roughly how far it is, so a bonus with no distance context reads as arbitrary. A band gives enough to decide without enabling cherry-picking by building or going direct to the customer. If the original reason for hiding location was disintermediation risk, a band does not reopen it — if it was something else, the rule should stand and the bonus carries the signal alone.
+
+</Callout>
+
+## When a bonus appears
+
+An order qualifies on any of six triggers. Full configuration is on the admin page; from the partner's side the practical cases are:
+
+- The pickup is far from their registered service area.
+- The device value is low relative to the effort of the trip.
+- It is an evening or weekend slot.
+- It is raining.
+- The order has been sitting unassigned, or has been refused by others.
+- The order is close to breaching its committed pickup window.
+
+## Step-by-step partner flow
+
+<Steps>
+  <Step title="See the bonus on the order card" icon="eye" title-type="p">
+
+  - The petrol bonus appears in Available Orders as its own line, before acceptance.
+  - The amount shown is what the partner will be paid, not an estimate.
+
+  </Step>
+
+  <Step title="Accept the order" icon="check-circle" title-type="p">
+
+  - On acceptance the amount is **locked server-side** and returned to the app.
+  - From this point the figure cannot change, whatever happens to demand, weather or the escalation state of the zone.
+
+  </Step>
+
+  <Step title="Complete the pickup" icon="package" title-type="p">
+
+  - The normal pickup flow is unchanged — inspection, requote if needed, payment, signature.
+  - The bonus is not affected by a requote of the device price.
+
+  </Step>
+
+  <Step title="Receive the bonus" icon="wallet" title-type="p">
+
+  - Settlement posts the locked amount, never a recalculated one.
+  - It appears as its own line — *Petrol bonus ₹60* — in the earnings dashboard and the payout breakdown, beside the order value.
+
+  </Step>
+</Steps>
+
+## Example scenario
+
+A partner registered to the Andheri service area opens the Vendor App on a rainy weekday evening.
+
+- A **Samsung Galaxy M14** order appears, quoted at ₹4,200, in a pincode roughly 9 km away round trip.
+- The order qualifies on three triggers: distance band, low order value, and weather.
+- The card shows **+₹75 petrol bonus**.
+- The partner accepts. The ₹75 is locked at that moment.
+- By the time the pickup completes two hours later the rain has stopped and the zone is no longer starved — the partner is still paid ₹75.
+
+## System logic
+
+**The amount is fixed at acceptance.** The bonus is calculated when the offer is shown and locked when the partner accepts. Settlement reads the locked amount. If a bonus could drift between accept and payout, partner trust in the number would be gone — and the trust is the entire point of showing it.
+
+**Refusing does not reliably increase the offer.** Escalation is capped, partners are scored on rejection rate, and the order in which escalated offers are broadcast is randomised. A partner who refuses in the hope of a higher figure is as likely to see the order go to someone else.
+
+**Cancelling after acceptance forfeits the bonus.** Accepting and then cancelling after seeing the address forfeits the amount, incurs a cancellation penalty, and counts toward the rejection score.
+
+**Distance is banded, not tracked.** The band comes from the partner's registered service-area centroid and the pickup pincode centroid — not from live GPS. The app does not need location permission for this, and the band cannot be inflated by spoofing a position.
+
+**A failure means no bonus, never a blocked order.** If bonus evaluation fails for any reason the order is offered with no bonus. It is never held back.
+
+## Connections
+
+- [Petrol Surge](/petrol-surge---admin-panel) — admin configuration, triggers, caps and budgets.
+- [Available Orders](/available-orders) — where the bonus line appears.
+- [Buy Credits](/buy-credits) — during the pilot the bonus may be delivered as a reduced lead-unlock cost rather than a wallet credit.
+- [Serviceable Area & Pincode Management](/serviceable-area-pincode-management) — the centroids distance banding is measured from.
+
+## Developer and tester notes
+
+**For developers**
+
+- The order feed carries a `pickupBonus` object per order; the accept endpoint performs the lock and returns the locked figure so the app can display a confirmed amount rather than re-deriving it.
+- Never recompute the bonus client-side. The app displays what the server returns.
+- Show the bonus as a distinct line in earnings and payout breakdowns. Folding it into a lump sum removes the entire trust benefit being paid for.
+- Hinglish strings that suit this audience: *"Door ka pickup — ₹60 petrol bonus"*, *"Petrol kharcha cover: ₹60"*, *"Barish bonus ₹20 add hua"*.
+
+**For testers**
+
+- Confirm the amount shown pre-acceptance is identical to the amount locked on acceptance and the amount settled on completion.
+- Accept an order, then let zone conditions change before completing it, and confirm the payout is unchanged.
+- Confirm a device-price requote does not alter the bonus.
+- Confirm an order with no qualifying trigger shows no bonus line at all, rather than ₹0.
+- Confirm that when bonus evaluation fails the order still appears and can still be accepted.
+- Confirm the bonus appears as its own line in both the earnings dashboard and the payout breakdown.
+- Confirm no screen in the Vendor App uses the word "surge".

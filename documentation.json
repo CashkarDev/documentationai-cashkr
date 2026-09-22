@@ -178,12 +178,6 @@
                 "title": "Customer Account Blocking",
                 "path": "customer-account-blocking-feature",
                 "icon": "user-x"
-              },
-              {
-                "title": "Petrol Surge System",
-                "path": "petrol-surge-system",
-                "icon": "fuel",
-                "badge": "Proposed"
               }
             ]
           },
@@ -403,6 +397,12 @@
                 "title": "Available Orders",
                 "path": "available-orders",
                 "icon": "inbox"
+              },
+              {
+                "title": "Petrol Bonus",
+                "path": "petrol-bonus---vendor-app",
+                "icon": "fuel",
+                "badge": "Proposed"
               },
               {
                 "title": "Unlock Lead",
@@ -728,6 +728,12 @@
                     "title": "Review Refund",
                     "path": "admin-review-refund",
                     "icon": "rotate-ccw"
+                  },
+                  {
+                    "title": "Petrol Surge",
+                    "path": "petrol-surge---admin-panel",
+                    "icon": "fuel",
+                    "badge": "Proposed"
                   }
                 ]
               },

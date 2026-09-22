@@ -1,0 +1,220 @@
+---
+title: Petrol Surge
+description: Proposed admin controls for the pickup partner trip bonus — rule configuration, trigger set, caps, city budgets, kill switch, dry-run simulation, abuse controls and rollout phases.
+---
+
+<Callout kind="warning">
+
+**Proposed — not built.** None of these controls exist in the Admin Panel today. Every rupee figure on this page is a placeholder scaled to market benchmarks rather than to Cashkr's own margins, and the premise the design rests on — that partners refuse orders because of travel cost — is still an assumption. See [Petrol Bonus](/petrol-bonus---vendor-app) for the partner-facing side.
+
+</Callout>
+
+## Overview
+
+Petrol Surge configures the trip bonus paid to pickup partners on orders that would otherwise be refused. It is an operator tool: Ops sets the rules, Finance sets the budgets, and both watch the spend.
+
+The bonus has two layers. A **trip allowance** is deterministic and predictable, derived from distance and device dwell time. A **surge** on top is reactive, driven by starvation, weather and time, and is always capped.
+
+| | |
+| --- | --- |
+| Internal name | Trip compensation |
+| Partner-facing name | Petrol bonus |
+| Status | Proposed — pending Phase 0 |
+| Configured per | City, optionally per zone |
+
+## Before anything is configured
+
+Three questions gate the design. None are engineering problems, and two change the numbers materially.
+
+| Question | Why it blocks | Owner |
+| --- | --- | --- |
+| Are per-transition order timestamps stored, or is the status column overwritten? | The whole system is fed by one event stream — offer shown → accepted, rejected or expired. If status is overwritten, that history does not exist and nothing here is buildable. | Engineering |
+| What is gross margin per completed order, by device band? | Every cap below is anchored to what food and quick-commerce platforms pay, not to what a Cashkr pickup earns. ₹250 is either conservative or ruinous depending on this number. | Finance |
+| Does a travel bonus enter the 5% gig-worker contribution base? | The Social Security (Central) Rules 2026, effective 8 May 2026, require aggregators to contribute a notified percentage of turnover or 5% of amounts paid to gig workers. This is the difference between surge costing X and 1.05X. | Yogesh |
+
+## Rule fields
+
+Rules are versioned. Changing a rule creates a new version rather than overwriting the old one, so any past bonus can be explained.
+
+| Field | Notes |
+| --- | --- |
+| City | Required. Rules are scoped per city. |
+| Zone | Optional. A zone rule overrides the city rule. |
+| Free kilometres | Round-trip distance covered before the allowance starts. Placeholder: 6 km. |
+| Rate per kilometre | Applied beyond the free radius. Placeholder: ₹6/km, which matches both the internal cost model and the ₹5–10/km the market pays. |
+| Dwell allowance | Per device category, covering time on site. Placeholder: phone ₹0, tablet ₹20, laptop ₹40. |
+| Step amount | Each escalation level adds this much. Placeholder: ₹20. |
+| Max escalation | How many steps the ladder may climb. Placeholder: 3. |
+| Absolute cap | Hard ceiling per order. Placeholder: ₹250. |
+| Percentage cap | Ceiling as a share of the customer quote. Placeholder: 12%. |
+| Trigger flags | Per-trigger enable switches and parameters. |
+| Effective from / to | Version validity window. |
+
+<Callout kind="warning">
+
+**The percentage cap is the one people forget.** Without it the system will one day pay ₹180 of bonus on a ₹900 device, and nobody finds out until month-end. Always set both caps.
+
+</Callout>
+
+## Triggers
+
+Six triggers, each independently switchable so one can be disabled without disabling the bonus.
+
+| Trigger | Fires on | Note |
+| --- | --- | --- |
+| Distance band | Round-trip km, partner service-area centroid → pickup pincode centroid | Deliberately **not live GPS**. Vendor location awareness is tier-1 only today, and centroids are far harder to spoof. |
+| Low order value | Bonus-to-quote ratio, not distance alone | The trigger that protects margin. A ₹1,200 feature phone 12 km out is never worth a trip to anyone. |
+| Time of day | Evening slots, weekends | — |
+| Weather | Rain | Mumbai monsoon. |
+| Zone starvation | Unassigned for T minutes, or rejected N times | Most powerful and most dangerous. It finds the clearing price without anyone guessing it, and it also teaches partners that refusing pays more. See abuse controls. |
+| Slot-breach risk | Order approaching its committed pickup window | — |
+
+## Admin workflow
+
+<Steps>
+  <Step title="Create a rule" icon="plus">
+    Configure the bonus for a city, or for a zone within it.
+
+    - Select the **City**, and a **Zone** if the rule is narrower than the city.
+    - Set **Free kilometres**, **Rate per kilometre** and the **Dwell allowance** per device category.
+    - Set **Step amount** and **Max escalation** for the reactive layer.
+    - Set both the **Absolute cap** and the **Percentage cap**.
+    - Enable the triggers that should apply, with their parameters.
+    - Set the **Effective from** date.
+  </Step>
+
+  <Step title="Dry-run before saving" icon="flask-conical">
+    Never ship a rule change untested.
+
+    - Point the candidate rule at the last 30 days of real orders.
+    - Review projected spend, orders affected and median bonus.
+    - Without this step every rule change is a live experiment on production money.
+  </Step>
+
+  <Step title="Set the city budget" icon="banknote">
+    Cap what the city can spend in a day.
+
+    - Set the daily cap per city.
+    - Consumption is checked atomically before an offer renders, so the cap cannot be overshot by concurrent offers.
+    - An alert fires when a city crosses 70% of its daily budget.
+  </Step>
+
+  <Step title="Monitor" icon="activity">
+    Watch the spend and the behaviour it produces.
+
+    - Review consumption against budget, and the bonus distribution at p95 rather than median.
+    - Watch the accept rate on **non-surged** orders as a counter-metric.
+  </Step>
+
+  <Step title="Kill it if needed" icon="power">
+    A global kill switch disables the bonus everywhere.
+
+    - Exercise it in production at least once before widening the rollout, so it is known to work when it is needed.
+    - With the bonus off, orders continue to be offered and assigned normally.
+  </Step>
+</Steps>
+
+## Caps and the exit condition
+
+If the bonus reaches its cap and the order is still unclaimed, the system must stop bidding and route the order elsewhere — batch it with another pickup in the same pincode, push the customer to a later slot with a small quote sweetener, or offer a drop-off at a partner store.
+
+Most surge systems have no exit condition and quietly become an uncapped subsidy. This one must be able to say *no bid at cap* and hand the order to a different fulfilment path.
+
+## Funding
+
+| Option | How it works | Trade-off |
+| --- | --- | --- |
+| **A — Direct wallet credit** | Post the bonus into the partner's ledger on completion. | Clean, visible to the agent, straight P&L cost. The per-partner ledger on the pooled HDFC account already supports it. Waits on the rupee-denominated wallet. |
+| **B — Lead-fee waiver** | Reduce or waive the credits charged for that order. | Costs foregone revenue rather than cash out, needs no payment integration, ships quickly. But where a partner is a shop employing riders, the money never reaches the person on the bike. |
+| **C — Hybrid** *(recommended)* | B for the pilot, A once the rupee wallet lands, with a rule that partner-businesses must surface the bonus to their agent. | Learns price elasticity now without waiting on the HDFC migration. |
+
+Option B's flaw grows over time: the partner growth path actively markets "start solo, then hire your own pickup agents", so an increasing share of trips is run by someone who is not the wallet holder.
+
+## Abuse controls
+
+| Vector | Control |
+| --- | --- |
+| Collusive rejection to pump the ladder | Cap escalation at three steps. Score partners on rejection rate. Show escalated offers to high-rejection partners later rather than first, and randomise the broadcast order so refusing does not reliably win the higher offer. |
+| Accept, then cancel after seeing the address | Forfeit the bonus, apply a cancellation penalty (10% of value, capped), and count it toward the rejection score. |
+| Address manipulation to inflate distance | Freeze the pincode at order creation. Any later change triggers a re-quote and resets escalation to zero. |
+| Self-dealing — a relative books a far pickup to farm the bonus | Dedupe on customer phone and payout beneficiary; alert on repeat customer↔partner pairs. There are ~15.8k saved beneficiary rows to check against. |
+| GPS spoofing | Largely neutralised by pincode centroids — a good reason to keep centroids even after live tracking ships. |
+| Runaway spend | Hard daily cap per city checked atomically before the offer renders, plus the global kill switch and the 70% alert. |
+
+## Rollout
+
+<Steps>
+  <Step title="Phase 0 — instrumentation only" icon="database">
+    Ship the append-only order assignment event table. No surge logic, nothing paid, nothing shown.
+
+    Two weeks of this shows whether travel cost is actually the problem, and sizes the partner-refusal slice of the gap between ~270 orders/day arriving and ~39/day completing. **This phase is worth shipping regardless of whether the bonus follows.**
+  </Step>
+
+  <Step title="Phase 1 — shadow mode" icon="eye">
+    Run the full calculation on every order for two weeks. Store the result, pay nothing, show nothing. This produces the real budget model before a rupee is spent.
+  </Step>
+
+  <Step title="Phase 2 — one zone, allowance only" icon="map-pin">
+    Trip allowance live in a single zone, no escalation ladder, behind a per-partner flag.
+  </Step>
+
+  <Step title="Phase 3 — add the ladder" icon="trending-up">
+    Escalation enabled in the same zone, with every abuse control active from day one.
+  </Step>
+
+  <Step title="Phase 4 — expand" icon="map">
+    Zone by zone, exercising the kill switch in production before each widening.
+  </Step>
+</Steps>
+
+## Monitoring
+
+<Callout kind="warning">
+
+**Hold out 10–20% of eligible orders, permanently.** Without an unsurged control group you cannot tell orders the bonus *caused* from orders that would have completed anyway, and you will pay for the latter indefinitely.
+
+</Callout>
+
+| Metric | Why |
+| --- | --- |
+| Completed orders/day against the ~39/day baseline | The headline, but meaningless without the holdout. |
+| Offer→accept rate and time to first accept | Whether the bonus is changing partner behaviour at all. |
+| **Cost per incremental completed order** | Spend ÷ completions above the holdout baseline. **This is the number that decides whether the feature lives.** |
+| Spend as a share of gross margin | The affordability ceiling. |
+| Bonus distribution at p95, not median | The median looks fine long after the tail stops being fine. |
+| Accept rate on *non-surged* orders | The counter-metric. If partners learn to wait for a bonus, the baseline rots while spend climbs. |
+
+## Connections
+
+- [Petrol Bonus](/petrol-bonus---vendor-app) — what the partner sees in the Vendor App.
+- [Credit System](/credit-system) — funding option B waives lead-unlock credits, so it touches credit accounting.
+- [Vendor Types (1 → 3)](/vendor-types-1-5) and [Vendor Tier Access Control](/vendor-tier-access-control-systemphonemactablet) — the bonus sits on top of existing extra-credit logic and must not double-charge or double-compensate.
+- [Order Status](/order-status) — the Phase 0 event stream depends on how status transitions are recorded.
+- [Serviceable Area & Pincode Management](/serviceable-area-pincode-management) — the centroids distance banding measures from.
+
+## Developer and tester notes
+
+**For developers**
+
+- Snapshot every calculation input on the quote record. A partner will dispute a ₹40 bonus six months later and the system must reconstruct exactly what it saw.
+- Lock at acceptance; settlement reads the locked amount and never recalculates.
+- Redis carries the hot path — zone escalation counters, budget consumption via atomic `INCRBY` behind a Lua script that checks the cap in the same round trip, and the rule cache. Postgres stays the source of truth.
+- Build it as a module inside the backend behind a clean interface, not a microservice on day one. Extracting it now adds a network hop to the order-assignment critical path for no benefit.
+- **Fail open.** Any evaluation error returns a zero bonus and lets the order flow. This going down must never stop a pickup being assigned.
+- Migrations must be additive — new tables only, no `ALTER` on hot tables, new columns nullable with defaults.
+
+<Callout kind="warning">
+
+**Stack hazard.** `CashkrBackend` and `new-2026-admin-panel` are separate Prisma projects pointed at the same database and `public` schema, sharing one `_prisma_migrations` table — this is what produced the WipeStatus failure. Create all surge tables and enums from one project and mark them introspected-only in the other, or this feature reproduces that exact bug.
+
+</Callout>
+
+**For testers**
+
+- Confirm a rule change creates a new version rather than mutating the old one, and that past quotes still resolve against the version they were calculated under.
+- Confirm both caps bind independently — a high-value order should still be limited by the absolute cap, and a low-value order by the percentage cap.
+- Drive a city to its daily budget with concurrent offers and confirm the cap is not overshot.
+- Confirm the 70% budget alert fires once, not repeatedly.
+- Confirm the kill switch stops all bonuses while orders continue to be offered and assigned.
+- Confirm dry-run simulation changes nothing in production.
+- Confirm a pincode change after order creation resets escalation to zero and triggers a re-quote.
