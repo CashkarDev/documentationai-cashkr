@@ -1,0 +1,115 @@
+---
+title: Careers
+description: Public careers pages on the Cashkr website — the open roles listing, individual job pages, and the application form where candidates submit a CV and cover letter.
+---
+
+## What the Careers page shows
+
+The Careers page presents Cashkr's employer story and lists every role currently open for applications. Roles are not hand-coded into the page — they are published from the Admin Panel and appear here automatically.
+
+The page has three parts:
+
+- **Hero section** – static employer branding, an introduction to working at Cashkr, and a **View Open Positions** link that scrolls to the listing.
+- **Current openings** – one entry per open role, showing the job title and location with an **Apply Now** link.
+- **Supporting sections** – a recruitment contact card, and the Perks & Benefits section grouped into Health & Wellness, Wealth & Equity, Flexibility & Freedom, Learning & Mastery, and Family & Milestones.
+
+<Callout kind="info">
+
+- Only roles with status **Open** appear in Current openings. Closed roles are removed from the list.
+- When no roles are open, the listing shows an empty state inviting the visitor to check back or contact the recruitment team.
+- Each role has its own URL at `/careers/<slug>`, where the slug is set when the role is created in the Admin Panel.
+
+</Callout>
+
+## Job detail page
+
+Selecting a role opens its own page at `/careers/<slug>`. The page header shows the job title over a hero image, with the workplace type, location and department beneath it. Content is then split across two tabs — **Job details** and **Application**.
+
+The Job details tab renders, in order:
+
+- **About Cashkr** – standard company boilerplate, identical on every role page.
+- **About the role** – the description written in the Admin Panel.
+- **Job Description** – the responsibilities list.
+- **Job requirements** – the requirements list.
+- **Skills** – the skills list, shown as a single comma-separated line.
+- **Benefits and perks** – the benefits list, under a short standard introduction.
+- **Apply** and **Share job** actions.
+
+## Applying for a role
+
+The application form lives on the Application tab, also reachable directly at `/careers/<slug>/apply`.
+
+<Steps>
+  <Step title="Open a role from the listing" icon="folder" title-type="p">
+
+  - The candidate selects **Apply Now** against a role in Current openings, or opens the role page and switches to the **Application** tab.
+
+  </Step>
+
+  <Step title="Enter contact details" icon="user" title-type="p">
+
+  - **Full name** – required.
+  - **Email address** – required, and validated for format.
+  - **Phone number** – required, with a country code selector offering India (+91), UAE (+971), USA (+1) and UK (+44).
+
+  </Step>
+
+  <Step title="Upload a CV or resume" icon="upload" title-type="p">
+
+  - Required. Accepts PDF, DOC, DOCX, JPEG and PNG up to 50MB.
+  - The file can be selected through the upload link or dragged onto the drop zone.
+  - An unsupported file type is rejected with a message naming the accepted formats.
+
+  </Step>
+
+  <Step title="Upload a cover letter" icon="file-text" title-type="p">
+
+  - Optional, with the same accepted formats and size limit as the CV.
+  - Stored separately from the CV, so recruiters can download either one independently.
+
+  </Step>
+
+  <Step title="Submit the application" icon="check-circle" title-type="p">
+
+  - The candidate selects **Submit Application**.
+  - On success the form is replaced by an **Application received** confirmation naming the role.
+  - The application appears immediately in the Admin Panel under **Marketing → Careers → Applications**.
+
+  </Step>
+</Steps>
+
+## System logic
+
+**Role visibility.** The listing is driven by role status. Opening or closing a role in the Admin Panel adds it to or removes it from Current openings without any content change on the website.
+
+**Closed roles.** A closed role is dropped from the listing but its job page stays reachable, so links already shared or indexed by search engines do not break. The page shows *This role is no longer accepting applications* in place of the apply action, and `/careers/<slug>/apply` redirects back to the job page.
+
+**Deleted or unknown roles.** A slug that does not exist returns the standard Cashkr 404 page.
+
+**Duplicate applications.** A candidate can apply to several different roles, but only once per role. A second application to the same role using the same email address is rejected.
+
+**Listing expiry.** Each role carries an expiry date set in the Admin Panel. The date is published as part of the job posting so search engines know when the listing lapses.
+
+## Connections
+
+- **Admin Panel → Marketing → Careers** – the single source for every role and every application shown here.
+- **Recruitment team** – the contact card links to the HR contact who handles direct enquiries.
+- **Analytics** – application form starts and submissions are tracked as conversion events.
+
+## Developer and tester notes
+
+**For developers**
+
+- Role content is stored as structured lists (responsibilities, requirements, skills, benefits) rather than free-form HTML, so the job page controls all formatting.
+- The slug is fixed once a role is published and forms the permanent URL for that posting.
+- The public site renders role data server-side; there is no client-side fetch of the careers API from the browser.
+
+**For testers**
+
+- Confirm a newly opened role appears in Current openings and a closed role disappears from it.
+- Confirm a closed role's job page still loads and shows the no-longer-accepting message, and that its `/apply` URL redirects to the job page.
+- Confirm an unknown slug returns the 404 page.
+- Test the apply form with a missing CV, an unsupported file type and a malformed email address, and confirm each is blocked with a message.
+- Submit an application with both a CV and a cover letter, then confirm both files download correctly from the Admin Panel.
+- Confirm a repeat application to the same role with the same email address is refused.
+- Check the listing, job page and apply form at mobile, tablet and desktop widths for layout and horizontal overflow.
