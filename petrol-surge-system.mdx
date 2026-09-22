@@ -1,0 +1,114 @@
+---
+title: Petrol Surge System
+description: Proposed trip bonus paid to pickup partners on long or low-value orders — why it exists, the cost model behind the rate, how the bonus is calculated, and what is verified versus assumed.
+---
+
+<Callout kind="warning">
+
+**Proposed — not built.** No part of this exists in the product today. Every rupee figure is a placeholder scaled to market benchmarks rather than to Cashkr's own margins, and the premise it rests on — that partners refuse orders because of travel cost — is still an assumption.
+
+Surface detail lives on [Petrol Bonus](/petrol-bonus---vendor-app) (Vendor App) and [Petrol Surge](/petrol-surge---admin-panel) (Admin Panel).
+
+</Callout>
+
+## Overview
+
+Quick-commerce platforms operate on 1.5–3 km radii, so their distance pay is a minor component. A Cashkr pickup can be 15 km out, and the agent spends 45 to 75 minutes on site running guided inspection, requote, payment and signature. On a low-value device that trip does not pay for itself, so it gets refused.
+
+The Petrol Surge System pays a bonus on qualifying orders so far and low-value pickups still get accepted. It is called a **petrol bonus** to partners and **trip compensation** internally — the names differ deliberately.
+
+## It is not petrol, it is time
+
+| | |
+| --- | --- |
+| Mumbai petrol, Sep 2026 | ₹111.21/litre |
+| Realistic two-wheeler economy | 45 km/l on a 110cc commuter |
+| Fuel cost | ~₹2.47/km |
+| 16 km round trip | ~₹40 of petrol |
+| Agent's real cost on that trip | ~₹120–170 |
+
+Petrol is roughly a quarter of what the trip actually costs the agent. The rest is time. The bonus is named after petrol because *petrol ka kharcha* is the language agents use and it reads as transparent rather than algorithmic — but what it compensates is the whole trip.
+
+## Cost model
+
+| Component | Mumbai, Sep 2026 | Basis | Confidence |
+| --- | --- | --- | --- |
+| Petrol | ₹111.21/l | Pump price, 22 Sep | Verified |
+| Two-wheeler fuel | ₹2.22–2.78/km | 40–50 km/l | Verified |
+| Diesel — car pickups, laptops | ₹97.83/l → ₹6.52/km | 15 km/l | Verified |
+| Wear, tyres, service | ~₹1.00/km | Estimate, unsourced | Inferred |
+| Agent time | ~₹2.50/km-equivalent | From ₹100/hr opportunity cost | Inferred |
+| **All-in, two-wheeler** | **~₹6/km** | Sum of the above | Inferred |
+
+₹6/km also matches the ₹5–10/km that food and quick-commerce platforms pay beyond a free radius. Convergent from two directions, which makes it a defensible starting rate even though half its components are estimates.
+
+<Callout kind="info">
+
+**A regulatory anchor worth knowing.** The Motor Vehicles Aggregator Guidelines 2025 cap surge at 2× base fare, set a floor of 50% of base, and require drivers to receive at least 80% of the fare. It does not bind Cashkr, but it is the Indian regulator's stated view of a defensible surge and a sensible self-imposed ceiling.
+
+</Callout>
+
+## How the bonus is built
+
+Two layers, deliberately separated so one is predictable and one is reactive.
+
+```js
+// Layer 1 — deterministic trip allowance (published, builds trust)
+trip_allowance = round_to_5(
+      max(0, round_trip_km - FREE_KM) * RATE_PER_KM
+    + DWELL_ALLOWANCE[device_category]
+)
+
+// Layer 2 — dynamic surge (reactive, capped, never shown as a ladder)
+surge = min(
+      SURGE_CAP,
+      STEP * escalation_level * zone_multiplier * weather_multiplier
+)
+
+pickup_bonus = min(
+      trip_allowance + surge,
+      CAP_ABS,                    // e.g. ₹250
+      CAP_PCT * quote_value       // e.g. 12% of the customer quote
+)
+```
+
+**Both caps matter.** Without the percentage cap the system will one day pay ₹180 of bonus on a ₹900 device, and nobody finds out until month-end.
+
+**Surge needs an exit.** If the bonus reaches its cap and the order is still unclaimed, the system must stop bidding and route elsewhere — batch it with another pickup in the pincode, push the customer to a later slot, or offer a store drop-off. Most surge systems have no exit condition and quietly become an uncapped subsidy.
+
+## Three answers gate the whole thing
+
+| Question | Why it blocks | Owner |
+| --- | --- | --- |
+| Are per-transition order timestamps stored, or is the status column overwritten? | The system is fed by one event stream — offer shown → accepted, rejected or expired. If status is overwritten, that history does not exist and nothing here is buildable. | Engineering |
+| What is gross margin per completed order, by device band? | Every cap is anchored to what other platforms pay, not to what a Cashkr pickup earns. | Finance |
+| Does a travel bonus enter the 5% gig-worker contribution base? | The Social Security (Central) Rules 2026, effective 8 May 2026, require aggregators to contribute a notified percentage of turnover or 5% of amounts paid to gig workers. | Yogesh |
+
+## Evidence
+
+| Claim | Source | Confidence |
+| --- | --- | --- |
+| Mumbai fuel prices | Pump price, 22 Sep 2026 | Verified |
+| Gig-platform pay structures | Published rates — publisher caveat applies | Verified |
+| MVAG 2025 surge cap, 80% driver share | Regulation | Verified |
+| Social Security (Central) Rules 2026 contribution basis | Regulation, effective 8 May 2026 | Verified |
+| ~270 orders/day in, ~39/day completing | Production analysis, 60 days to June 2026 | Verified |
+| Shared `_prisma_migrations` hazard | WipeStatus incident | Verified |
+| Vendor location awareness is tier-1 only | Production analysis | Verified |
+| Partner refusal on travel cost is material to the completion gap | Assumption — Phase 0 exists to test it | **Unverified** |
+| ₹1.00/km wear; ₹100/hr time value | Estimate | Inferred |
+| Every rupee figure in the calculation | Placeholders scaled to market benchmarks | Inferred |
+
+<Callout kind="warning">
+
+**The gap is not all refusals.** Roughly 270 orders/day arrive against about 39/day completing. A large share of that is customers dropping off at quote stage (`isCompleted=0`), not partners refusing trips. Sizing the partner-refusal slice is what Phase 0 exists to do, and it must happen before any money is spent.
+
+</Callout>
+
+## Connections
+
+- [Petrol Bonus](/petrol-bonus---vendor-app) — the partner-facing side in the Vendor App.
+- [Petrol Surge](/petrol-surge---admin-panel) — rule configuration, budgets, kill switch and rollout.
+- [Credit System](/credit-system) — the pilot funds the bonus by waiving lead-unlock credits.
+- [Vendor Types (1 → 3)](/vendor-types-1-5) — the bonus sits on top of existing extra-credit logic.
+- [Order Status](/order-status) — the Phase 0 event stream depends on how status transitions are recorded.

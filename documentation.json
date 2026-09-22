@@ -178,6 +178,17 @@
                 "title": "Customer Account Blocking",
                 "path": "customer-account-blocking-feature",
                 "icon": "user-x"
+              },
+              {
+                "title": "Petrol Surge System",
+                "path": "petrol-surge-system",
+                "icon": "fuel",
+                "badge": "Proposed"
+              },
+              {
+                "title": "Careers",
+                "path": "careers-feature",
+                "icon": "briefcase"
               }
             ]
           },
