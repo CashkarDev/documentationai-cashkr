@@ -1,0 +1,146 @@
+---
+title: Admin API Overview
+description: Base URL, the deny-by-default middleware auth model, RBAC, machine-to-machine schemes, and how the ck-admin API reference is organised.
+---
+
+<Callout kind="info">
+This is the **ck-admin** API — the Next.js admin panel at `admin.cashkr.com`. It is a different API from the [CashkrBackend reference](/api-reference/overview), which serves the Website, Customer App, Vendor App and Store App. Different host, different authentication, different audience.
+</Callout>
+
+## Base URL
+
+```
+https://admin.cashkr.com
+```
+
+Every path in this reference already includes its `/api/` prefix, so `/api/finance/cash-balance` resolves to `https://admin.cashkr.com/api/finance/cash-balance`.
+
+## Authentication
+
+<Callout kind="alert">
+**Read this before interpreting any endpoint's `security` block.**
+
+Since **2026-09-05**, `middleware.ts` is **deny-by-default** for `/api/*`. It requires an admin session on every route except `/api/auth/*` and the `PUBLIC_API` / `SELF_GATED_API` allowlists.
+
+An operation's `security` records only what the **handler itself** checks. `security: []` therefore means *the handler adds no check of its own and relies on middleware* — **not** that the route is open.
+</Callout>
+
+This inverted default is the single most important thing to understand here. Before the change, 420 of 586 operations were genuinely unauthenticated. After it, the edge enforces a session and `security: []` became a statement about defence in depth rather than exposure.
+
+### How a request is authorised
+
+<Steps>
+  <Step title="Middleware checks the session" icon="shield">
+    Every `/api/*` request must carry a valid NextAuth admin session cookie — `next-auth.session-token`, or `__Secure-next-auth.session-token` over HTTPS. Requests without one are rejected at the edge.
+  </Step>
+  <Step title="Middleware checks page permissions" icon="key">
+    With `RBAC_ENFORCE=true`, `lib/auth/route-permissions.ts` also checks page permissions. A route is allowed if the admin holds any page that calls it — **view** access for reads, **edit** access for writes.
+  </Step>
+  <Step title="The handler runs" icon="play">
+    Some handlers add their own check on top (these show `cookieAuth` in `security`). Most do not, and rely on the two steps above.
+  </Step>
+</Steps>
+
+### Roles
+
+Admins carry one of: `SUPER_ADMIN`, `MANAGER`, `TEAM_LEAD`, `EXECUTIVE`, `SALES_AGENT`, `VENDOR_ONBOARDING`, and related values. `isRootAdmin` is a separate flag that grants every page and defaults to `false` — treat it as break-glass.
+
+## Machine-to-machine access
+
+Routes called by schedulers, webhooks and other services do not carry an admin session. They are exempt from the session check and gated by shared secrets instead.
+
+| Scheme | Guards | Credential |
+| --- | --- | --- |
+| `cronBearer` | 10 cron jobs | `LINODE_CRON_SECRET` |
+| `pabblySecret` | 6 scheduler-triggered routes | `PABBLY_WEBHOOK_SECRET` |
+| `internalToken` | Inbound server-to-server | `INTERNAL_SERVICE_TOKEN` |
+| `exportsToken` | GST statement export | `EXPORTS_API_TOKEN` |
+| `webhookSecret` | CX Genie webhook | Webhook secret |
+| `adsWebhookSecret` | Ads sync webhook | `ADS_WEBHOOK_SECRET` |
+| `cronSecretBearer` | Sentiment analysis | `CRON_SECRET` |
+
+## Genuinely public routes
+
+Only four operations sit outside the session requirement by design:
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /api/auth/login` | Issue an admin session |
+| `GET` / `POST /api/auth/{nextauth}` | NextAuth catch-all |
+| `GET /api/public/reviews` | Public platform reviews |
+
+## Known gaps
+
+<Callout kind="alert">
+These were identified during the security review and are **not yet resolved**. They are listed so the next person inherits them rather than rediscovering them.
+</Callout>
+
+<Expandable title="Five self-gated customer routes verify nothing" default-open="false">
+`/api/customer-addresses` (GET, POST), `/api/customer-payments` (GET, POST) and `/api/completeMyLead` sit on the `SELF_GATED_API` allowlist, so middleware does not enforce a session. Their own check is presence-only — per the spec, the token *"must be PRESENT, but the value is never verified."*
+
+`Authorization: x` passes. These routes expose and write **customer addresses and payment details**. This is the highest-priority remaining item.
+</Expandable>
+
+<Expandable title="Two cron routes log instead of rejecting" default-open="false">
+Both of these declare a bearer secret but do not enforce it, and both are machine routes exempt from the session check — so the secret is the only gate, and it does not hold.
+
+- `GET /api/cron/ingest-data` — the spec's own note: *"SECURITY: the CRON_SECRET check is not enforced — an unauthenticated caller triggers the full sync and only produces a log line."*
+- `POST /api/services/analyze-sentiment` — *"the code comments say the 401 was disabled to simplify testing, so a bad or absent Authorization header only produces a server-side warning."*
+
+Fail closed in both. The second is a deliberate test-time change that was never reverted.
+
+`POST /api/integrations/ads-sync` previously shared this problem and is **now fixed** — when `ADS_WEBHOOK_SECRET` is unset the route rejects every call rather than falling through.
+</Expandable>
+
+<Expandable title="RBAC enforcement is behind a flag" default-open="false">
+Page-permission checking only runs when `RBAC_ENFORCE=true`. If that flag is off in production, authentication is enforced but **authorisation is not** — any logged-in admin can call any route regardless of role.
+
+Confirm the flag's production value.
+</Expandable>
+
+<Expandable title="Handler-level checks are still thin" default-open="false">
+Eight routes read `getServerSession(...)` purely to label an audit log and never reject — for example `POST /api/updatevendorpayment` and `PATCH /api/updatevendorstatus`. The middleware now covers them, so they are not exposed, but they offer no defence in depth if middleware is ever bypassed or misconfigured.
+
+`PATCH /api/updatevendorstatus` also forwards an `accessToken` to CashkrBackend, so it reaches beyond this service.
+</Expandable>
+
+<Expandable title="Response schemas are inferred, not authoritative" default-open="false">
+512 of the spec's 776 schemas were inferred from response examples and flagged `x-inferred-from-example`. Field types are best-effort.
+
+In this reference those inferred schemas are reduced to a stub so the pages stay readable; the **response example** beside each one carries the real shape. Do not generate client SDKs or request validators from them without checking against source.
+</Expandable>
+
+## Where to find an endpoint
+
+662 operations across 455 route files. The sidebar splits them into 42 groups; each group is one OpenAPI document, kept small enough to load quickly. Numbered groups (**Vendors 1**, **Vendors 2**, …) are slices of the same domain, not different APIs — if an endpoint is not in the first slice, check the next.
+
+| Sidebar group | Groups | Operations | Covers |
+| --- | ---: | ---: | --- |
+| Admin & Auth | 3 | 56 | Login, admin users, roles, page permissions, teams, demo users, activity logs |
+| Customers | 1 | 10 | Customer records, blocking, addresses, payment methods |
+| Orders & Leads | 3 | 51 | Order queues, lead lifecycle, dispositions, hot leads, escalations, inspection images |
+| Vendors | 4 | 65 | Vendor records, onboarding, tiers, pincodes, scoring, documents |
+| Vendor Operations | 3 | 49 | Attendance, agents, DID numbers, credits, payments, issue reports, holds |
+| Catalog & Pricing | 4 | 67 | Brands, models, variants, classes, component lookups, pricing, model requests |
+| Inventory | 1 | 19 | Stock, device purchases, device sales |
+| Finance | 4 | 54 | Cash accounts, expenses, purchase orders, suppliers, returns, GST exports, invoices |
+| B2B Buyback | 2 | 33 | Corporate deals, clients, leads, inspections, seller invoices |
+| Marketing & CRM | 4 | 73 | Campaigns, banners, coupons, referrals, influencers, push, reviews, CX |
+| Dashboards | 4 | 48 | Operational and executive dashboard aggregates |
+| Geography & Serviceability | 2 | 31 | Serviceable areas, zones, cities, pincodes |
+| Settings & Config | 3 | 42 | Platform settings, terms, careers, petrol surge |
+| Platform & Infrastructure | 4 | 64 | Linode cost monitoring, cron, integrations, telephony, email, uploads, internal endpoints |
+
+<Callout kind="tip">
+Search is faster than browsing: type the route path (`/api/vendor/attendance`) or the summary text into the docs search box and it will land on the operation regardless of which slice holds it.
+</Callout>
+
+## Conventions
+
+- **Source annotations.** Most operations carry a `_Source:_` line naming the route file, and an `_Auth:_` line recording what the handler itself checks.
+- **Proxy routes.** Many endpoints are thin proxies to CashkrBackend. Their descriptions name the upstream path; the upstream host is shown as `backend.internal` rather than its real address.
+- **Error swallowing.** Several proxy routes return HTTP 200 even on upstream failure, with the error in the body. Check the payload, not just the status code.
+
+<Callout kind="tip">
+When adding a route, wrap it rather than relying on middleware alone, and add it to the permission map in `lib/auth/route-permissions.ts`. A route with no page mapping behaves unpredictably under `RBAC_ENFORCE`.
+</Callout>
