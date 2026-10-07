@@ -193,6 +193,17 @@
             ]
           },
           {
+            "group": "Cashkr Events",
+            "icon": "calendar",
+            "pages": [
+              {
+                "icon": "calendar-heart",
+                "path": "cashkr-buyback-days",
+                "title": "Cashkr BuyBack Days"
+              }
+            ]
+          },
+          {
             "group": "Cashkr Website",
             "icon": "monitor",
             "pages": [
