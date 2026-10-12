@@ -1,13 +1,13 @@
 ---
 title: Phone
-description: Manage the complete phone catalog for Cashkr, including models, brands, classes, and pricing that power customer-facing device selection and buyback values.
+description: Manage the complete phone catalog for Cashkr, including models and variants, brands, condition classes, and warranty-based pricing that power customer-facing device selection and buyback values.
 ---
 
 ## Overview
 
-Use the Phone page in Admin Panel → Devices to manage every mobile phone model available for buyback on the Cashkr platform. Configure models, brands, condition-based classes, and warranty-based pricing in one place. Changes you make here update the customer app and website in real time, affecting model search, device selection, and displayed buyback prices.
+Use the Phone page (**Phone Management**, route `/phone`) in Admin Panel → Devices to manage every mobile phone model available for buyback on the Cashkr platform. Configure models and their storage/RAM variants, brands, condition-based classes, and age-based pricing in one place. Changes you make here update the customer app and website, affecting model search, device selection, and displayed buyback prices.
 
-The Phone Management page has four tabs: Models, Brands, Classes, and Pricing.
+The page has four tabs: **Models**, **Brands**, **Classes**, and **Pricing**. Tablet, Mac, Watch, Laptop, Console, Camera, and Headphone pages use the same layout, with the per-device differences described on their own pages.
 
 ## Tabs
 
@@ -15,311 +15,257 @@ The Phone Management page has four tabs: Models, Brands, Classes, and Pricing.
   <Tab title="Models">
     ### What you see
 
-    The Models tab displays the complete list of all phone models configured in the system.
+    The Models tab lists every phone model, 20 per page, with a footer such as "Showing 1 to 20 of N models" and **Previous** / **Next** pagination.
 
-    Each row in the models list shows:
-
-    - **Model** — Device name, storage variant, brand, and series along with the device image.
-    - **Code** — Unique system code assigned to the model (for example `PAPP100012`).
-    - **Price** — Base buyback price configured for the model.
-    - **Class** — The class assigned to the model (for example Class 15, Class 16) which determines the pricing logic.
-    - **Variants** — Number of storage or RAM variants available for the model.
-    - **Actions** — Edit or delete the model.
+    | Column | Description |
+    | --- | --- |
+    | Checkbox | Select one or more models for bulk actions. |
+    | Expand (chevron) | Expands the row to show each storage/RAM variant with its own code, price, class, and edit/delete icons. |
+    | Model | Device image, model name with the variant in brackets (for example `(256GB)`), and brand • series. |
+    | Code | Unique model code, for example `PAPP100012`. |
+    | Price | Base buyback price of the shown variant. |
+    | Class | Assigned pricing class, for example Class 16. |
+    | Variants | Number of variants under the model. |
+    | Actions | Row menu (⋯). |
 
     <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774766753199-adj9bxn49pe-phone-models-section.phone models section?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="825" alt="Phone models tab showing list of models with codes, prices, classes, variants, and actions" />
 
     ### Search & filters
 
-    Search and filters help you quickly locate specific phone models.
+    - **Search models…** — Type a model name and press Enter or click **Filter** to apply.
+    - **All Brands** dropdown — Limit the list to one brand (Apple, Asus, Google, Honor, Huawei, Infinix, iQOO, Motorola, Nokia, Nothing, OnePlus, Oppo, Poco, Realme, Samsung, Tecno, Vivo, Xiaomi, and others).
+    - **Refresh** icon — Reload the list.
 
-    - **Search by model name** to find a specific phone model.
-    - **Filter by brand** using the All brands dropdown to view models from a specific manufacturer.
-    - **Use the Filter button** for additional filtering options.
-    - **Use the refresh button** to reload the latest model data.
+    ### Row actions
+
+    The ⋯ menu on a model row offers:
+
+    | Action | What it does |
+    | --- | --- |
+    | Edit Model | Opens the Edit Model dialog (same tabs as Add Model). |
+    | Add Variant | Opens **Add Variant** for that model: Storage (GB), RAM (GB), Price (₹), Class, Variant Title, Variant Description, and a **Generate SEO** button. |
+    | View SEO | Opens **SEO Preview**: an SEO score, a Google search preview, a field analysis (page title 30–60 chars, description 120–160, H1 20–70, alt text 10–125), recommendations, and the current SEO values and URL. |
+    | Duplicate | Copies the model as a starting point for a new one. |
+    | Delete | Removes the model. |
+
+    Each expanded variant row has its own **edit** icon (opens Edit Model for that variant) and **delete** icon.
+
+    ### Bulk actions
+
+    Selecting one or more checkboxes shows a bar with "N model selected" and:
+
+    - **Update Class** — Assign a class to all selected models.
+    - **Regenerate SEO** — Rebuild SEO fields for the selected models.
+    - **Clear Selection**.
 
     ### Add
 
-    Use the Add Model button to create a new phone model entry.
-
     <Steps>
-      <Step title="Open the Add Model form">
-        Click **Add Model** in the top-right corner of the Models tab to open the create form.
+      <Step title="Open the Add Model form" icon="plus">
+        Click **Add Model** (top right). The **Add New Model** dialog ("Add a new mobile model") has four tabs: Basic Info, URL & Code, SEO, and Pricing.
       </Step>
 
-      <Step title="Fill basic info" icon="edit">
-        Under **Basic info**, enter:
-
-        - **Device type** — Set to Phone.
-        - **Brand** — Select from available brands.
-        - **Model name** — Full name of the phone model.
-        - **Upload device image** — Photo of the device for display on the app and website.
-        - **Specifications** — Technical specifications of the model.
+      <Step title="Basic Info" icon="edit">
+        - **Brand*** — Select from the phone brands.
+        - **Model Name*** — For example `iPhone 15 Pro`.
+        - **Series (Optional)** — For example Pro, Ultra, Plus.
+        - **Image** — Paste an image URL or click **Upload**.
+        - **Storage (GB)** and **RAM (GB)** — Leave empty if not applicable.
       </Step>
 
-      <Step title="Configure pricing and variants" icon="settings">
-        In **Pricing and variants**, define:
-
-        - **Price** — Base buyback price for the model.
-        - **Class** — Assign a class that determines condition-based pricing.
-        - **Storage options** — Available storage configurations (for example 128GB, 256GB).
-        - **RAM options** — Available RAM configurations.
-        - **Product variant naming** — How each variant is labelled in the system.
+      <Step title="URL & Code" icon="link">
+        - **Base URL** — Slug for the model page (for example `cashkr.com/sell-old-mobile-phones/<model-slug>`), with a **Generate** button.
+        - **Model Code** — With a **Generate** button. Auto-generated as `[Device prefix][Brand][Sequence 6]`; leave it unless you need a specific code.
       </Step>
 
-      <Step title="Enter SEO information" icon="bar-chart">
-        In **SEO information**, provide:
+      <Step title="SEO" icon="bar-chart">
+        Use **Auto-Generate SEO** or fill in manually:
 
-        - **SEO title** — Title tag for the model page on the website.
-        - **SEO description** — Meta description for search engine visibility.
-        - **Alt text** — Image alt text for accessibility and SEO.
-        - **H1 tag** — Primary heading for the model page.
-        - **Variant title and variant description** — SEO details for individual variants.
+        - **Page Title** (character counter, optimal 30–60)
+        - **Page Description** (counter, optimal 120–160)
+        - **H1 Heading**
+        - **Image Alt Text**
+        - **Variant Title** and **Variant Description**
       </Step>
 
-      <Step title="Save the model" icon="check-circle">
-        Review all details for accuracy, then save to create the new model. The model becomes available on the customer app and website after saving.
+      <Step title="Pricing" icon="settings">
+        - **Base Price (₹)***
+        - **Pricing Class*** — Classes are listed as "Class N - Brand Tier" (for example Class 16 - Apple E). After a class is chosen, **Class Details** show its Dead Price, Credit, Tier, and Type.
+        - **Bulk Add Variants** — "Add multiple configurations (storage/RAM) instantly". Each **Add Variant** row takes Storage (GB), RAM (GB), and Variant Price (₹).
+        - **SIM options** (shown in Edit Model) — Tick every SIM version the model is sold in: Physical SIM only (SIM1), SIM tray + eSIM (SIM2), eSIM only (no SIM tray) (SIM3). Ticking both a tray version and eSIM-only makes the customer flow ask whether their unit has a SIM tray; a "no" applies the class's eSIM deduction. A single tick is only recorded on the order. Applies to all variants of the model.
+      </Step>
+
+      <Step title="Save" icon="check-circle">
+        Click **Create Model** (or **Update Model** when editing). **Cancel** closes without saving.
       </Step>
     </Steps>
 
-    ### Edit
-
-    Editing lets you update any configuration for an existing model.
-
-    - Click the **Actions** menu on the desired model row.
-    - Select **Edit** to open the model details.
-    - Update any of the fields in basic info, pricing and variants, or SEO information.
-    - Save your changes to update the model on the customer app and website.
-
-    ### Delete
-
-    Deleting removes a model from the buyback catalog.
-
-    - Click the **Actions** menu on the model row.
-    - Select **Delete** to permanently remove the model from the system.
-    - Confirm the deletion when prompted.
-
     <Callout kind="alert">
-      Deleting a model is permanent and removes it from the customer app and website. Customers will no longer see or select this model for buyback.
+      Deleting a model removes it from the customer app and website. Customers will no longer see or select this model for buyback.
     </Callout>
   </Tab>
 
   <Tab title="Brands">
     ### What you see
 
-    The Brands tab displays all phone brands registered in the system such as Apple, Samsung, OnePlus, and others.
+    The Brands tab shows **Brand Management** with a breadcrumb (Dashboard / Phone) and a table of phone brands (Apple, Asus, Google, Honor, Huawei, Infinix, IQOO, Motorola, Nokia, Nothing, OnePlus, Oppo, Poco, Realme, Samsung, Tecno, Vivo, Xiaomi, and others).
 
-    Each brand row shows:
+    | Column | Description |
+    | --- | --- |
+    | Brand ID | Numeric ID. |
+    | Brand Name | Display name. |
+    | Device Type | Mobile for this page. |
+    | Brand Link | URL slug, for example `apple`. |
+    | Brand Image | Logo. |
+    | Title | SEO title, for example "Sell Old Apple Mobile Phone for best price at CashKr". |
 
-    - Brand name.
-    - Associated device type.
-    - Brand URL.
-    - Logo image.
-    - Available actions.
+    Columns are sortable.
 
     <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774766789735-9litb27i4c-phone-brand-section.phone brand section?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="829" alt="Phone brands tab listing each brand with device type, URL, logo, and actions" />
 
     ### Search & filters
 
-    Use search and filters to manage brand records efficiently.
+    - **Search mobile brands…** search box.
+    - **Filters** button opens a panel with **Reset** and **Apply Filters**.
 
-    - **Search by brand name** to find a specific brand.
-    - **Filter by device type** to view only phone brands.
+    ### Brand details
+
+    Clicking a brand row opens **Brand Details** with the logo, device type, Title, Description, Brand Link, created / last updated times, and **Visit Website**, **Edit**, and **Delete** buttons.
 
     ### Add
 
-    Use the Add Brand button to register a new phone brand.
-
     <Steps>
-      <Step title="Open the Add Brand form">
-        Click **Add Brand** in the Brands tab to open the create form.
+      <Step title="Open the form" icon="plus">
+        Click **Add New Product**. The **Add New Brand** dialog opens.
       </Step>
 
       <Step title="Enter brand details" icon="edit">
-        Fill in the brand information:
-
-        - **Brand name** — Official name of the brand.
-        - **Device type** — Set to Phone (Mobile).
-        - **Brand URL** — URL slug used for SEO and display links on the website.
-        - **Image upload** — Brand logo or identifying image.
-      </Step>
-
-      <Step title="Add SEO metadata" icon="bar-chart">
-        Provide **SEO metadata**, including:
-
-        - **Brand title** — SEO title for brand pages.
-        - **Brand description** — SEO description for search engine visibility.
+        - **Brand Name***
+        - **Device Type*** — Mobile, Tablet, Laptop, TV, Watch, Headphone, Console, Desktop, Camera, Mac, Drone, or AC.
+        - **Brand Link***
+        - **Title** — SEO or display title.
+        - **Description** — Brand description.
+        - **Brand Image** — Drag and drop or **Browse Files** (JPEG, PNG or GIF, max 5MB), or enter an image URL manually. A **Brand Details** preview shows the name, device type, and image URL.
       </Step>
 
       <Step title="Save the brand" icon="check-circle">
-        Review the brand details and save. The brand becomes available in dropdowns when creating or editing models.
+        Click **Create Brand**. The brand becomes available in the Brand dropdown when creating or editing models.
       </Step>
     </Steps>
 
-    ### Edit
-
-    Editing a brand updates what admins and customers see when selecting brands.
-
-    - Open the brand row and click **Edit**.
-    - Update any of the values such as name, URL, device type, logo, or SEO metadata.
-    - Save to apply changes immediately in the brand dropdown and on the customer app and website.
-
-    ### Delete
-
-    Deleting a brand removes it from the brand list and from model creation flows.
-
-    - Select the brand you want to remove.
-    - Click **Delete** in the actions.
-    - Confirm the deletion.
-
     <Callout kind="alert">
-      You cannot delete a brand that still has associated models. Remove or reassign all linked models first, then delete the brand. Deletion is permanent and affects brand options on the customer app and website.
+      Do not delete a brand that still has associated models. Remove or reassign linked models first. Deletion affects brand options on the customer app and website.
     </Callout>
   </Tab>
 
   <Tab title="Classes">
     ### What you see
 
-    The Classes tab displays all condition-based classes configured for phones. Classes categorise devices by quality and determine the pricing adjustments applied based on the device physical and functional condition.
+    **Device Class Management** ("Configure pricing models for different device conditions") shows a **Mobile Classes** table. Each class is a set of condition deductions applied to every model assigned to it.
 
-    Each class entry shows:
-
-    - Class name.
-    - Device type.
-    - Tier.
-    - Credits.
-    - Dead price.
-    - Condition parameters covered by the class.
+    Columns: **ID**, **Class Type** (for example Apple A, Samsung C, OnePlus B), **Credit**, **Dead Price**, **Tier**, then one column per condition code, and a row menu.
 
     <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774766818707-bqytnj7eg4m-phone-class-section.phone class section?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="830" alt="Phone classes tab listing tier, credits, dead price, and condition parameters for each class" />
 
+    ### Phone condition codes
+
+    | Group | Codes | Options |
+    | --- | --- | --- |
+    | Warranty | W1–W4 | 0–3 months, 3–6 months, 6–11 months, 11+ months |
+    | Battery | B1–B4 | Flawless, Good, Average, Below Average |
+    | Screen | S1–S5 | Flawless Screen, Scratches on Screen, Cracked Screen, Faulty Screen, Screen Not Usable |
+    | Physical | P1–P4 | Back Glass Broken, Physical Button, Display Changed, Bend Device |
+    | Technical | T1–T15 | Restart, Sensors, Front Camera, Back Camera, Microphone, Speaker, Face ID, Fingerprint, Bluetooth, Wifi, Network, Vibration, Charging, Battery/Service, Motherboard problems |
+    | Accessories | A1–A4 | Bill, Box, Charger, Other Accessories |
+    | SIM type | eSIM | eSIM only (no SIM tray) |
+
+    Each deduction field accepts a flat amount or a percentage (placeholder "e.g. 500 or 10%").
+
     ### Search & filters
 
-    Use search and filters to locate specific classes.
-
-    - **Search by class type** (for example Basic, Standard, Premium).
-    - **Filter by device type** to view only phone classes.
+    - **Search classes… (press Enter)** and a refresh button.
+    - Sortable Class Type, Credit, Dead Price, and Tier columns.
 
     ### Add
 
-    Use the Add Class button to define a new condition-based class.
-
     <Steps>
-      <Step title="Open the Add Class form">
-        Click **Add Class** in the Classes tab to start creating a new class.
+      <Step title="Open the Add New Class dialog" icon="plus">
+        Click **Add New Class**. The dialog ("Create a new pricing model for Mobile devices") has tabs: Basic Info, Warranty, Battery, Screen, Physical, Technical, Accessories, and SIM Type.
       </Step>
 
-      <Step title="Set basic class details" icon="edit">
-        In the class details section, enter:
+      <Step title="Basic Info" icon="edit">
+        - **Class Type*** — for example Premium, Standard, Basic.
+        - **Tier** — Tier level (1–3).
+        - **Credit** — Credit value.
+        - **Dead Price** — Price for a dead device.
 
-        - **Device type** — Set to Phone.
-        - **Class type** — Name of the class (for example Class 15, Class 16).
-        - **Tier** — Tier level of the class.
-        - **Credits** — Credit value associated with the class.
-        - **Dead price** — Minimum price for a device in dead or non-functional condition.
+        A summary lists all deduction codes. If every critical deduction is zero, the dialog warns: "All critical deductions are zero! … The device will always return the base price regardless of its condition."
       </Step>
 
-      <Step title="Configure pricing logic by condition" icon="settings">
-        Set pricing logic based on the following condition parameters:
-
-        - **Warranty condition** — Whether the device is under warranty.
-        - **Battery condition** — Battery health percentage.
-        - **Screen condition** — Scratches, cracks, or display issues.
-        - **Physical condition** — Overall body condition such as dents, scratches, or damage.
-        - **Technical condition** — Functional issues such as camera, speakers, or buttons.
-        - **Accessories** — Whether original accessories are included.
+      <Step title="Condition tabs" icon="settings">
+        Enter the deduction for each option on the Warranty, Battery, Screen, Physical, Technical, Accessories, and SIM Type tabs (codes as in the table above).
       </Step>
 
       <Step title="Save the class" icon="check-circle">
-        Confirm all fields and save the class. Devices assigned to this class will use its pricing logic on the customer app and website.
+        Click **Create Class**. Devices assigned to this class use its deductions on the customer app and website.
       </Step>
     </Steps>
 
-    ### Edit
+    ### Edit and delete
 
-    Editing a class adjusts how pricing is calculated for all devices assigned to it.
-
-    - Open the existing class entry.
-    - Modify any of the parameters, including tier, credits, dead price, or condition-based pricing rules.
-    - Save your changes to immediately update pricing behaviour on the customer app and website.
-
-    ### Delete
-
-    Delete a class only when it is no longer needed.
-
-    - Locate the class you want to remove.
-    - Use the **Delete** action to remove it.
-    - Reassign any active models using this class before deletion to avoid gaps in pricing logic.
+    Open the row menu (**Actions**) and choose **Edit** or **Delete**.
 
     <Callout kind="alert">
-      Deleting a class affects all models that rely on its pricing logic. Reassign classes for active models first to prevent incorrect or missing prices on the customer app and website.
+      Deleting or editing a class affects all models that rely on it. Reassign classes for active models first to prevent incorrect or missing prices.
     </Callout>
 
     ### Export
 
-    Export helps you review or report on all phone classes.
-
-    - Use the **Export** option to download all class data as a CSV file.
-    - Use the CSV for reporting, audits, or bulk review of class configuration.
+    **Export CSV** downloads the class table for review or audit.
   </Tab>
 
   <Tab title="Pricing">
     ### What you see
 
-    The Pricing tab shows a table of all phone models with their assigned class and editable price slabs based on warranty condition.
+    The Pricing tab is shared across device categories at the top and scoped to phones in the table.
 
-    Each row in the pricing table shows:
+    - **Pricing Overview** (collapsible, shows the total device count) — Cards for **Total Devices** (with a per-category breakdown), **Price Coverage** (how many devices need pricing), **Class Coverage**, and **Price Changes** (today and last 7 days), plus an **Attention Required** panel listing devices without a price.
+    - **BuyBack bonus** — An On/Off switch: "All categories. Flat ₹ per model on top of the device price. Stays on until switched off." The **Bulk bonus** button sets or removes a bonus for the selected models or for all matching models.
+    - **Filters**, an **All Brands** dropdown, and **Search by model name… (press Enter)**.
+    - Product count, **Export**, and **Import** buttons.
 
-    - Model name.
-    - Class ID.
-    - Price fields for each warranty bracket:
-      - 0 to 3 months warranty.
-      - 3 to 6 months warranty.
-      - 6 to 11 months warranty.
-      - Above 11 months warranty.
+    | Column | Description |
+    | --- | --- |
+    | Checkbox / expand | Select rows; expand to see variant rows (tagged **Variant**). |
+    | Model | Model name and brand. |
+    | Specs | Storage and RAM. |
+    | Class | Class dropdown for the row. |
+    | Base Price | 0–3 month price with a ✎ inline-edit icon. |
+    | Bonus | Model bonus in ₹, or **+ Add**. |
+    | 3-6 Months / 6-11 Months / 11+ Months | Calculated price for each age bracket with the % drop from base. |
+    | ⋯ | Row menu with **Price History**. |
 
-    When an admin updates the price for the 0 to 3 months bracket, prices for subsequent warranty brackets auto-update based on pre-set logic. Admins can also manually override any bracket price.
+    The bracket prices are derived from the base price and the class's warranty deductions. Changing the base price or class recalculates them.
 
-    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774766852070-4m8trqak6sj-phone-pricing-section.phone pricing section?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="828" alt="Phone pricing tab showing warranty-based price slabs for each model and class" />
+    <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774766852070-4m8trqak6sj-phone-pricing-section.phone pricing section?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="828" alt="Phone pricing tab showing age-based price slabs for each model and class" />
 
-    ### Search & filters
+    ### Advanced Filters
 
-    Use search and filters to focus on relevant pricing entries.
+    The **Filters** button opens Advanced Filters: **Storage (GB)**, **RAM (GB)**, **Class**, **Bonus**, and **Price Range (₹)** (min–max).
 
-    - **Search by model name** to find a specific phone pricing row.
-    - **Filter by device type** to view only phone pricing entries.
+    ### Bulk updates
 
-    ### Add
+    Selecting rows shows "N selected", **Select all N**, and:
 
-    Pricing entries are created when models and classes are configured. Use model and class setup to ensure each model appears in the Pricing tab with a class and price slabs.
+    - **Update Price** — **Bulk Price Update**: Update Type (Fixed Amount or Percentage), Operation (for example Increase by), and Amount, then **Apply**.
+    - **Update Class** — **Bulk Class Update**: choose a New Class. "Changing the class will recalculate all age-range prices for the selected devices."
 
-    ### Edit
+    ### Price History
 
-    Editing pricing updates how much customers see for each warranty bracket.
-
-    - Click **Edit** on the desired model row.
-    - Update the **class ID** if needed.
-    - Adjust the **warranty-based prices**:
-      - Change the 0 to 3 months price to auto-update subsequent brackets based on logic.
-      - Manually override any bracket price if required.
-    - Confirm to save. Changes immediately update device evaluation results and prices on the customer app and website.
-
-    ### Delete
-
-    Deleting a pricing entry removes buyback pricing for that model.
-
-    - Locate the pricing row for the model.
-    - Click **Delete** in the actions.
-    - Confirm removal of the pricing entry.
+    **Price History** shows the current price and a change log with old → new price, date and time, who changed it, the % change, and the source (for example manual).
 
     <Callout kind="alert">
-      When you delete a pricing entry, the model no longer has configured buyback prices. This directly affects the price shown to customers during device evaluation and on the model product page.
+      Pricing changes apply to new evaluations immediately. A model without a price does not show a buyback value to customers.
     </Callout>
-
-    ### Connections
-
-    Pricing configured in this tab directly affects:
-
-    - The price displayed to customers during device evaluation on the app and website.
-    - The buyback value shown on individual model product pages.
   </Tab>
 </Tabs>

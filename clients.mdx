@@ -5,6 +5,8 @@ description: Use the Clients page in the Buyback B2B module to manage corporate 
 
 ## Overview
 
+**Sidebar path:** Channels → Buyback B2B → Clients (`/buyback-b2b/clients`). The page header reads **B2B Clients — Manage corporate clients and their buyback agreements**.
+
 The Clients page in the Buyback B2B section is the primary workspace for the Sales Team to manage ongoing relationships with corporate accounts that have been converted from leads.
 
 Use this page to see all active corporate clients, maintain communication history, create new deals when clients want to sell devices, and request payments once deals are approved.
@@ -24,19 +26,38 @@ Four summary cards at the top of the page give a snapshot of the current corpora
 
 Each row in the clients table represents one corporate client and shows the key details needed for daily sales work:
 
-- **Company** — Name of the corporate company.
-- **Contact** — Primary contact person at the company.
-- **Relationship** — Current relationship health or status of the account.
+- **Company** — Name of the corporate company, with its GSTIN below.
+- **Contact** — Primary contact person and phone.
+- **Relationship** — Relationship status badge: Active, VIP, Dormant or At Risk.
 - **Assigned To** — Sales executive responsible for managing this client.
 - **Follow-up** — Scheduled date for the next client interaction.
 - **Deals** — Number of deals associated with this client.
-- **Action** — Available actions for the client record.
+- **Action** — **View** opens the client detail page.
+
+## Search & filters
+
+- **Search clients...** — search by company or contact.
+- **Status filter** — **All Statuses**, **Active**, **VIP**, **Dormant**, **At Risk**.
+
+## Client detail page
+
+Click **View** to open `/buyback-b2b/clients/<client-id>`:
+
+- **Header** — company name, relationship badge, city and **Total Buybacks**.
+- **Activity composer** — tabs **Call**, **Email**, **Meeting**, **Note**; type the details and click **Log**. Entries appear in the **Activity Timeline**.
+- **Buyback Deals** — counts of **Active**, **Completed** and **Total Value**, with tabs **Active**, **Completed**, **Cancelled** listing the client's deals. **+ New Deal** opens **Create Buyback Request** with **Subject** (e.g. `Q1 Office Renewal`), **Description** and **Notes**; click **Create Request** to create the deal.
+- **Contact** — contact name, phone, email and designation.
+- **Company** — GST number and address.
+- **CRM** — **Assigned To**, **Next Follow-up**, **Last Contact**. Click **Edit** to change **Assigned To**, **Next Follow-up** and **Relationship Status**, then **Save** (or **Cancel**).
+- **Documents** — upload KYC documents: **Authorization Letter** (Board Resolution or Letter of Authority on company letterhead), **GST / PAN Certificate**, **Bank Account Proof** (cancelled cheque or bank-attested letter).
 
 ## How clients are added
 
 Clients are created automatically when a lead is converted in the Leads page of the Buyback B2B module.
 
-The new client record preserves all lead history and notes so the full context of the relationship is available to the Sales Team. Do not create client records manually; every client must have a traceable lead origin.
+The new client record preserves all lead history and notes so the full context of the relationship is available to the Sales Team.
+
+A client record is also created automatically when you record a **Direct Buyback** from the Deals page, so one-off sellers appear in the Clients list. There is no manual "Add Client" button on this page.
 
 ## Sales workflow on the Clients page
 
@@ -52,7 +73,7 @@ Once a lead is converted and a client record exists, the Sales Team manages the 
   </Step>
 
   <Step title="Request payment after deal approval" icon="upload">
-    After the client approves the deal and the invoice is submitted to the finance team, use the Clients page to formally request payment. Once requested, the deal moves into the B2B section under Finance for the finance team to process payment.
+    After the client approves the final quote and submits their GST invoice, payment is requested from Finance (logged on the deal as **Sent to Finance**). The payment then appears in **Finance → B2B Buyback** for the finance team to process.
   </Step>
 
   <Step title="Manage and complete follow-ups" icon="check-circle">
@@ -66,9 +87,11 @@ Once a lead is converted and a client record exists, the Sales Team manages the 
 
 Use client status controls to keep the portfolio accurate and highlight accounts that need extra attention:
 
-- Mark a client as **VIP** when they are a high-volume or strategically important account.
-- Flag a client as **At Risk** when they show signs of disengagement, such as fewer responses, declining deal volume, or feedback that suggests dissatisfaction.
-- Reassign a client to a different sales executive when responsibilities change or accounts are redistributed.
+Use **CRM → Edit** on the client detail page to:
+
+- Set **Relationship Status** to **VIP** for high-volume or strategically important accounts.
+- Set it to **At Risk** when the client shows signs of disengagement, or **Dormant** when there has been no activity for a long time.
+- Change **Assigned To** when accounts are redistributed, and set the **Next Follow-up** date.
 
 ## Connections to other modules
 

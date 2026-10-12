@@ -1,125 +1,94 @@
 ---
 title: Device Sales
-description: View all sold devices and transaction details across customers and dealers
+description: View all sold devices grouped by sale transaction, track payments received and pending, and record payments against a sale
 ---
 
 ## Overview
 
-The **Device Sales** page in the **Finance** module shows every device sold from the [All Inventory](/inventory/all-inventory) module, including sale price, margin, GST on margin, and buyer details for both customers and dealers.
+**Sidebar path:** Finance → Device Sales (`/finance/sales`)
+
+The **Device Sales** page shows every device sold from the [All Inventory](/inventory/all-inventory) module, **grouped by sale transaction**. Each sale shows the buyer (customer or dealer), number of devices, payment method, totals, amount received, pending balance and margin. Expanding a sale shows the individual devices with cost, sale price, margin, GST and profit.
 
 <Callout kind="info">
-
-Use Device Sales to reconcile revenue, track per-device margins, and monitor GST on margin for compliance and finance reporting.
-
+Use Device Sales to reconcile revenue, track per-device margins and GST, and follow up on sales that are not yet fully paid.
 </Callout>
 
 ---
 
-## What it shows
+## What the screen shows
 
 ### Summary cards
 
-At the top of the page, four summary cards display real-time metrics for the currently applied filter or date range.
+The cards at the top reflect the current filters and date range.
 
-<ul>
-  <li>
-    <ParamField body="totalSales" param-type="currency" show-location="false">
-      **Total Sales** card showing the total INR value of all devices sold in the current view, based on their final sale prices.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="totalMargin" param-type="currency" show-location="false">
-      **Total Margin** card showing the total profit earned across all displayed sales, calculated as sale price minus cost for each device.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="gstOnMargin" param-type="currency" show-location="false">
-      **GST on Margin** card showing the GST amount applicable on the total margin for the filtered set of sales.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="itemsSold" param-type="integer" show-location="false">
-      **Items Sold** card showing the total number of devices sold in the current filtered view.
-    </ParamField>
-  </li>
-</ul>
+| Card | What it shows |
+| --- | --- |
+| **Total Sales** | Total value of all sales in the current view |
+| **Margin** | Total margin (sale price minus cost) across the sales |
+| **Received** | Total amount already collected from buyers |
+| **Pending** | Total amount still to be collected |
+| **Sales / Items** | Number of sale transactions / number of devices sold |
 
-### Sales table columns
+### Sale cards (grouped by transaction)
 
-Each row in the sales table represents one completed device sale, with the following columns.
+Each sale appears as a collapsible card showing:
 
-<ul>
-  <li>
-    <ParamField body="device" param-type="string" show-location="false">
-      **Device** column showing the name and model of the sold device.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="serial" param-type="string" show-location="false">
-      **Serial** column showing the unique serial number of the device.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="cost" param-type="currency" show-location="false">
-      **Cost** column showing the original cost price of the device as recorded in inventory.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="salePrice" param-type="currency" show-location="false">
-      **Sale Price** column showing the price at which the device was sold, highlighted in green.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="margin" param-type="currency" show-location="false">
-      **Margin** column showing the profit on the sale, calculated as sale price minus cost, highlighted in green.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="customer" param-type="string" show-location="false">
-      **Customer** column showing the name of the buyer, which may be a customer or a dealer.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="type" param-type="string" show-location="false">
-      **Type** column showing the buyer type, with values such as **Customer** or **Dealer**.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="payment" param-type="string" show-location="false">
-      **Payment** column showing the payment method used for the sale, such as cash.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="refNo" param-type="string" show-location="false">
-      **Ref No** column showing the payment or transaction reference number, when available.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="date" param-type="datetime" show-location="false">
-      **Date** column showing the date when the sale was completed.
-    </ParamField>
-  </li>
-</ul>
+- **Buyer name and phone**, with a **Customer** or **Dealer** badge
+- A **Pending** badge when the sale is not fully paid
+- **Sale date · device count · payment method · sale reference ID** (e.g. `#AB12CD34`)
+- **Total**, **Received**, **Pending** (shows **Paid** when nothing is pending) and **Margin**
+
+### Expanded sale details
+
+Click the arrow on a sale card to expand it. The device table shows:
+
+| Column | Description |
+| --- | --- |
+| **Device** | Model name of the sold device |
+| **Serial** | Serial / IMEI number |
+| **Cost** | Cost price recorded in inventory |
+| **Sale Price** | Price the device was sold at |
+| **Margin** | Sale price minus cost |
+| **GST** | GST on the margin |
+| **Profit** | Margin after GST |
+
+Below the table you see the payment **Ref** (if any), a progress bar showing the **% paid**, and an **Update Payment** button for sales with a pending balance.
 
 ---
 
-## Filters & controls
+## Filters & search
 
-The summary cards and sales table respond to filters so you can focus on a specific period or subset of sales.
+| Control | Description |
+| --- | --- |
+| **Pick a date range** | Limit sales and summary cards to a date range |
+| **Search** | Search by customer, device or serial (press **Enter** to search) |
+| **Type** | **All Types**, **Customer** or **Dealer** |
+| **Pending Only** | Show only sales that still have a pending balance |
+| **Refresh** | Reload the data |
+| **Export** | Export the current list |
 
-<ul>
-  <li>
-    <ParamField body="dateRangeFilter" param-type="date-range" show-location="false">
-      Adjust the **date range filter** to limit the Device Sales view and summary cards to sales completed within a selected start and end date.
-    </ParamField>
-  </li>
-</ul>
+---
+
+## Actions
+
+### Update Payment (Record Payment)
+
+For a sale with a pending amount, expand it and click **Update Payment**. The **Record Payment** dialog shows the customer, **Total Amount**, **Already Received** and **Pending**, and has these fields:
+
+| Field | Description |
+| --- | --- |
+| **Payment Amount** | Amount being received now (maximum = pending amount) |
+| **Payment Method** \* | **Cash**, **UPI** or **Bank Transfer** |
+| **Transaction ID** | Receipt / reference number (optional) |
+| **Mark Fully Paid** | Marks the sale as fully paid |
+
+Click **Save** to record the payment, or **Close** to cancel.
 
 ---
 
 ## How sales entries are created
 
-Device Sales entries are generated automatically from the All Inventory module when a sale is punched, so you do not need to add rows manually on this page.
+Device Sales entries are created automatically when a sale is punched from the All Inventory module — you do not add sales on this page.
 
 ```plaintext
 Admin selects device(s) in All Inventory
@@ -128,95 +97,38 @@ Punch Sale confirmed (Dealer / Customer selected)
         ↓
 Device removed from All Inventory
         ↓
-New row created in Device Sales
+New sale transaction created in Device Sales
         ↓
-Summary cards updated (Total Sales, Margin, GST, Items Sold)
+Pending payments collected later via Update Payment
 ```
 
 ---
 
 ## Margin & GST calculation
 
-Device Sales calculates per-device profit and the GST on that profit, then aggregates these values in the summary cards.
-
-<ul>
-  <li>
-    <ParamField body="margin" param-type="currency" show-location="false">
-      **Margin** is calculated for each device as sale price minus cost price.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="gstOnMargin" param-type="currency" show-location="false">
-      **GST on Margin** applies an 18 percent GST rate on the margin amount for each sale.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="totalSales" param-type="currency" show-location="false">
-      **Total Sales** is the sum of all sale prices for the device rows in the current filtered view.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="totalMargin" param-type="currency" show-location="false">
-      **Total Margin** is the sum of all per-device margin values in the current filtered view.
-    </ParamField>
-  </li>
-</ul>
+- **Margin** = sale price − cost price, per device.
+- **GST** is calculated on the margin amount (18%, treated as included in the margin).
+- **Profit** = margin − GST.
+- **Total Sales** and **Margin** cards are the sums across the current filtered view.
 
 ---
 
 ## Customer types
 
-Buyer information in the sales table distinguishes between individual customers and registered dealers.
-
-<ul>
-  <li>
-    <ParamField body="customerTypeCustomer" param-type="string" show-location="false">
-      **Customer** refers to an individual or walk-in buyer who is not registered as a dealer.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="customerTypeDealer" param-type="string" show-location="false">
-      **Dealer** refers to a registered reseller or bulk buyer whose record comes from the Customers (Dealers) module.
-    </ParamField>
-  </li>
-</ul>
+- **Customer** — an individual or walk-in buyer.
+- **Dealer** — a registered reseller or bulk buyer from the Customers (Dealers) module.
 
 ---
 
 ## Connections to other modules
 
-Device Sales ties into other Admin Panel modules to keep inventory, cash flow, and reporting aligned.
-
-<ul>
-  <li>
-    <ParamField body="allInventory" param-type="relation" show-location="false">
-      **All Inventory** provides the devices; punching a sale here removes the device from inventory and creates a corresponding entry in Device Sales.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="customersDealers" param-type="relation" show-location="false">
-      **Customers (Dealers)** supplies dealer records that are used as buyers when you punch a sale.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="reportsFinance" param-type="relation" show-location="false">
-      **Reports** uses Device Sales data as an input to finance and performance reports.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="cashInHand" param-type="relation" show-location="false">
-      **Cash In Hand** reflects cash payment sales recorded in Device Sales as part of overall cash flow tracking.
-    </ParamField>
-  </li>
-  <li>
-    <ParamField body="gstFinance" param-type="relation" show-location="false">
-      **GST / Finance** uses the GST on margin amounts from Device Sales for GST compliance and finance reporting.
-    </ParamField>
-  </li>
-</ul>
+- **All Inventory** — punching a sale removes the device from inventory and creates the sale here.
+- **Customers (Dealers)** — supplies dealer records used as buyers.
+- **Cash In Hand** — cash sales and cash payments feed overall cash tracking.
+- **Reports** — sales, margin and GST feed the Profit & Loss, GST and Money Flow reports.
 
 ---
 
 ## Snapshot
 
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774333574298-8fpvs64u25g-device-sales.device sales?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="833" alt="Device Sales page showing summary cards and detailed sales table for sold devices" />
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774333574298-8fpvs64u25g-device-sales.device sales?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="833" alt="Device Sales page (older layout) showing summary cards and sales list" />

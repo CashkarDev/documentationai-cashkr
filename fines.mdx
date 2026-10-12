@@ -5,7 +5,9 @@ description: Manage manual credit additions and deductions for B2C vendors and r
 
 ## Overview
 
-The Fines page in Quality - B2C lets admins manually add or deduct credits from any vendor account and review a complete history of all credit operations.
+**Sidebar:** Vendors → Money → **Vendor Fines** (`/vendors/credit-operation`). The page heading reads **Fines — Add or deduct credits for vendor accounts**.
+
+The Fines page lets admins manually add or deduct credits from any vendor account and review a complete history of all credit operations — including credit purchases approved on Credits & Payments and instant Razorpay purchases, which are logged here too.
 
 <Callout kind="info">
   Use the Fines page to apply manual credit adjustments (rewards, penalties, corrections) and to access an auditable log of every credit operation across all vendors.
@@ -51,15 +53,16 @@ After you select a vendor, the Fines section appears where you configure and con
   - **Operation Type** — Select the type of credit operation to perform:
     - **Deduct Credits** — Remove a specified number of credits from the vendor's balance. Use for fines, penalties, or corrections.
     - **Add Credits** — Add a specified number of credits to the vendor's balance. Use for rewards, corrections, or compensations.
-  - **Performed By** — Select who is performing the operation. This defaults to Admin and is stored with the transaction for audit purposes.
+  - **Performed By** — **Admin** (default) or **Sales**. Stored with the transaction for audit purposes.
 
   </Step>
 
   <Step title="Enter Credit Amount and Reason" icon="edit">
 
   - **Credit Amount** — Enter the number of credits to add or deduct from the vendor's account. The field shows `0` by default; update it to the correct value before confirming.
-  - **Reason** — Enter a clear, detailed reason for the credit operation. This field is mandatory and is visible in the Fines History for anyone reviewing the transaction later.
-  - **Voice Recording Notes** — Instead of — or in addition to — typing a reason, admins can record a voice note directly from the admin panel. The voice note is saved with the credit operation record and provides richer context for why the credit adjustment was made. This is especially useful when the reason is complex or involves multiple factors.
+  - **Reason** — Mandatory, **10–500 characters**. Provide a clear explanation; it is visible in the Fines History for anyone reviewing the transaction later.
+  - **Voice Note (optional)** — Click **Record** to attach a voice note explaining the operation. The vendor can play it back with the fine, so they hear the explanation and not just read it.
+  - The submit button label follows the operation type (**Deduct Credits** or **Add Credits**).
 
   </Step>
 
@@ -84,18 +87,19 @@ After you select a vendor, the Fines section appears where you configure and con
 
 ## Fines history
 
-The Fines History section below the vendor selector shows a complete log of all credit operations across all vendors on the platform.
+The Fines History section shows a complete log of all credit operations across all vendors. When a vendor is selected, the summary cards and history switch to **that vendor only** ("View all fines for this vendor") and the Vendor column and vendor filter are hidden.
 
 Each row in the Fines History represents one credit operation, with the following columns:
 
 - **Date** — Date and time the operation was performed.
+- **TXN ID** — Transaction reference, where one exists (shown as “—” otherwise).
 - **Operation** — Credit amount added or deducted, shown with a green plus for additions and a red minus for deductions.
 - **Vendor** — Name and email of the vendor whose credits were affected.
 - **Reason** — The detailed reason entered by the admin at the time of the operation.
 - **Amount** — Credit value of the operation — positive for additions, negative for deductions.
 - **Previous Balance** — Vendor's credit balance before the operation.
 - **New Balance** — Vendor's credit balance after the operation.
-- **Performed By** — Name of the admin who performed the operation.
+- **Performed By** — Role badge of who performed the operation (e.g. Admin); the admin's name also appears in the reason text.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774588916064-v2gt0j95t2o-fines-page.fines page?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="839" alt="Fines page showing summary cards, vendor selection, and Fines History with filters and export option" />
 
@@ -113,7 +117,7 @@ Use the available filters and controls above the table to focus on the records y
   - **Deductions only** — Shows only credit deduction operations.
   - **Additions only** — Shows only credit addition operations.
 - **Vendor Filter** — Filter the history by a specific vendor to review that vendor's complete credit history.
-- **Results Per Page** — Choose how many records to display per page (for example, 10 or more), depending on the volume of data.
+- **Results Per Page** — 10, 25 or 50 per page, with Previous / Next pagination.
 - **Export CSV** — Download the filtered Fines History as a CSV file for finance reporting, audits, or sharing with the management team.
 
 ## Common use cases

@@ -1,0 +1,79 @@
+---
+title: Nurture Analytics
+description: The Nurture Analytics dashboard — WhatsApp nurture funnel with holdout lift, email drip stats, and per-campaign sends, clicks and orders.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → **Nurture Analytics** (`/nurture-analytics`)
+
+Nurture Analytics measures automated lead-nurture messaging: **sent → responded → hot → orders**, with a holdout group to show true lift. Three tabs cover each channel.
+
+| Tab | Covers |
+| --- | --- |
+| **WhatsApp** | WhatsApp nurture funnel and holdout lift (default tab) |
+| **Email** | Email drip delivery stats and tracked orders |
+| **Campaigns** | Sends, clicks and orders per campaign template |
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days (WhatsApp and Email tabs). |
+| **Refresh** | Reloads the data. |
+
+## WhatsApp tab
+
+### KPI cards
+
+| Card | Meaning |
+| --- | --- |
+| **Sent** | Nurture messages sent. |
+| **Responded** | Customers who replied (count and %). |
+| **Hot leads** | Leads marked hot after responding. |
+| **Orders** | Orders placed via the message link. |
+| **Conversion** | Orders ÷ sent. |
+| **Holdout conv.** | Conversion of the withheld (no-message) group. |
+
+### Funnel by component
+
+| Column | Meaning |
+| --- | --- |
+| **Component** | Bot opening, Re-engage (step-7), Push nurture. |
+| **Sent / Responded / Hot** | Funnel counts. |
+| **Orders (via link)** | Message → link click → order placed. |
+| **Conv%** | Conversion. |
+| **Lift vs holdout** | Separate holdout A/B result. |
+
+### Other panels
+
+- **Bot-opening responses** — taps on the opening message: Yes, continue; Better price; Need more time; Have a question; Other.
+- **WhatsApp suppression state** — live (not date-scoped) per-customer engagement-decay state: **Active**, **Backoff (temporarily paused)**, **Suppressed (push-only)**.
+
+## Email tab
+
+Email drip delivery stats plus orders from Cashkr's own link tracking.
+
+| Block | Contents |
+| --- | --- |
+| **KPI cards** | Sent, Delivered, Opens (unique), Clicks, Unsubscribed, Orders (tracked via links). |
+| **Campaign performance** | Lifetime totals from the email-sending tool. |
+| **Orders from email (our own tracking)** | Clicks on the drip's tracked links and whether those leads went on to order. |
+
+## Campaigns tab
+
+Campaign analytics per template key, with bot clicks and test numbers excluded.
+
+| Block | Contents |
+| --- | --- |
+| **Campaign selector** | Cards for each campaign phase with dates and a *Live* badge on the running one. |
+| **KPI cards** | Sends, Recipients, Clickers (with clicks), CTR, Orders, Orders / 1k sends. |
+| **Template × segment** | Template, Segment, Sends, Clickers, CTR, Orders, per 1k. |
+
+<Callout kind="info">
+Orders on the Campaigns tab are orders placed after a click (in-progress orders included), so the number never shrinks.
+</Callout>
+
+## Actions
+
+The dashboard is read-only.

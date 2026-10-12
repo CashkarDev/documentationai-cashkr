@@ -5,7 +5,9 @@ description: Manage job postings and candidate applications in the Admin Panel �
 
 ## Overview
 
-The Careers section under **Marketing** controls the job postings on the Cashkr website and collects the applications they bring in. It has two tabs: **Roles** for the postings themselves, and **Applications** for the candidates who applied.
+**Sidebar path:** Marketing → Careers (`/careers`)
+
+The Careers section under **Marketing** controls the job postings on the Cashkr website and collects the applications they bring in. It has two tabs: **Roles** for the postings themselves, and **Applications** for the candidates who applied. The Applications tab shows a badge with the number of new applications (e.g. *3 new*).
 
 <Callout kind="info">
   Careers writes directly to the public website. Opening a role publishes it to the careers page; closing it takes it down without losing any application already received.
@@ -21,9 +23,10 @@ Each row in the Roles table includes:
 - **Department** – for example Engineering, Marketing, Operations.
 - **Location** – the posting location, with the workplace type beneath it.
 - **Type** – employment type.
+- **Expires** – the listing expiry date.
 - **Applications** – how many candidates have applied to this role.
 - **Open** – a toggle showing Open or Closed.
-- **Actions** – edit and delete.
+- **Actions** – view the role on cashkr.com (opens the public job page), edit, and delete.
 
 ### Filters and search options
 
@@ -47,7 +50,7 @@ Each row in the Roles table includes:
 | Skills | No | Short keywords rather than sentences. |
 | Benefits | No | One entry per line. |
 
-<Callout kind="warning">
+<Callout kind="alert">
   The slug becomes the role's live URL and the address search engines index. It is locked once the role has been published, because changing it would break both.
 </Callout>
 
@@ -98,7 +101,7 @@ Each row in the Roles table includes:
     - A confirmation dialog names the role, states how many applications it currently holds, and warns that their CVs go with it.
     - Select **Delete role** to confirm, or **Cancel** to keep it.
 
-    <Callout kind="warning">
+    <Callout kind="alert">
       Deleting a role permanently deletes every application submitted for it, including the candidates' CVs and cover letters. It cannot be undone. To take a role off the website without losing anything, close it instead.
     </Callout>
   </Step>

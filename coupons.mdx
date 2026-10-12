@@ -1,0 +1,84 @@
+---
+title: Coupons
+description: The Coupon Dashboard — all-time coupon catalogue, period redemptions and discount, abandoned cart recovery, coupon breakdowns and the Top Coupons table.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → **Coupons** (`/coupon-dashboard`)
+
+The **Coupon Dashboard** shows how coupons perform across app and web: how many campaigns exist, how often they are redeemed, the discount given, and whether coupon orders complete.
+
+<Callout kind="info">
+The top **Coupon Catalogue** strip is **all-time** and ignores the date range. Everything under **Selected Period** follows the date range.
+</Callout>
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days. |
+| **Refresh** | Reloads all cards, charts and tables. |
+
+## What the screen shows
+
+### Coupon catalogue (all-time)
+
+| Card | Meaning |
+| --- | --- |
+| **Campaign Coupons** | Coupons someone authored, with an *Active* count ring. |
+| **Auto-Generated Bonuses** | One-off coupon rows created per abandoned-cart token. |
+| **All-Time Redemptions** | Every coupon ever applied to a lead. |
+| **First-Customer Campaigns** | Campaigns limited to a customer's first order, with a bar against all campaigns. |
+
+### Selected period
+
+| Card | Meaning |
+| --- | --- |
+| **Redemptions** | Coupons applied to leads (with % change). |
+| **New Campaigns** | Campaigns created in the period. |
+| **Unique Users** | Customers redeeming. |
+| **Device Value Paid** | Final price of completed coupon orders. |
+| **Completed Orders** | Coupon orders completed. |
+| **Discount Given** | Discount on this period's redemptions. |
+| **Avg Discount/Use** | Discount given ÷ redemptions. |
+| **Conversion** | Share of this period's redemptions whose order has completed since. |
+
+<Callout kind="info">
+Device value paid and completed orders count orders that reached Completed inside the period, using the status log rather than the order date.
+</Callout>
+
+### Abandoned cart recovery
+
+Tokens issued in the period and how many were redeemed since: recovery %, **Tokens Issued**, **Redeemed**, **Not Redeemed**, and **Bonus Redemptions** (bonus coupons used in the period and their value).
+
+### Charts
+
+| Chart | Shows |
+| --- | --- |
+| **Coupon Status** | Campaign coupons by status (Active, Expired), all-time. |
+| **Platform Breakdown** | Campaign coupons by platform (APP, WEB, BOTH), all-time. |
+| **Device Breakdown** | Redemptions in the period by device. |
+| **Accessibility** | Campaign coupons by who can use them (ALL, FirstCustomer), all-time. |
+| **Discount Distribution** | Campaign coupons by discount value band (for example ₹0–50, ₹101–200, ₹201–500), all-time. |
+| **Daily Usage Trend** | Redemptions per day (IST) in the period. |
+
+### Top Coupons table
+
+Most-redeemed coupons in the period.
+
+| Column | Meaning |
+| --- | --- |
+| **Code** | Coupon code. |
+| **Title** | Coupon name. |
+| **Discount** | Discount value. |
+| **Platform** | App, Web or Both. |
+| **Period Uses** | Redemptions in the period. |
+| **Discount Given** | Discount given in the period. |
+| **All-Time Uses** | Total redemptions. |
+| **Max Uses** | Usage limit. |
+| **Status** | Active or expired. |
+
+## Actions
+
+The dashboard is read-only. Create and edit coupons under **Marketing → Coupons**; review abandoned-cart coupons under **Marketing → Abandoned Coupons**.

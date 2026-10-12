@@ -1,0 +1,62 @@
+---
+title: Funnel
+description: The Growth → Funnel tab — funnel health, step-by-step flow from lead to completion, velocity, requote impact, drop-off reasons and device/city funnels.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → Growth → **Funnel** tab (`/dashboard/growth?tab=funnel`)
+
+The Conversion Funnel tab analyses the end-to-end customer journey, from lead creation to completed pickup, and shows where customers drop off.
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days. |
+| **AI Analyst Insight → Analyze Data** | Generates an AI summary of the funnel. |
+
+## What the screen shows
+
+### Funnel Health
+
+A *Broken* → *Leaky* → *Efficient* band, with Funnel CVR, Max Drop-off, Lead→Order time (hours) and Median Days.
+
+### KPI cards
+
+Total Leads, Orders (with devices selected), Completed, Funnel CVR (with failed count).
+
+### Funnel Flow
+
+Count and % of total at each step:
+
+| Step | Meaning |
+| --- | --- |
+| **Lead Created** | Lead captured. |
+| **Device Selected** | Customer chose a device. |
+| **Slot Booked** | Pickup slot booked. |
+| **Order Created** | Lead became an order. |
+| **Picked Up** | Vendor picked up the device. |
+| **Completed** | Order completed. |
+
+Also shows the converted vs lost split.
+
+### Panels
+
+| Panel | Contents |
+| --- | --- |
+| **Velocity** | Avg Lead → Order (hours), Order → Complete (hours), Median Total (days). |
+| **Requote Impact** | Total Requotes, Accepted, Rejected, Completed, Avg Drop %, Accept %. |
+| **Dropout Detective** | Top failure reasons with who caused them. |
+| **Step Drop-offs** | Table: Step, Users, From Start %, Drop %, Severity (for example *Critical*). |
+| **Conversion by Price Drop** | Requote acceptance by bucket: under 5% drop, 5–15% drop, over 15% drop. |
+| **Daily Funnel Trend** | Leads, orders and completed per day. |
+| **By Device / By City** | Switchable funnel table: Device (or City), Leads, Orders, Done, CVR, Comp %. |
+
+## Actions
+
+The Funnel tab is read-only.
+
+<Callout kind="tip">
+Start with **Step Drop-offs**: the step marked *Critical* is where to focus. Then check **Conversion by Price Drop** to see whether large requotes are losing customers.
+</Callout>

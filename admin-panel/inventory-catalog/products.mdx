@@ -1,0 +1,93 @@
+---
+title: Products
+description: The device catalog — every model with its base price, class, storage/RAM variants and SEO data, used for customer quotes and vendor pricing.
+---
+
+## Overview
+
+**Sidebar:** Inventory & Catalog → Catalog → **Products** (`/products`)
+
+The Products screen is the device catalog behind customer quotes and vendor pricing. Each product is a model (e.g. a phone, laptop or console) with a base price, a pricing **Class**, storage/RAM variants and SEO content for the website.
+
+## What the screen shows
+
+| Column | Description |
+| --- | --- |
+| Model Code | Auto-generated code, e.g. `MOSAMS100210` (sortable). |
+| Model | Device type badge (Mobile, Laptop…), **Parent** badge for the base model, model name and brand (sortable). |
+| Storage / RAM | Base storage and RAM. |
+| Price | Base price in INR (sortable). |
+| Class | Pricing class (e.g. Class 6) (sortable). |
+| Credit | Credit value (sortable). |
+| Actions | **Edit** (pencil). |
+
+Paginated 25 per page with total results.
+
+## Filters & search
+
+- **Search products** (top bar).
+- **Filters** → **Device Type** (Mobile, Laptop, Macbook, Tablet, Desktop, Camera, Console, Headphone, Watch, Drone), then **Apply Filters** or **Reset**.
+
+## Product Details panel
+
+Click a row to open **Product Details**:
+
+| Section | Contents |
+| --- | --- |
+| Header | Image, device type, "Added … ago", model name and brand. |
+| Specifications | Storage, RAM, URL slug, Price. |
+| Classification | Credits, Dead Price, Tier. |
+| SEO Information | Page Title, Meta Description, H1, Alt Text. |
+
+Buttons: **Close**, **Delete**, **Edit**.
+
+## Add / Edit product
+
+Click **Add New Product** (or **Edit**). The form has three tabs; click **Create Product** to save.
+
+<Tabs>
+<Tab title="Basic Information">
+
+| Field | Notes |
+| --- | --- |
+| **Device Type** * | Mobile, Tablet, Laptop, Camera, Headphone, Console, Drone, TV, AC, Desktop, Mac, Watch. |
+| **Brand** * | Brand list for the selected device type. |
+| **Model Name** * | e.g. "iPhone 15 Pro". Select a brand first. |
+| **Model Code** | Auto-generated; **Regenerate** to create a new one. |
+| **Base URL** | Auto-generated URL slug. |
+| **Series** | Auto-generated series. |
+| **Image** | Drag and drop or Browse Files — JPEG, PNG or GIF, max 5 MB. |
+
+An **Auto-generated Details** box previews device type, brand, model, model code, base URL and series.
+
+</Tab>
+<Tab title="Specs & Pricing">
+
+| Field | Notes |
+| --- | --- |
+| **Price (INR)** * | Base price, e.g. 120000. |
+| **Class** * | Brand pricing class (e.g. "6 - Samsung A", "12 - Apple A"), with a refresh button. |
+| **Storage (GB)** * | Base storage. |
+| **RAM (GB)** | Base RAM. |
+| **Good Price** | Optional reference price (see the field's info tooltip). |
+| **Product Variants** | **Add Variant** to add other storage/RAM combinations with their own price. |
+
+</Tab>
+<Tab title="SEO Information">
+
+Shows an **SEO Score** and an **Apply All Suggestions** button.
+
+| Field | Limit |
+| --- | --- |
+| **Page Title** * | 60 characters — e.g. "Sell Old iPhone 15 Pro For Best Price". |
+| **H1 Tag** * | 70 characters. |
+| **Meta Description** * | 160 characters. |
+| **Image Alt Text** * | 125 characters. |
+| **Variant Title** / **Variant Description** | Optional. |
+
+</Tab>
+</Tabs>
+
+<Callout kind="alert">
+Price and Class changes affect customer quotes and vendor pricing. Follow the pricing SOP (Adding/Editing Device Models & Pricing Updates) before changing them.
+</Callout>

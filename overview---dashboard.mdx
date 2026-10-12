@@ -1,0 +1,86 @@
+---
+title: Overview
+description: The live Overview dashboard — total users, order completion and requote rates, orders by device, B2B buybacks and vendor onboarding for a chosen date range.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → LIVE → **Overview** (`/dashboard`)
+
+The Overview is the landing page of the admin panel. It gives a quick, live snapshot of platform health for a selected date range: user base, order flow, completion and requote rates, device mix, B2B buybacks and vendor onboarding.
+
+<Callout kind="info">
+Overview defaults to **today**. Change the date range to compare a week or a month; every card except **Total Cashkr Users Till Date** follows the selected range.
+</Callout>
+
+## What the screen shows
+
+### Header
+
+| Element | Description |
+| --- | --- |
+| **Title + range line** | "Overview" with the active range (for example *Oct 12 – Oct 12, 2026*). |
+| **Date picker** | Top-right button showing the selected date. Opens the range picker (see Filters). |
+
+### Users hero card
+
+| Card | Meaning |
+| --- | --- |
+| **Total Cashkr Users Till Date** | All active customers in the system (all-time, not date-filtered). |
+| **New Users in Selected Period** | Customer accounts created in the selected range. |
+
+### KPI cards
+
+Each card shows a value and a change indicator against the previous period.
+
+| Card | Sub-label | Meaning |
+| --- | --- | --- |
+| **Completion %** | Overall Completion % | Share of orders that completed. |
+| **Requote %** | Overall Requote % | Share of orders where the vendor revised the price. |
+| **Orders Received** | Created | Orders created in the period. |
+| **Orders Completed** | Updated | Orders that reached Completed in the period. |
+| **Orders Converted** | Leads converted to orders | Leads that became orders. |
+| **Failed After Requote** | By vendor | Orders that failed after a vendor requote (highlighted in red). |
+
+### Device orders received
+
+One card per category with count and % change: **Smartphone, Tablet, Laptop, Mac, Console, Watch, Camera, Headphone** Orders Received.
+
+### Device orders completed
+
+Completed counts per category: **Smartphone, Tablet, Laptop, Mac, Console, Watch, Camera, Headphone** Completed.
+
+### Business cards
+
+| Card | Sub-label |
+| --- | --- |
+| **B2B Buybacks Closed** | No. of successful buybacks |
+| **Vendors Onboarded** | No. of vendors onboarded & approved |
+
+## Filters
+
+The date picker opens a panel with:
+
+- **Presets:** Today, Yesterday, This Week, Last 7 days, Last 30 days, This Month, Last Month, All Time
+- **Start Date / End Date** fields and a month calendar
+- **Reset**, **Cancel** and **Apply** buttons
+
+<Steps>
+<Step title="Open the date picker" icon="calendar" title-type="p">
+Click the date button in the top-right corner.
+</Step>
+<Step title="Pick a range" icon="mouse-pointer-click" title-type="p">
+Choose a preset or select start and end dates on the calendar.
+</Step>
+<Step title="Apply" icon="check" title-type="p">
+Click **Apply**. All period-based cards recalculate.
+</Step>
+</Steps>
+
+## Actions
+
+The Overview is read-only. There are no row or bulk actions. For deeper analysis, use **Leadership**, **Executive** or **Growth** under Dashboards.
+
+<Callout kind="tip">
+Use **System → Admin → Live Ticker** to show the same headline counters full-screen on an office TV.
+</Callout>

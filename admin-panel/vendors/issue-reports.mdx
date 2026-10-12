@@ -1,0 +1,69 @@
+---
+title: Issue Reports
+description: Triage app problems reported by vendors and agents, update ticket status and reply to the reporter.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Comms → **Issue Reports** (`/vendors/issue-reports`)
+
+Vendors (and field agents) can report app problems from their app — with a description, how often it happens, screenshots and voice notes. Each report becomes a ticket (e.g. `#SR-1001`) that admins triage here.
+
+## What the screen shows
+
+### Tabs
+
+| Tab | Shows |
+| --- | --- |
+| **Ongoing** | Open tickets (count badge). |
+| **Solved** | Tickets marked Solved (count badge). |
+| **All** | Every ticket. |
+
+### Columns
+
+| Column | Description |
+| --- | --- |
+| Ticket | Ticket number, e.g. `#SR-1001` (sortable). |
+| Reported by | Name, role (e.g. Vendor, Cashboy) and phone. |
+| Problem | Problem type (e.g. App closed, Screen stuck, Upload failed, Blank page) and the reporter's description (sortable). |
+| Frequency | Every time / Sometimes (sortable). |
+| Media | Count of attached screenshots and voice notes. |
+| Status | **Sent**, **In review**, **Fixing** or **Solved** (sortable). |
+| Replies | Reply count and the latest reply, or "None". |
+| Reported | Date/time and how long it has been open (e.g. "open for 3d"). |
+
+Results are paginated (12 per page by default).
+
+## Filters & search
+
+- **Tabs** — Ongoing / Solved / All.
+- **Search** — ticket number, vendor name or phone.
+- Click a column header to sort.
+
+## Ticket detail panel
+
+Click a row to open the ticket panel:
+
+| Section | Contents |
+| --- | --- |
+| Header | Ticket number, status badge and reported time. |
+| Reported by | Name, role, phone and email. |
+| What happened | Problem type, frequency and description. |
+| Attachments | Screenshots (click to open full size) and voice notes. |
+| **Update status** | Sent · In review · Fixing · Solved. |
+| **Reply log** | Previous replies with status at the time, timestamp and admin name. |
+| **Add another reply** | Up to 2,000 characters. Shown to the vendor under their report. |
+
+Click **Save changes** to apply the status change and reply, or **Cancel** to close.
+
+<Steps>
+<Step title="Open the ticket" icon="ticket" title-type="p">
+Start with the oldest tickets in **Ongoing** — the "open for" age shows what has waited longest.
+</Step>
+<Step title="Review the evidence" icon="image" title-type="p">
+Check the description, frequency, screenshots and voice notes. Reproduce the issue if possible.
+</Step>
+<Step title="Update status and reply" icon="message-square" title-type="p">
+Move the ticket to **In review** or **Fixing** and add a reply so the vendor knows it is being worked on. Mark **Solved** once fixed.
+</Step>
+</Steps>

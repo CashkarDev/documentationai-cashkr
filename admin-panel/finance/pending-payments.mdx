@@ -1,0 +1,67 @@
+---
+title: Pending Payments
+description: Track and collect outstanding payments from device sales that are not yet fully paid
+---
+
+## Overview
+
+**Sidebar path:** Finance → Pending Payments (`/finance/pending-payments`)
+
+**Pending Payments** lists every device sale that still has an outstanding balance, so finance can follow up with buyers and record payments as they come in. It shows the same sale transactions as [Device Sales](/device-sales), filtered to those that are not fully paid.
+
+---
+
+## What the screen shows
+
+### Summary cards
+
+| Card | What it shows |
+| --- | --- |
+| **Total Pending** | Total amount still to be collected across all pending sales |
+| **Partially Received** | Amount already received against sales that are still pending |
+| **Pending Sales** | Number of sales with an outstanding balance |
+
+### Pending sale cards
+
+Each pending sale shows:
+
+- **Buyer name and phone** with a **Customer** / **Dealer** badge
+- **Sale date · device count · sale reference** (e.g. `#AB12CD34`)
+- A progress bar with **% paid**
+- **Total**, **Received** and **Pending** amounts
+- An **Update Payment** button
+
+Click the arrow on a card to expand it and see:
+
+- The devices in the sale — **Device**, **Serial**, **Sale Price**
+- **Payment History** — date and time, payment method, transaction reference and amount of each payment received so far
+
+---
+
+## Filters & search
+
+| Control | Description |
+| --- | --- |
+| **Search** | Search by customer name or phone (press **Enter**) |
+| **Refresh** | Reload the list |
+
+---
+
+## Actions
+
+### Update Payment (Record Payment)
+
+Click **Update Payment** on a sale to open **Record Payment**. It shows the customer, **Total Amount**, **Already Received** and **Pending**, with these fields:
+
+| Field | Description |
+| --- | --- |
+| **Payment Amount** | Amount received now (cannot exceed the pending amount) |
+| **Payment Method** \* | Cash, UPI or Bank Transfer |
+| **Transaction ID** | Receipt / reference number (optional) |
+| **Mark Fully Paid** | Closes the remaining balance and marks the sale as paid |
+
+Click **Save** to record the payment or **Close** to cancel. Each saved payment is added to the sale's **Payment History**; once the sale is fully paid it drops off this list.
+
+<Callout kind="tip">
+Always enter the UPI / bank reference in **Transaction ID** so payments can be reconciled later in Money Flow.
+</Callout>

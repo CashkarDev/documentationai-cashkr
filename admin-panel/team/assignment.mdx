@@ -1,0 +1,75 @@
+---
+title: Lead Assignment
+description: Distribute unassigned B2C leads across sales executives in batches, assign individual leads by hand, and move leads between executives.
+---
+
+## Overview
+
+**Sidebar:** B2C Sales → Team → **Assignment** (`/team/assignment`)
+
+Assignment is where a team lead hands unassigned B2C leads to sales executives. It has three parts: **Distribute a batch** (bulk split), **Unassigned** (the open queue) and **Executives** (current load per person, with Move leads).
+
+<Callout kind="alert">
+
+A banner at the top shows how many open leads are unassigned and how many arrived today. Auto-assignment exists as a scheduled job; if the unassigned number keeps growing, the job is not running. Assigning by hand at high volume is not a fix — raise it with tech.
+
+</Callout>
+
+## Distribute a batch
+
+"Highest quote first, never called, split across everyone receiving leads."
+
+| Field | What it does |
+| --- | --- |
+| Give to | Chips for every executive receiving leads. All are selected by default — click a name to leave them out of this batch. |
+| Leads per executive | How many leads each selected executive gets (default 60). |
+| Quote from (₹) | Minimum quoted price. |
+| To (₹) | Maximum quoted price — **0 for no cap**. |
+| Device | Any, Mobile, Laptop, Tablet, Mac, Watch, Console, Camera, Headphone, Drone, Desktop, TV, AC. |
+| Arrived | Today, Last 3 days, Last 7 days, Last 30 days, The whole backlog, Custom range… |
+
+- **Check** previews what the batch would assign.
+- **Distribute** assigns the batch.
+
+How distribution works:
+
+- Leads are taken highest quote first, and only leads that were never called.
+- A customer who already has one of the chosen executives goes back to that executive; the rest is dealt evenly.
+- Nothing already assigned is touched, so pressing Distribute twice tops the team up rather than doubling anyone.
+
+## Unassigned
+
+The open, unassigned queue — total count with the newest 25 shown. Each row shows customer name, device, lead ID, city, quoted price and age, with a checkbox.
+
+Tick one or more leads and the Executives card switches to "Assign *n* selected to…", with an **Assign here** button on each executive.
+
+## Executives
+
+"Current load" for each executive receiving leads:
+
+| Metric | Meaning |
+| --- | --- |
+| Open | Open leads assigned to them. |
+| Untouched | Assigned leads with no activity yet. |
+| Today | Leads assigned today. |
+| Oldest | Age of their oldest open lead. |
+
+### Move leads
+
+Click **Move leads** on an executive to open "Move *name*'s leads":
+
+- **Which leads** — Promised callbacks, Never called, or Both.
+- **How many** — number of leads to move (default 50).
+- **Destination** — to the pool (unassigned) or to another named executive.
+- **Move** applies it; **Cancel** closes the panel.
+
+<Callout kind="info">
+
+Promised callbacks move soonest-first — those are the ones that break if nobody picks them up. Leads already in conversation stay put: handing a live call to a stranger is usually worse for the customer than waiting.
+
+</Callout>
+
+## Related pages
+
+- [Live Floor](/admin-panel/team/live-floor) — real-time load and activity per executive.
+- [Lead management](/lead-management-all-leads-not-called-callbacks-high-ends) — how executives work assigned leads.

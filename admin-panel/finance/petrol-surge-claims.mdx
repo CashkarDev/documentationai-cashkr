@@ -1,0 +1,88 @@
+---
+title: Petrol Surge Claims
+description: Review petrol bill claims submitted by vendors and cashboys, and approve them with a reimbursement amount or reject them
+---
+
+## Overview
+
+**Sidebar path:** Finance → Petrol Surge Claims (`/finance/petrol-surge`)
+
+Vendors and cashboys submit photos of their petrol bills as reimbursement claims. On this screen Finance reviews each bill and either **approves** it — setting the reimbursement amount — or **rejects** it.
+
+<Callout kind="info">
+This is the live claims-review screen. The rule-based trip bonus described in [Petrol Surge (Proposed)](/petrol-surge---admin-panel) is a separate design that is not built.
+</Callout>
+
+---
+
+## What the screen shows
+
+### Status tabs
+
+| Tab | Shows |
+| --- | --- |
+| **Pending (n)** | Claims waiting for review (default tab) |
+| **Approved (n)** | Claims approved, with the approved amount |
+| **Rejected (n)** | Claims rejected |
+| **All** | Every claim |
+
+### Claims table
+
+| Column | Description |
+| --- | --- |
+| **Bill** | Thumbnail of the uploaded bill photo — click to open the bill details |
+| **Claimant** | Vendor or cashboy name, with role (e.g. **Vendor**) and phone |
+| **Bill Date/Time** | Date and time printed on / entered for the bill |
+| **Bill Amount** | Amount claimed by the vendor |
+| **Approved** | Amount approved for reimbursement (— until approved) |
+| **Status** | Pending, Approved or Rejected |
+| **Submitted** | Date the claim was submitted |
+| **Action** | **Approve** / **Reject** buttons on pending claims (— once decided) |
+
+---
+
+## Filters & search
+
+| Control | Description |
+| --- | --- |
+| **Search** | Search by vendor, cashboy or phone |
+| **Status tabs** | Switch between Pending, Approved, Rejected and All |
+
+---
+
+## Actions
+
+### View a bill
+
+Click the bill thumbnail to open **Petrol Bill — {claimant}**. It shows the claimant (role, shop and phone), the bill photo, **Bill date/time**, **Bill amount (vendor)**, **Approved amount** and, for decided claims, the reviewer's **Comment**. Pending claims also show **Approve** and **Reject** buttons here.
+
+### Approve
+
+Click **Approve** (in the row or the bill dialog) to accept the claim and set the reimbursement amount. The approved amount can differ from the bill amount — for example a lower amount if only part of the bill is eligible.
+
+### Reject
+
+Click **Reject** to decline the claim. Add a clear comment (e.g. "bill photo is not clear") so the claimant knows why.
+
+<Steps>
+  <Step title="Open Pending" icon="clock" title-type="p">
+    Start on the **Pending** tab and work oldest submissions first.
+  </Step>
+  <Step title="Check the bill" icon="receipt" title-type="p">
+    Open the bill photo and check that the date/time and amount are readable and match the claim.
+  </Step>
+  <Step title="Decide" icon="check-circle" title-type="p">
+    **Approve** with the correct reimbursement amount, or **Reject** with a reason.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+Watch for unusual bill amounts (very large values or ₹0) — verify these with the claimant before approving.
+</Callout>
+
+---
+
+## Related
+
+- [Petrol Bonus (Vendor App)](/petrol-bonus---vendor-app) — partner-facing side of petrol compensation.
+- [Credits](/credits) — vendor wallet and credit balances.

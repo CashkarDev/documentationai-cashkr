@@ -1,0 +1,49 @@
+---
+title: Customer Activity Logs
+description: Search and filter customer-side actions such as logins, quotes, orders, payments, coupons and referrals across all customers.
+---
+
+## Overview
+
+Customer Activity Logs lists customer-side actions across all customers for the **last 90 days** — logins, quotes, orders placed, completed or cancelled, profile changes, payments, coupons and referrals.
+
+Open it from **System → Admin → Customer Activity Logs** in the left sidebar (route `/customer-activity-logs`).
+
+Use it to reconstruct what a customer did before raising a complaint, to verify a login or order event, or to investigate suspicious behaviour. For actions taken by admins, use [Master Logs](/master-logs) instead.
+
+## Filters
+
+The **Filters** card at the top contains:
+
+| Filter | Description |
+| --- | --- |
+| Customer (phone / email / id) | Match a single customer, e.g. `9876543210` |
+| Category | All categories, **Auth**, **Order**, **Quote**, **Profile**, **Payment**, **Coupon**, **Referral** |
+| Action | Exact action code, e.g. `ORDER_CANCELLED` |
+| Description contains | Free-text match on the description, e.g. `iPhone` |
+| Start date / End date | Limit to a date range within the last 90 days |
+
+Click **Apply filters** to run the search, or **Reset** to clear all filters.
+
+## Results
+
+The **Results** table shows the current page and total count (e.g. "Page 1 of N • X total").
+
+| Column | Description |
+| --- | --- |
+| When | Date and time of the action |
+| Customer | Customer name with phone number below |
+| Action | Readable action name, e.g. Login Success, Order Placed, Order Completed, Order Cancelled |
+| Category | Coloured tag: AUTH, ORDER, QUOTE, PROFILE, PAYMENT, COUPON, REFERRAL |
+| Description | Detail, e.g. "Placed order for Mobile worth ₹X", "Order cancelled (AfterRequote)", "Logged in via OTP" |
+| Platform | Where the action happened, e.g. WEB or ANDROID |
+
+Use **Previous** and **Next** at the bottom to page through results.
+
+<Callout kind="tip">
+To trace a single customer's journey, enter their phone number in **Customer**, leave Category on **All categories**, and apply. Results read newest first.
+</Callout>
+
+<Callout kind="info">
+This screen is read-only and contains customer personal data. Do not export or share it outside the team.
+</Callout>

@@ -1,0 +1,107 @@
+---
+title: Purchase Orders
+description: Create and manage purchase orders for external products and services, and maintain the supplier list
+---
+
+## Overview
+
+**Sidebar path:** Finance → Purchase Orders (`/finance/purchase-orders`)
+
+Use **Purchase Orders** to raise POs to external suppliers for products and services (for example printing, advertising or office supplies), track their status, and download a printable PO PDF. Suppliers are maintained from the same screen.
+
+<Callout kind="info">
+POs tagged with a **Marketing** spend category are counted in the Marketing Report's total spend.
+</Callout>
+
+---
+
+## What the screen shows
+
+### Summary cards
+
+| Card | What it shows |
+| --- | --- |
+| **Total POs** | Number of purchase orders matching the filters |
+| **Total Value** | Combined value of those POs |
+| **Open (Draft + Sent)** | POs still open (status Draft or Sent) |
+| **Suppliers** | Number of suppliers |
+
+### Purchase orders table
+
+| Column | Description |
+| --- | --- |
+| **PO No.** | Auto-generated PO number, e.g. `PO-2026-0001` |
+| **Supplier** | Supplier company name |
+| **Order Date** | Date of the PO |
+| **Items** | Number of line items |
+| **Total** | Grand total of the PO |
+| **Status** | Draft, Sent, Received, Closed or Cancelled |
+| **Category** | Spend category (e.g. Marketing — Offline) |
+| **Actions** | **⋯** menu: **Download PDF**, **Edit**, **Delete** |
+
+---
+
+## Filters & search
+
+| Control | Description |
+| --- | --- |
+| **Pick a date range** | Filter POs by order date |
+| **Search** | Search by PO number or supplier (press **Enter**) |
+| **Status** | All Statuses, Draft, Sent, Received, Closed, Cancelled |
+| **Supplier** | All Suppliers or a specific supplier |
+| **Refresh** (icon) | Reload the list |
+
+---
+
+## Actions
+
+### Create PO
+
+Click **+ Create PO** to open **Create Purchase Order**:
+
+| Field | Description |
+| --- | --- |
+| **Supplier** \* | Pick a supplier (the icon next to it adds a new supplier) |
+| **Order Date** | Defaults to today |
+| **Expected Delivery** | Optional expected delivery date |
+| **Spend Category** | Unclassified, Marketing — Offline, Marketing — Online, Non-marketing |
+| **Line Items** \* | One row per item: **Description**, **HSN/SAC**, **Qty**, **Unit** (e.g. pcs), **Rate (incl. GST)**; **Amount** is calculated. Use **+ Add Item** for more rows |
+| **Notes (printed on PO)** | Terms, delivery instructions, payment terms |
+| **Internal Notes (not printed)** | Visible only in the admin panel |
+
+The form shows the **Taxable Value**, GST (e.g. **IGST @ 18%**) and **Grand Total** as you add items. Rates are entered **inclusive of GST**. Click **Create PO** to save or **Cancel** to close.
+
+### Add Supplier
+
+Click **Add Supplier** to add a supplier:
+
+| Field | Description |
+| --- | --- |
+| **Company Name** \* | Registered company name |
+| **GSTIN** | Supplier GST number |
+| **Contact Person** | Name of the contact |
+| **Phone** / **Email** | Contact details (e.g. billing email) |
+| **Address**, **City**, **State**, **Pincode** | Supplier address |
+| **Internal Notes** | Optional notes about the supplier |
+
+### Row actions
+
+- **Download PDF** — download the printable purchase order.
+- **Edit** — update the PO details, items or status.
+- **Delete** — remove the PO.
+
+---
+
+## PO statuses
+
+| Status | Meaning |
+| --- | --- |
+| **Draft** | Created but not yet sent to the supplier |
+| **Sent** | Sent to the supplier |
+| **Received** | Goods/services received |
+| **Closed** | PO completed |
+| **Cancelled** | PO cancelled |
+
+<Callout kind="tip">
+Pick the correct **Spend Category** when creating a PO — marketing POs feed the Marketing Report's spend totals.
+</Callout>

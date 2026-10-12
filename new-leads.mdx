@@ -5,7 +5,7 @@ description: Use the New Leads page in the Admin Panel to track checkout drop-of
 
 ## Overview
 
-New Leads in the Sales module tracks customers who reached the checkout page on the Cashkr website or customer app but did not complete an order. Use this view to follow up on intent, record call outcomes, and convert qualified leads into confirmed pickup orders.
+New Leads (**B2C Sales → To Work → New Leads**, breadcrumb *Dashboard / B2C Sales*) tracks customers who reached the checkout page on the Cashkr website or customer app but did not complete an order. Use this view to follow up on intent, record call outcomes, and convert qualified leads into confirmed pickup orders.
 
 <Callout kind="info">
   A New Lead is an uncompleted checkout from the customer app or website. Leads are not orders. Convert a lead to an order only after speaking with the customer and confirming their intent to sell.
@@ -115,11 +115,13 @@ Statuses and dispositions help standardize how you track each interaction with t
 
 Use filters and search to prioritize leads and assign work efficiently.
 
-- **Type** — Filter by device type: Mobile, Laptop, Tablet, or Mac.
-- **Tiers** — Filter by customer tier or segment.
-- **City** — Filter by customer city for location-based routing.
-- **Date range** — Show leads created within a specific period.
-- **Search** — Search by Lead ID, device name, or customer phone number.
+- **Mine / All / Unassigned** — Toggle at the top right to show only leads assigned to you, all leads, or leads not yet assigned to any sales executive.
+- **Search leads...** — Search box in the header (for example by token, device name or phone number).
+- Click **Filters** to open the filter panel:
+  - **Type** — Device type: Mobile, Laptop, Macbook, Tablet, AC, Desktop, Camera, Console, TV, Headphone, Watch, Drone.
+  - **All Tiers** — Device price tier: High End, Mid End, Low End.
+  - **City** — Customer city for location-based routing.
+  - **Date range** — From / to date pickers to show leads created within a specific period.
 
 Actions on filters:
 
@@ -132,9 +134,23 @@ Each row in the New Leads table represents one customer who showed intent to sel
 
 - **Order Date** — Date and time when the lead was created from checkout.
 - **Model** — Device model the customer wants to sell.
-- **Type** — Device category: Mobile, Tablet, Laptop, or Mac.
-- **Status** — Lead status: New, Connected, or Not Connected.
-- **Notes** — Follow-up notes added by admins during calls.
+- **Assigned** — Sales executive the lead is assigned to, or *Unassigned*.
+- **Type** — Device category badge.
+- **Status** — Lead status badge, for example New, Connected - Callback or Not Connected - Ringing.
+- **Notes** — Follow-up notes added during calls, or *No Notes*.
+
+The list is paginated (25 rows per page) with Previous, page numbers and Next.
+
+## Lead detail drawer
+
+Click any row to open the lead drawer on the right:
+
+- **Header** — Lead status badge (for example *Initiated*), device type badge, device model and **Token** (with copy button).
+- **Device Specifications** — Device Turned On, RAM, Storage, Physical Condition, Accessories, Technical Condition, Warranty Status, Screen Condition, Body Condition, and the **Quoted Price**.
+- **Update Disposition** — **Select Status** (Connected / Not Connected), the disposition reason, an **Add remarks...** text box, and the **Update Disposition** button to save the call outcome.
+- **Create Lead** — Starts the conversion flow from lead to order.
+- **Customer Information** — Customer name, email, phone (with **Click to call**), pincode and city.
+- **Activity Logs** — Timeline of lead events, starting with *Lead Generated*.
 
 ## Converting a lead to an order
 

@@ -1,6 +1,6 @@
 ---
 title: Admin Panel Overview
-description: Understand who uses the Cashkr Admin Panel, what each module does, and the key rules for operating it safely and consistently.
+description: Understand who uses the Cashkr Admin Panel, how the sidebar is organised, what each module does, and the key rules for operating it safely and consistently.
 ---
 
 ## Overview
@@ -96,23 +96,56 @@ The Finance team depends on Admin Panel data for accurate payments and reconcili
 
 </Tabs>
 
+## Navigating the panel
+
+The left sidebar holds every module, grouped into collapsible sections. Inside each section, small uppercase sub-headings (for example **LIVE**, **NEEDS ATTENTION**, **ROSTER**) group related screens.
+
+| Element | Where | What it does |
+| --- | --- | --- |
+| **Search menu…** | Top of the sidebar | Type to find any screen by name. |
+| **Collapse** (‹) | Next to the logo | Collapses the sidebar to icons. |
+| **Count badges** | Next to some items | Live counts, for example orders in *Assigned · No Action* or *Delayed*, and *Hot Leads*. |
+| **Sidekick (AI)** | Bottom of the sidebar | Opens the Sidekick AI assistant. |
+| **Theme** | Bottom of the sidebar | Switches between light and dark theme. |
+| **Logout** | Bottom of the sidebar | Ends your session. |
+
+## Sidebar structure
+
+| Section | Sub-headings and screens |
+| --- | --- |
+| **Dashboards** | LIVE: Overview · LEADERSHIP: Leadership, Executive, Marketing Report · OPERATING: Growth, Operations / SLA, CX & Reviews, Vendors, Inventory & Pricing, Finance, Coupons, Referrals, Nurture Analytics, Influencers |
+| **Orders** | ACTIVE: All Orders, Live Order Map, Upcoming, Reserved, In Progress · NEEDS ATTENTION: Not Assigned, Assigned · No Action, Delayed, Flagged, To Be Failed, Coverage Gaps · CLOSED: Order Audit, Failed After Requote, Failed (No Requote) |
+| **B2C Sales** | TO WORK: My Leads, Hot Leads, New Leads, Not Called, Callbacks, Retention · OUTCOMES: Converted Orders, Lost Leads · TEAM: Assignment, Live Floor, Escalations, Reviews, Day Close · SUPPORT: CX Desk, Referrals, CX Settings, AI Health |
+| **Vendors** | ROSTER: All Vendors, New Applications, Activation Tracker, Onboarding, Store Vendors, Vendor Tiers, Inspection Durations, Vendor DIDs, Account Deletions · PERFORMANCE: Leaderboard, Vendor Report, Pricing Review · MONEY: Credits & Payments, Low Credit, Vendor Fines, Review Refunds, Review Refund Settings · COMMS: Notifications, Issue Reports, Training Hub, Stories |
+| **Inventory & Catalog** | STOCK: All Inventory · CATALOG: Products |
+| **Merchandise** | CATALOG: Products · FULFILLMENT: Orders |
+| **Finance** | MONEY IN: Device Sales, Returns · MONEY OUT: B2B Buyback, Device Purchases, Expenses, Purchase Orders, Pending Payments, Cash In Hand, Internal Vendors, Petrol Surge Claims · RECORDS: Purchases · REPORTS: Device Trail, All Reports, Profit & Loss, GST, Money Flow, Credits |
+| **Channels** | STORE: Leads, Completed, Failed · BUYBACK B2B: Deals, Leads, Clients, Inspection · Corporate Buyback |
+| **Marketing** | ACQUISITION: Banners, Push Notifications · PROGRAMS: Coupons, Abandoned Coupons, Referral Programs, Referral Transactions, Referral Payouts · REPUTATION: Platform Reviews |
+| **HR** | HIRING: Careers |
+| **Cost Monitor** | OVERVIEW: Overview |
+| **System** | PEOPLE: Users, Customers, Admin Users, Demo Users · DEVICES CATALOG: Phone, Tablet, Laptop, Mac, Console, Camera, Headphone, Watch, Model Requests · LOCATIONS: Areas & Zones · ADMIN: Connections, Data Health, Master Logs, Customer Activity Logs, Contact Messages, Stolen Devices, Fraud & Trust Audit, Terms & Conditions, Help & Support, Settings, Live Ticker, Attendance, Linode Costs |
+
+<Callout kind="tip">
+Not every admin sees every section. The Super Admin controls which modules each admin user can access (System → Admin Users).
+</Callout>
+
 ## Modules at a glance
 
-Use this table to understand what each Admin Panel module does and which teams rely on it most.
-
-| Module                | What it is used for                                                                 | Primary teams                            |
-| --------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------- |
-| Dashboard             | View real-time metrics such as orders today, city-wise performance, SLAs, vendors. | Management, Operations, BD               |
-| Orders                | Track full order lifecycle, assign vendors, update statuses, resolve issues.       | Operations, CX, Vendor Ops, Finance      |
-| Leads                 | Monitor unconverted leads, follow-ups, dispositions, and high-value devices.       | Sales, CX                                |
-| Vendors               | Manage vendor profiles, KYC, SLAs, credits, and area coverage; hold/deactivate.    | Vendor Ops, Operations, BD               |
-| Payments (Wallet and Credits) | Review vendor wallet transactions, credit deductions, refunds, and reversals.          | Finance, Vendor Ops                      |
-| Customers             | View customer profiles, order history, referrals, and edit customer details.       | CX, Sales                                |
-| Models and Pricing    | Maintain device list, model variants, pricing logic, and deduction rules.          | Pricing team                             |
-| Coupons and Referrals | Manage active coupons, referral usage, and bonuses; create and edit coupons.       | Marketing, Finance, CX                   |
-| Support and Complaints| Track customer complaints, vendor misconduct, and SLA escalations and resolutions. | CX, Operations, Vendor Ops               |
-| Logs and Audit Trail  | See detailed history of actions, status changes, refunds, and system events.       | Tech, Management, Finance                |
-| Settings (Roles and Permissions) | Add admin users and manage access control to protect sensitive actions.              | Tech, Management                         |
+| Section | What it is used for | Primary teams |
+| --- | --- | --- |
+| **Dashboards** | Live and period analytics: overview, leadership and CXO reports, growth, ops/SLA, CX, vendors, inventory, finance, coupons, referrals, nurture and influencers. | Management, Operations, Marketing, Finance |
+| **Orders** | Track the full order lifecycle, assign vendors, work exception queues, audit closed and failed orders. | Operations, CX, Vendor Ops |
+| **B2C Sales** | Work leads (hot, new, not called, callbacks, retention), manage the calling team floor and escalations, and run the CX desk. | Sales, CX |
+| **Vendors** | Vendor roster and onboarding, tiers and DIDs, performance, credits, fines, review refunds, notifications and training. | Vendor Ops, Operations, BD |
+| **Inventory & Catalog** | Devices held in stock and the product catalogue. | Operations, Finance |
+| **Merchandise** | Vendor merchandise products and orders. | Vendor Ops |
+| **Finance** | Money in and out, purchases, cash in hand, petrol surge claims, and finance reports. | Finance |
+| **Channels** | Store buyback, B2B buyback and corporate buyback pipelines. | Sales, BD |
+| **Marketing** | Banners, push notifications, coupons, referral programs and payouts, platform reviews. | Marketing |
+| **HR** | Careers / job postings. | HR |
+| **Cost Monitor** | Spend across all third-party services in one view: this month, last month, YTD, upcoming renewals and spend by category. | Tech, Management, Finance |
+| **System** | Users and admins, device pricing catalogue, areas and zones, logs, fraud tools, terms, help content, settings, live ticker and attendance. | Tech, Management, Pricing, BD |
 
 ## Key rules when using the Admin Panel
 
@@ -128,7 +161,7 @@ High-risk actions: never change order statuses without authorization, always doc
 - Do not make manual data edits without proper documentation and internal notes.
 - Maintain SLA commitments and follow escalation rules when SLAs are at risk or breached.
 - Business Development must update pincodes regularly to reflect actual serviceable areas.
-- CX must log every complaint properly in the Support and Complaints module.
+- CX must log every complaint properly (B2C Sales → Support → CX Desk).
 - Vendor Operations must maintain vendor discipline and quality control logs.
 
 ## One-page quick summary
@@ -146,6 +179,6 @@ Used by:
 - Vendor Ops → Vendor management
 - Finance → Payments and refunds
 
-Main modules: Dashboard, Orders, Leads, Vendors, Payments, Customers, Models and Pricing, Coupons and Referrals, Support and Complaints, Logs and Audit Trail, Settings.
+Sidebar sections: Dashboards, Orders, B2C Sales, Vendors, Inventory & Catalog, Merchandise, Finance, Channels, Marketing, HR, Cost Monitor, System.
 
 </Callout>

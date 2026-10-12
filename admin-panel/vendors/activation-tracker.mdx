@@ -1,0 +1,52 @@
+---
+title: Activation Tracker
+description: Track ramp-up of recently approved B2C vendors — stage, coverage, credits, orders, time to first pickup, and what is blocking them.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Roster → **Activation Tracker** (`/vendors/activation`). Page title: **Vendor Activation** — "Ramp progress for recently approved vendors, and what's blocking the ones that haven't started."
+
+Use it after accepting vendors in [New Applications](/new-vendors---b2c) to make sure each one actually starts receiving and completing orders.
+
+## KPI cards
+
+| Card | Meaning |
+| --- | --- |
+| Approved in window | Vendors approved within the selected window. |
+| Blocked | Approved vendors that cannot receive orders yet. |
+| Ready · no orders | Covered and funded, but no orders have reached them yet. |
+| Ramping | Have started receiving orders. |
+| Median days to 1st pickup | Median days from approval to first completed pickup. |
+
+## Filters
+
+- **Window** — 30d, 60d (default), 90d, 180d.
+- **Stage** — All, Blocked, Ready · no orders, Ramping, Active.
+- **Refresh** — reloads the data.
+
+## Table
+
+| Column | What it shows |
+| --- | --- |
+| Vendor | Vendor name. |
+| City | Vendor city. |
+| Stage | Blocked, Ready · no orders, Ramping or Active. |
+| Since approval | Days since approval. |
+| Pincodes | Number of pincodes assigned. |
+| Credits | Current credit balance. |
+| Orders | Orders completed / received. |
+| 1st pickup | Days from approval to first pickup ("—" if none yet). |
+| Next step | What to do next, e.g. "Covered and funded, but no orders have reached them yet". |
+
+<Callout kind="info">
+
+Approval dates are read from the vendor status-change log. The footer shows when the data was last updated.
+
+</Callout>
+
+<Callout kind="tip">
+
+For a **Blocked** vendor, open them in [All Vendors](/b2c-vendors) and check pincodes / zones, Max Leads and credits — a vendor needs at least one pincode and Max Leads above 0 to go Live.
+
+</Callout>

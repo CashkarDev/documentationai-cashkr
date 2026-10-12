@@ -1,11 +1,11 @@
 ---
 title: Laptop
-description: Manage the laptop master catalog in the Admin Panel, including models, brands, classes, pricing, laptop-specific credits, and component-based pricing.
+description: Manage the laptop master catalog in the Admin Panel, including models, brands, classes, the processor-based pricing matrix, laptop credits, and component pricing.
 ---
 
 ## Overview
 
-The Laptop page in the Devices section is the master catalog for all laptop models available for buyback on the Cashkr platform. Laptop management uses six tabs: Models, Brands, Classes, Pricing, Credits, and Components. Credits and Components are laptop-specific tabs that handle vendor credit algorithms and component-based pricing for processors, RAM, storage, and graphics cards. Together, these controls keep laptop valuations accurate, consistent, and aligned with your pricing logic.
+The Laptop page (**Laptop Management**, route `/laptop`) is the master catalog for all laptop models available for buyback. It has six tabs: **Models**, **Brands**, **Classes**, **Pricing**, **Credits**, and **Components**. Credits and Components exist only for laptops. Laptop pricing is built from a base price plus component values (processor, RAM, storage) adjusted by the class, so laptops have no storage/RAM variants.
 
 ## Tabs
 
@@ -14,47 +14,58 @@ The Laptop page in the Devices section is the master catalog for all laptop mode
 
 ### What you see
 
-The Models tab lists all configured laptop models in the system. Each row shows:
+The Models tab lists laptop models, 20 per page ("Showing 1 to 20 of N models").
 
-- Model name
-- Brand and series
-- Device image
-- Unique system code
-- Base buyback price
-- Assigned class
-- Available actions
+| Column | Description |
+| --- | --- |
+| Checkbox | Select rows. |
+| Model | Image, model name, and brand • URL slug. |
+| Code | Unique code, for example `ACEL100061`. |
+| Price | Base price. |
+| Showoff Price | Display price shown to customers. |
+| Class | Assigned class (Class 1–5 / A–E). |
+| Actions | Row menu. |
 
-The Laptop Models tab does not show a Variants column because laptop pricing is driven more by component specifications (processor, RAM, storage) managed in the Components tab than by fixed variants.
+There is no Variants column or expand chevron for laptops.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769245789-h24tkemdd8d-laptop-models.laptop models?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="829" alt="Laptop Models tab showing the list of configured laptop models, columns, and available actions" />
 
 ### Search & filters
 
-Search by model name or filter by brand to quickly find specific laptop models.
+- **Search models…** with **Filter**.
+- **All Brands** — Acer, Asus, AVITA, Dell, HP, Lenovo, Microsoft, MSI, Nokia, Realme, Samsung, Xiaomi.
+- Refresh icon.
+
+### Row actions
+
+**Edit Model**, **View SEO**, **Duplicate**, **Delete** (no Add Variant).
 
 ### Add
-
-Use the Add Model action to create a new laptop entry with the same structure as Phone models, but with Device Type set to Laptop.
 
 <Steps>
   <Step title="Open the add model form" icon="plus">
 
-  Click **Add Model**.
+  Click **Add Model** ("Add a new laptop model").
 
   </Step>
-  <Step title="Enter basic information">
+  <Step title="Basic Info">
 
-  Fill in **Basic Info**.
-
-  </Step>
-  <Step title="Configure pricing and variants">
-
-  Configure **Pricing and Variants** using laptop-specific settings.
+  **Brand***, **Model Name*** (for example ThinkPad X1 Carbon), and **Image** (URL or Upload). There are no Series, Storage, or RAM fields.
 
   </Step>
-  <Step title="Add SEO, set device type, and save">
+  <Step title="URL & Code">
 
-  Add **SEO Information**, set **Device Type** to **Laptop**, and save.
+  **Base URL** and **Model Code**, each with **Generate**.
+
+  </Step>
+  <Step title="SEO">
+
+  **Auto-Generate SEO** or fill Page Title, Page Description, H1 Heading, and Image Alt Text.
+
+  </Step>
+  <Step title="Pricing and save">
+
+  Enter **Base Price (₹)***, **Showoff Price (₹)**, and **Pricing Class***, then click **Create Model**.
 
   </Step>
 </Steps>
@@ -65,17 +76,11 @@ Use the Add Model action to create a new laptop entry with the same structure as
 
 ### What you see
 
-The Brands tab displays all laptop brands registered in the system, such as Dell, HP, Lenovo, Acer, Apple, Asus, and others. Brand data populates the brand dropdown during laptop model creation and appears on the customer app and website.
+**Brand Management** (Dashboard / Laptop) lists laptop brands (Acer, Asus, Avita, Dell, HP, Lenovo, Microsoft, MSI, Nokia, Realme, Samsung, Xiaomi) with Brand ID, Brand Name, Device Type, Brand Link, Brand Image, and Title.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769270411-9ftdkgrcadd-laptop-brands.laptop brands?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="824" alt="Laptop Brands tab listing all laptop brands configured in the system" />
 
-### What you see (fields and behavior)
-
-All capabilities are identical to the Phone Brands tab. When you add or manage brands here, the same behaviors and fields apply, with Device Type set to Laptop.
-
-### Add
-
-Set Device Type to Laptop when adding brands so they appear in the laptop brand dropdown during laptop model creation.
+Search, Filters, **Add New Product** (Add New Brand), and the Brand Details view (Edit, Delete) work as on the [Phone](/phone) Brands tab. Set **Device Type** to Laptop when adding brands.
 
 </Tab>
 
@@ -83,22 +88,23 @@ Set Device Type to Laptop when adding brands so they appear in the laptop brand 
 
 ### What you see
 
-The Classes tab shows all condition-based classes configured for laptops. Class fields and pricing logic are identical to the Phone Classes tab and cover multiple condition dimensions.
+The **Laptop Classes** table has five classes (A–E) with ID, Class Type, Credit, Dead Price, Tier, and the laptop condition codes. Laptop codes differ from Phone:
+
+| Group | Codes | Options |
+| --- | --- | --- |
+| Warranty | W1–W3 | 0–3 months, 3–11 months, 11+ months |
+| Battery | B1–B4 | Excellent (80–100%), Good (60–80%), Average (40–60%), Poor (&lt;40%) |
+| Screen (size) | S1–S4 | 10–12 inch, 13–14 inch, 15–16 inch, 16+ inch |
+| Physical | P1–P16 | Display Changed, Keyboard Issues, Trackpad, Speaker, Wifi/Bluetooth, Fingerprint/TouchID, Charging, Battery, USB Port, CD Drive, WebCam, Charger, Hard Disk, Display Issue, Hinge, Motherboard |
+| Accessories | A1–A3 | Bill, Box, Charger |
+
+There is no Technical tab for laptops.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769289061-05jjrl6hl859-laptop-classes.laptop classes?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="831" alt="Laptop Classes tab showing condition-based classes and pricing factors" />
 
-Classes typically include:
-
-- Warranty condition
-- Battery condition
-- Screen condition
-- Physical condition
-- Technical condition
-- Accessories
-
 ### Add
 
-Set Device Type to Laptop when adding new classes so they apply correctly to laptop models and pricing.
+Click **Add New Class** ("Create a new pricing model for Laptop devices"). Fill Basic Info (Class Type*, Tier, Credit, Dead Price), then the Warranty, Battery, Screen, Physical, and Accessories tabs, and click **Create Class**. **Export CSV** downloads the classes.
 
 </Tab>
 
@@ -106,13 +112,23 @@ Set Device Type to Laptop when adding new classes so they apply correctly to lap
 
 ### What you see
 
-The Pricing tab displays a table of all laptop models with their assigned class and warranty-based price slabs across four warranty brackets. Pricing configuration and auto-update logic are identical to the Phone Pricing tab.
+The laptop Pricing tab is a **Laptop Pricing Matrix**, not age brackets. Each row is a laptop model with its brand and class, **Base Price**, **Bonus**, and one price column per processor generation (AMD Ryzen 3/5/7/9 and Pro generations, Intel Core i3/i5/i7/i9 4th–14th Gen, Intel Core Ultra 7, Ryzen AI 7/9 300 Series).
 
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769319714-wf21l998jwk-laptop-pricing.laptop pricing?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="834" alt="Laptop Pricing tab showing laptop models, classes, and warranty-based price slabs" />
+The matrix header shows the formula used for each cell:
 
-### Search & filters
+```text
+(Base + Processor + 8GB RAM [₹500] + 256GB SSD [₹900] + S2 + A2 + A3) − W3% − B2%
+```
 
-Set the device type filter to Laptop when working in this tab to view and manage only laptop pricing.
+Standard scenario: above 11 months (W3), B2, 13–14" screen (S2), and A2 + A3 accessories present. Percentages are applied on the accumulated total. The RAM and SSD values come from the Components tab.
+
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769319714-wf21l998jwk-laptop-pricing.laptop pricing?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="834" alt="Laptop Pricing tab showing laptop models with processor-based price columns" />
+
+### Controls
+
+- **BuyBack bonus** switch and **Bulk bonus**, shared with other categories.
+- **Bonus** filter (Any), **Search laptops… (press Enter)**, and **Refresh**.
+- **Bonus** cells show the model bonus or **+ Add**.
 
 </Tab>
 
@@ -120,80 +136,64 @@ Set the device type filter to Laptop when working in this tab to view and manage
 
 ### What you see
 
-The Credits tab is unique to laptop management and controls vendor credit earnings for laptop buyback orders. It shows the Laptop Credit Management section with a table of all configured credit algorithms.
-
-Each row in the table shows:
+**Laptop Credit Management** ("Manage credit algorithms for laptop pricing tiers") controls vendor credits for laptop buyback orders. The **Credit Algorithms** table shows the total count and these columns:
 
 - **Device Type** — Laptop
-- **Price Range** — INR price range the algorithm applies to, such as ₹1 to ₹10,000 or ₹10,001 to ₹15,000
-- **Credit Amount** — Number of credits awarded to the vendor for completing an order in that price range
-- **Type Credits** — Additional credit type details if applicable
-- **Created** — Date the algorithm was created
-- **Actions** — Edit or delete the algorithm
+- **Price Range** — For example ₹1 – ₹10,000
+- **Credit Amount**
+- **Type Credits**
+- **Created**
+- **Actions**
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769352632-65dd9lm6dbt-laptop-credits.laptop credits?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="830" alt="Laptop Credits tab showing credit algorithms by price range and credit amount" />
 
-This configuration allows the platform to automatically award more credits to vendors for higher-value laptop buybacks and fewer credits for lower-value ones.
-
 ### Search & filters
 
-Search for a specific credit algorithm and filter by Device Type, set to Laptop, to focus on laptop credit rules.
+The **Filters** panel has **Search… (press Enter)** and **Device Type** (Laptop).
 
 ### Add
-
-Use the Add Credit Algorithm action to create new laptop credit brackets.
 
 <Steps>
   <Step title="Open the add credit algorithm form" icon="plus">
 
-  Click **Add Credit Algorithm** in the top-right corner.
+  Click **Add Credit Algorithm**.
 
   </Step>
   <Step title="Define the price range">
 
-  Set the **Price Range** by choosing the minimum and maximum INR values for the bracket.
+  Set the minimum and maximum INR values for the bracket.
 
   </Step>
   <Step title="Set credit amount">
 
-  Enter the **Credit Amount** for completing a laptop order in this price range.
+  Enter the **Credit Amount** for a laptop order in this range.
 
   </Step>
   <Step title="Save the algorithm">
 
-  Save the algorithm so it applies to future laptop buyback orders.
+  Save so it applies to future laptop buyback orders.
 
   </Step>
 </Steps>
 
-### Edit
+### Edit and delete
 
-Update existing credit brackets when you need to tweak how many credits vendors earn.
-
-- Click the **edit** icon on the relevant row.
-- Update the **Price Range** and/or **Credit Amount** as required.
-- Save your changes; updates apply immediately to new orders.
-
-### Delete
-
-Remove outdated or incorrect credit brackets using the delete action on the corresponding row.
+Use the row actions to edit the price range or credit amount, or to delete a bracket.
 
 <Callout kind="alert">
 
-Deleting a credit algorithm can leave uncovered price ranges where vendors receive no credits or incorrect credits. After deletion, verify that all price ranges remain fully covered and that laptop orders map cleanly to a single credit rule.
+Deleting a credit algorithm can leave price ranges uncovered. After deletion, check that every price range maps to exactly one credit rule.
 
 </Callout>
 
-### Example credit algorithms
+### Current credit brackets
 
-Typical laptop credit brackets might look like:
-
-- ₹1 to ₹10,000 — 30 credits
-- ₹10,001 to ₹15,000 — 45 credits
-- ₹15,001 to ₹20,000 — 50 credits
-- ₹20,001 to ₹30,000 — 70 credits
-- ₹30,001 to ₹40,000 — 100 credits
-- ₹40,001 to ₹200,000 — 100 credits
+- ₹1 – ₹10,000 — 30
+- ₹10,001 – ₹15,000 — 45
+- ₹15,001 – ₹20,000 — 50
+- ₹20,001 – ₹30,000 — 70
+- ₹30,001 – ₹40,000 — 100
+- ₹40,001 – ₹200,000 — 100
 
 </Tab>
 
@@ -201,178 +201,48 @@ Typical laptop credit brackets might look like:
 
 ### What you see
 
-The Components tab is also unique to laptop management and controls the pricing value of individual hardware components that affect laptop buyback value. Component pricing feeds into the final buyback price offered to the customer.
-
-Components are split into four sub-tabs:
-
-- Processor
-- RAM
-- Storage
-- Graphics Card
+The Components tab sets the INR value each hardware component adds to a laptop's price. It has four sub-tabs, each with the same layout: a title ("Processor Pricing", "RAM Pricing", and so on), an **Add …** button, **Export**, a search box ("Search processor… (press Enter)"), a table with **ID**, **Name**, **Value (Price)**, and **Actions**, and summary cards (**Total Components**, **Average Value**, **Highest Value**).
 
 <Tabs>
 <Tab title="Processor">
 
-#### What you see
+Processors such as Intel Core i3 8th–13th Gen with their INR value. Add with **Add Processor**.
 
-The Processor sub-tab lists all laptop processors configured in the system with their pricing values. Each row shows:
-
-- Processor ID
-- Processor name, such as Intel Core i3 13th Gen
-- INR value contribution this processor adds to the laptop price
-
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769378816-at8jpywi3ih-processor.processor?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="823" alt="Processor sub-tab showing processor list with IDs, names, and INR value contributions" />
-
-#### Search & filters
-
-Search for specific processors by name to quickly locate and manage their pricing entries.
-
-#### Add
-
-Use the Add Processor action to introduce new processor options with their price impact.
-
-<Steps>
-  <Step title="Open the add processor form" icon="plus">
-
-  Click **Add Processor**.
-
-  </Step>
-  <Step title="Enter processor details">
-
-  Enter the **processor name**.
-
-  </Step>
-  <Step title="Set price value">
-
-  Set the **price value** representing its INR contribution to the laptop price.
-
-  </Step>
-  <Step title="Save the processor">
-
-  Save the processor so it appears in evaluations and pricing calculations.
-
-  </Step>
-</Steps>
-
-#### Delete
-
-Remove processors that are no longer relevant using the delete icon next to the corresponding row.
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769378816-at8jpywi3ih-processor.processor?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="823" alt="Processor sub-tab showing processor list with IDs, names, and INR values" />
 
 <Callout kind="alert">
 
-Before deleting a processor, confirm that no active laptop models rely on that processor for pricing. Removing an in-use processor can cause gaps or inconsistencies in laptop price calculations.
+Before deleting a processor, confirm that no active laptop models rely on it. Removing an in-use processor can cause gaps in the pricing matrix.
 
 </Callout>
 
-#### Export
-
-Use the Export action to download all processor pricing data as a file for analysis, backup, or bulk review.
-
 </Tab>
-
 <Tab title="RAM">
 
-#### What you see
+RAM sizes from 4 GB to 256 GB with their INR value (for example 8 GB = ₹500). Add with **Add RAM**.
 
-The RAM sub-tab displays all RAM configurations with their pricing values. Each row shows:
-
-- RAM ID
-- RAM specification, such as 8GB DDR4
-- INR value contribution this RAM config adds to the laptop price
-
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769405914-2rz0ackz4af-ram.ram?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="832" alt="RAM sub-tab showing RAM configurations with IDs, specs, and INR value contributions" />
-
-#### Add
-
-Add new RAM configurations when you introduce new laptop specs or pricing tiers.
-
-<Steps>
-  <Step title="Open the add RAM configuration form" icon="plus">
-
-  Click the action to add a new RAM configuration.
-
-  </Step>
-  <Step title="Enter RAM specification">
-
-  Enter the **RAM specification**, such as capacity and type.
-
-  </Step>
-  <Step title="Set INR value contribution">
-
-  Set the **INR value contribution** for this configuration.
-
-  </Step>
-  <Step title="Save the configuration">
-
-  Save the entry to use it in laptop price evaluations.
-
-  </Step>
-</Steps>
-
-#### Edit
-
-Update RAM entries as market prices or laptop lineups change.
-
-- Open the RAM configuration you want to adjust.
-- Modify the **specification** and/or **INR value contribution**.
-- Save the changes so new evaluations use the updated values.
-
-#### Delete
-
-Delete RAM configurations that you no longer support or sell.
-
-<Callout kind="alert">
-
-Deleting RAM configurations that still appear in active laptop models can lead to incomplete or incorrect pricing. Review dependent models before removing a RAM entry.
-
-</Callout>
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769405914-2rz0ackz4af-ram.ram?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="832" alt="RAM sub-tab showing RAM configurations with IDs and INR values" />
 
 </Tab>
-
 <Tab title="Storage">
 
-#### What you see
+SSD (128 GB to 8 TB) and HDD options with their INR value (for example 256 GB SSD = ₹900). Add with **Add Storage**.
 
-The Storage sub-tab lists all storage configurations with their pricing values. Each row shows:
-
-- Storage ID
-- Storage specification, such as 512GB SSD
-- INR value contribution this storage option adds to the laptop price
-
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769425761-qf9d5r8r03i-storage.storage?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="827" alt="Storage sub-tab showing storage configurations with IDs, specs, and INR value contributions" />
-
-Manage storage options to keep pricing accurate for different storage tiers and capacities.
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769425761-qf9d5r8r03i-storage.storage?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="827" alt="Storage sub-tab showing storage configurations with IDs and INR values" />
 
 </Tab>
-
 <Tab title="Graphics Card">
 
-#### What you see
+GPUs such as RTX 3050, 4060, and 5070 with their INR value. Add with **Add Graphics Card**.
 
-The Graphics Card sub-tab lists all graphics card configurations with their pricing values. Each row shows:
-
-- Graphics card ID
-- Graphics card name, such as NVIDIA GTX 1650
-- INR value contribution this GPU adds to the laptop price
-
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769451070-f2puyxy3ldw-graphics.graphics?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="834" alt="Graphics Card sub-tab showing GPU configurations with IDs, names, and INR value contributions" />
-
-Use these entries to differentiate pricing for laptops with integrated graphics versus dedicated GPUs and across GPU performance tiers.
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774769451070-f2puyxy3ldw-graphics.graphics?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="834" alt="Graphics Card sub-tab showing GPU configurations with IDs and INR values" />
 
 </Tab>
 </Tabs>
 
 ### How components affect laptop pricing
 
-Laptop buyback pricing combines base model price, condition class, and component values to arrive at the final offer shown to the customer.
-
-During evaluation:
-
-- The system identifies the laptop's processor, RAM, storage, and graphics card.
-- It looks up the INR values for each component from the Components tab.
-- These component values are added to the base model price and adjusted by the assigned class.
-
-Keeping processor, RAM, storage, and graphics card prices accurate and up to date ensures customers receive fair and competitive buyback offers for their laptops.
+During evaluation, the system takes the laptop's base price, adds the values for its processor, RAM, storage (and graphics card where applicable) from this tab, then applies the class adjustments. Keep component prices current, because they directly change every cell in the Pricing matrix and every laptop offer.
 
 </Tab>
 </Tabs>

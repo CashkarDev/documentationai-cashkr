@@ -5,7 +5,9 @@ description: Manage all Cashkr customers from a single list, review their histor
 
 ## Overview
 
-The Cashkr Users page under Data → Users lists every customer registered via the Cashkr website or customer app. Admins use this page to review customer history, monitor referrals and reviews, and block or unblock accounts when needed.
+**Sidebar path:** Users → Users (`/users`). The page header reads *Users — Manage app users, view their journey, and track reviews.*
+
+The Cashkr Users page lists every customer registered via the Cashkr website or customer app. Admins use this page to review customer history, monitor referrals and reviews, and block or unblock accounts when needed.
 
 <Callout kind="info">
 
@@ -33,8 +35,10 @@ The All Users table lists every registered customer. Each row represents one cus
 - **Contact** — Registered phone number (with quick call option) and email address.
 - **City** — City from the customer's saved address.
 - **Orders** — Total number of orders the customer has placed.
-- **Rating** — Average rating the customer has given across their completed orders.
+- **Rating** — Average rating (star) recorded against the customer's orders; "—" when there are none.
 - **Status** — Current account status, either Active or Blocked.
+
+The table shows 10 customers per page with **Previous** / **Next** and a "Page X of Y • N users" indicator.
 
 Use this list to scan customer activity at a glance and to open the detail panel for deeper investigation.
 
@@ -74,7 +78,7 @@ The Details tab combines profile information with key performance and activity m
 
 **Performance summary**
 
-- **Avg Rating** — Average rating the customer has given across all completed orders.
+- **Avg Rating** — Average rating out of 5, with the number of reviews it is based on.
 - **Total Sale Value** — Total INR value of all devices the customer has sold through Cashkr.
 
 **Order activity**
@@ -94,17 +98,19 @@ Use this tab before taking any action to understand how important the customer i
 
 ## Journey tab
 
-The Journey tab shows a chronological timeline of the customer's activity on the platform, including:
+The Journey tab shows the customer's orders as a newest-first timeline. Each card shows:
 
-- Order creation and status changes.
-- Key milestones in the customer's lifecycle.
-- Other notable events in their engagement history.
+- Status badge (e.g. Completed, Failed) and date/time.
+- Device name and category (e.g. Mobile, Tablet, Console).
+- **Quote** price and, for completed orders, the **Final** price.
+- **Pickup** date and slot (or *Instant pickup*).
+- Assigned **Vendor**.
 
 Review the journey to understand context behind complaints, disputes, or suspicious patterns before deciding whether to block or escalate.
 
 ## Reviews tab
 
-The Reviews tab lists all reviews and ratings the customer has submitted for their completed orders. Use this view to:
+The Reviews tab lists the ratings recorded for this customer's orders, each showing the score out of 5, the source (e.g. **Vendor** — "Rating from vendor") and the date. Use this view to:
 
 - Gauge the customer's satisfaction levels over time.
 - Identify patterns in their feedback (for example, repeated complaints about a vendor or a process).

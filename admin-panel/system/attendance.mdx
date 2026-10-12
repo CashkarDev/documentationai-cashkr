@@ -1,0 +1,73 @@
+---
+title: Attendance
+description: Monitor store vendor punch-ins, field executive (cashboy) locations, geofencing and anti-spoofing audit logs, and override attendance when needed.
+---
+
+## Overview
+
+The **Vendor & Field Attendance Tracker** monitors real-time store vendor punch-ins, field executive (cashboy) locations, geofencing and anti-spoofing audit logs.
+
+Open it from **System → Admin → Attendance** in the left sidebar (route `/attendance`).
+
+For how vendors and cashboys punch in and out from the Vendor App, see [Vendor & Cashboy Attendance](/vendor-attendance).
+
+## Header actions
+
+- **Refresh** — Reload attendance data.
+- **Export CSV** — Download the attendance roster.
+
+## Summary cards
+
+| Card | Meaning |
+| --- | --- |
+| Clocked In | Partners active today |
+| Present (Store) | Store vendors present at their counters |
+| On-Field Agents | Cashboys active on field pickups |
+| Late Arrival | Punch-ins after 10:15 AM |
+| Disputed / Mock | Records needing admin audit (e.g. suspected location spoofing) |
+| Checked Out | Shifts completed |
+
+## Attendance Roster Table
+
+**Filters**
+
+- **Search** — Partner name, phone or store.
+- **Role** — All Roles, **Store Vendor**, **Vendor / Cashboy**.
+- **Status** — All Statuses, **Present**, **Late**, **On Field**, **Checked Out**, **Disputed / Mock**.
+
+**Columns**
+
+| Column | Description |
+| --- | --- |
+| Partner Info | Name and phone |
+| Role | e.g. Cashboy or Store Vendor |
+| Store / Location | Store name, or *Field Dynamic* for field agents |
+| Punch In | Time and date |
+| Punch Out | Time, or *Active Shift*; completed shifts show the duration |
+| Geofence Check | Device check details such as battery level |
+| Selfie | Punch-in selfie thumbnail |
+| Status | On Field, Checked Out, etc. |
+| Actions | **Edit** |
+
+### Admin Attendance Override
+
+Click **Edit** on a row to open **Admin Attendance Override** ("Update status or regularize attendance for &lt;partner&gt;"):
+
+| Field | Description |
+| --- | --- |
+| New Attendance Status | PRESENT, LATE, ON_FIELD, CHECKED_OUT or DISPUTED |
+| Override Reason / Audit Remarks | Reason for the change, e.g. device GPS glitch or approved leave |
+
+Click **Save Override** to apply, or **Cancel** to close.
+
+<Callout kind="alert">
+Always enter a clear reason when overriding attendance. Overrides affect attendance records and should be auditable.
+</Callout>
+
+## Live Tracking Map & Stores
+
+The **Live Field Operations & Store Counter Map** tab shows:
+
+- **Store Counter Operational Status** — Store counters and whether they are operating.
+- **Active Field Cashboys (Live Locations)** — Each active cashboy with status (e.g. On Field), battery level, and last captured location ("No location captured" if none).
+- **Refresh Markers** — Reload the locations.

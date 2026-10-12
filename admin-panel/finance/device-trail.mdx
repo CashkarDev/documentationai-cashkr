@@ -1,0 +1,59 @@
+---
+title: Device Trail
+description: Look up the full lifecycle of a single device — source, payment to seller, inventory, resale and event timeline
+---
+
+## Overview
+
+**Sidebar path:** Finance → Reports → Device Trail (`/finance/device-trail`)
+
+**Device Trail** answers "where did this device come from and where did it go?". Search one device and see its full lifecycle on one page: who sold it to Cashkr, what was paid, its inventory and grading status, where it was sold, and a timeline of every event.
+
+---
+
+## Search
+
+Enter one of the following in the search box and click **Search** (or press **Enter**):
+
+| You can search by | Format |
+| --- | --- |
+| **IMEI** | 14–17 digits |
+| **Serial number** | As recorded on the device |
+| **Lead ID** | UUID of the B2C lead |
+| **B2B deal number** | e.g. `BD-123` |
+
+The result header shows the device name and type (e.g. *Galaxy Z Fold7 (Mobile)*), a source badge (e.g. **B2C Lead**) and what it **Matched on** (for example `imei (handover)`).
+
+---
+
+## What the result shows
+
+### Source — where it came from
+
+Lead ID, **Seller** name and phone, **Collected by** (vendor), **Device**, **Device type**, **IMEI**, **Serial**, **Pickup date** and **Pickup address**.
+
+### Payment to seller
+
+**Quoted price**, **Requote price**, **Final price**, **Paid at**, **Method** (e.g. Cash), and payout details when paid online — **UPI**, **Beneficiary**, **Bank**, **Account**, **IFSC**.
+
+### Inventory & grading
+
+Inventory and grading details once the device is in stock, otherwise *Not yet in inventory.*
+
+### Outbound — where it went
+
+Sale details once the device is sold, otherwise *Not sold yet.*
+
+### Event timeline
+
+A chronological list of every event for the device and its lead, each with date/time, a description and an event type tag, for example:
+
+| Event type | Example |
+| --- | --- |
+| `LEAD_CREATED` | Lead created for the device |
+| `LEAD_LOG` | Lead converted to order, order locked by vendor, status changes (Out For Pickup, Inspection Started), order completed |
+| `CALL` | Vendor called the customer |
+
+<Callout kind="tip">
+Use Device Trail for disputes and audits — for example to confirm what a seller was paid, or to trace a returned device back to its original purchase.
+</Callout>

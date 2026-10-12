@@ -5,7 +5,9 @@ description: Manage versioned terms and conditions for Cashkr, track vendor acce
 
 ## Overview
 
-The Terms & Conditions page in Settings lets admins create, manage, and publish versioned terms and conditions documents for the Cashkr platform. Multiple versions can exist at the same time with different statuses, while only one version is active for vendors at any point.
+The Terms & Conditions page (**Terms & Conditions Management** — "Manage your platform's terms and conditions versions") lets admins create, manage, and publish versioned terms and conditions documents for the Cashkr platform. Multiple versions can exist at the same time with different statuses, while only one version is active for vendors at any point.
+
+Open it from **System → Admin → Terms & Conditions** in the left sidebar (route `/terms&condition`). A **Refresh** icon at the top right reloads the data.
 
 Active versions are displayed to vendors in the vendor app and must be accepted before vendors can continue using the platform. Acceptance metrics on this page help you monitor compliance and follow up with vendors who have not yet agreed to the latest terms.
 
@@ -36,7 +38,7 @@ Each row in the table represents a single version and includes:
 - **Sections** — Number of sections the document contains.
 - **Acceptances** — Number of users who have accepted this version.
 - **Created** — Date and time when the version was created.
-- **Actions** — Quick actions available for that version: View, Duplicate, Edit, Export, and Delete.
+- **Actions** — Quick actions available for that version: View Details, Duplicate Terms, Edit Terms, Publish Version, and Delete Terms.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774785954305-uwkzm8ujem-terms-and-conditions.terms and conditions?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="831" alt="Terms & Conditions versions table and summary cards in the Cashkr Admin Panel" />
 
@@ -44,18 +46,32 @@ Each row in the table represents a single version and includes:
 
 Use the **Create New Version** button (top right) to add a new terms and conditions document while keeping existing versions intact.
 
+Clicking **Create New Version** opens the **Create New Terms & Conditions** dialog ("Create a new version of your terms and conditions").
+
+| Field | Notes |
+| --- | --- |
+| Title * | Document title, e.g. "Terms and Conditions" or "Vendor Onboard Agreement" |
+| Version * | Version number, e.g. `1.0.0` |
+| Changes Summary | Describe what changed in this version |
+| Sections | One or more sections; use **Add Section** to add more |
+| Section Number | Order of the section |
+| Section Type | Header, Content, Footer, Legal Notice or Contact Info |
+| Required section | Checkbox (checked by default) |
+| Section Title * | e.g. "Introduction" |
+| Section Content * | Full text of the section |
+
 <Steps>
-  <Step title="Start a new Draft" icon="plus">
-    Click Create New Version in the top-right corner of the Terms & Conditions page to open the new version form, which is created in Draft status by default.
+  <Step title="Open the form" icon="plus">
+    Click Create New Version in the top-right corner of the versions table.
   </Step>
   <Step title="Enter document details" icon="edit">
-    Add a clear document title such as Vendor Onboard Agreement or Customer Terms of Service and confirm the version number, which is either assigned automatically or entered manually following your versioning convention.
+    Enter the Title, Version and a Changes Summary.
   </Step>
   <Step title="Add sections and content" icon="file-text">
-    Define the sections that make up the terms document and fill in the full legal content so that vendors will see the complete agreement when it is activated.
+    Fill in each section's number, type, title and content. Click Add Section for additional sections.
   </Step>
-  <Step title="Save as Draft" icon="save">
-    Keep the status set to Draft while the content is being written and reviewed; once you create the version, it appears in the table with Draft status and remains fully editable.
+  <Step title="Create" icon="save">
+    Click Create Terms. The new version appears in the table in Draft status and remains editable. Click Cancel to close without saving.
   </Step>
 </Steps>
 
@@ -75,9 +91,9 @@ Status determines whether vendors can see a version and whether acceptance is re
 
 Use search, filters, and sorting controls above the table to quickly locate specific versions:
 
-- **Search** — Search for a version by title, version number, or content keywords, then click Search to apply the filter.
+- **Search** — Search for a version by title, version number, or content keywords (**Search by title, version, or content...**).
 - **Status filter** — Narrow the list by status: All Status, Draft, Active, or Published, so you can focus on versions that are being drafted, currently live, or archived.
-- **Sort options** — Sort the list by Created date, Acceptance count, Version number, or Title using the sort dropdown, and toggle ascending or descending order using the sort direction button.
+- **Sort options** — Sort the list by Created Date, Version, Title, or Acceptances using the sort dropdown, and toggle ascending or descending order using the sort direction button.
 
 These tools make it easier to manage large histories of terms and conditions versions over time.
 
@@ -85,11 +101,11 @@ These tools make it easier to manage large histories of terms and conditions ver
 
 The **Actions** column in the table provides quick controls for each version:
 
-- **View** — Click the eye icon to open a read-only preview of the full terms and conditions document. All sections and content are displayed exactly as vendors will see them in the vendor app.
-- **Edit** — Click the pencil icon to change the document content, title, sections, or status. Only edit versions in Draft status. Avoid editing an Active version while vendors are in the process of accepting it to prevent inconsistencies.
-- **Duplicate** — Click the duplicate icon to create an exact copy of an existing version. The duplicate is created as a new Draft with the same content and sections, which is ideal when creating an updated version based on an existing document.
-- **Export** — Click the export icon to download the terms and conditions document as a file for offline sharing, legal review, or record-keeping.
-- **Delete** — Click the delete icon to permanently remove a version from the system. You can delete Draft versions freely, but be cautious with Published versions because they may be referenced in acceptance records.
+- **View Details** — Click the eye icon to open a read-only preview of the full terms and conditions document. All sections and content are displayed exactly as vendors will see them in the vendor app.
+- **Edit Terms** — Click the pencil icon to change the document content, title, sections, or status. Only edit versions in Draft status. Avoid editing an Active version while vendors are in the process of accepting it to prevent inconsistencies.
+- **Duplicate Terms** — Click the duplicate icon to create an exact copy of an existing version. The duplicate is created as a new Draft with the same content and sections, which is ideal when creating an updated version based on an existing document.
+- **Publish Version** — Click the upload icon to publish the version so it becomes live for users. Only publish content that has been reviewed and approved.
+- **Delete Terms** — Click the trash icon to permanently remove a version from the system. You can delete Draft versions freely, but be cautious with Published versions because they may be referenced in acceptance records.
 
 <Callout kind="alert">
   Deleting a Published version that is associated with acceptance records can break your compliance history. Only delete Published versions when you are certain they are not needed for legal or audit purposes.
@@ -134,7 +150,7 @@ Admins who manage Terms & Conditions in Settings should consistently follow thes
 - Always create new versions as Drafts and review them thoroughly before changing the status to Active.
 - Monitor the **Need Acceptance** count regularly after activating a new version and follow up with vendors who have not accepted.
 - Use the **Duplicate** action when creating updated versions instead of editing an Active version directly, so the original remains an accurate record.
-- Export and archive all Published versions for legal and compliance record-keeping.
+- Keep a copy of all Published versions for legal and compliance record-keeping.
 - Keep version numbering consistent and meaningful; use semantic versioning such as `v1.0.0`, `v1.1.0`, or `v2.0.0` to indicate the scale of changes.
 - Never delete a Published version that has acceptance records associated with it, as those records may be required later for compliance checks or audits.
 

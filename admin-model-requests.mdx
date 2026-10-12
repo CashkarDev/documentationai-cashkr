@@ -13,6 +13,32 @@ Use this page to review incoming requests, add viable devices to the catalog, an
 Every row is a lost sale that can still be recovered. The customer has already told you they want to sell — they are only waiting on the catalog.
 </Callout>
 
+## Screen layout
+
+The **Model Requests** screen (route `/model-requests`) is described as "Devices customers asked for that aren't in the catalog yet. Review each one and mark it added or rejected."
+
+- **Status tabs** with counts — **All**, **Pending** (default), **Reviewed**, **Added**, and **Rejected**.
+- **All device types** dropdown — Mobile, Tablet, Laptop, Camera, Headphone, Console, Drone, TV, AC, Desktop, Mac, Watch.
+- **Reset** — Clears the filters.
+- A table with **Device**, **Brand**, **Model**, **Customer**, **Phone**, **Requested** (date and time), and **Status**, and a footer such as "7 requests · page 1 of 1".
+
+### Request details
+
+Click a row to open the request panel:
+
+| Section | Contents |
+| --- | --- |
+| Header | Requested model, brand · device type, and status |
+| Device | Device type, brand, model |
+| Customer | Name, phone, customer ID, and total requests by this customer |
+| Timeline | Requested at, last updated |
+| Link the catalog product | **Search catalog by brand or model…** to pick the exact product you added. The customer's spelling may not match. This is the product the WhatsApp notice links to. |
+| Update status | **Mark reviewed**, **Mark added to catalog**, **Reject** |
+
+<Callout kind="alert">
+The customer gets a WhatsApp notice as soon as you click **Mark added to catalog**. The button unlocks only after you pick a catalog product, so link the product first.
+</Callout>
+
 ## What a request contains
 
 Each request carries what the customer submitted:
@@ -49,8 +75,8 @@ Each request carries what the customer submitted:
     Search for the model as a customer would. If it does not appear, it is not fulfilled, regardless of the record existing.
   </Step>
 
-  <Step title="Notify the customer" icon="bell">
-    Only after verifying, notify the requester on their registered number. The form promised them exactly this.
+  <Step title="Link the product and mark it added" icon="bell">
+    Only after verifying, open the request, pick the product under **Link the catalog product**, and click **Mark added to catalog**. This sends the requester a WhatsApp notice linking to that product. Use **Mark reviewed** while you are still working on it, or **Reject** if the device will not be added.
   </Step>
 </Steps>
 
@@ -80,7 +106,7 @@ Because brand and model are free text, the same device can appear several ways. 
 ## Open questions
 
 <Callout kind="alert">
-Several behaviours are **not yet confirmed**, including whether login is required to submit, which channel the notification uses, what happens when a request is declined, whether duplicate requests are merged, and whether the request is linked to any eventual order.
+Several behaviours are **not yet confirmed**, including whether login is required to submit, whether **Reject** sends the customer any message, whether duplicate requests are merged, and whether the request is linked to any eventual order. The "added" notification goes out on WhatsApp.
 
 The full list is on [Model Requests](/model-requests). The decline path matters most operationally — the form makes an unconditional promise to notify, so a request that is quietly closed leaves that promise unmet.
 </Callout>

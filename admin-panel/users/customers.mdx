@@ -1,0 +1,80 @@
+---
+title: Customers
+description: Look up any Cashkr customer, review their orders, ratings and full activity timeline, and block abusive accounts.
+---
+
+## Overview
+
+**Sidebar path:** Users → Customers (`/customers`)
+
+The Customers page — *View customers, journeys, and block abusive users* — is a lighter, investigation-focused view of the same customer base shown on **Users → Users**. Its main addition is the **Activity** timeline, which records everything a customer did in the app or website.
+
+<Callout kind="info">
+Use **Users** for summary counts (total / active / blocked) and order & referral stats. Use **Customers** when you need the step-by-step activity history behind a complaint, dispute or fraud check.
+</Callout>
+
+## What the screen shows
+
+**All Customers** table, with "Page X of Y • Total N" in the header:
+
+| Column | What it shows |
+| --- | --- |
+| **Name** | Customer name. |
+| **Contact** | Phone (with a quick-call icon) and email. |
+| **City** | City from the saved address, or "—". |
+| **Orders** | Number of orders. |
+| **Status** | Active or Blocked. |
+
+Use **Previous** / **Next** at the bottom to page through results.
+
+## Search
+
+Type a name, phone or email in the search box (top right) and click **Search**.
+
+## Customer panel
+
+Click a row to open the side panel. The header shows name, email, phone (with quick-call) and a **Block** switch. The panel has four tabs:
+
+<Tabs>
+<Tab title="Details">
+Full saved address with pincode, and the customer's **Average Rating** (out of 5).
+</Tab>
+<Tab title="Journey">
+Order summary cards — **Total**, **Completed**, **In Progress**, **Failed** — followed by a list of the customer's leads/orders. Each item shows the lead ID, status with date, and the assigned vendor ID.
+</Tab>
+<Tab title="Reviews">
+Ratings recorded for the customer, each showing the score out of 5, who gave it (e.g. *By: Vendor* — "Rating from vendor") and the date.
+</Tab>
+<Tab title="Activity">
+A timeline of the customer's actions over the **last 90 days**.
+
+- **Search description** box to find specific events.
+- Category chips with counts: **All**, **Auth**, **Order**, **Quote**, **Profile**, **Payment**, **Coupon**, **Referral**.
+- Each event shows a title (e.g. *Order Completed*), category badge, description (e.g. *Order completed for ₹X*), time, platform (e.g. ANDROID) and IP address, with **View metadata** to expand the raw details.
+- **CSV** button exports the activity list.
+</Tab>
+</Tabs>
+
+## Block or unblock a customer
+
+<Steps>
+<Step title="Open the customer" icon="user" title-type="p">
+Search for the customer and click their row. Confirm the name, phone and email in the panel header.
+</Step>
+<Step title="Check the history" icon="search" title-type="p">
+Review **Journey** (failed vs completed orders), **Reviews**, and **Activity** (e.g. repeated coupon or referral events, logins from many IPs).
+</Step>
+<Step title="Use the Block switch" icon="ban" title-type="p">
+Turn on **Block** in the panel header to stop the customer using the app and website; turn it off to restore access. The Status column updates to Blocked / Active.
+</Step>
+</Steps>
+
+<Callout kind="alert">
+Blocking takes effect immediately. Record the reason in your internal notes before or right after blocking so support can explain the decision if the customer gets in touch.
+</Callout>
+
+## Connections to other modules
+
+- **Users → Users** — same customers, with summary cards, order/referral stats and the Journey view of device sales.
+- **Customer Activity Logs** — platform-wide view of customer activity events.
+- **Referral Transactions / Coupons** — cross-check suspected abuse found in the Activity tab.

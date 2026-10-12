@@ -1,0 +1,54 @@
+---
+title: Pricing Review
+description: Queue of completed vendor orders where admins verify the final price against market rates to build training data for the AI pricing engine.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Performance → **Pricing Review** (`/vendor-scores/pricing-review`)
+
+The **Pricing Review Queue** lets admins verify vendor pricing against market rates. Each verification records the correct market price for a device in a given condition, building training data for the AI pricing engine.
+
+## What the screen shows
+
+### KPI cards
+
+| Card | Description |
+| --- | --- |
+| **Pending Review** | Orders waiting for verification. |
+| **Verified** | Orders already verified. |
+| **Avg Accuracy** | Average pricing accuracy of verified orders. |
+| **Today** | Verifications done today. |
+| **Verification Rate** | Share of orders that have been verified. |
+
+### Queue table
+
+| Column | Description |
+| --- | --- |
+| Order | Short order ID and city. |
+| Device | Category (Mobile, Tablet, Console…) and model. |
+| Vendor | Vendor who completed the order. |
+| Generated | Price quoted to the customer when the order was created. |
+| Final | Final price paid after inspection. |
+| Dip | % change from generated to final (negative = price dropped). Colour-coded by size. |
+| Action | **Review**. |
+
+Paginated at 20 per page with a total pending count.
+
+## Verify a price
+
+Click **Review** to open **Verify Pricing — &lt;device&gt;**:
+
+| Section | Contents |
+| --- | --- |
+| Price Timeline | Generated → Requote → Final price. |
+| Device Condition | Body, screen, physical and technical condition codes, warranty status, whether the device turns on, and accessories. |
+| Inspection Photos | Device side photos and the vendor's selfie from the pickup. |
+| **What should the correct market price be?** | Enter the verified market price. |
+| **Notes** (optional) | Any observations about pricing. |
+
+Click **Verify Price** to save, or **Cancel** to close.
+
+<Callout kind="tip">
+Large dips between Generated and Final are the most useful to review: they show either a quote that was too high or a vendor deducting too much at inspection. Vendors with consistently large dips also show a low **Pricing Accuracy** / **Requote Behavior** score on the Leaderboard.
+</Callout>

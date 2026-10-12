@@ -1,0 +1,69 @@
+---
+title: CX Settings
+description: Configure the thresholds behind every late, due and breaching count on the CX Desk, the Ops/Sales tagging model, and Acefone agent number mapping.
+---
+
+## Overview
+
+**Sidebar:** B2C Sales → Support → **CX Settings** (`/support/settings`)
+
+"Every 'late', 'due' and 'breaching' on the desk resolves through these numbers."
+
+<Callout kind="alert">
+
+A banner shows how many settings are still **placeholders** — values invented so the screens would render, not agreed by anyone. Until they are set, every breach count on the [CX Desk](/admin-panel/support/cx-desk) is measured against a guess. Placeholder rows carry a **placeholder** label.
+
+</Callout>
+
+## Ops / Sales tagging
+
+Every chat is tagged Ops or Sales when it opens. Cases opened before tagging was stored have no tag; the desk guesses for them on each load.
+
+- **Tag untagged cases** — stores the guess for untagged cases, links each customer's live order, and lets the tag be moved and measured.
+- **Re-run the rules on rule-tagged cases** — re-applies the tagging rules to cases the rules tagged.
+
+A tag set by a person is never touched by either button. Tagging accuracy is shown on [AI Health](/admin-panel/support/ai-health).
+
+## The model that learns from corrections
+
+Shows whether the Ops/Sales model is switched on, how many cases a person has checked, and whether it has been trained. It retrains every night at 02:00; every move, confirm and close with a desk reason is training data. **Train now** runs training immediately.
+
+## Thresholds
+
+Each row has a value field and its own **Save** button. **Reload reference lists** refreshes the dropdown lists used on the desk.
+
+| Setting | What it controls |
+| --- | --- |
+| Callback window (minutes) | How long after opening an out-of-hours miss must be called. |
+| Ops / Sales model — minimum sureness (%) | The model tags a case only when at least this sure; below it, the rules decide. |
+| Ops / Sales model — checked cases before it is used | The model stays off until this many cases have been checked by a person. |
+| Customer update window (minutes) | Default time by which the customer must be updated when a case is parked. |
+| Pick-up lapses after (minutes, no reply) | A picked-up chat with no reply is released for anyone else after this. |
+| Reopen window (days) | Contact about the same order within this window counts as a reopen. |
+| Response standard — call (minutes) | A promised callback is late after this. |
+| Response standard — chat (minutes) | A waiting chat is breaching after this. |
+| Response standard — email (minutes) | An unanswered email is breaching after this. |
+| support_did_numbers | Inbound support numbers in Acefone — comma-separated, digits only. Filling this in switches the Call lane on. |
+| Working days | ISO weekdays, 1 = Monday. |
+| Working hours — start | IST, 24h. Start of the support day. |
+| Working hours — end | IST, 24h. End of the support day. |
+
+<Callout kind="info">
+
+Durations are in minutes and counted in **floor time** — only while the support day is open. A two-hour callback window promised at 18:55 falls due the next morning, not at 20:55 when nobody is there.
+
+</Callout>
+
+## Acefone agent numbers
+
+Acefone identifies an agent only by phone number. Map each agent number to a panel user so call events attach to the right person:
+
+- **Agent number** — e.g. 91XXXXXXXXXX.
+- **Which panel user** — select the admin user.
+- **Add** — saves the mapping.
+
+<Callout kind="alert">
+
+Without a mapping, every call event arrives correctly but attaches to nobody — which looks exactly like the integration working. Nothing depends on it until an inbound support line exists, but it can be filled in now.
+
+</Callout>

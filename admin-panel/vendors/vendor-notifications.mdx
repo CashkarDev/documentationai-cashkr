@@ -1,0 +1,127 @@
+---
+title: Vendor Notifications
+description: Broadcast announcements and urgent alerts to vendors, schedule sends, and manage the vendor app's home-screen in-app banner.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Comms → **Notifications** (`/vendors/notifications`)
+
+Use this screen to push messages to the **Vendor App**. It has three tabs, each reachable by URL:
+
+| Tab | URL | Purpose |
+| --- | --- | --- |
+| **Announcement** | default (no parameter) | Platform news to every vendor — lands in the vendor's **Announcements** tab (FCM topic `all_vendors_announcement`). For policy changes, campaigns and anything that isn't time-critical. |
+| **Alerts** | `?tab=alerts` | Urgent, time-critical broadcasts — lands in the vendor's **Alerts** tab (topic `all_vendors_alert`). Outages and time-critical notices only; vendors read this tab as urgent. |
+| **In-App Banner** | `?tab=banner` | Home-screen banner in the vendor app — scheduled, targetable and editable. |
+
+<Callout kind="info">
+For customer-app push campaigns, templates and segments, use **Marketing → Push Notifications** instead (see [Notifications](/notifications)).
+</Callout>
+
+## Announcement & Alerts
+
+Both tabs share the same compose form. Alerts adds an **Audience** choice.
+
+### Compose form
+
+| Field | Notes |
+| --- | --- |
+| **Audience** (Alerts only) | **All vendors** or **Specific vendors**. Specific vendors shows a searchable list (name, shop, city or phone); vendors without a registered device are tagged "no device". |
+| **Title** * | Up to 255 characters. |
+| **Body** * | Message text. |
+| **Image URL** (optional) | Direct `https://` link to the image file — no redirects, 1 MB max. Anything else and FCM silently drops the image. |
+| **Deep link** (optional) | Where tapping the push lands (e.g. `/wallet`). Passed to the app as `data.deepLink`. |
+| **When to send** | **Send now** or **Schedule**. |
+
+When **Schedule** is selected:
+
+| Field | Notes |
+| --- | --- |
+| **First send** * | Date and time of the first send. |
+| **Repeat daily until** | Optional end date — the message repeats daily until then. Leave empty to send once. |
+
+The submit button reads **Send announcement** / **Send alert**, or **Schedule send** when scheduling.
+
+<Callout kind="tip">
+Scheduled sends fire within about **30 minutes** of the chosen time, not to the minute — the scheduler runs on a periodic trigger. They go out through the backend, so they land in the vendor's in-app list as well as on their device, the same as sending now.
+</Callout>
+
+### Scheduled and Send history
+
+Below the form are two collapsible sections:
+
+- **Scheduled** — count of queued sends; expand to see each item's title, type badge (e.g. Alert), body and **Next** run time. The red **×** cancels a queued send.
+- **Send history** — messages sent from this panel, each with title, body, recipient count, the admin who sent it and the sent time.
+
+## In-App Banner
+
+A table of home-screen banners. Only the **top-priority live banner** is shown to a vendor.
+
+### Filters & search
+
+- **Search** — by title or message.
+- **Status** — All statuses, Draft, Scheduled, Live, Expired.
+
+### Columns
+
+| Column | Description |
+| --- | --- |
+| Banner | Title and message. |
+| Type | Banner / Strip / Modal, with severity badge (Info, Success, Warning, Critical). |
+| Status | Draft, Scheduled, Live or Expired. |
+| Priority | Higher wins. |
+| Schedule | Start/end window (e.g. "Always"). |
+| Audience | Who is targeted. |
+| On | Switch to turn the banner on/off. |
+| Actions | **Engagement stats**, **Edit**, **Delete**. |
+
+**Engagement stats** opens a panel (counted since the banner was first published) with **Impressions**, **Clicks**, **Dismisses**, **Unique vendors** (reached at least once) and **CTR** (clicks ÷ impressions). Impressions count renders, not unique vendors — a banner set to *Always* will out-count one set to *Once per day* for the same reach.
+
+### New banner / Edit banner form
+
+Click **+ New banner** (or **Edit** on a row). A live **Preview** with the current status, start and end shows on the right.
+
+<Tabs>
+<Tab title="Content">
+
+| Field | Notes |
+| --- | --- |
+| **Title** * | Up to 120 characters. |
+| **Message** * | Banner text. |
+| **Image URL** | Optional image. |
+| **CTA label** / **CTA action** | Button text and deep link (e.g. `cashkr://offers/...`). Set both or neither. |
+
+</Tab>
+<Tab title="Appearance & behaviour">
+
+| Field | Options |
+| --- | --- |
+| **Type** | Banner — card in the home feed · Strip — thin bar pinned to the top · Modal — blocking popup on app open |
+| **Severity** | Info · Success · Warning · Critical |
+| **Display frequency** | Always (every render) · Once per session (once per app open) · Once per day (first open of each day) · Once ever |
+| **Priority** | Number; higher wins. Only the top-priority live banner is shown. |
+| **Vendor can dismiss it** | Off means it stays until it expires or you switch it off. |
+
+</Tab>
+<Tab title="Schedule">
+
+| Field | Notes |
+| --- | --- |
+| **Starts at** | Empty = starts immediately. |
+| **Ends at** | Empty = never expires. |
+| **Published** | Off keeps it a draft. On hands it to the schedule above. |
+
+</Tab>
+<Tab title="Audience">
+
+| Field | Options |
+| --- | --- |
+| **Target** | All vendors (no filter) · By city (exact match on vendor city) · By tier (vendor tier numbers) · Specific vendors (explicit vendor list) |
+| **Platform** | All platforms · Android only · iOS only |
+| **Minimum app version** | Optional; older app versions won't see the banner. |
+
+</Tab>
+</Tabs>
+
+Click **Create banner** to save, or **Back** to discard.

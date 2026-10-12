@@ -1,0 +1,56 @@
+---
+title: Live Order Map
+description: See every in-play pickup on a map, coloured by how much SLA time is left, and filter by SLA state or city.
+---
+
+## Overview
+
+Open **Orders → Active → Live Order Map**. The page shows *every in-play pickup, coloured by how much SLA time is left*, so you can see at a glance where pickups are running late.
+
+The map refreshes automatically every minute; the footer shows the last update time (for example *Updated 3:18 PM · refreshes every minute*).
+
+## What the screen shows
+
+### SLA chips
+
+| Chip | Meaning |
+| --- | --- |
+| **All** | Every in-play pickup (with count) |
+| **Late** (red) | Pickups past their SLA |
+| **Due soon** (amber) | Pickups close to their SLA deadline |
+| **On track** (green) | Pickups with comfortable SLA time left |
+
+Each chip shows its count. Click a chip to show only those pickups on the map.
+
+### Map markers
+
+- Each marker is one open order, coloured by its SLA state.
+- **Solid** markers are placed at the customer's coordinates. **Hollow** markers are placed at the pincode centroid — accurate to the area, not the doorstep.
+- An info bar above the map states how many points are pincode centroids and how many open orders have no coordinates at all (those are not shown).
+- Use **+ / −** to zoom.
+
+### Marker popup
+
+Click a marker to see:
+
+- Order token
+- Device type, city and pincode
+- How late it is (or time left) and the SLA stage, for example `2d 4h late (pickup)`
+- Assigned vendor
+- Pickup date and time slot
+- *Approximate — pincode centre* when the location is a centroid
+
+## Filters and actions
+
+| Control | What it does |
+| --- | --- |
+| **All cities** dropdown | Limit the map to one city |
+| **Refresh** | Reload the map immediately |
+
+<Callout kind="tip">
+  Use the map together with **Delayed** and **Coverage Gaps**: clusters of red markers in one area usually point to a vendor capacity or coverage problem rather than a single late vendor.
+</Callout>
+
+<Callout kind="info">
+  The map is read-only. To act on an order, find it by token in **All Orders** or **Delayed** and use the order detail drawer.
+</Callout>

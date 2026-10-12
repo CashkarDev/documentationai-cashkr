@@ -1,0 +1,50 @@
+---
+title: AI Health
+description: Monitor the CX Genie support bot — what it could not handle, how accurate Ops/Sales tagging is, and which questions keep escalating to a person.
+---
+
+## Overview
+
+**Sidebar:** B2C Sales → Support → **AI Health** (`/support/ai-health`)
+
+"What the bot could not handle, and what customers keep asking about." Use it to decide what to add or fix in the CX Genie bot and whether the Ops/Sales tagger can be trusted.
+
+## Period
+
+Buttons at the top right: **7d** (default), **30d**, **90d**.
+
+## Sections
+
+### How much the bot is handling
+
+Volume of chats the bot handled on its own. Until the CX Genie webhook **"Bot receives a new message"** is ticked under the bot's Webhook settings, this shows "Not being counted yet" — failed chats are visible but successful ones are not, so totals cannot be judged.
+
+### Is the Ops / Sales tag right?
+
+Every chat is tagged Ops or Sales when it opens. A person checks the tag by moving the case or closing it with a reason that belongs to a desk.
+
+| Card | Meaning |
+| --- | --- |
+| Tagged by the rules | Chats tagged automatically, with how many were marked unsure (those want a person first). |
+| Checked by a person | Moved to the other desk, or closed with a reason that names one. |
+| Rules were right | Share of checked tags the rules got right ("—" until something is checked). |
+
+### Why chats reach a person
+
+Two problems, kept apart because they need opposite fixes:
+
+- **The bot did not know the answer** — count of chats. The answer is missing; add it in CX Genie.
+- **The bot answered but it did not help** — *not measured*; CX Genie does not report this. Empty means unmeasured, not zero.
+
+### Questions that keep escalating
+
+Questions ranked by how often they escalated in the selected period.
+
+### Technical details
+
+Collapsed by default, for developers: CX Genie events the panel did not recognise, kept as they arrived (values shortened, since they carry customer messages).
+
+## Related pages
+
+- [CX Desk](/admin-panel/support/cx-desk)
+- [CX Settings](/admin-panel/support/cx-settings) — tagging buttons and model thresholds.

@@ -5,7 +5,7 @@ description: Review and action failed B2C orders in the admin panel, deciding wh
 
 ## Overview
 
-The To Be Failed page in Quality - B2C shows all B2C orders that have been marked as failed by a vendor or by Cashkr and are now awaiting admin review.
+The To Be Failed page (**Orders → Needs Attention → To Be Failed**, breadcrumb *Dashboard / Orders / Failed Orders*) shows all B2C orders that have been marked as failed by a vendor, a cashboy, the customer or Cashkr and are now awaiting admin review.
 
 <Callout kind="info">
   Use the To Be Failed queue to review every failed B2C order, validate the failure reason, and decide whether to accept the failure, reject it, reverse it back to the vendor, or make the device available in inventory.
@@ -15,20 +15,27 @@ The To Be Failed page in Quality - B2C shows all B2C orders that have been marke
 
 Each row in the To Be Failed list represents one order that has been failed and is pending admin action.
 
-- **Created At** — Date and time the order was originally created.
-- **Model** — Device model the customer wanted to sell.
-- **City** — City where the pickup was scheduled.
-- **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
-- **Status** — Who failed the order: Failed By Vendor or Failed By Cashkr.
+| Column | Description |
+| --- | --- |
+| **Failed At** | Date and time the order was marked as failed |
+| **Waiting** | How long the failure has been waiting for a decision (red badge, for example `3d 4h`) |
+| **Model** | Device model the customer wanted to sell |
+| **City** | City where the pickup was scheduled |
+| **Type** | Device category badge |
+| **Failed By** | Who failed the order (Failed By Vendor, Failed By Cashboy, Failed By Customer, Failed By Cashkr). A second badge shows the source when relevant, for example *Customer · chat* |
+| **Reason** | Failure reason, for example Not Interested, Not Reachable, Just Checking, Multiple Reschedules, Duplicate Lead, Roadside Pickup, Price Not Accepted, Out of Town, Sold Elsewhere |
+| **Actions** | Two quick buttons: ✔ **Fail Accept – Reverse Credit** and ⚠ **Fail Reject – No Credit Reverse** |
 
 ## Failed order statuses
 
 - **Failed By Vendor** — The vendor marked the order as failed from their end. This can happen when the customer was not available, the device condition did not match expectations, the customer changed their mind, or any other reason from the vendor's side.
 - **Failed By Cashkr** — The order was failed by Cashkr's operations or admin team. This typically happens when an internal decision is made to close the order due to operational reasons.
+- **Failed By Cashboy** — The order was failed by the cashboy handling the pickup.
+- **Failed By Customer** — The customer cancelled the order, for example from the customer chat.
 
 ## Order detail panel
 
-Click any order row to open the detail panel on the right side. This panel shows:
+Click any order row to open the order detail drawer on the right side (the same drawer used across Orders — see [All Orders](/all-orders#order-detail-drawer)). For failed orders it shows:
 
 - **Device Name** — Model of the device in the failed order.
 - **Points** — Points value associated with the order.
@@ -41,11 +48,11 @@ The panel also shows the failure type tag at the top — Failed By Vendor or Fai
 
 ## Admin actions available
 
-From the order detail panel, admins can take one of four actions.
+Fail Accept and Fail Reject are available directly on each row. All four actions are available at the bottom of the order detail drawer: **Fail Accept**, **Fail Reject**, **Reverse To Vendor** and **Make Available**.
 
 ### Fail Accept
 
-Confirm and accept the failure so the order is officially closed as a failed order.
+Confirm and accept the failure so the order is officially closed as a failed order. The row button tooltip reads *Fail Accept – Reverse Credit*: the vendor's credits for the order are reversed.
 
 **When to use**
 
@@ -53,7 +60,7 @@ Use Fail Accept when the failure reason is valid and verified, for example when 
 
 ### Fail Reject
 
-Reject the failure and keep the order open for further action. When rejecting, the admin enters a reason for the rejection.
+Reject the failure and keep the order open for further action. The row button tooltip reads *Fail Reject – No Credit Reverse*: the vendor's credits are not returned. When rejecting, the admin enters a reason for the rejection.
 
 **Voice recording notes**
 
@@ -87,14 +94,18 @@ Use Make Available when the order should not be reversed to the same vendor but 
 
 Use filters and controls above the table to narrow down which failed orders you review.
 
-- **Device Type Filter** — Filter orders by device category: Mobile, Laptop, Tablet, or Mac.
+Click **Filters** in the header to open the filter panel.
+
+- **Device Type Filter** — Filter orders by device category (Mobile, Laptop, Macbook, Tablet, Watch and other supported types).
 - **City Filter** — Filter orders by the city where the pickup was scheduled.
-- **From Date / To Date** — Filter orders by their creation date range to review failures within a specific period.
+- **From Date / To Date** — Filter by date range to review failures within a specific period.
+- **Source** — All sources, Customer · Chat, Vendor, Admin panel or System.
+- **Sort** — Longest waiting first (default) or Newest failure first.
 - **Show Orders with Test Accounts** — Include or exclude test account orders; uncheck during normal operations to view only real customer orders.
-- **Search** — Search for a specific failed order by order details, device name, or customer information.
+- **Search** — Use the **Search orders...** box in the header to find a specific failed order.
 - **Apply Filters** — Apply the selected filters to update the list.
 - **Reset** — Clear all filters and return to the full list.
-- **Pagination controls** — Move between pages using page numbers or Previous and Next; the total result count appears below the table.
+- **Pagination controls** — Move between pages using page numbers or Previous and Next.
 
 ## Decision flow for each failed order
 
@@ -141,7 +152,8 @@ Admins are responsible for keeping the To Be Failed queue clear and decisions co
 
 The To Be Failed queue interacts with several other admin modules:
 
-- **Orders - B2C** — Failed orders originate from the active order pipeline across all Orders - B2C sections.
+- **Orders** — Failed orders originate from the active order pipeline across all Orders views. Failed orders are also listed under **Orders → Closed → Failed After Requote** or **Failed (No Requote)**.
+- **Retention** — Failed orders are also worked by the sales team in **B2C Sales → Retention** to try to win the customer back.
 - **Vendors - B2C** — Vendor trust score and performance are impacted by accepted failures, especially those marked Failed By Vendor.
 - **Fines** — Vendors with unjustified failures may be subject to fines managed in the Fines section under Quality - B2C.
 - **All Inventory** — If Make Available is selected and the order is eventually completed, the device enters All Inventory.

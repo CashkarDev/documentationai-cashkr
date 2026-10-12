@@ -2,23 +2,23 @@
 title: All Orders
 description: >-
   Manage and review all B2C pickup orders from the customer app and website in
-  the Admin Panel, with filters, status views, and detailed order insights.
+  the Admin Panel, with filters, SLA status, and the order detail drawer.
 ---
 ## All Orders overview
 
-Use the **All Orders** view under **Orders - B2C** in the Admin Panel to manage every customer pickup order created through the Cashkr customer app and website, across all statuses and vendor assignments.
+Use **Orders → All Orders** (under the **Active** group in the sidebar) to see every customer pickup order created through the Cashkr customer app and website, across all statuses and vendor assignments.
 
 <Columns cols="3">
   <Card title="Purpose" href="#purpose-and-location" icon="target" cta="Understand role" horizontal="false">
-    Monitor and manage the full lifecycle of every B2C pickup order for auditing, review, exports, and volume tracking.
+    Monitor the full lifecycle of every B2C pickup order for auditing, review and volume tracking.
   </Card>
 
-  <Card title="Key views" href="#orders-b2c-views" icon="folder" cta="See all views" horizontal="false">
-    Switch between All Orders, In Progress, Not Assigned, No Action, Delayed, Reserved, and Flagged to focus on specific operational buckets.
+  <Card title="Key views" href="#orders-views-in-the-sidebar" icon="folder" cta="See all views" horizontal="false">
+    The Orders menu is split into Active, Needs Attention and Closed queues so you can focus on one operational bucket at a time.
   </Card>
 
-  <Card title="Deep dive on a single order" href="#order-detail-view" icon="info" cta="View details" horizontal="false">
-    Open any order from All Orders to see device info, customer and vendor details, pickup timeline, inspection data, credits, and activity logs.
+  <Card title="Deep dive on a single order" href="#order-detail-drawer" icon="info" cta="View details" horizontal="false">
+    Click any row to open the order drawer with device specs, pricing, timeline, vendor and customer details, activity timeline, inspection data and credits.
   </Card>
 </Columns>
 
@@ -26,186 +26,121 @@ Use the **All Orders** view under **Orders - B2C** in the Admin Panel to manage 
 
 All Orders helps you manage all customer pickup orders created through the **Cashkr website** and **customer app**.
 
-You access it from the Admin Panel under **Orders - B2C → All Orders**.
+Open it from **Admin Panel → Orders → All Orders**. The breadcrumb shows **Dashboard / Orders**.
 
-## Orders - B2C views in the Admin Panel
+## Orders views in the sidebar
 
-Under **Orders - B2C**, the Admin Panel provides multiple views to segment orders by operational status:
+The **Orders** menu groups its views into three sections:
 
-- **All Orders** – All orders on the Cashkr platform, regardless of status or vendor assignment.
-
-- **In Progress** – Orders that are currently being worked on (for example, pickup scheduled, out for pickup, or inspection ongoing).
-
-- **Not Assigned** – Orders that do not yet have a vendor assigned.
-
-- **No Action** – Orders where no action has been taken yet after creation.
-
-- **Delayed** – Orders where pickup or processing is delayed beyond expected timelines.
-
-- **Reserved** – Orders marked as reserved, following the reserved order logic.
-
-- **Flagged** – Orders flagged for review, quality checks, or further investigation.
+| Group | View | What it shows |
+| --- | --- | --- |
+| Active | **All Orders** | Every order, any status |
+| Active | **Live Order Map** | In-play pickups on a map, coloured by SLA time left |
+| Active | **Upcoming** | Orders with an upcoming pickup |
+| Active | **Reserved** | Orders in the reserved state |
+| Active | **In Progress** | Orders currently being worked on by a vendor |
+| Needs Attention | **Not Assigned** | Orders without a vendor |
+| Needs Attention | **Assigned · No Action** | Assigned orders where the vendor has not acted (count badge) |
+| Needs Attention | **Delayed** | Orders past their pickup SLA (count badge) |
+| Needs Attention | **Flagged** | Orders with customer issues requiring attention |
+| Needs Attention | **To Be Failed** | Failure requests waiting for an admin decision |
+| Needs Attention | **Coverage Gaps** | Pincodes with open orders that cannot currently be served |
+| Closed | **Order Audit** | Completed orders paid below quote that need sign-off |
+| Closed | **Failed After Requote** | Failed orders that had been requoted |
+| Closed | **Failed (No Requote)** | Failed orders that were never requoted |
 
 Use **All Orders** when you need a complete picture across all these categories.
 
-## All Orders list
+## What the All Orders table shows
 
-The **All Orders** view displays every order created on the Cashkr platform, regardless of the current status or vendor assignment.
+| Column | Description |
+| --- | --- |
+| **Created At** | Date and time the order was created (for example, `2026-Jan-05 02:50 PM`) |
+| **Model** | Device model being sold |
+| **City** | Pickup city |
+| **Type** | Device category badge (Mobile, Tablet, Laptop, …) |
+| **Status** | Current order status badge (for example Completed, Pickup Delayed, Failed By Vendor, Failed By Customer, Failed By Cashkr) |
+| **SLA** | SLA state. Closed orders show **Settled**; open orders show how late or how much time is left, with the SLA stage (for example `2d 4h late · PICKUP`) |
 
-### What the All Orders view shows
-
-All Orders includes:
-
-- Orders created from both the **customer app** and the **website**.
-
-- Orders across all key lifecycle statuses:
-
-  - Order Generated
-
-  - Assigned
-
-  - Out for Pickup
-
-  - Inspection Started
-
-  - Completed
-
-  - Failed
-
-  - Pickup Delay
-
-  - Reserved
+The list is paginated (25 rows per page) with **Previous / Next** and page numbers.
 
 ### Typical use cases
 
-Use All Orders when you need to:
-
 - **Audit** order history across all stages and channels.
-
 - **Review** specific orders in detail, including inspection and failure reasons.
-
-- **Export data** for reporting, analysis, or reconciliation.
-
 - **Track volume** of orders across lifecycle stages over a selected period.
-
 - **Cross-check** statuses against other views like In Progress, Delayed, or Reserved.
 
-### Filters and search
+## Filters and search
 
-The All Orders view includes filters and controls that help you narrow down the list:
+Use the **Search orders...** box in the header to find an order (for example by token or device name). Click **Filters** to expand the filter panel:
 
-- **Status**
+| Filter | Options |
+| --- | --- |
+| **Status** | Order Generated, Assigned, Out For Pickup, Inspection Started, Completed, Completed · Awaiting audit, Completed · Audited, Completed · Audit flagged, Failed, Pickup Delayed, Reserved |
+| **Device Type** | Mobile, Laptop, Macbook, Tablet, AC, Desktop, Camera, Console, TV, Headphone, Watch, Drone |
+| **City** | All serviceable cities |
+| **From date / To date** | Creation date range |
+| **Show orders with Test accounts** | Checkbox to include orders from test accounts |
 
-  - Filter orders by a specific status:
-
-    - Order Generated
-
-    - Assigned
-
-    - Out for Pickup
-
-    - Inspection Started
-
-    - Completed
-
-    - Failed
-
-    - Pickup Delay
-
-    - Reserved
-
-- **Device type**
-
-  - Filter by device category such as Mobile, Tablet, Mac, Laptop, and other supported types.
-
-- **City**
-
-  - View orders filtered by the customer's city.
-
-- **Date range**
-
-  - Filter orders created between specific start and end dates.
-
-- **Test accounts**
-
-  - Use the checkbox to include or exclude orders created from test accounts.
-
-- **Search**
-
-  - Search by **Order ID**.
-
-  - Search by **Device Name**.
-
-- **Filter and reset behavior**
-
-  - Use the **Filter** button to apply selected criteria.
-
-  - The **Reset filter** button appears only after at least one filter is applied.
-
-  - When you click **Reset filter**, the view clears all applied filters and returns to the default unfiltered list.
+Click **Apply Filters** to apply the selection, or **Reset** to clear all filters.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774435415847-9rh55vrp8f9-all-orders.all orders?q=85&fm=auto&auto=compress%2Cformat" width="1917" height="825" alt="All Orders view in the Admin Panel showing filters, order list, and key columns" />
 
 ### How All Orders connects with other systems
 
-- Orders listed here are pulled from both customer platforms: **Website** and **App**.
+- Orders listed here come from both customer platforms: **Website** and **App**, plus leads converted by the sales team.
+- Status updates (Out for Pickup, Inspection Started, Completed, Failed, Pickup Delayed) come from the **Vendor App**.
+- The same orders appear in the other Orders views when they meet that view's criteria.
 
-- Status updates (such as Out for Pickup, Completed, Failed, Pickup Delay) come from the **Vendor App**.
+## Order detail drawer
 
-- The same orders appear in other **Orders - B2C** views (In Progress, Delayed, Reserved, Flagged, etc.) when they meet that view's criteria.
+Click any row to open the order detail drawer on the right. It is available from every order list (All Orders, In Progress, Delayed, etc.). Close it with the **×** button.
 
-## Order Detail View
+### Header
 
-When you click any specific order in the **All Orders** table, an order detail panel opens with the following sections:
+- Status badge and device type badge, device model, and the order's credit points (for example `70 pts`).
+- **Token** (order token, with copy button) and the inspection **Code**.
+- For open orders, two quick actions: **Flag this order for escalation** and **Send a reminder to the vendor or customer**.
 
-- **Device details**
+### Sections
 
-  - Shows current order status, device brand, model, variant, condition reported by the customer, credit points for the model, order ID, inspection code, quoted price, requote price, and final price.
+| Section | What it contains |
+| --- | --- |
+| **Device Specifications** | Customer-reported answers: Device Turned On, RAM, Storage, Physical Condition, Accessories, Technical Condition, Warranty Status, Screen Condition, Body Condition |
+| **Pricing** | Quoted Price, Requote Price and Final Price (shows *Not Set* until the order is completed) |
+| **Order Timeline** | Pickup Schedule (time slot), Pickup Date and City. Open orders show a **Reschedule Pickup** action |
+| **People & Places → Vendor Details** | Vendor name, email and contact, **Order Tier**, Base Credits and Total credits. Open orders show a **Reassign Vendor** action |
+| **People & Places → Cashboy Details** | Assigned cashboy, or *No Cashboy assigned* |
+| **Customer Information** | Customer name, email, phone (with **Click to call**) and the pickup address with its address label (Home, Office, …) |
+| **History & Audit** | Activity Timeline, inspection timer, credit history and inspection photos (see below) |
+| **Reviews & Feedback** | **View All Reviews** link |
+| **Conversation** | **Customer–Vendor Chat** (read-only; admin views are logged) with an **Open** action |
 
-- **Order timeline**
+### History & Audit details
 
-  - Displays pickup time, pickup date, and pickup address for the order.
+- **Activity Timeline** — Every event on the order with date and time, tagged by type: CREATED (lead generated), CONVERTED (lead converted to order by a sales rep), LOCKED (vendor locked the order, with credits), ASSIGNED, ACTIVITY (status changes, vendor calls with reason), CALLBACK, PICKUP-CONFIRMED, REQUOTED and COMPLETED. The newest event is marked **Latest**.
+- **Inspection** — Whether the inspection was **On time**, Time taken vs Allowed, Started and Due by timestamps, and the vendor's **Delay reason**.
+- **Credit History** — Credit transactions linked to the order (for example *Lead Locked by Vendor* — Debited) with before/after balance.
+- **Device Inspection** — Inspection photos: Device Side One to Six and a Self Photo.
 
-- **Vendor section**
+### Drawer actions
 
-  - Shows assigned vendor details including name, phone number, and email.
-
-  - Includes an action to reassign the order to another vendor when required.
-
-- **Customer section**
-
-  - Displays the customer's name, phone number, and registered email address.
-
-- **Pickup address**
-
-  - Shows the customer's selected pickup address used for the order.
-
-- **Activity logs**
-
-  - Lists internal logs of all admin and vendor actions on the order, timestamps, and available call recordings between vendor and customer with recording details.
-
-- **Credit history**
-
-  - Shows credit transactions related to the order during completion and failure flows, including credit deductions and reversals.
-
-- **Requote details**
-
-  - Displays requote details with the previous quoted price, new requote price, and the specific attributes changed when the vendor requoted the device from the Vendor App.
-
-- **Inspection images**
-
-  - If the order was marked as completed or failed, shows images uploaded during the pickup inspection.
-
-- **Inspection timer**
-
-  - Shows the total time taken by the vendor for the inspection, whether the vendor completed within or exceeded the configured duration for the device type, and the delay reason selected if the timer expired.
-
-- **Failure section**
-
-  - Allows admins to view or add failure reasons when failing the order, aligned with quality and credit policies.
+| Action | When shown | What it does |
+| --- | --- | --- |
+| **Flag this order for escalation** | Open orders | Raises the order for escalation |
+| **Send a reminder to the vendor or customer** | Open orders | Sends a reminder about the order |
+| **Reschedule Pickup** | Open orders | Changes the pickup date/slot |
+| **Reassign Vendor** | Open orders | Moves the order to another vendor |
+| **Cancel Order** | Open orders (footer) | Cancels the order |
+| **Mark as Stolen** | Completed orders (footer) | Marks the device as stolen |
 
 <Callout kind="info" collapsed="false">
-  Credits are deducted from the vendor when an order is completed, and reversed back to the vendor if the order is failed and the failure reason is approved by the admin.
+  Credits are deducted from the vendor when the order is locked or completed, and reversed back to the vendor if the order is failed and the failure is accepted by an admin in **To Be Failed**.
+</Callout>
+
+<Callout kind="alert" collapsed="false">
+  The drawer shows real customer contact details and the customer–vendor chat. Admin views of the chat are logged, so open it only when needed for an investigation.
 </Callout>
 
 ### Walkthrough (embedded)
@@ -213,4 +148,3 @@ When you click any specific order in the **All Orders** table, an order detail p
 The following internal embed shows a walkthrough of the All Orders detail view:
 
 <Iframe uid="c09b01e1-929e-4758-a425-e3bb8583f9ab" src="https://vento.so/view/43a5434c-ddba-463c-a9aa-0980e05330a1/embed" title="Embedded content" height="315" allow-full-screen="true" frame-border="0" loading="lazy" display-mode="auto-resize" />
-
