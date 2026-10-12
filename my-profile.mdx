@@ -1,6 +1,6 @@
 ---
 title: My Profile
-description: Understand the My Profile screen on the Cashkr Website, including editable fields, locked phone behavior, data flow, and QA expectations.
+description: Understand the My Profile screen on the Cashkr Website, including editable fields, email verification, locked phone behavior, data flow, and QA expectations.
 ---
 
 ## What the My Profile screen shows
@@ -55,6 +55,26 @@ For a smoother UX, keep the **Save** button disabled until at least one editable
 
 </Callout>
 
+## Verifying your email
+
+Customers can verify their email address with a one-time code sent to their inbox. The same capability exists in the Customer App, and verification state is shared across both.
+
+<Callout kind="info">
+
+This matters because email is a delivery channel, not just a profile field. The **inspection code** is sent by email as well as WhatsApp, and order notifications reach customers by email. An address with a typo fails silently — the customer only discovers it when they cannot produce an inspection code at the door.
+
+See [Email Verification](/email-verification) for the full flow.
+
+</Callout>
+
+<Callout kind="alert">
+
+**Email OTP is not a login method.** Phone plus OTP remains the only way to sign in, and the phone number stays the account's primary identifier. Verifying an email changes neither.
+
+</Callout>
+
+Because email is editable on this screen, editing and verification interact. Whether saving a new address clears an existing verified flag is **not yet confirmed** — see the open questions on the Email Verification page. If it does not, a profile can show a verified badge against an address that was never confirmed.
+
 ## System logic and data flow
 
 Edits made on the My Profile screen update the core customer profile and stay consistent across surfaces.
@@ -65,6 +85,7 @@ Edits made on the My Profile screen update the core customer profile and stay co
   - **Cashkr Website** (My Profile and any other user-facing display)
   - **Admin Panel** customer records (orders and leads sections)
   - **Customer App** profile views
+- Keep **email verification state** on the same customer record, so the Website and Customer App agree on whether an address is verified.
 
 <Callout kind="info">
 
@@ -88,6 +109,9 @@ When implementing sync, prefer event-based or queued updates over direct cross-s
 - Lock phone number:
   - Make the **Phone number** field read-only on the **front-end** (no editing UI).
   - Enforce immutability on the **back-end** so API calls cannot modify the phone number.
+- Handle email verification:
+  - Store verification state against the customer record, not per surface.
+  - Decide and document whether saving a changed email clears the verified flag, and enforce it server-side.
 - Handle sensitive data:
   - Encrypt sensitive information such as **Email** at rest.
   - Apply appropriate access controls so only authorized services can read decrypted values.
@@ -97,6 +121,9 @@ When implementing sync, prefer event-based or queued updates over direct cross-s
 - Verify editable fields:
   - Change **First Name** and **Last Name**, save, and confirm updates on the **My Profile** screen.
   - Change **Email**, save, and confirm the new email appears on the **My Profile** screen.
+- Check email verification:
+  - Verify an email on the Website and confirm the Customer App shows it as verified without repeating the flow.
+  - Change the email after verifying and confirm the verified state behaves as specified rather than persisting silently.
 - Check cross-system consistency:
   - Confirm updated **Name** and **Email** appear correctly in the **Admin Panel** (customer record, orders, and leads).
   - Confirm the same updates appear in the **Customer App** profile views.

@@ -1,6 +1,6 @@
 ---
 title: Search Functionality
-description: Understand how the homepage search bar surfaces active device models from the Admin Panel product database and routes users into model evaluation.
+description: Understand how the homepage search bar surfaces active device models from the Admin Panel product database, routes users into model evaluation, and offers a model request when nothing matches.
 ---
 
 ## What the search shows
@@ -41,6 +41,20 @@ The homepage includes a universal search bar that lets customers search for any 
   </Step>
 </Steps>
 
+## When nothing matches
+
+Because search only returns active products with pricing and class assigned, a customer looking for a model Cashkr does not list gets no results.
+
+<Callout kind="info">
+
+Rather than leaving them at a dead end, the customer can open the **Request a model** form and tell Cashkr what they want to sell. The request reaches the Admin Panel, an admin adds the device, and the customer is notified on their registered number once it is available.
+
+See [Model Requests](/model-requests).
+
+</Callout>
+
+Where the form is launched from a search that returned nothing, the model field arrives pre-filled with what the customer typed.
+
 ## System logic
 
 - Fetch device results from the **Admin Panel > Product** database.
@@ -48,10 +62,18 @@ The homepage includes a universal search bar that lets customers search for any 
 - Show results **only when pricing and class are assigned**.
 - Exclude inactive or discontinued devices, or any product missing pricing or class.
 
+<Callout kind="alert">
+
+These same rules decide whether a fulfilled model request actually becomes visible. A device created in response to a request but left inactive, or without pricing or class, still will not appear in search.
+
+</Callout>
+
 ## Connections
 
 - **Admin Panel → Product Page**
   - Device models added as products in the Admin Panel appear in the homepage search, as long as they are active and have valid pricing and class configured.
+- **Model Requests**
+  - Searches that return nothing are the entry point for [model requests](/model-requests), and the reason the request feature exists.
 
 ## Developer and tester notes
 
@@ -67,6 +89,7 @@ The homepage includes a universal search bar that lets customers search for any 
 - Confirm that **inactive or discontinued devices never appear** in autosuggestions or results.
 - Check that **products without pricing or class** do not appear in search.
 - Test that the **search bar works across devices** (desktop, tablet, mobile) and responds quickly.
+- Search for a model that does not exist and confirm the **Request a model** path is offered, with the typed term carried into the model field.
 
 ## Screenshot
 

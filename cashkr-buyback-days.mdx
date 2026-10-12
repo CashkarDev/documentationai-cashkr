@@ -1,0 +1,132 @@
+---
+title: Cashkr BuyBack Days
+description: Time-boxed buyback event that adds a visible bonus on top of the best-value price, surfaced across the customer app, website and desktop.
+---
+
+## Overview
+
+**Cashkr BuyBack Days** is a time-boxed promotional event. During the window, eligible devices earn a **bonus on top of the normal best-value price**, and the customer is shown the full arithmetic rather than a vague "extra cash" claim.
+
+The event is abbreviated **CBD** in tight UI spaces, such as device tile labels.
+
+<Callout kind="warning">
+**Status: design finalised, mechanics not yet documented.** The surfaces, copy and visual treatment below are confirmed. The pricing, configuration and settlement rules in [Open questions](#open-questions) are still to be filled in by the team that built it — do not implement or support against assumptions.
+</Callout>
+
+## What the customer sees
+
+The headline is a quote-style card that spells out the sum:
+
+| Line | Example |
+| --- | --- |
+| Best Value We Pay | ₹27,500 |
+| Cashkr BuyBack Days bonus | ₹500 |
+| **You get** | **₹28,000** |
+
+<Callout kind="info">
+Showing the breakdown is deliberate. The bonus reads as a real addition to a real price, which is what separates this from a discount-code gimmick.
+</Callout>
+
+## Surfaces
+
+<Columns cols={2}>
+
+<Card title="Event page (app + web)" icon="calendar">
+
+Top of page is the quote card above. Below it, a **Valid on** list of eligible devices with a `+4 more` overflow, then the trust row: **Fast Payment · Free Pickup · 100% Safe**.
+
+</Card>
+
+<Card title="App home" icon="smartphone">
+
+A white **No Service Charges** card. Eligible device tiles carry a small green **+ CBD bonus** label. The main navigation uses the standard **BUYBACK** tab.
+
+</Card>
+
+<Card title="Website & desktop" icon="monitor">
+
+An entry strip styled to match the existing **Refer a friend** mint bar, plus a desktop header and banner in the same treatment.
+
+</Card>
+
+<Card title="Flow screens" icon="layers">
+
+Brand, model, evaluate, login, quote, order and the details sheet all carry the event theme, along with two banners and the push notification drafts.
+
+</Card>
+
+</Columns>
+
+## Visual rules
+
+The event uses **only Cashkr's existing green and mint**, the same palette already in the app and site.
+
+<Callout kind="alert">
+Do not reintroduce gold, orange or yellow, coin imagery, or `BONUS` stickers on tiles. That combination was built and rejected: against a dark green base it read like a betting or loan app, which undermines trust on exactly the screen where the customer is deciding whether Cashkr will actually pay them.
+</Callout>
+
+Specifically replaced during the redesign:
+
+- The dark home strip became the white **No Service Charges** card.
+- Per-tile `BONUS` stickers became the small green **+ CBD bonus** label.
+- The gold coin button in the centre of the navigation became the normal **BUYBACK** tab.
+
+## Open questions
+
+These need answers before the event can be supported or extended. Each one changes behaviour the support and vendor teams will be asked about.
+
+<Expandable title="Is the bonus flat or variable?" default-open="false">
+The confirmed example is a flat ₹500. Unknown whether that is global, per category, per model, or a percentage with a cap.
+</Expandable>
+
+<Expandable title="Where is it configured, and by whom?" default-open="false">
+Whether there is a dedicated Admin Panel section for events, or it rides on the existing coupon/campaign tables. Also which roles can create and activate an event — Marketing, or admin-only.
+</Expandable>
+
+<Expandable title="When does the bonus attach to the price?" default-open="false">
+At quote generation, or at payment/completion. This decides what happens on **requote** and under **dead price**: if a quote is regenerated after the window closes, does the bonus survive, and does the customer see a drop they were not warned about.
+</Expandable>
+
+<Expandable title="How is the Valid on list built?" default-open="false">
+Manual model selection, or a rule over category, price band or class.
+</Expandable>
+
+<Expandable title="Does it stack with coupons and referrals?" default-open="false">
+Whether a coupon can be applied on top of the bonus, and how the combination is displayed and capped.
+</Expandable>
+
+<Expandable title="Who absorbs the bonus?" default-open="false">
+Whether it comes out of Cashkr's margin or changes vendor deduction, credit cost or unlock economics — and whether the vendor app shows the bonus at all.
+
+Related: the ₹500 in the example reads as part of the **device payout**, not a wallet credit. Cashkr Wallet holds referral earnings only and is never used for device payouts, so this needs confirming explicitly.
+</Expandable>
+
+<Expandable title="Window handling" default-open="false">
+Where start and end dates are set, and what happens to in-flight leads and orders at rollover.
+</Expandable>
+
+<Expandable title="API surface" default-open="false">
+Whether any admin or customer endpoints exist for this yet. The ck-admin v1.4.0 spec (662 operations) contains no routes matching an events or buyback-days prefix, so either it is unbuilt, served by CashkrBackend, or implemented through the existing `/api/marketing/campaigns` routes.
+</Expandable>
+
+## Related
+
+<Columns cols={2}>
+
+<Card title="Coupons" icon="ticket" href="/coupon">
+Existing discount and promotion machinery, and the likeliest place event configuration already lives.
+</Card>
+
+<Card title="How device valuation works" icon="calculator" href="/how-device-valuation-works-model-condition-pricing-logic">
+Base price derivation, which the bonus sits on top of.
+</Card>
+
+<Card title="Price change logic" icon="trending-down" href="/price-change-logic-when-and-why-it-happens">
+Requote and dead-price behaviour the bonus has to survive or explicitly expire against.
+</Card>
+
+<Card title="Cashkr Wallet" icon="wallet" href="/cashkr-wallet">
+Referral earnings only — never device payouts. Relevant to how the bonus is settled.
+</Card>
+
+</Columns>

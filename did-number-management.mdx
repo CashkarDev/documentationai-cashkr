@@ -1,0 +1,90 @@
+---
+title: DID Number Management
+description: Assign, change, and audit dedicated DID numbers for B2C vendors from the Admin Panel so outbound vendor calls present a Cashkr-controlled caller ID.
+---
+
+## Overview
+
+Admins assign a **dedicated DID number** to each B2C vendor. Once assigned, every call that vendor places to a customer from the Vendor App presents that number as the caller ID instead of the vendor's personal mobile.
+
+Assignment is admin-only. Vendors cannot select, request, or change their own DID, in the same way they cannot set their own vendor type or tier access.
+
+<Callout kind="info">
+DID assignment sits alongside the other vendor-level controls — devices, pincodes, Max Leads, vendor type, and tier access — in the vendor detail panel. See [Vendors - B2C](/b2c-vendors).
+</Callout>
+
+## What DID assignment controls
+
+<Columns cols={3}>
+  <Card title="What it sets" icon="phone">
+    The caller ID presented to the customer when this vendor calls from the Vendor App.
+  </Card>
+  <Card title="Why it matters" icon="shield-check">
+    Keeps the vendor's personal number private, gives customers a consistent recognisable number, and makes calls attributable for quality and disputes.
+  </Card>
+  <Card title="Where it impacts" icon="arrow-right">
+    The Vendor App calling flow for that vendor, and any admin view that surfaces vendor call activity.
+  </Card>
+</Columns>
+
+## Assigning a DID number
+
+<Steps>
+  <Step title="Open the vendor" icon="search">
+    Go to **Operations B2C → Vendors - B2C** and click the vendor row to open the detail panel.
+  </Step>
+  <Step title="Locate the DID field" icon="phone">
+    In the vendor profile, find the dedicated DID number field alongside the other vendor-level configuration.
+  </Step>
+  <Step title="Assign the number" icon="user-check">
+    Assign an available DID number to this vendor. One number maps to one vendor.
+  </Step>
+  <Step title="Verify" icon="check-circle">
+    Confirm the assignment is reflected on the vendor profile, then verify with a test call that the customer-facing caller ID matches.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+Always verify with a real test call after assigning or changing a number. A misconfigured routing relationship can silently fall back to behaviour that exposes a personal number, and nothing in the admin UI will show that.
+</Callout>
+
+## Operational guidance
+
+- **Assign before going Live.** A vendor being activated should have a DID assigned as part of activation, alongside pincodes and Max Leads. Activating without one leaves calling behaviour undefined.
+- **Treat numbers as identifying.** A DID that a customer has in their call history points at a specific vendor. Reassigning it to a different vendor will connect that customer to the wrong person.
+- **Record changes.** When you change a vendor's DID, note why. Number changes are hard to debug retrospectively when a customer reports being called from an unexpected number.
+
+## Underlying integration
+
+The feature routes through **Acefone**. The backend registers the vendor-to-customer relationship with the provider and the provider bridges the call presenting the assigned DID.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /acefone-dialplan/create-relationship` | Registers the vendor-to-customer pairing and the DID to present. |
+| `POST /acefone-dialplan/step1` | Dial-plan webhook invoked by the provider while routing. |
+| `PUT /order/setCallRequest` | Records a call request against an order. |
+
+## Known gaps
+
+<Callout kind="alert">
+Several behaviours are **not yet confirmed**, including inbound calls to the DID, the fallback when no DID is assigned, whether agents share the parent vendor's number, call recording and retention, and what happens to the number when a vendor goes on Hold.
+
+The full list is on [Dedicated DID Number](/dedicated-did-number). These should be resolved before the feature is treated as fully documented.
+</Callout>
+
+## Related pages
+
+<Columns cols={2}>
+  <Card title="Dedicated DID Number" href="/dedicated-did-number" icon="phone-call" cta="How it works">
+    Feature overview, routing model, telephony integration, and the open questions.
+  </Card>
+  <Card title="Vendors - B2C" href="/b2c-vendors" icon="users" cta="Open vendor list">
+    The vendor list and detail panel where DID assignment sits with devices, pincodes, Max Leads, and tier access.
+  </Card>
+  <Card title="Calling the Customer" href="/vendor-app-calling" icon="phone" cta="See vendor flow">
+    What the vendor experiences on the other side of this configuration.
+  </Card>
+  <Card title="New Vendors - B2C" href="/new-vendors---b2c" icon="plus" cta="Review new vendors">
+    Onboarding flow where DID assignment should happen as part of activation.
+  </Card>
+</Columns>

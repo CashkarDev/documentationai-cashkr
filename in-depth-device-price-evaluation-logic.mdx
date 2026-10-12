@@ -91,6 +91,10 @@ Use this page as the backend reference for engineering and QA when validating ev
   (Console only) Count of extra controllers included with the console. Maps to E* addition codes (E1, E2, ...). Each controller adds a flat rupee value to `finalPrice`. Can increase the final price above `basePrice`.
 </ParamField>
 
+<ParamField body="isEsimOnly" param-type="boolean" required="false" deprecated="false">
+  (iPhone only) Whether the handset has no physical SIM tray. Set from the eSIM question in the sell flow, and re-settable by the vendor at requote. When `true`, a **7% of `basePrice`** deduction is applied. Ignored for every device other than iPhone. See [eSIM deduction (iPhone)](#esim-deduction-iphone).
+</ParamField>
+
 <ParamField body="deviceType" param-type="string" required="true" deprecated="false">
   Logical device type, such as `Mobile`, `Laptop`, `Tablet`, `Camera`, `Headphone`, `Console`, `Drone`, `TV`, `AC`, `Desktop`, `Mac`, or `Watch`. Used to select table mappings and strategy.
 </ParamField>
@@ -293,6 +297,73 @@ function resolveDeduction(value, basePrice) {
 
 All deduction steps in both strategies conceptually call `resolveDeduction(classData[code], basePrice)`, so every percentage-based value always uses `basePrice` as the reference.
 
+## eSIM deduction (iPhone)
+
+iPhones sold without a physical SIM tray are harder to resell in India, because the buyer cannot simply move an existing physical SIM into the handset. A dedicated question captures this, and an eSIM-only handset takes a **7% deduction from the base price**.
+
+### The question
+
+| | |
+| --- | --- |
+| Applies to | iPhone only. No other brand or device type asks it. |
+| Asked in | Website sell flow, Customer App sell flow, and available to the vendor at **requote**. |
+| Answers | *Has a physical SIM slot* (no deduction) or *eSIM only* (7% deduction). |
+| Deduction | 7% of `basePrice`, resolved the same way as any other percentage value. |
+
+<Callout kind="info">
+
+Because the question is asked in the sell flow, the quote the customer sees already reflects the deduction. The vendor can still correct it at requote if the handset turns out to be eSIM-only when it was declared otherwise, or the reverse.
+
+</Callout>
+
+### Why eSIM-only handsets exist
+
+The seller usually does not know the term, so the question is worded around the SIM tray rather than the technology. Three cases produce an eSIM-only iPhone:
+
+- **iPhone Air** — eSIM-only in every market, India included. This is the only model sold new in India with no tray.
+- **Imported US units** — every iPhone 14 and later sold in the United States is eSIM-only. These arrive in India through grey-market and personal-import channels.
+- **Other eSIM-only markets** — a handset bought in a market where Apple ships the eSIM-only variant.
+
+An Indian-market iPhone 14, 15, 16 or 17 keeps its physical SIM tray and should answer *Has a physical SIM slot*.
+
+### How it interacts with the rest of the calculation
+
+The deduction behaves exactly like the warranty, body, screen, physical, technical and accessory deductions:
+
+- It resolves against `basePrice`, never against the running `finalPrice`.
+- It is applied alongside the others, not instead of them.
+- It is skipped entirely when the device is dead, because the dead-device check returns `deadPrice` before any deduction runs.
+- It is subject to the same floor check — if total deductions take the price to zero or below, the strategy returns `deadPrice`.
+
+### Worked example
+
+An imported US iPhone 15, otherwise in good condition:
+
+- Base price: `₹52,000`
+- Device turns on: `true`
+- Warranty `W3` → `₹2,000` deduction
+- Body `B2` → `₹1,500` deduction
+- Screen `S1` → `₹0` deduction
+- Missing accessory `A2` (box) → `₹1,000` deduction
+- **eSIM only: yes** → `7% of ₹52,000` = `₹3,640` deduction
+
+Price evolution:
+
+1. Start: `₹52,000`
+2. After warranty `W3`: `₹52,000 - 2,000 = ₹50,000`
+3. After body `B2`: `₹50,000 - 1,500 = ₹48,500`
+4. After screen `S1`: `₹48,500 - 0 = ₹48,500`
+5. After missing `A2`: `₹48,500 - 1,000 = ₹47,500`
+6. After eSIM-only deduction: `₹47,500 - 3,640 = ₹43,860`
+
+Final evaluated price is `₹43,860`. The same handset with a physical SIM tray would evaluate to `₹47,500`.
+
+<Callout kind="warning">
+
+The 7% is taken from `basePrice`, not from the price after other deductions. On a heavily deducted device this matters: in the example above, 7% of the running `₹47,500` would have been `₹3,325`, not `₹3,640`.
+
+</Callout>
+
 ## Evaluation strategies
 
 ### Mobile-style strategy (`mobilePriceEvaluation`)
@@ -335,6 +406,12 @@ Used for `Mobile`, `Tablet`, `Camera`, `Headphone`, `Console`, `Drone`, `TV`, `A
 
   <Step title="Apply missing accessory deductions" icon="settings" title-type="p">
     Derive the full accessory set for the class (for example, codes `A1`, `A2`, `A3`, `A4`). For each code that is **not** in `request.accessories`, resolve `classData[code]` with `resolveDeduction(classData[code], basePrice)` and subtract the resolved amount from `finalPrice`.
+  </Step>
+
+  <Step title="Apply eSIM-only deduction (iPhone only)" icon="smartphone" title-type="p">
+    If the device is an iPhone and `request.isEsimOnly` is `true`, subtract **7% of `basePrice`** from `finalPrice`. Like every other percentage deduction, it resolves against `basePrice` and not against the running `finalPrice`.
+
+    This step is skipped entirely for non-iPhone devices, and for iPhones that still have a physical SIM tray.
   </Step>
 
   <Step title="Final price fallback" icon="check-circle" title-type="p">
@@ -791,7 +868,7 @@ Final Price = Base Price - Total Deductions + Total Additions
 
 Where:
 
-- **Total Deductions** includes warranty, body, screen or screen-size, physical, technical, and missing accessory deductions, each computed as `resolveDeduction(classData[code], basePrice)` so that all percentages are based on `basePrice`.
+- **Total Deductions** includes warranty, body, screen or screen-size, physical, technical, and missing accessory deductions, each computed as `resolveDeduction(classData[code], basePrice)` so that all percentages are based on `basePrice`. For iPhones, it also includes the **7% eSIM-only deduction** when the handset has no physical SIM tray.
 
 - **Total Additions** covers:
   - Laptop hardware upgrades (processor, RAM, storage, and optionally graphic card if configured) as direct numeric additions

@@ -1,0 +1,72 @@
+---
+title: Careers
+description: How job postings flow from the Admin Panel to the public careers page and back as applications — role lifecycle, slug rules, application handling and data retention.
+---
+
+## Overview
+
+Careers is the hiring surface. Job postings are created in the Admin Panel and appear on the public careers page automatically; applications submitted there come straight back into the Admin Panel with the candidate's CV and cover letter.
+
+It is a closed loop with a single source of truth. There is no separate CMS, no content deploy, and no second place where a role can be edited.
+
+| | |
+| --- | --- |
+| Managed in | Admin Panel → Marketing → Careers |
+| Published to | `cashkr.com/careers`, and a page per role at `/careers/<slug>` |
+| Collects | Applications with a required CV and an optional cover letter |
+
+## Role lifecycle
+
+<Steps>
+  <Step title="Created" icon="plus">
+    A role is created in the Admin Panel with a title, slug, department, location, workplace type, employment type and a required expiry date, plus optional description, responsibilities, requirements, skills and benefits.
+
+    It is saved as **Open** and appears on the careers page.
+  </Step>
+
+  <Step title="Open" icon="eye">
+    The role is listed under Current openings and accepts applications. Edits to any field except the slug go live on the public page.
+  </Step>
+
+  <Step title="Closed" icon="pause">
+    Closing removes the role from the listing and stops it accepting applications, but keeps everything — the role, its applications and its CVs.
+
+    The job page stays reachable so links already shared or indexed by search engines do not break. It shows *This role is no longer accepting applications*, and the apply URL redirects back to it.
+  </Step>
+
+  <Step title="Deleted" icon="trash">
+    Deleting removes the role **and every application submitted for it, including the candidates' CVs**. It cannot be undone.
+
+    To take a role off the website without losing anything, close it instead.
+  </Step>
+</Steps>
+
+## The slug is permanent
+
+Each role has a URL slug, auto-generated from the title and editable until the role is published. After that it is locked.
+
+The slug is the role's live URL and the address search engines index, so changing it would break both the links already shared and the search listing. A title can be corrected after publishing; the slug cannot.
+
+## Applications
+
+| | |
+| --- | --- |
+| Required | Full name, email address, phone number with country code, and a CV |
+| Optional | Cover letter |
+| Accepted files | PDF, DOC, DOCX, JPEG, PNG up to 50MB |
+| Stages | New → In review → Shortlisted → Rejected → Hired |
+
+A candidate may apply to several different roles, but only once per role — a second application to the same role from the same email address is rejected.
+
+<Callout kind="warning">
+
+**Applications can only be removed with their role.** There is no per-application delete. The only way to remove a candidate's name, email, phone and CV is to delete the entire role, which takes every other application with it.
+
+This matters for a data erasure request under the DPDP Act. Until per-application deletion exists, such a request cannot be serviced without collateral damage.
+
+</Callout>
+
+## Connections
+
+- [Careers](/careers) — the public listing, job pages and application form.
+- [Careers](/careers---admin-panel) — Admin Panel role and application management.

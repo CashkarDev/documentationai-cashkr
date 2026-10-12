@@ -1,0 +1,104 @@
+---
+title: Model Requests
+description: Review customer requests for device models Cashkr does not list, add the device to the catalog, and notify the requester once it is searchable.
+---
+
+## Overview
+
+The Model Requests section shows device models that customers have asked Cashkr to support. Each entry is a customer who tried to sell a device, could not find it, and filled in the **Request a model** form.
+
+Use this page to review incoming requests, add viable devices to the catalog, and close the loop with the customer.
+
+<Callout kind="info">
+Every row is a lost sale that can still be recovered. The customer has already told you they want to sell — they are only waiting on the catalog.
+</Callout>
+
+## What a request contains
+
+Each request carries what the customer submitted:
+
+- **Device type** — Selected from a dropdown, so this is reliable and routable.
+- **Brand** — Free text as typed by the customer.
+- **Model** — Free text as typed by the customer. Often carried over from what they searched for.
+- **Requester** — The customer and their registered number, used for the notification.
+
+<Callout kind="alert">
+**Brand and model are unvalidated free text.** Expect misspellings, partial names, marketing names rather than model numbers, and occasional junk. Identify the real device before adding anything to the catalog — do not create a product from the raw string.
+</Callout>
+
+## Handling a request
+
+<Steps>
+  <Step title="Identify the actual device" icon="search">
+    Work out which real device the customer means. Check the device type they selected, since that is the one constrained field and narrows the search considerably.
+
+    Confirm the model genuinely is missing rather than listed under a different name, inactive, or missing pricing. A device already in the catalog but inactive needs reactivating, not recreating.
+  </Step>
+
+  <Step title="Decide whether to add it" icon="scale">
+    Consider whether the device fits Cashkr's buyback range and whether vendors can realistically handle it. Requests for an entirely unsupported device type are a business decision, not a catalog task — escalate rather than close silently.
+  </Step>
+
+  <Step title="Add the device with pricing and class" icon="plus">
+    Create the device under the correct device type with its variants, base price, and an assigned class.
+
+    All of these are required. See the warning below.
+  </Step>
+
+  <Step title="Verify it is actually searchable" icon="check-circle">
+    Search for the model as a customer would. If it does not appear, it is not fulfilled, regardless of the record existing.
+  </Step>
+
+  <Step title="Notify the customer" icon="bell">
+    Only after verifying, notify the requester on their registered number. The form promised them exactly this.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+**Do not notify before verifying.** Search returns only active products that have both pricing and a class. A device created without a base price or class will not appear, so a customer notified at that point returns, searches, finds nothing, and is worse off than if you had never contacted them.
+</Callout>
+
+## Prioritising
+
+Requests are a direct demand signal — stronger than analytics, because the customer explicitly asked. When triaging:
+
+- **Repeated requests for the same model** are the strongest case for adding a device. Watch for the same device arriving under different spellings.
+- **Clusters by device type** may indicate a category gap worth a broader conversation.
+- **A single obscure request** may not justify building out variants, pricing, and a class.
+
+<Callout kind="info">
+Because brand and model are free text, the same device can appear several ways. Scan for near-duplicates before concluding a model has only been asked for once.
+</Callout>
+
+## Connections to other modules
+
+- **Devices** — Fulfilling a request means creating the device under the matching type in the [Devices](/phone) section.
+- **Search Functionality** — The [search rules](/search-functionality) determine whether the added device actually becomes visible.
+- **Classes** — A device without a [class](/classes) cannot be priced and will not surface.
+- **Customer Notifications** — The closing notification goes out through the [customer notification](/customer-notification) channels.
+
+## Open questions
+
+<Callout kind="alert">
+Several behaviours are **not yet confirmed**, including whether login is required to submit, which channel the notification uses, what happens when a request is declined, whether duplicate requests are merged, and whether the request is linked to any eventual order.
+
+The full list is on [Model Requests](/model-requests). The decline path matters most operationally — the form makes an unconditional promise to notify, so a request that is quietly closed leaves that promise unmet.
+</Callout>
+
+## Related pages
+
+<Columns cols={2}>
+
+<Card title="Model Requests (feature)" href="/model-requests" icon="clipboard-list" cta="How it works">
+
+The customer-side form, the full lifecycle, and the open questions.
+
+</Card>
+
+<Card title="Search Functionality" href="/search-functionality" icon="search" cta="See search rules">
+
+Why a device needs to be active with pricing and class before it appears.
+
+</Card>
+
+</Columns>

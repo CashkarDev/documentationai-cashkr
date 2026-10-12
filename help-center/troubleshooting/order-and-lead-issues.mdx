@@ -1,0 +1,68 @@
+---
+title: Order & Lead Issues
+description: Diagnosing orders that are missing, stuck, or behaving unexpectedly across the Cashkr surfaces.
+---
+
+Work these in order. Most reports resolve at step one or two without needing engineering.
+
+## Order is missing from a vendor's Available Orders
+
+<Steps>
+  <Step title="Confirm it is actually an order" icon="search">
+    Check Admin Panel → Orders, not Leads. An abandoned price-screen session is a lead and never enters the vendor queue.
+  </Step>
+  <Step title="Check the four access filters" icon="filter">
+    Device type, service pincode, vendor type, and tier all have to match. Tier is the usual culprit — a lower-tier vendor cannot see a higher-tier device.
+  </Step>
+  <Step title="Check whether it is already taken" icon="lock">
+    If another vendor unlocked it, it leaves the available pool. Look at the order's assignment history.
+  </Step>
+  <Step title="Check the vendor's Max Lead cap" icon="gauge">
+    A vendor at their active-lead ceiling will not be offered more, regardless of credits.
+  </Step>
+  <Step title="Check vendor approval status" icon="user-check">
+    An unapproved or held vendor cannot log in or receive orders at all.
+  </Step>
+</Steps>
+
+## Order is stuck in a status
+
+| Stuck at | Most likely cause |
+| --- | --- |
+| `Generated` | No vendor has unlocked it. Check tier and pincode coverage for that area. |
+| `Reserved` | Vendor is linked under the same-customer rule but lacks credits. Resolves when they top up. |
+| `InProgress` with no movement | Vendor unlocked but has not called. Check call disposition history. |
+| `Out for Pickup` for a long time | Agent en route or the status was set prematurely. Confirm with the vendor. |
+| `Inspection Started` | Inspection is open. Check the inspection timer before treating it as stalled. |
+
+<Callout kind="info">
+A transition made in the Vendor App should appear in the Admin Panel and Customer App in near real time. If it does not, that is a genuine sync bug worth escalating — include the order ID and both timestamps.
+</Callout>
+
+## Customer says the price changed at pickup
+
+This is the **requote** flow and it is expected, not a fault. Every online quote is provisional until physical inspection.
+
+The vendor revises the price when the device condition differs from what the customer declared. The customer can accept, which moves the order to `Completed`, or decline, which produces a fail-after-requote.
+
+Escalate only if the requote has no recorded condition justification, or the pattern repeats for one vendor — that is a quality issue, and it is what the fines and to-be-failed flows exist for.
+
+## Customer never received their inspection code
+
+<Steps>
+  <Step title="Confirm the order actually reached Generated" icon="check">
+    The code goes out at order confirmation. If the order was never confirmed, no code was ever sent.
+  </Step>
+  <Step title="Check both channels" icon="send">
+    It is delivered by WhatsApp and email. Confirm the email on file is valid and the WhatsApp number matches the registered phone.
+  </Step>
+  <Step title="Resend rather than improvise" icon="repeat">
+    Use the resend path. Never read a code out from the admin panel over an unverified channel — the code exists specifically to prove the person at the door is the assigned partner.
+  </Step>
+</Steps>
+
+## Customer cannot start the sell flow at all
+
+Check serviceability first. An unserviceable pincode blocks the journey outright and prevents lead creation — there will be no record of the attempt in Leads. See [Area](/area).
+
+Also check whether the customer account is blocked, which produces a similar dead end. See [Customer account blocking](/customer-account-blocking-feature).

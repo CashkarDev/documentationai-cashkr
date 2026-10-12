@@ -1,0 +1,124 @@
+---
+title: Dedicated DID Number
+description: How Cashkr assigns a dedicated DID number to each vendor so outbound calls to customers from the Vendor App display that number instead of the vendor's personal phone.
+---
+
+## Overview
+
+A **DID** (Direct Inward Dialling) number is a virtual phone number provisioned from Cashkr's telephony provider rather than a physical SIM. Cashkr assigns a dedicated DID number to individual vendors from the Admin Panel. When a vendor calls a customer from the Vendor App, the call is routed through the telephony provider and the customer sees that dedicated DID number as the caller ID.
+
+The vendor's personal phone number is never exposed to the customer, and the customer's number is handled by the platform rather than being dialled directly by the vendor.
+
+<Callout kind="info">
+This is a **caller-identity and routing** feature, not a change to the order flow. Call disposition, order status transitions, and every other part of the pickup journey behave exactly as they did before.
+</Callout>
+
+## Why it exists
+
+<Columns cols={3}>
+  <Card title="Customer trust" icon="shield-check">
+    Customers receive calls from a consistent Cashkr-controlled number rather than an unknown personal mobile, which makes the call recognisable and harder to mistake for a scam.
+  </Card>
+  <Card title="Vendor privacy" icon="eye-off">
+    The vendor's personal number stays private. Customers cannot call, save, or share it, and cannot route future business around the platform.
+  </Card>
+  <Card title="Traceability" icon="activity">
+    Calls placed through a platform-owned number can be attributed to a specific vendor and order, which supports quality monitoring and dispute resolution.
+  </Card>
+</Columns>
+
+## How it works
+
+<Steps>
+  <Step title="Admin assigns a DID to the vendor" icon="user-check">
+    An admin assigns a dedicated DID number to a vendor from the Admin Panel. The mapping is one number to one vendor.
+
+    See [DID Number Management](/did-number-management).
+  </Step>
+  <Step title="Vendor initiates a call" icon="phone">
+    The vendor opens an in-progress order in the Vendor App and taps the call action. The app does not hand the customer's number to the vendor's native dialler for a direct call.
+  </Step>
+  <Step title="Platform creates the call relationship" icon="link">
+    The backend registers the vendor-to-customer pairing with the telephony provider so the provider knows which two parties this call connects, and which DID to present.
+  </Step>
+  <Step title="Provider connects the call" icon="phone-call">
+    The telephony provider bridges the call. The customer's phone rings showing the vendor's dedicated DID number as the caller ID.
+  </Step>
+  <Step title="Vendor records the disposition" icon="check-circle">
+    After the call, the vendor submits the call disposition as normal. This step is unchanged by the DID feature.
+
+    See [Call Disposition](/call-disposition).
+  </Step>
+</Steps>
+
+## Telephony provider
+
+Cashkr uses **Acefone** as the telephony provider for this feature. The integration exposes a dial-plan webhook that the provider calls when handling a call, plus an endpoint that registers the caller-to-callee relationship.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /acefone-dialplan/create-relationship` | Registers the vendor-to-customer pairing and the DID to present for the call. |
+| `POST /acefone-dialplan/step1` | Dial-plan webhook invoked by the provider while routing a call. |
+| `PUT /order/setCallRequest` | Records a call request against an order from the Vendor App. |
+
+<Callout kind="alert">
+These three endpoints currently carry **no request or response schemas** in the API reference. The payload shapes have not been documented. Confirm them against the service before integrating, and see the open questions below.
+</Callout>
+
+## Behaviour rules
+
+- **One DID per vendor.** The dedicated number belongs to a single vendor, not to a city, tier, or device type.
+- **Assignment is admin-controlled.** Vendors cannot select, request, or change their own DID from the Vendor App, in the same way they cannot set their own vendor type or tier.
+- **The DID is the caller ID, not the vendor's number.** Anything that displays a vendor's contact detail to a customer should use the DID, never the registered personal number.
+- **Disposition is still mandatory.** The Vendor App still blocks further action on a lead until a call disposition is submitted.
+
+## Open questions
+
+<Callout kind="alert">
+The following behaviours are **not yet confirmed** and are not documented anywhere in Cashkr. They are listed here so the gaps are visible rather than assumed. Someone with implementation knowledge should fill these in and remove this section.
+</Callout>
+
+<Expandable title="What happens when a customer calls the DID back?" default-open="false">
+Unknown. A customer who has the DID in their call history may dial it. It is not documented whether the inbound call routes to the assigned vendor, to a support queue, to the most recent order's vendor, or is rejected.
+</Expandable>
+
+<Expandable title="What happens if a vendor has no DID assigned?" default-open="false">
+Unknown. It is not documented whether the call action is hidden, whether it falls back to a shared or pooled number, or whether it falls back to a direct dial that exposes the vendor's personal number.
+
+This matters: a silent fallback to direct dialling would defeat the privacy purpose of the feature without anyone noticing.
+</Expandable>
+
+<Expandable title="Do a vendor's agents share the vendor's DID?" default-open="false">
+Unknown. Vendors add agents who handle pickups on their behalf. It is not documented whether an agent calling a customer presents the parent vendor's DID, gets their own, or cannot use the feature.
+</Expandable>
+
+<Expandable title="Are calls recorded, and for how long?" default-open="false">
+Unknown. Routing calls through a provider commonly enables recording. Whether recording is on, where recordings are stored, who can access them, how long they are retained, and whether customers are notified are all undocumented.
+
+This has customer-consent implications and should be settled explicitly.
+</Expandable>
+
+<Expandable title="What happens when a vendor is put on Hold or deactivated?" default-open="false">
+Unknown. It is not documented whether the DID is released back to a pool, retained against the vendor, or reassigned. Reassigning a number that a customer still has in their call history would connect them to a different vendor.
+</Expandable>
+
+<Expandable title="How are numbers provisioned and is there a cost per number?" default-open="false">
+Unknown. The provisioning process, who requests numbers from Acefone, and any per-number cost that would limit how many vendors can be covered are undocumented.
+</Expandable>
+
+## Related pages
+
+<Columns cols={2}>
+  <Card title="DID Number Management" href="/did-number-management" icon="layers" cta="Open admin guide">
+    How admins assign, change, and audit dedicated DID numbers for vendors from the Admin Panel.
+  </Card>
+  <Card title="Calling the Customer" href="/vendor-app-calling" icon="phone" cta="See vendor flow">
+    What the vendor sees and does in the Vendor App when placing a call through their dedicated DID.
+  </Card>
+  <Card title="Call Disposition" href="/call-disposition" icon="check-circle" cta="View disposition rules">
+    Recording the outcome of the call, which remains mandatory once per lead.
+  </Card>
+  <Card title="Vendors - B2C" href="/b2c-vendors" icon="users" cta="Open vendor list">
+    The vendor profile and configuration panel where DID assignment sits alongside tier, devices, and Max Leads.
+  </Card>
+</Columns>

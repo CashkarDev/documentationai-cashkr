@@ -1,0 +1,151 @@
+---
+title: Careers
+description: Manage job postings and candidate applications in the Admin Panel — creating, editing, opening, closing and deleting roles, and reviewing applications with their CVs and cover letters.
+---
+
+## Overview
+
+The Careers section under **Marketing** controls the job postings on the Cashkr website and collects the applications they bring in. It has two tabs: **Roles** for the postings themselves, and **Applications** for the candidates who applied.
+
+<Callout kind="info">
+  Careers writes directly to the public website. Opening a role publishes it to the careers page; closing it takes it down without losing any application already received.
+</Callout>
+
+## Roles
+
+### What the roles list shows
+
+Each row in the Roles table includes:
+
+- **Role** – job title, with the URL slug beneath it.
+- **Department** – for example Engineering, Marketing, Operations.
+- **Location** – the posting location, with the workplace type beneath it.
+- **Type** – employment type.
+- **Applications** – how many candidates have applied to this role.
+- **Open** – a toggle showing Open or Closed.
+- **Actions** – edit and delete.
+
+### Filters and search options
+
+- **Search by** – title, department or location. Matching is case-insensitive.
+- **Filter: Status** – All statuses, Open, Closed.
+
+### Role fields
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| Title | Yes | Up to 180 characters. |
+| URL slug | Yes | Auto-generated from the title, and editable until the role is published. Lowercase and hyphenated. |
+| Department | Yes | Free text, for example Engineering. |
+| Location | Yes | Free text, for example Mumbai, Maharashtra, India. |
+| Workplace | Yes | On-site, Hybrid or Remote. |
+| Employment type | Yes | Full time, Part time, Contract, Temporary or Internship. |
+| Listing expires on | Yes | Must be a future date. Search engines downrank postings without an expiry date. |
+| About the role | No | A paragraph or two on what the person will own. |
+| Responsibilities | No | One entry per line. Shown as Job Description on the role page. |
+| Requirements | No | One entry per line. |
+| Skills | No | Short keywords rather than sentences. |
+| Benefits | No | One entry per line. |
+
+<Callout kind="warning">
+  The slug becomes the role's live URL and the address search engines index. It is locked once the role has been published, because changing it would break both.
+</Callout>
+
+### Admin workflow
+
+<Steps>
+  <Step title="Create a new role" icon="plus">
+    Use this to publish a new job posting to the website.
+
+    - Select **New role**.
+    - Enter the **Title**. The **URL slug** fills in automatically and can be adjusted before saving.
+    - Set **Department** and **Location**.
+    - Choose the **Workplace** and **Employment type**.
+    - Set **Listing expires on** to a future date.
+    - Write **About the role**, then add **Responsibilities**, **Requirements**, **Skills** and **Benefits** entries.
+    - Select **Create role**. The role is saved as Open and appears on the careers page.
+  </Step>
+
+  <Step title="Build the list sections" icon="list">
+    Responsibilities, Requirements, Skills and Benefits all work the same way.
+
+    - Select **Add** to append an entry.
+    - Use the up and down arrows to reorder entries; the order is preserved on the public page.
+    - Use the cross to remove an entry.
+    - The entry count beside each heading reflects only entries that have text. Blank entries are discarded on save.
+  </Step>
+
+  <Step title="Edit an existing role" icon="edit">
+    Change a posting after it has gone live.
+
+    - Select the edit icon on the role's row.
+    - Update any field except the **URL slug**, which is locked once published.
+    - Select **Save changes**.
+  </Step>
+
+  <Step title="Open or close a role" icon="toggle-right">
+    Take a posting off the website without losing its applications.
+
+    - Use the **Open** toggle on the role's row.
+    - Closing removes the role from the careers listing and stops it accepting applications. Its job page stays reachable so existing links keep working.
+    - Opening puts it back on the listing.
+  </Step>
+
+  <Step title="Delete a role" icon="trash">
+    Remove a posting and everything attached to it.
+
+    - Select the delete icon on the role's row.
+    - A confirmation dialog names the role, states how many applications it currently holds, and warns that their CVs go with it.
+    - Select **Delete role** to confirm, or **Cancel** to keep it.
+
+    <Callout kind="warning">
+      Deleting a role permanently deletes every application submitted for it, including the candidates' CVs and cover letters. It cannot be undone. To take a role off the website without losing anything, close it instead.
+    </Callout>
+  </Step>
+</Steps>
+
+## Applications
+
+### What the applications list shows
+
+Each row in the Applications table includes:
+
+- **Candidate** – full name, with email address and phone number beneath it.
+- **Role** – the posting the candidate applied to.
+- **Applied** – the submission date.
+- **Files** – download buttons for the **CV** and, where supplied, the **Cover letter**.
+- **Status** – the current stage, with a dropdown to change it.
+
+### Filters and search options
+
+- **Search by** – candidate name, email address or phone number.
+- **Filter: Role** – All roles, or any individual posting.
+- **Filter: Status** – All statuses, New, In review, Shortlisted, Rejected, Hired.
+
+### Application workflow
+
+<Steps>
+  <Step title="Review a new application" icon="inbox">
+    Applications arrive with status **New**.
+
+    - Open the **Applications** tab.
+    - Use the role and status filters to narrow the list, or search by name, email or phone.
+    - Download the **CV** and **Cover letter** to assess the candidate.
+  </Step>
+
+  <Step title="Move the application through its stages" icon="git-branch">
+    Keep the pipeline current so the team sees the same picture.
+
+    - Use the **Status** dropdown on the candidate's row.
+    - Stages are **New**, **In review**, **Shortlisted**, **Rejected** and **Hired**.
+    - The change saves immediately and the status badge updates.
+  </Step>
+</Steps>
+
+## Connections
+
+Careers connects directly to:
+
+- **Cashkr website careers pages** – the listing at `/careers`, each job page at `/careers/<slug>`, and the application form.
+- **Search engines** – the expiry date and posting details are published so job listings can be indexed and retired on schedule.
+- **Recruitment team** – applications collected here are the input to the hiring process.
