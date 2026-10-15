@@ -1,23 +1,24 @@
 ---
 title: Failed (No Requote)
-description: Review failed orders that were never requoted, with the standard order filters and detail drawer.
+description: >-
+  Review failed orders that were never requoted, with the standard order filters
+  and detail drawer.
 ---
-
 ## Overview
 
-Open **Orders → Closed → Failed (No Requote)** (breadcrumb *Dashboard / Orders / Failed No Requote*). This list shows failed orders where no revised quote (requote) was shared before the order failed.
+Open **Orders → Closed → Failed (No Requote)** (breadcrumb _Dashboard / Orders / Failed No Requote_). This list shows failed orders where no revised quote (requote) was shared before the order failed.
 
 Its companion view, **Failed After Requote**, lists failed orders that had been requoted.
 
 ## What the table shows
 
-| Column | Description |
-| --- | --- |
-| **Created At** | Date and time the order was created |
-| **Model** | Device model |
-| **City** | Pickup city |
-| **Type** | Device category badge |
-| **Status** | Failure status badge, for example Failed By Vendor |
+| Column         | Description                                        |
+| -------------- | -------------------------------------------------- |
+| **Created At** | Date and time the order was created                |
+| **Model**      | Device model                                       |
+| **City**       | Pickup city                                        |
+| **Type**       | Device category badge                              |
+| **Status**     | Failure status badge, for example Failed By Vendor |
 
 The list is paginated with Previous, page numbers and Next. Click a row to open the order detail drawer (see [All Orders → Order detail drawer](/all-orders#order-detail-drawer)) to read the failure details, activity timeline and credit history.
 
@@ -27,6 +28,7 @@ The list is paginated with Previous, page numbers and Next. Click a row to open 
 - Click **Filters** to open: **Device Type**, **City**, **From date / To date**, and **Show orders with Test accounts**.
 - Click **Apply Filters** to apply or **Reset** to clear.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   This is a read-only list for review and reporting. Pending failure decisions (Fail Accept / Fail Reject and credit reversal) are handled in **Orders → To Be Failed**. Customers from failed orders are worked for win-back in **B2C Sales → Retention**.
 </Callout>
+
