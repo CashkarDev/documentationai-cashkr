@@ -1,0 +1,65 @@
+---
+title: Data Quality
+description: The Data Health (Data Quality) dashboard — lead field completeness, data hygiene, attribution health, pipeline freshness and quality scoring.
+---
+
+## Overview
+
+**Sidebar path:** System → ADMIN → **Data Health** (`/dashboard/data-quality`)
+
+**Data Quality** tracks field completeness, data hygiene and tracking reliability for leads, so reports built on that data can be trusted.
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days. |
+| **Refresh** | Reloads the data. |
+| **AI Analyst Insight → Analyze Data** | Generates an AI summary. |
+
+## What the screen shows
+
+### KPI cards
+
+Total Leads, Quality Score, Attribution Rate, Critical Missing, Test Data, Duplicates, Defaults, Total Issues.
+
+### Health
+
+A score with a *Critical* → *Healthy* bar (for example *Needs Attention*).
+
+### Panels
+
+| Panel | Contents |
+| --- | --- |
+| **Quality Metrics** | Overall Score, City Coverage, Model Coverage, Source Coverage, Vendor Coverage. |
+| **Data Hygiene** | Default Values, Duplicate Phones, Test Data, High Issues, Medium Issues — each with a badge such as *Clean* or *Detected*. |
+| **Attribution Health** | Attribution Rate, Attributed, Total Leads, Critical Missing. |
+| **Data Freshness** | Lead Lag, Attribution Lag, Latest Lead, Latest Attribution. |
+| **Daily Quality Trend** | Average quality and City, Model, UTM Source coverage per day. |
+
+### Detail tabs
+
+| Tab | Shows |
+| --- | --- |
+| **Lead Fields** | Coverage for every tracked field, worst first — field, importance (Low / Medium / High), group (contact, assignment, payment, pricing, location), filled / total and %. Footer counts Healthy, Fair and Critical fields. |
+| **Attribution** | Attribution coverage details. |
+| **Data Issues** | Individual data problems found. |
+| **Lead Status** | Lead status distribution. |
+
+### Quality scoring
+
+| Band | Range |
+| --- | --- |
+| **Healthy** | 90% or more |
+| **Needs attention** | 70–89% |
+| **Critical** | below 70% |
+
+**Overall Score** is the weighted average of City, Pincode, Model, Vendor, Address, UTM Source and UTM Campaign coverage.
+
+## Actions
+
+The dashboard is read-only.
+
+<Callout kind="tip">
+A high **Test Data** count inflates lead totals on other dashboards. Check this page before sharing lead numbers.
+</Callout>

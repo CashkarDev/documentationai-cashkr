@@ -1,222 +1,128 @@
 ---
 title: Merchandise Store
-description: Manage products, track order lifecycles, process refunds, and audit merchandise store operations from the admin panel.
+description: Manage merchandise products and variations, and track vendor merchandise orders, shipments and cancellations from the admin panel.
 ---
 
 ## Overview
 
-The Merchandise Store section in the Admin Panel gives you full control over the product catalogue and every order placed by vendors. It contains two pages: **Products** and **Orders**. You can add and manage products, track order lifecycles, update shipping details, process refunds, and export order data.
+**Sidebar:** **Merchandise** → Catalog → **Products** (`/merchandise/products`) and Merchandise → Fulfillment → **Orders** (`/merchandise/orders`)
 
-For the full feature overview, data model, and business rules, see [Merchandise Store](/merchandise-store).
+The Merchandise section controls the store vendors buy branded items from (apparel, packaging, accessories, starter kits). Use **Products** to maintain the catalogue and stock, and **Orders** to track and fulfil orders.
 
-## What this section is for
+For the full feature overview and business rules, see [Merchandise Store](/merchandise-store).
 
-Use this section to maintain the product catalogue, monitor and fulfil incoming vendor orders, update order statuses through the order lifecycle, process refunds through PhonePe, and export order reports. Role permissions apply: **Store Managers** can manage products and update order statuses, while only **Super Admins** can delete products and issue refunds.
+---
 
-## Products page
+## Products
 
-The Products page shows all merchandise products in a server-side table with search, filters, and pagination. Columns include **Image**, **Name**, **SKU**, **Category**, **Price**, **Stock**, **Status**, **Created on**, and **Actions**. You can search by product name or SKU, and filter by category, status, and stock state.
+The header shows the total number of products.
 
-### Add a product
+### Filters & search
 
-<Steps>
-<Step title="Open the Products page" icon="plus">
+| Control | Description |
+| --- | --- |
+| Search | By name, slug or category. |
+| Filter by category | Type a category to narrow the list. |
+| **Refresh** | Reloads the list. |
 
-Open **Products** in the Admin Panel and click **Add Product**.
+### Columns
 
-</Step>
-<Step title="Enter the core product details" icon="plus">
+| Column | Description |
+| --- | --- |
+| Image | Primary product image. |
+| Name | Product name and auto-generated slug. |
+| Category | Category text (e.g. apparel, hoodies, Packaging, Accessories). |
+| Variations | Number of variations. |
+| Price | Single price, or a price range across variations. |
+| Stock | Total stock across variations (low stock is highlighted). |
+| Status | **Available** or unavailable. |
+| Actions | **Edit** (pencil) and **Delete** (bin). |
 
-Enter the product name and SKU, then select a category. The product name must be 3 to 120 characters, and the SKU must be unique and use only letters, numbers, dashes, or underscores.
+### Add / Edit product
 
-</Step>
-<Step title="Add the description and price" icon="edit">
+Click **Add product** (or the pencil on a row). The **New Merchandise Product** dialog says: "Create a product with at least one variation. Slug is auto-generated from the name."
 
-Enter the product description that vendors will see on the product detail page, then set the product price. The price must be greater than 0 and saved with two decimal places.
+| Field | Notes |
+| --- | --- |
+| **Name** | e.g. "Cashkr Hoodie". The slug is generated from it. |
+| **Category** | Free-text category, e.g. "apparel". |
+| **Description** | Shown to buyers. |
+| **Available for sale** | Switch. Disabled products are hidden from customers. |
+| **Minimum quantity (per size)** | Buyers must buy at least this many of each size — e.g. 2 = min 2 of XL, 2 of XXL. |
+| **Images** | Drop or **Browse** — JPEG, PNG, WebP, GIF, max 5 MB each. Or paste an image URL and click **Add**. |
+| **Variations** | At least one. Each has **SKU**, **Color**, **Size**, **Price** and **Stock**. Use **Add variation** for more, or the remove icon to delete one. |
 
-</Step>
-<Step title="Set stock and order limits" icon="package">
+Click **Create product** to save, or **Cancel**.
 
-Set the stock quantity, minimum order quantity, and maximum order quantity. Leave the maximum order quantity blank if you do not want to enforce a cap.
-
-</Step>
-<Step title="Upload product images" icon="upload">
-
-Upload at least one product image. You can upload up to five images in JPG, PNG, or WebP format, with a maximum size of 2 MB per image. The first image becomes the primary product image.
-
-</Step>
-<Step title="Choose the status and save" icon="settings">
-
-Set the product status to **Active** or **Inactive**, then save the product. **Active** is the default status.
-
-</Step>
-</Steps>
-
-<Callout kind="warning">
-
-Duplicate SKUs are rejected. Price and stock must be non-negative, and at least one image is required. After you save, the product appears in the vendor app immediately if the product is Active.
-
+<Callout kind="tip">
+Price and stock live on each variation, so a hoodie in three sizes is one product with three variations. The list shows the price range and the total stock.
 </Callout>
 
-### Product form fields
+---
 
-| Field | Type | Required | Validation | Notes |
-| --- | --- | --- | --- | --- |
-| Product name | Text | Yes | 3 to 120 characters | Display name shown in admin and vendor app |
-| SKU | Text | Yes | Unique, alphanumeric with dash or underscore | Duplicate SKU is rejected |
-| Category | Dropdown | Yes | Must be selected | Values come from the managed category list |
-| Description | Rich text | Yes | Cannot be empty | Shown on the vendor product detail page |
-| Price | Number | Yes | Greater than 0, two decimals | Pricing is enforced server-side |
-| Tax rate | Number | No | Optional | Defaults from store settings if not set |
-| Stock quantity | Integer | Yes | 0 or greater | Products are only visible when stock is above 0 and status is Active |
-| Min order qty | Integer | No | Default is 1 | Minimum quantity per order |
-| Max order qty | Integer | No | Blank means no cap | Maximum quantity per order |
-| Images | File upload multi | Yes | 1 to 5 images, JPG or PNG or WebP, 2 MB max each | First image is the primary image |
-| Status | Toggle | Yes | Active or Inactive | Default is Active |
+## Orders
 
-### Update a product
+The header shows the total number of orders. Paginated with Previous / Next.
 
-Updating a product uses the same form with all current values pre-filled. You can edit any field, reorder or replace images, adjust stock, and change the status without affecting the product record itself.
+### Filters & search
 
-<Callout kind="warning">
+| Control | Description |
+| --- | --- |
+| Search | By order #, name, email or phone — click **Search**. |
+| Status | All statuses, PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED. |
+| **Refresh** | Reloads the list. |
 
-Changing the price does not affect already placed orders because each order stores a price snapshot. Items already in vendors' carts are re-priced at checkout with a price changed notice. Setting a product to Inactive hides it from the vendor app immediately but does not change historical orders.
+### Columns
 
-</Callout>
+| Column | Description |
+| --- | --- |
+| Order # | Sequential order number. |
+| Customer | Buyer name and email. |
+| Items | Number of items. |
+| Total | Order total. |
+| Status | Status badge. |
+| Placed | Date and time placed. |
+| **View →** | Opens the order detail page. |
 
-### Delete a product
+### Order detail
 
-Deleting a product always asks for confirmation before the action completes. The system protects order history, so deletion behavior depends on whether the product has already been used in orders.
+`/merchandise/orders/<order-id>` shows the order number with its status badge and a **Refresh** button:
 
-<Callout kind="warning">
+| Block | Contents |
+| --- | --- |
+| **Items** | Product (image, name, SKU), variant (colour · size), qty, price, subtotal and total. |
+| **Shipment (Shiprocket)** | Shipment status (e.g. NOT_CREATED). Label and tracking appear once Shiprocket generates them. |
+| **Actions** | **Cancel order** — cancelling restores stock for each variation in the order. |
+| **Customer** | Name, email, phone and ID. |
+| **Shipping address (warehouse)** | Delivery address and contact number. |
+| **Meta** | Placed, Updated and Order ID. |
 
-If the product appears in any existing order, the system does not allow a hard delete. It either blocks the action with a message such as `This product exists in N orders; deactivate it instead.` or performs a soft delete. A soft-deleted product is hidden from the vendor app and the default admin list, but old orders can still resolve the product correctly.
+### Status lifecycle
 
-</Callout>
-
-## Orders page
-
-The Orders page shows all vendor orders in a searchable, filterable list. Columns include **Order ID**, **Vendor name**, **Date and time**, **Items count**, **Total amount**, **Payment status**, **Order status**, and **Actions**. You can search by Order ID, vendor name, or PhonePe transaction ID, then export the filtered result set as CSV or Excel.
-
-### Order list
-
-Use the order list to monitor new orders, track fulfilment progress, and find payment-related issues quickly. Filters are available for date range, order status, payment status, and vendor, so you can narrow the list before taking action or exporting data.
-
-### Order detail view
-
-The order detail view brings the full order record into one place. It shows the vendor block with name, vendor code, phone, and email; the delivery block with address, contact person, phone, and vendor remarks; and the items block with product image, name, SKU, unit price snapshot, quantity, and line total.
-
-The same page also shows the amount block with subtotal, tax, shipping, and grand total; the payment block with method, merchant transaction ID, PhonePe transaction ID, payment status, paid-at time, and amount; and the status block with the current order status plus full status history. From this page, you can update status, add a tracking number and courier, add an internal note, download the invoice, or initiate a refund if you are a Super Admin.
-
-### Order status lifecycle
-
-The following diagram shows the order status transitions:
-
-```typescript
-PENDING_PAYMENT ──► PLACED ──► CONFIRMED ──► PACKED ──► SHIPPED ──► DELIVERED
-       │                │            │
-       ▼                ▼            ▼
-    FAILED          CANCELLED    CANCELLED
-                        │
-                        ▼
-                    REFUNDED
+```plaintext
+PENDING ──► CONFIRMED ──► SHIPPED ──► DELIVERED
+                │
+                ▼
+            CANCELLED (stock restored)
 ```
 
-| Status | Meaning | Set by | Next possible statuses |
-| --- | --- | --- | --- |
-| PENDING_PAYMENT | Order record created and waiting for PhonePe result | System | PLACED, FAILED |
-| FAILED | Payment failed, was cancelled, or timed out | System | Terminal |
-| PLACED | Payment succeeded and the order was received | System | CONFIRMED, CANCELLED |
-| CONFIRMED | Admin accepted the order for fulfilment | Admin | PACKED, CANCELLED |
-| PACKED | Items are packed and ready to dispatch | Admin | SHIPPED |
-| SHIPPED | Order has been dispatched and tracking is added | Admin | DELIVERED |
-| DELIVERED | Vendor received the order | Admin | Terminal |
-| CANCELLED | Order was cancelled by vendor or admin | Vendor or Admin | REFUNDED if paid |
-| REFUNDED | Refund completed through PhonePe | Super Admin | Terminal |
-
 <Callout kind="info">
-
-Status can only move forward, except to CANCELLED. DELIVERED is a terminal state. Moving an order to SHIPPED requires a courier name and tracking number. Cancelling a paid order requires a reason and starts the refund workflow. Every status change is logged and notifies the vendor when notifications are enabled.
-
+Shipping is handled through Shiprocket — the shipment block shows the label and tracking once a shipment is created.
 </Callout>
 
-### Updating order status
-
-<Steps>
-<Step title="Open the order" icon="list">
-
-Open the order you want to update from the **Orders** page.
-
-</Step>
-<Step title="Start the status update" icon="edit">
-
-Click **Update Status** in the order detail view.
-
-</Step>
-<Step title="Add shipment details when required" icon="package">
-
-If you are moving the order to **SHIPPED**, enter the courier name and tracking number. The system does not allow the status change without both values.
-
-</Step>
-<Step title="Select the new status" icon="check">
-
-Choose the next valid status and add remarks if your process requires them. Review the current status first so you do not trigger an invalid transition.
-
-</Step>
-<Step title="Confirm the change" icon="check-circle">
-
-Confirm the update. The vendor receives a push notification for key status changes such as confirmed, packed, shipped, delivered, cancelled, and refund processed.
-
-</Step>
-</Steps>
-
-### Refunds
-
-Refunds are initiated from the order detail page by a Super Admin. Use refunds when a paid order is cancelled or when your operations process requires returning the collected amount to the vendor.
-
-<Callout kind="warning">
-
-The backend calls the PhonePe Refund API with the original transaction reference and a new `merchantTransactionId`. After refund confirmation, `payment_status` becomes `refunded`, `order_status` becomes `REFUNDED`, stock is restored, and the vendor is notified by push and email. Refund settlement typically takes 3 to 7 business days.
-
-</Callout>
-
-### Export
-
-Export the filtered order list as CSV or Excel when you need reporting or reconciliation data. The export respects the current filters, including date range, order status, payment status, and vendor, so the file matches the rows you are viewing on screen.
-
-## Audit trail
-
-| Action | Logged fields | Who | Timestamp |
-| --- | --- | --- | --- |
-| Product created | Product ID, name, SKU, all field values | Admin user | `created_at` |
-| Product updated | Product ID, changed fields, old values to new values | Admin user | `updated_at` |
-| Product deleted or deactivated | Product ID, action type | Admin user | Timestamp |
-| Order status changed | Order ID, `from_status` to `to_status`, remarks | Admin, vendor, or system | Timestamp |
-| Refund processed | Order ID, refund amount, PhonePe refund transaction ID | Super Admin | Timestamp |
-
-<Callout kind="info">
-
-Every admin action on products and orders is written to an audit log. The order status history record keeps every status transition with who made the change, when it happened, and any remarks captured during the update.
-
-</Callout>
+---
 
 ## Common issues
 
 | Issue | Cause | Resolution |
 | --- | --- | --- |
-| Duplicate SKU rejected | SKU already exists in the catalogue | Use a unique SKU or update the existing product instead |
-| Product delete blocked | Product exists in one or more orders | Deactivate the product instead of deleting it |
-| Cannot move to SHIPPED | Courier name and tracking number are missing | Enter both fields before updating the status |
-| Invalid status transition | Status was moved backward or to a disallowed state | Follow the lifecycle and move only to the next allowed status, except CANCELLED |
-| Refund failed | PhonePe Refund API returned an error | Check the PhonePe transaction ID and retry. If the error continues, escalate to tech support |
-| Stock discrepancy after refund | Stock was not restored automatically | Verify that the refund completed successfully. If stock still does not restore, escalate |
-| Product not showing in vendor app | Product is Inactive or stock is 0 | Set the status to Active and ensure stock is above 0 |
-| Payment status mismatch | PhonePe callback was not received | Wait for reconciliation to re-check pending payments, or review the payment record manually |
+| Product not visible to vendors | **Available for sale** is off or variations have no stock | Turn availability on and add stock to the variations. |
+| Shipment shows NOT_CREATED | Shiprocket has not generated the shipment yet | Refresh later; escalate to tech if it stays NOT_CREATED. |
+| Stock looks wrong after a cancellation | Cancel restores stock per variation | Re-check the variation stock in the product's Edit dialog. |
 
 ## Related pages
 
-<Columns cols={3}>
+<Columns cols={2}>
 <Card title="Feature overview" href="/merchandise-store" icon="book-open" cta="Open page" />
 <Card title="Vendor App" href="/vendor-merchandise-store" icon="monitor" cta="Open page" />
-<Card title="Review Refund" href="/admin-review-refund" icon="rotate-ccw" cta="Open page" />
 </Columns>

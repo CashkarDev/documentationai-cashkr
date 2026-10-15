@@ -5,13 +5,23 @@ description: Manage corporate buyback B2B deals from first request through payme
 
 ## Overview
 
+**Sidebar path:** Channels → Buyback B2B → Deals (`/buyback-b2b`). The page header reads **Buyback CRM — Manage corporate buyback requests and pipeline**.
+
 The Deals page in the Buyback B2B section is the primary workspace for the Pricing Team. It tracks all active corporate buyback deals from creation through final closure and payment confirmation.
 
 The pricing team uses this page to request device data from clients, send initial and final quotations, schedule inspections, review inspection results, mark deals as approved, and close completed deals.
 
+## Header actions
+
+| Button | What it does |
+| --- | --- |
+| **Direct Buyback** | Record a one-off purchase from a company (see below) |
+| **+ New Request** | Create a new buyback request / deal manually |
+| **Refresh** (icon) | Reload the pipeline |
+
 ## Deal pipeline tabs
 
-The Deals page has three tabs that represent the lifecycle stages of every corporate buyback deal.
+The Deals page has three tabs (the page opens on **In Progress**) that represent the lifecycle stages of every corporate buyback deal.
 
 ### New Requests
 
@@ -55,11 +65,30 @@ Each row in the deals table represents one corporate buyback deal. Use these col
 
 - **Deal #** — Unique deal reference number.
 - **Date** — Date the deal was created.
-- **Company / Contact** — Name of the corporate client and their contact person.
-- **Subject** — Description or reference subject for the deal.
-- **Location** — City or location of the corporate client.
+- **Company / Contact** — Name of the corporate client and contact phone. Direct buybacks show a **DIRECT** badge.
+- **Subject** — Subject of the deal, with the description below it.
+- **Location** — City or location of the client (**Unknown** if not set).
 - **Status** — Current deal status within the pipeline.
-- **Action** — Available actions for the deal based on its status.
+- **Action** — **View** opens the deal detail page.
+
+## Deal detail page
+
+Clicking **View** opens `/buyback-b2b/<deal-id>` with the deal number, status and creation date, and these sections:
+
+- **Progress stepper** — Format → Data → Quote → Inspect → Final → Invoice → Pay → Done. Once paid, a **Deal locked** banner says the deal can no longer be edited.
+- **Documents** — **Purchase Order** (View / Regenerate), **Acknowledgement** (Generate) and **Client's GST Invoice** (Upload).
+- **Client Details** — company, contact person, email, phone, location, with **Edit contact**.
+- **Request Details** — subject and description.
+- **Items & Inspection Results** — one row per unit so IMEI / serial stays attached to the right device: **#**, **Device**, **IMEI / Serial**, **Condition / Notes**, **Max Quote (incl. GST)**. Use **View IMEIs & prices** to expand.
+- **Status** — current state, e.g. "This deal is closed. Items have been added to inventory."
+- **Financials** — **First Quote**, **Final Quote**, **Taxable value**, **GST (18%)**, **Total incl. GST** and **Paid**. A **Prices include GST** note confirms that entered prices are GST-inclusive.
+- **Activity Log** — timestamped history, e.g. Deal Created, Data Received (CSV upload), status changes, Inspection Completed, PO Regenerated, Sent to Finance, Payment Processed, Deal Closed (with number of items added to inventory).
+
+### Deal statuses
+
+A deal moves through these statuses (as recorded in the Activity Log):
+
+`Format` → `DataRequested` → `DataReceived` → `FirstQuoteSent` → `InspectionScheduled` → inspection completed → `FinalQuoteSent` → `Approved` → `InvoiceReceived` → sent to Finance → paid → `Closed`
 
 ## Pricing team workflow in the Deals page
 
@@ -119,7 +148,27 @@ The pricing team follows a consistent workflow from the moment a deal appears in
 
 Deals are usually created by the sales team from the Clients page when a client confirms they want to sell devices. The pricing team does not create deals themselves; they receive new deals in the New Requests tab and start the pricing workflow from there.
 
-Admins can also click **New Request** on the Deals page to manually create a deal if needed, for example when setting up a one-off corporate buyback outside the normal flow.
+Admins can also click **+ New Request** on the Deals page to create a deal manually. The **Create New Buyback Request** form has:
+
+| Section | Fields |
+| --- | --- |
+| **Client Information** | **Contact Name** \*, **Email** \*, **Mobile Number** \* |
+| **Pickup Location** | City, State, Pincode |
+| **Buyback Details** | **Subject** (e.g. `Selling 50 MacBooks`), **Details** (models, quantity, condition) |
+
+Click **Submit Request** to create the deal, or **Cancel**.
+
+### Direct Buyback
+
+Use **Direct Buyback** for a one-off purchase from a company. A B2B client record is created automatically so the seller appears in the Clients list. After creating it you can generate a Purchase Order, upload the seller's GST invoice and issue an acknowledgement from the deal page.
+
+| Section | Fields |
+| --- | --- |
+| **Seller Details** | **Company name** \*, GSTIN, Contact name, Contact phone, Contact email, Address, City, State, Pincode, Subject (optional) |
+| **Seller's GST Invoice** | Invoice number, Invoice date, Invoice file (PDF or image) — optional now, can be uploaded later from the deal page |
+| **Devices** | One row per device: **Type** (e.g. Laptop, Firewall), **Brand**, **Model**, **Qty**. Use **Add row** for more |
+
+Click **Create Direct Buyback** to save, or **Cancel**.
 
 ## Deal lifecycle flow
 

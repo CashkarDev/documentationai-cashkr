@@ -1,0 +1,97 @@
+---
+title: Vendors Dashboard
+description: The Vendors analytics dashboard — Health, SLA, Evaluation, Trust, Drill-down and Calling tabs for vendor credits, performance, scoring, per-vendor metrics and dedicated DID impact.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → **Vendors** (`/dashboard/vendors-analytics`)
+
+The Vendors dashboard analyses the vendor (pickup partner) network. A tab bar switches between six views:
+
+| Tab | What it covers |
+| --- | --- |
+| **Health** | Active vendors, credits, low-credit alerts, onboarding pipeline |
+| **SLA** | Vendor performance and SLA violations (last 30 days) |
+| **Evaluation** | Score every vendor and decide keep, coach or replace |
+| **Trust** | Fraud and compliance — see the Trust & Safety page |
+| **Drill-down** | Detailed metrics for one vendor |
+| **Calling** | Impact of dedicated DID phone numbers on call answer rates |
+
+## Health tab
+
+**Vendor Health** — partner ecosystem performance.
+
+| Block | Contents |
+| --- | --- |
+| **KPI cards** | Active Vendors, Credit Pool (with average), Low Credit Alerts, Pending Payments (amount and count). |
+| **Top Performers (30d)** | Vendors ranked by orders. |
+| **Low Credit Vendors** | Vendors with low credit balance, tagged *Critical* or *Low*. |
+| **Vendor Onboarding Pipeline** | Vendor leads by stage: New, Contacted, Interested, NotInterested, FollowUp, Converted, Invalid, Duplicate (count and %). |
+| **Activation Stats** | Activation Rate, Total Vendors, Active & Live. |
+
+## SLA tab
+
+**Vendor Performance & SLA** — *Ops Control Tower, last 30 days*, with **Refresh**.
+
+| Block | Contents |
+| --- | --- |
+| **KPI cards** | Active Vendors, Orders Assigned, Overall Completion, SLA Violations. |
+| **Top Performers** | Completion % and completed/assigned orders, best marked *Best*. |
+| **Needs Attention** | Vendors with low completion or high vendor fails, tagged *Critical* or *Low*. |
+| **SLA Violations (Action Required)** | Each violating vendor with the breached metrics (Completion, Vendor Fail, Delays, Requotes) and **View →**. |
+| **All Vendors Performance** | Vendor (with live/barred status), Assigned, Completed, Completion %, Vendor Fail %, Requote %, On-Time %, Credits. |
+
+## Evaluation tab
+
+**Vendor Evaluation** — *deep-dive into any vendor — decide whether to keep, coach, or replace*.
+
+| Control | Description |
+| --- | --- |
+| **Period** | 7D, 30D, 90D, 6M, 1Y, All Time. |
+| **Search and select a vendor to evaluate** | Opens a single-vendor evaluation. |
+| **Search vendors** | Filters the table by name. |
+| **City filter** | All Cities or one city. |
+| **Sort chips** | Orders, Completion, Requote, Vendor Fail, On-Time, CX Call, Rating. |
+
+**Score cards:** Total Vendors, Avg Score (out of 100), Excellent (80+), Good (65–79), Average (50–64), Below / Poor (under 50).
+
+**Table columns:** #, Vendor (name and phone), City, Verdict (Excellent / Good / Average / Below Average / Poor), Orders (completed/assigned), Completion, Requote Rate, Vendor Fail Rate, On-Time Pickup, CX Call Answer, Rating, Flags. Click a row (arrow) for details.
+
+## Drill-down tab
+
+Per-vendor metrics for a custom range.
+
+| Filter | Description |
+| --- | --- |
+| **Vendor** | Dropdown of all vendors. |
+| **From / To** | Date range. |
+| **Device** | All, Phone, Laptop, Mac, Tablet. |
+| **Apply** | Loads the metrics. |
+
+**Cards:** Total Orders Received, Total Orders Completed, CPA (Cost Per Acquisition), Average Order Value, Completion %, Requote %, Orders Assigned, Orders In Progress, Orders Completed, Orders Failed, Cancelled By Vendor, Requote Orders, Credits Purchased (Pending), Credits Fined (Pending), Credits Due (Pending), Credits Spent. Charts: **Orders By Status** and **Failed Reasons**.
+
+## Calling tab
+
+**Dedicated DID impact** compares call answer rates before and after vendors moved from the shared number to their own dedicated DID number.
+
+| Block | Contents |
+| --- | --- |
+| **Before window / After window** | From–To dates for each window, with **Apply dates**. Both windows should cover a similar span. |
+| **Dedicated DID vendors** | Answer rate before → after for vendors given their own number. |
+| **Shared number · same period (control)** | The same change for vendors still on the shared number. |
+| **Gain over control** | Dedicated movement minus control movement, in percentage points — the effect of the DID itself. |
+| **Vendor tables** | Inbound before/after and answered before/after per vendor. |
+| **Inbound vs outbound** | Inbound and outbound answer rates before/after, call counts in brackets, and talk time after. |
+
+<Callout kind="info">
+Inbound = a customer rang the vendor; outbound = the vendor rang the customer; answered = the share someone picked up. A single vendor's change is noisy — read the pooled figures.
+</Callout>
+
+## Actions
+
+All tabs are read-only analytics. Manage vendors, credits and DIDs in the **Vendors** sidebar group (All Vendors, Credits & Payments, Low Credit, Vendor DIDs).
+
+<Callout kind="alert">
+The Evaluation and Drill-down tabs show vendor names and phone numbers. Do not export or share screenshots outside the vendor operations team.
+</Callout>

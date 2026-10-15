@@ -1,0 +1,82 @@
+---
+title: Data Health
+description: Monitor lead field completeness, data hygiene, attribution coverage and pipeline freshness from the Data Health (Data Quality) screen.
+---
+
+## Overview
+
+Data Health shows how complete, clean and up to date lead and attribution data is. The page header reads **Data Quality — Field completeness, data hygiene, and tracking reliability**.
+
+Open it from **System → Admin → Data Health** in the left sidebar (route `/dashboard/data-quality`).
+
+Use it to spot missing fields, test data and duplicates that distort reports, and to confirm that the lead and attribution pipelines are running on time.
+
+## Controls
+
+- **Date range** — Defaults to the last 30 days. All metrics on the page use this range.
+- **AI Analyst Insight → Analyze Data** — Generates written insights from the current data on demand.
+
+## What the screen shows
+
+### Summary strip
+
+| Metric | Meaning |
+| --- | --- |
+| Total Leads | Leads in the selected period |
+| Quality Score | Weighted overall field-coverage score |
+| Attribution Rate | Share of leads with attribution (tracking) data |
+| Critical Missing | Leads missing critical fields |
+| Test Data | Test/internal leads detected |
+| Duplicates | Duplicate phone numbers |
+| Defaults | Records still holding default values |
+| Total Issues | Total records affected by issues |
+
+A **health gauge** places the data on a scale of Critical → Poor → Fair → Good → Healthy (for example, "Health: Needs Attention").
+
+### Metric cards
+
+| Card | Contents |
+| --- | --- |
+| Quality Metrics | Overall Score with rating, plus City, Model, Source and Vendor coverage % |
+| Data Hygiene | Default Values, Duplicate Phones, Test Data, High Issues, Medium Issues |
+| Attribution Health | Attribution Rate, Attributed leads, Total Leads, Critical Missing |
+| Data Freshness | Lead Lag and Attribution Lag (minutes since the latest record, flagged e.g. **Slow**), Latest Lead and Latest Attribution timestamps |
+
+### Daily Quality Trend
+
+A line chart of field coverage over time, with series for **Avg Quality**, **City**, **Model** and **UTM Source**.
+
+## Detail tabs
+
+<Tabs>
+<Tab title="Lead Fields">
+**Lead Field Completeness** — coverage for every tracked lead field, sorted worst-first. Each row shows the field name, importance (**Low / Medium / High**), a category tag (contact, assignment, payment, pricing, location, etc.), filled count out of total leads, and a percentage bar. A footer counts fields that are Healthy, Fair and Critical.
+</Tab>
+<Tab title="Attribution">
+**Attribution Field Completeness** — coverage for each field in the lead attribution tracking table, such as UTM Content, UTM Term, Google Click ID, Facebook Click ID and Referrer URL, each with importance, count and percentage.
+</Tab>
+<Tab title="Data Issues">
+**Data Issues** — real-time detection of data hygiene issues, with a summary of High / Medium severity counts and total records affected. Each issue card shows its name, severity, a recommended action and the number of affected records. Examples: test/internal leads, leads using the test pincode, and duplicate phone numbers (customers with 3+ leads, to review for fraud or duplicates).
+</Tab>
+<Tab title="Lead Status">
+**Lead Status Distribution** — leads across primary × secondary status combinations (for example New / Initiated, Failed / Failed, Completed / Completed, InProgress / Assigned), with a count and distribution bar for each.
+</Tab>
+</Tabs>
+
+## Quality scoring
+
+| Score | Rating |
+| --- | --- |
+| ≥ 90% | Healthy |
+| 70–89% | Needs attention |
+| < 70% | Critical |
+
+**Overall Score** is a weighted average of City, Pincode, Model, Vendor, Address, UTM Source and UTM Campaign coverage.
+
+<Callout kind="tip">
+A high Test Data count inflates lead totals in other dashboards. Make sure test leads are excluded (or marked as test) before reading conversion metrics.
+</Callout>
+
+<Callout kind="info">
+This page is read-only — it reports on data but does not change any records.
+</Callout>

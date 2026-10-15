@@ -1,11 +1,11 @@
 ---
-title: No Action
-description: Understand the No Action view in Orders - B2C, when orders appear here, how it differs from Delayed, which filters to use, and what admins should do.
+title: Assigned · No Action
+description: Understand the Assigned · No Action view under Orders, when orders appear here, how it differs from Delayed, which filters to use, and what admins should do.
 ---
 
 ## Overview
 
-The No Action page in Orders - B2C shows orders that are assigned to a vendor but have not progressed because the vendor has not taken any recorded action.
+The **Assigned · No Action** page (**Orders → Needs Attention → Assigned · No Action**, breadcrumb *Dashboard / Orders / No Action*) shows orders that are assigned to a vendor but have not progressed because the vendor has not taken any recorded action.
 
 <Callout kind="info">
   An order qualifies as No Action when it is assigned to a vendor, but the vendor has not started the pickup process or updated the order status after assignment.
@@ -13,7 +13,7 @@ The No Action page in Orders - B2C shows orders that are assigned to a vendor bu
 
 Admins use this view to spot stalled orders quickly, follow up with vendors, and keep customer pickups moving.
 
-The count badge next to No Action in the sidebar shows the real-time number of orders in this state and should be checked daily.
+The count badge next to **Assigned · No Action** in the sidebar shows the real-time number of orders in this state and should be checked daily.
 
 ## What the No Action list shows
 
@@ -23,7 +23,10 @@ Each row in the No Action list represents one order that is assigned to a vendor
 - **Model** — Device model the customer wants to sell.
 - **City** — City where the pickup is scheduled.
 - **Type** — Device category such as Mobile, Laptop, Tablet, or Mac.
-- **Status** — Current status of the order. It shows Assigned because the vendor has been assigned but has not acted.
+- **Status** — Current status of the order, for example **Assigned**, or **Pickup Delayed** once the pickup slot has passed without vendor action.
+- **SLA** — How late the order is against its SLA and the SLA stage (for example `1d 3h late · PICKUP`).
+
+Click any row to open the order detail drawer, where you can **Send a reminder to the vendor or customer**, **Flag this order for escalation**, **Reschedule Pickup** or **Reassign Vendor** (see [All Orders](/all-orders#order-detail-drawer)).
 
 ## Why orders appear in No Action
 
@@ -47,13 +50,15 @@ An order can appear in both No Action and Delayed if the vendor never acted and 
 
 Use filters at the top of the No Action page to narrow down the list and focus on the most important stalled orders.
 
-- **Device Type Filter** — Filter orders by device category such as Mobile, Laptop, Tablet, or Mac.
+Click **Filters** in the header to open the filter panel.
+
+- **Device Type Filter** — Filter orders by device category such as Mobile, Laptop, Macbook, Tablet, Watch and other supported types.
 - **City Filter** — Filter orders by the city where the pickup is scheduled.
 - **From Date and To Date** — Filter orders by their creation date range to focus on older or newer stalled orders.
 - **Show Orders with Test Accounts** — Include or exclude orders created by test accounts during testing or QA.
-- **Search** — Search for a specific order by order details, device name, or customer information.
+- **Search** — Use the **Search orders...** box in the header to find a specific order.
 - **Reset and Apply Filters** — Click Apply Filters to apply the selected filters. Click Reset to clear all filters and return to the full list.
-- **Pagination** — Use Previous and Next to move between pages. The total result count appears below the table.
+- **Pagination** — Use Previous, page numbers and Next to move between pages.
 
 <Callout kind="alert">
   During normal operations, keep test account orders excluded so you focus on real customer orders. Enable Show Orders with Test Accounts only when you intentionally review test data.
@@ -87,7 +92,8 @@ Use the No Action view as a daily work queue to unblock stalled orders.
 
 - Open the order detail and check when it was assigned and how long it has been idle.
 - Call the assigned vendor directly to prompt them to act on the order.
-- If the vendor is unresponsive or unable to complete the pickup, reassign the order to another available vendor in the same pincode.
+- Use **Send a reminder to the vendor or customer** in the order drawer for a quick nudge.
+- If the vendor is unresponsive or unable to complete the pickup, use **Reassign Vendor** to move the order to another available vendor in the same pincode.
 - Contact the customer to update them on the status and reassure them the pickup is being arranged.
 - Escalate to the operations manager if a vendor repeatedly has orders in No Action.
 

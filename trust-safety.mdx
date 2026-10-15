@@ -1,0 +1,61 @@
+---
+title: Trust & Safety
+description: The Vendors dashboard → Trust tab — trust health, lead and vendor flags, suspicious order patterns (fake requotes, condition jumps, new phone drops) and vendor status health.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → Vendors → **Trust** tab (`/dashboard/vendors-analytics?tab=trust`)
+
+**Trust & Safety** covers fraud detection, vendor compliance and an action center for suspicious orders.
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days. |
+| **Refresh** | Reloads the data. |
+| **AI Analyst Insight → Analyze Data** | Generates an AI summary. |
+
+## What the screen shows
+
+### Trust Health
+
+A score with a *Critical* → *Healthy* band, based on resolution rate, suspicious rate and vendor health. Shows % resolved, % suspicious, unresolved count and vendor flags.
+
+### KPI cards
+
+| Card | Meaning |
+| --- | --- |
+| **Lead Flags** | Flags raised on leads (with resolved count). |
+| **Suspicious** | Suspicious completed orders (count and % of completed). |
+| **Vendor Flags** | Flags raised on vendors. |
+| **Avg Resolution** | Average time to resolve a flag. |
+| **Resolution Rate** | Share of flags resolved. |
+| **Unresolved** | Open flags. |
+| **Vendor Health** | Share of vendors that are live. |
+| **Suspicious Rate** | Suspicious orders ÷ completed. |
+
+### Panels
+
+| Panel | Contents |
+| --- | --- |
+| **Suspicious Breakdown** | New Phone Drops, Fake Requotes, Condition Jumps, Drastic Drops, Screen Issues. |
+| **Problem Types** | Lead flag types. |
+| **Vendor Health** | Vendors by status: Live, On Hold, Pending, Internal and others. |
+| **Flag Reasons** | Vendor flag reasons. |
+| **Daily Safety Trend** | Lead flags and vendor flags per day. |
+
+### Action tables
+
+Switch between **Suspicious Orders**, **Risky Vendors**, **Unresolved Flags** and **Compliance Issues**.
+
+The **Suspicious Orders** table lists flagged orders: Order ID, Model, Vendor, Generated price, Final price, Drop %, Flags (for example *Fake Requote*, *New Phone Drop*, *Condition Jump*), City, Date and Actions.
+
+<Callout kind="info">
+A negative **Drop** means the final price was higher than the generated quote — a common sign of a fake requote.
+</Callout>
+
+## Actions
+
+On a suspicious order, click the **Order ID** or the icon in the **Actions** column to open it for review. The tab itself does not change any data. Fraud records themselves are managed under **System → Admin → Stolen Devices** and **Fraud & Trust Audit**.

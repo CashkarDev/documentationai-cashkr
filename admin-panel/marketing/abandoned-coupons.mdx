@@ -1,0 +1,65 @@
+---
+title: Abandoned Coupons
+description: Configure the abandoned-quote coupon programs — the two coupons sent automatically when a customer leaves a quote unfinished.
+---
+
+## Overview
+
+**Sidebar path:** Marketing → Abandoned Coupons (`/abandoned-coupon-programs`)
+
+When a customer gets a quote but doesn't finish placing the order, Cashkr automatically sends them **two coupons** to win them back. An **abandoned coupon program** sets how much each coupon is worth, how long it lasts, and the limits that apply.
+
+<Callout kind="info">
+Only **one program is live at a time**. Create a new program (or schedule one with dates) to change the coupon values; the live program decides what abandoned-cart customers receive.
+</Callout>
+
+## What the screen shows
+
+**Status tabs** (each with a count): **All**, **Live**, **Scheduled**, **Expired**, **Inactive**.
+
+When no programs exist, the page shows *No programs found* with a **New program** button.
+
+## Filters and search
+
+- **Search** by program name or notes.
+- **Running between** — from / to dates, to find programs active during a period.
+
+## Create a program
+
+Click **New program** (top right). The dialog explains: *Two coupons are sent to a customer who leaves a quote unfinished. Set what each one is worth and how long it lasts.*
+
+| Field | Details |
+| --- | --- |
+| **Program name** | Up to 255 characters, e.g. *Monsoon winback 2026*. |
+| **First coupon amount (₹)** | Value of the first coupon sent (e.g. 200). |
+| **First coupon expires after (hours)** | Defaults to 72. |
+| **Second coupon amount (₹)** | Value of the second, follow-up coupon (e.g. 350). |
+| **Second coupon expires after (hours)** | Defaults to 72. |
+| **Minimum order value (₹)** | Leave blank for no minimum. |
+| **Maximum redemptions** | Leave blank for unlimited. |
+| **Start date** / **End date** | Optional. With no dates, the program runs for as long as it is switched on. |
+| **Internal notes** | Why the program exists and who asked for it. |
+
+Click **Create program** to save, or **Cancel** to close.
+
+<Steps>
+<Step title="Decide the incentive" icon="badge-indian-rupee" title-type="p">
+Pick the two coupon values — typically a smaller first nudge and a larger second one — and how many hours each stays valid.
+</Step>
+<Step title="Set limits" icon="sliders-horizontal" title-type="p">
+Add a minimum order value and a redemption cap if you need to control cost.
+</Step>
+<Step title="Schedule (optional)" icon="calendar" title-type="p">
+Add start and end dates to run it as a time-boxed campaign; it will show under **Scheduled** until it starts.
+</Step>
+<Step title="Document and create" icon="notebook-pen" title-type="p">
+Add internal notes so the team knows why the program exists, then click **Create program**.
+</Step>
+</Steps>
+
+## Notes
+
+- Program status moves through **Scheduled → Live → Expired** based on its dates, or **Inactive** when switched off.
+- Because only one program is live at a time, check the **Live** tab before creating a new one.
+- The coupons themselves are sent automatically — there is nothing to send by hand from this screen.
+- Regular (manually created) coupons are managed separately under **Marketing → Coupons**.

@@ -1,0 +1,70 @@
+---
+title: Marketing Report
+description: The Marketing Report dashboard — spend, ROAS, CPL/CPA, channel and paid campaign performance, funnel drop-offs, geo and device splits for a selected period.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → LEADERSHIP → **Marketing Report** (`/dashboard/marketing-report`)
+
+The Marketing Report is the weekly marketing health report. It compares the selected period with the previous period of the same length. A similar report also appears as the **CMO** tab of the Executive dashboard.
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Period** | Date range picker (defaults to the last 7 days). The header shows the comparison, for example *vs previous 6 days*, and the last updated time. |
+| **Refresh** | Reloads the report. |
+
+## What the screen shows
+
+### 1. Marketing overview
+
+Headline KPI tiles with % change vs the previous period:
+
+| Tile | Meaning |
+| --- | --- |
+| **Spend** | All marketing spend, online and offline. |
+| **Revenue** | Revenue from marketing-attributed orders. |
+| **ROAS** | Revenue ÷ spend. |
+| **Sessions** | GA4 sessions. |
+| **Leads** / **Orders** | Volume in the period. |
+| **CPL (Paid)** | Cost per paid lead. |
+| **CPA (Google/Meta)** | Platform-reported CPA (shows *awaiting sync* until ad data arrives). |
+| **CPA (Our tracking)** | CPA using Cashkr's own attribution. |
+| **CPA (Blended)** | Total spend ÷ all orders. |
+| **Lead → Order CR** | Lead-to-order conversion. |
+
+<Callout kind="info">
+Cost KPIs use red for growth and green for shrinkage; revenue KPIs use the opposite.
+</Callout>
+
+### 2. Channel performance
+
+Table of channels (SEO, Google Ads, Direct, Cross-network, Unassigned, Organic Social, Meta Ads, Email, AI Assistant, Referral and others) with Spend, Sessions, Leads, Orders, Conv (Google/Meta), CPA (Google/Meta), CPA (our tracking) and Lead → Order. A note shows what % of leads carry a channel tag.
+
+### 3. Paid campaign performance
+
+Callouts for **Top performer**, **Biggest waste** and **Needs attention**, then a campaign table. Rows above the target CPA (₹60) or with spend but no orders are marked red. Only paid campaigns are listed.
+
+### 4. Funnel performance
+
+Stage-to-stage rates with drop-off counts: Sessions → Leads, Leads → Orders booked, Booked → Pickup completed, and Completed → Payout disbursed (marked *Assumed* — the vendor pays the customer at pickup).
+
+### 5. Geo / city performance
+
+City bars (completed orders) and a **By state** table: State, Leads, Orders, Lead → Order, Completion %, Revenue. State is derived from the lead's pincode; there is no spend by state.
+
+### 6. Device & platform
+
+Three splits: **Web vs App** (with conversion), **Android vs iOS** (and other OS), and **Device type** (Mobile, Desktop, Tablet).
+
+Each section ends with a short **Why this format** note explaining how to read it.
+
+## Actions
+
+The report is read-only.
+
+<Callout kind="tip">
+If the paid campaign table is empty while ads are running, the ads-sync integration may not be firing. Ask the tech team to check the ad-data sync before reading CPA figures.
+</Callout>

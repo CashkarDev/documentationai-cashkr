@@ -5,6 +5,8 @@ description: Understand how the Buyback B2B Leads page works, from lead creation
 
 ## Overview
 
+**Sidebar path:** Channels → Buyback B2B → Leads (`/buyback-b2b/leads`). The page header reads **B2B Leads — Manage corporate leads, track interactions, and convert to clients**. The **Corporate Buyback** sidebar entry (`/corporateBuyback`) opens this same B2B Leads board.
+
 The Leads page in the Buyback B2B section is the starting point of the corporate buyback journey for the Sales team. All corporate leads — whether generated from the Cashkr website corporate buyback form or added manually — are managed here.
 
 Sales uses this page to track every lead, log all interactions, and convert interested leads into clients.
@@ -22,14 +24,23 @@ Corporate leads enter the system from the website or through manual input by the
 
 ### Manual entry
 
-- The Sales team can manually add a lead by clicking **Add Lead** and entering the company details directly.
+- The Sales team can manually add a lead by clicking **+ Add Lead**. The **New Lead** form has **Company** \*, **Contact Name** \*, **Email**, **Phone**, **City**, **Job Title** and **Source** (Cold Call, LinkedIn, Reference, Website, Import, Other). Click **Create Lead** to save.
 - Use this when you receive leads through direct outreach, referrals, or offline conversations.
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774949202505-m3a2eyc9xc-manual-entry.manual entry?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="832" alt="Manual lead creation form with company and contact details" />
 
 ### CSV import
 
-Click **Import CSV** to bulk import multiple corporate leads at once from a CSV file. This is useful when adding leads from trade events, outreach campaigns, or external contact lists.
+Click **Import CSV** to bulk import multiple corporate leads at once. The **Import Leads** dialog expects a CSV with the headers **Company, Name, Email, Phone, City, Source**. This is useful when adding leads from trade events, outreach campaigns, or external contact lists.
+
+## Search & filters
+
+Above the board:
+
+- **Search** — search by company, name or city.
+- **Follow-up filter** — **All Follow-ups**, **Today**, **This Week**, **Overdue**.
+- **Follow-up Date** — pick a specific follow-up date.
+- The total number of leads is shown on the right (e.g. *275 leads*).
 
 ## Pipeline stages
 
@@ -45,10 +56,22 @@ The Leads page uses a horizontal Kanban board with seven pipeline stages. Each c
 
 Each lead card shows:
 
-- Company name  
-- City  
-- Contact person name  
-- Date of the last interaction or note  
+- Company name and city
+- Contact person name
+- Next follow-up date (e.g. *Follow-up: Aug 11*)
+- The latest note or activity, with its date
+
+## Lead detail page
+
+Click a lead card to open its detail page (`/buyback-b2b/leads/<lead-id>`):
+
+- **Header** — company, contact and job title, with **Convert** (convert the lead to a client) and **Edit** buttons.
+- **Stage bar** — NEW, ATTEMPTED, CONNECTED, INTERESTED, CONVERTED, LOST, DISQUALIFIED, with the current stage highlighted. Use it to move the lead to another stage.
+- **Activity composer** with tabs:
+  - **Log Call**, **Email**, **Meeting**, **Note** — type notes (e.g. pricing discussed, attendees, outcomes) and log them as that activity type.
+  - **Follow-up** — **Set Next Follow-up Date** (shows the current follow-up) and click **Set Follow-up**.
+- **Activity Timeline** — every note, call, email, meeting and follow-up with author and timestamp.
+- **Record Details** — Contact, Job Title, Phone, Email, Source, Location, Date Received and Next Follow-Up.
 
 ## Sales team actions
 

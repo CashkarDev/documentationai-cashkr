@@ -6,7 +6,7 @@ description: Monitor and resolve escalated B2C orders, understand summary metric
 ## Overview
 
 <Callout kind="info">
-  Use the Flagged page in Orders - B2C to track escalated orders that need admin attention due to customer issues, vendor problems, or operational concerns. Any order under Orders - B2C can be flagged from its order detail panel regardless of its current status or section.
+  Use the Flagged page (**Orders → Needs Attention → Flagged**, page title *Flagged Orders — Orders with customer issues requiring attention*) to track escalated orders that need admin attention due to customer issues, vendor problems, or operational concerns. Any open order can be flagged from its order detail drawer using **Flag this order for escalation**.
 </Callout>
 
 The Flagged page lists all orders that the admin team has escalated so you can monitor open issues, resolve them, or reassign the order to a different vendor.
@@ -16,10 +16,10 @@ The Flagged page lists all orders that the admin team has escalated so you can m
 Use the three summary cards at the top of the page to see the current flagged order situation at a glance:
 
 - **Total Pending** — Total number of flagged orders currently awaiting resolution.
-- **Critical (more than 15 minutes)** — Number of flagged orders that have been open for more than 15 minutes without any response or action. These require immediate attention.
+- **Critical (>15M)** — Number of flagged orders that have been open for more than 15 minutes without any response or action. These require immediate attention.
 - **Avg Response Time** — Average time taken by the admin team to respond to and resolve flagged orders.
 
-When there are no pending flagged orders, the page displays an All Clear message confirming no customer issues are pending at the moment.
+When there are no pending flagged orders, the page displays **All Clear! No pending customer issues at the moment.** Use the **Refresh** button to reload the list.
 
 <Callout kind="alert">
   The Critical counter tracks orders that have been flagged for more than 15 minutes without any admin response. Treat any non-zero Critical count as an operational emergency and act immediately.
@@ -53,15 +53,15 @@ After selecting the problem type, the admin can add a description to provide add
 
 ## How to flag an order
 
-Admins can flag an order from any section under Orders - B2C including All Orders, In Progress, Not Assigned, No Action, Delayed, and Reserved.
+Admins can flag an open order from any Orders view, including All Orders, In Progress, Not Assigned, Assigned · No Action, Delayed, and Reserved.
 
 <Steps>
   <Step title="Open the order detail" icon="folder">
-    Open the order detail page for the relevant order from any Orders - B2C section.
+    Click the order row in any Orders view to open the order detail drawer.
   </Step>
 
   <Step title="Choose Flag Order" icon="alert-triangle">
-    Click the Flag Order option within the order detail panel to start the escalation.
+    Click **Flag this order for escalation** at the top of the order detail drawer to start the escalation.
   </Step>
 
   <Step title="Fill in flag details" icon="edit">
@@ -79,7 +79,7 @@ Use this flow to understand what happens from issue identification to resolution
 
 <Steps>
   <Step title="Identify the issue and flag the order" icon="info">
-    An issue is identified on an active order. The admin opens the order detail from any Orders - B2C section, selects Flag Order, and chooses the relevant problem type. The order appears in the Flagged page with a pending status.
+    An issue is identified on an active order. The admin opens the order detail drawer from any Orders view, selects **Flag this order for escalation**, and chooses the relevant problem type. The order appears in the Flagged page with a pending status.
   </Step>
 
   <Step title="Investigate with vendor and customer" icon="users">
@@ -144,6 +144,6 @@ Use these screenshots to recognise the key parts of the Flagged experience in th
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517351633-3q17a3k68my-flag-order.flag order?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="837" alt="Flag Order popup showing problem type selection and description fields in the admin panel" />
 
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517379073-8yevt2h691y-flagorder.flagorder?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="821" alt="Order detail panel in Orders - B2C with the Flag Order option highlighted" />
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517379073-8yevt2h691y-flagorder.flagorder?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="821" alt="Order detail panel with the Flag Order option highlighted" />
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774517411288-ynu7a6igbcj-flagged-order.flagged order?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="829" alt="Flagged Orders page showing summary cards and the flagged order table with actions" />

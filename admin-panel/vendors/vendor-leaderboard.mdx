@@ -1,0 +1,63 @@
+---
+title: Vendor Leaderboard
+description: Ranked vendor performance scores across 7 dimensions with levels from Bronze to Diamond, plus a per-vendor scorecard with improvement tips and history.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Performance → **Leaderboard** (`/vendor-scores`)
+
+Every vendor gets a performance score out of 100, built from **7 dimensions**, and a level (**Bronze, Silver, Gold, Platinum, Diamond**). Scores refresh nightly.
+
+## What the screen shows
+
+### Level cards
+
+Five cards across the top show how many vendors are at each level: **Diamond, Platinum, Gold, Silver, Bronze**.
+
+### Leaderboard table
+
+Above the table: total vendor count and the average score. Results are paginated (50 per page).
+
+| Column | Description |
+| --- | --- |
+| # | Rank by score. |
+| Vendor | Vendor name and shop name. |
+| City | Vendor city. |
+| Score | Overall score (0–100). |
+| Level | Level badge (Bronze → Diamond). |
+| Completion | Completion rate score. |
+| SLA | SLA compliance score. |
+| Reviews | Customer reviews score. |
+| Volume | Number of orders counted. |
+
+## Filters & search
+
+- **Search** — vendor name, phone or shop.
+- **Level chips** — All, Diamond, Platinum, Gold, Silver, Bronze.
+
+## Actions
+
+- **Recompute All** (top right) — recalculates scores for all vendors now instead of waiting for the nightly refresh.
+- **Click a row** — opens the vendor's scorecard.
+
+## Vendor scorecard
+
+`/vendor-scores/<vendor-id>` shows one vendor's detail:
+
+| Section | Contents |
+| --- | --- |
+| Header | Vendor name, shop · city, and a **Recompute** button for just this vendor. |
+| Score ring | Overall score, level badge, points needed for the next level (e.g. "11 pts to Diamond") with a progress bar, and the **volume multiplier** with completed / eligible order counts. |
+| Dimension cards | The 7 dimension scores: **Completion Rate, Requote Behavior, SLA Compliance, Customer Reviews, Reliability, Pricing Accuracy, Area Performance**. |
+| How to improve | Prioritised tips (e.g. *high*) explaining what to fix, with the current value and the target (e.g. requote rate current vs. target "Under 15%"). |
+| Score history | Trend of recent scores. |
+| Level progression | Timeline of level changes with dates. |
+
+<Callout kind="info">
+The volume multiplier adjusts the score based on the vendor's completed vs. eligible order volume, so a handful of good results on very few orders does not outrank a consistently busy vendor.
+</Callout>
+
+<Callout kind="tip">
+Share the **How to improve** tips with vendors during performance calls — they name the exact metric and target to work on.
+</Callout>

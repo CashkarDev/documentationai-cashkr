@@ -1,11 +1,11 @@
 ---
 title: Delayed
-description: Understand how the Delayed view in Orders - B2C works, what qualifies as delayed, and how admins should prioritize and resolve overdue pickups.
+description: Understand how the Delayed view under Orders works, what qualifies as delayed, and how admins should prioritize and resolve overdue pickups.
 ---
 
 ## Overview
 
-The Delayed page in Orders - B2C shows all orders whose scheduled pickup date has passed but the order has not been completed yet. Admins use this page to identify and urgently action overdue pickups across the platform.
+The Delayed page (**Orders → Needs Attention → Delayed**, breadcrumb *Dashboard / Orders / Delayed*) shows all orders whose scheduled pickup date has passed but the order has not been completed yet. Admins use this page to identify and urgently action overdue pickups across the platform.
 
 <Callout kind="info">
   The Delayed page is date-driven. An order appears here when its pickup date is in the past and it is still incomplete, regardless of its current status.
@@ -19,7 +19,10 @@ Each row in the Delayed list represents one order that has crossed its scheduled
 - **Model** — Device model the customer wants to sell.
 - **City** — City where the pickup was scheduled.
 - **Type** — Device category such as Mobile, Laptop, Tablet, or Mac.
-- **Status** — Current status of the order, which can be Pickup Delayed, Assigned, or Pickup depending on where the order currently sits in the pipeline.
+- **Status** — Current status of the order, which can be Pickup Delayed, Assigned, or Out For Pickup depending on where the order currently sits in the pipeline.
+- **SLA** — How late the order is and the SLA stage, shown as a red badge (for example `3d 2h late · PICKUP`).
+
+Click any row to open the order detail drawer, where you can **Flag this order for escalation**, **Send a reminder to the vendor or customer**, **Reschedule Pickup**, **Reassign Vendor** or **Cancel Order** (see [All Orders](/all-orders#order-detail-drawer)).
 
 ## Why orders appear in Delayed
 
@@ -29,7 +32,7 @@ An order appears in the Delayed page purely based on its pickup date, not its st
 
 - Customer placed order on 22 March with pickup date 25 March, vendor was assigned but did not complete the pickup by 25 March — order appears in Delayed with status **Assigned**.
 - Customer placed order on 18 March with pickup date 20 March, no vendor accepted the order — order appears in Delayed with status **Pickup Delayed**.
-- Customer placed order on 19 March with pickup date 21 March, vendor started pickup but did not complete — order appears in Delayed with status **Pickup**.
+- Customer placed order on 19 March with pickup date 21 March, vendor started pickup but did not complete — order appears in Delayed with status **Out For Pickup**.
 
 ## Order statuses visible on this page
 
@@ -37,15 +40,15 @@ Since the Delayed page is date-driven, orders here can carry any of the followin
 
 - **Pickup Delayed** — Pickup date has passed and no vendor has been assigned or acted on the order.
 - **Assigned** — Vendor has been assigned but has not started or completed the pickup despite the date passing.
-- **Pickup** — Vendor initiated the pickup process but did not complete it before the scheduled date passed.
+- **Out For Pickup** — Vendor initiated the pickup process but did not complete it before the scheduled date passed.
 
 ## Filters and controls
 
 Use filters and controls at the top and bottom of the page to quickly locate and work through delayed orders:
 
-- **Search** — Search for a specific order by order details, device name, or customer information.
-- **Filters button** — Open additional filter options to narrow down the delayed orders list.
-- **Pagination** — View delayed orders across multiple pages and use Previous, Next, or page numbers to navigate. The total result count and page count appear below the table.
+- **Search** — Use the **Search orders...** box in the header to find a specific order.
+- **Filters button** — Opens the filter panel with **Device Type**, **City**, **From date / To date** and **Show orders with Test accounts**. Click **Apply Filters** to apply or **Reset** to clear.
+- **Pagination** — Use Previous, Next, or page numbers to navigate (25 orders per page).
 
 ## Admin actions on delayed orders
 
@@ -90,7 +93,7 @@ All three sections highlight problem orders but from different angles. An order 
     The scheduled pickup date passes without the order being completed.
   </Step>
   <Step title="Order appears in Delayed" icon="folder">
-    The order automatically appears in the Delayed view in Orders - B2C.
+    The order automatically appears in the Delayed view under Orders.
   </Step>
   <Step title="Admin reviews and takes action" icon="settings">
     Admin opens the order, reviews the delay, and contacts or reassigns the vendor as needed.
@@ -137,7 +140,7 @@ Delayed orders interact with other admin modules:
 </Callout>
 
 <Callout kind="alert">
-  The count badge next to Delayed in the sidebar is one of the most important operational metrics. A count of 99+ indicates a serious backlog that requires immediate team-wide attention.
+  The count badge next to Delayed in the sidebar is one of the most important operational metrics. A large count indicates a serious backlog that requires immediate team-wide attention. Use the **Live Order Map** to see where late pickups are concentrated and **Coverage Gaps** to find pincodes that cannot currently be served.
 </Callout>
 
 ## Screenshot

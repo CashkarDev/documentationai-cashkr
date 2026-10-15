@@ -1,0 +1,97 @@
+---
+title: CX Desk
+description: The customer support record across call, chat and email — open cases by channel, Ops/Sales tagging, and closing each case with reason, cause and resolution.
+---
+
+## Overview
+
+**Sidebar:** B2C Sales → Support → **CX Desk** (`/support/cx-desk`)
+
+"Calls happen in Acefone, chat and email in CX Genie. This holds the record of what happened, so support can be counted." Support associates answer customers in those tools and use CX Desk to pick up cases and record how each one was closed.
+
+## Tabs
+
+- **Open** — cases still being handled (default).
+- **Closed** — closed cases, with filters for period (Last 24 hours, Last 7 days, Last 30 days, All time), channel (All channels, Chat, Call, Email) and closed by (Closed by anyone, or a person).
+
+## KPI cards (Open tab)
+
+| Card | Meaning |
+| --- | --- |
+| Came back again | The first answer didn't hold — the customer contacted again. |
+| Callbacks due | Promised callbacks, or calls missed out of hours. |
+| Taking too long | Past the response standard for its channel. |
+| No update sent | Parked with another team, and the customer is owed an update. |
+
+Response standards and windows are set on [CX Settings](/admin-panel/support/cx-settings).
+
+## Channel lanes
+
+<Tabs>
+
+<Tab title="Call">
+
+"Live — from Acefone." Open call cases and the callback queue. This lane stays empty until a support number exists in Acefone (set in CX Settings → support DID numbers).
+
+</Tab>
+
+<Tab title="Chat">
+
+"From CX Genie — longest wait first." Shows the open count and the oldest wait. Filter chips: **All**, **📦 Ops**, **💰 Sales** (with counts).
+
+Each row shows the customer's first message, their number or name, who last touched it, the desk tag (OPS / SALES; a "?" means the tag is a guess not yet checked by a person) and the wait time. Paginated 25 per page.
+
+</Tab>
+
+<Tab title="Email">
+
+"From CX Genie — oldest first, never newest." Email is answered in CX Genie; cases appear here once the sync is connected.
+
+</Tab>
+
+</Tabs>
+
+## Case panel
+
+Click a case to open its side panel:
+
+- **Header** — customer number, the **📦 Ops** / **💰 Sales** desk buttons (click to move the case to the other desk) and who set the tag.
+- **They asked** — the customer's message.
+- **Pick-up state** — e.g. "Nobody has picked this up", with **check again** and **Pick up & open in CX Genie**.
+- **Reason — what they contacted about** *(required)*
+- **Cause — what actually produced it** *(required)* — "This is the field the business reads. Reason is what the customer said; cause is what was actually wrong."
+- **Resolution — what was done** *(required)*
+- **Case state** *(required)* — Solved — case closed, Waiting on another team, Escalated to lead, Handed to sales.
+- **Note (optional)** — "Anything the three fields above cannot carry".
+- **Save case** / **Cancel** — the footer shows what is still missing before saving.
+- **History** — timeline of sync events, desk moves and updates.
+
+### Field options
+
+<Tabs>
+
+<Tab title="Reason">
+
+Payment not received · Payment delayed · Price changed at door · Pickup missed · Pickup late · Wants to reschedule pickup · Wants to cancel · Disputes device condition finding · Order status query · Quote or valuation query · Accessories query · Documentation query · App or website problem · Area serviceability · General information request
+
+</Tab>
+
+<Tab title="Cause">
+
+Payment gateway failure · Payment sent, customer unaware · Condition differed from declaration · Vendor did not reach · Vendor reached late · Vendor cancelled · No slot available · Area not serviceable · App or website error · Quote expired · AI gave a wrong answer · AI could not answer · Customer misunderstood the process · Wrong expectation set upstream · No fault — information request
+
+</Tab>
+
+<Tab title="Resolution">
+
+Explained, case closed · Explained, expectation set with a date · Referred to another function · Escalated to lead · Handed to sales · Order cancelled as requested · Could not resolve, customer declined options
+
+</Tab>
+
+</Tabs>
+
+<Callout kind="info">
+
+Setting Case state to **Waiting on another team** parks the case on [Support Referrals](/admin-panel/support/referrals). Moving a case between Ops and Sales, or closing it with a desk reason, also teaches the Ops/Sales tagger (see [AI Health](/admin-panel/support/ai-health)).
+
+</Callout>

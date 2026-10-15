@@ -4,9 +4,9 @@ description: >-
   Manage refunds and returns in the Finance module: credit refunds, device
   returns, purchase returns, and audit logs.
 ---
-## &#x20;
-
 ## Overview
+
+**Sidebar path:** Finance → Returns (`/finance/returns`). The page header reads **Returns & Refunds — Manage vendor credit refunds and device returns**.
 
 Returns and Refunds in the Finance module handle credit refunds, device returns, and purchase returns with a complete audit trail. Use this page to reverse transactions in a controlled way while keeping inventory and vendor balances accurate.
 
@@ -66,7 +66,7 @@ Every action you take here writes to the Logs tab so Finance, Operations, and Su
 
     <Steps>
       <Step title="Search for the sold device" icon="search" title-type="p">
-        Use the search bar to look up the sold device by device name or serial number. Wait for the system to load matching sale records.
+        Use the search bar (**Search by IMEI, Serial, or Device Name...**) and click **Search** to look up the sold device. Results show **Device**, **Serial/IMEI**, **Status**, **Sale Price** and **Action**.
       </Step>
 
       <Step title="Review sale details" icon="table" title-type="p">
@@ -98,7 +98,7 @@ Every action you take here writes to the Logs tab so Finance, Operations, and Su
 
     <Steps>
       <Step title="Search for the purchased device" icon="search" title-type="p">
-        Search by device name or serial number to find the purchase record. Wait for the system to display matching purchase entries.
+        Search by IMEI, serial or device name from inventory and click **Search**. Results show **Device**, **Serial/IMEI**, **Vendor**, **Source**, **Purchase Price** and **Action**.
       </Step>
 
       <Step title="Review purchase details" icon="table" title-type="p">
@@ -135,12 +135,12 @@ Every action you take here writes to the Logs tab so Finance, Operations, and Su
         Switch to the **Logs** tab from the Returns and Refunds page to view all historical entries.
       </Step>
 
-      <Step title="Filter or scan activity" icon="search" title-type="p">
-        Use search or filters (where available) to focus on specific vendors, customers, devices, time ranges, or action types.
+      <Step title="Pick a period" icon="calendar" title-type="p">
+        The **Return Logs** view defaults to the last 30 days. Change the date range to look at another period, click **Refresh** to reload, or **Export** to download the logs.
       </Step>
 
       <Step title="Review detailed entries" icon="table" title-type="p">
-        Open or read each entry to see the type of action, party involved, device details (where applicable), credits or amount affected, date and time, and the admin who performed the action.
+        Each row shows **Date**, **Type**, **Reference**, **Vendor**, **Description** and **Amount**.
       </Step>
     </Steps>
 
@@ -152,11 +152,11 @@ Every action you take here writes to the Logs tab so Finance, Operations, and Su
 
     - Device details for device and purchase returns.
 
+    - Reference and description of the action.
+
     - Credits or amount involved.
 
-    - Date and time of the action.
-
-    - Admin who processed the action.
+    - Date of the action.
 
     ### When to use this
 

@@ -1,0 +1,56 @@
+---
+title: Coverage Gaps
+description: Find pincodes with open orders that cannot currently be served, see why, and what to do about each gap.
+---
+
+## Overview
+
+Open **Orders → Needs Attention → Coverage Gaps**. The page lists *pincodes with open orders we can't currently serve*, groups them by the reason, and tells you the next step for each one.
+
+The data refreshes every minute (footer: *Updated … · refreshes every minute*).
+
+## Summary cards
+
+| Card | Meaning |
+| --- | --- |
+| **Orders at risk** | Open orders sitting in pincodes with a coverage gap |
+| **No coverage** | Pincodes with no vendor at all |
+| **Out of credits** | Pincodes whose vendors have no credits left |
+| **At capacity / inactive** | Pincodes whose vendors are at their order cap or not accepting orders |
+
+## Filters
+
+- **All cities** dropdown — limit the list to one city.
+- **Gap chips** — **All**, **No coverage**, **Device gap**, **Out of credits**, **At capacity**, **Vendor inactive**.
+- **Refresh** — reload immediately.
+
+## What the table shows
+
+| Column | Description |
+| --- | --- |
+| **Pincode** | Affected pincode. A **NON-SERVICEABLE** tag marks pincodes that are not set up as serviceable |
+| **City** | City of the pincode |
+| **Gap** | Gap type badge (No coverage, Device gap, Out of credits, At capacity, Vendor inactive) |
+| **Open** | Open orders in the pincode |
+| **Unclaimed** | Open orders no vendor has claimed |
+| **Late** | Open orders already past their SLA |
+| **Vendors** | Number of vendors covering the pincode |
+| **What to do** | Suggested next step |
+
+## Gap types and suggested action
+
+| Gap | What it means | What to do |
+| --- | --- | --- |
+| **No coverage** | No vendor covers the pincode | *Assign a vendor to this pincode* |
+| **Device gap** | Vendors cover the pincode but not this device type | *Widen an existing vendor's device types* |
+| **Vendor inactive** | Vendors are funded and under cap but not accepting orders | *Funded and under cap but not accepting — call the vendor* |
+| **Out of credits** | Covering vendors have run out of credits | Follow the hint in the *What to do* column (typically: get the vendor to top up credits) |
+| **At capacity** | Covering vendors have hit their order limit | Follow the hint in the *What to do* column (typically: raise the vendor's limit or add another vendor) |
+
+<Callout kind="tip">
+  Work **No coverage** and **Device gap** rows with the vendor onboarding / serviceable area teams, and **Vendor inactive** rows by calling the vendor. Late orders in these pincodes also appear in **Delayed** and on the **Live Order Map**.
+</Callout>
+
+<Callout kind="info">
+  This page is read-only. Vendor coverage, device types and credits are changed in the Vendors and Expansion sections.
+</Callout>

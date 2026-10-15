@@ -1,0 +1,61 @@
+---
+title: Fraud & Trust Audit
+description: See every trust signal — fraud registry flags, suspicious failures, order flags and vendor flags — in one event trail, with repeat offenders surfaced.
+---
+
+## Overview
+
+Fraud & Trust Audit ("Every trust signal in one trail, with repeat offenders surfaced") combines fraud and trust events from across the platform into a single timeline.
+
+Open it from **System → Admin → Fraud & Trust Audit** in the left sidebar (route `/fraud/audit-trail`).
+
+Use it to spot customers or vendors who repeatedly trigger fraud signals and to review recent high-severity events. For confirmed stolen devices, see [Stolen Devices](/stolen-devices).
+
+## Summary cards
+
+| Card | Meaning |
+| --- | --- |
+| Trust events | Total trust events in the selected period |
+| High severity | Events rated high severity |
+| Repeat offenders | Subjects (customers or vendors) with repeated events |
+| Unresolved flags | Flags still open |
+
+## Filters
+
+- **Period** — **7d**, **30d** (default), **90d**, **180d**.
+- **Signal type** — **All**, **Fraud registry**, **Suspicious failure**, **Order flag**, **Vendor flag**.
+- **Refresh** — Reload the data.
+
+When there are many events, a note shows that only the most recent events (up to 500) are displayed.
+
+## Repeat offenders
+
+A table of subjects with repeated signals in the period:
+
+| Column | Description |
+| --- | --- |
+| Subject | Customer or vendor name |
+| Type | Customer or Vendor |
+| Events | Total trust events for the subject |
+| High | Number of high-severity events |
+| Signals | Signal types involved (e.g. Suspicious failure) |
+
+## Event trail
+
+A newest-first list of individual events. Each card shows:
+
+- **Event title** — The reason, e.g. *Wrong Model*, *Incorrect Info*, *Flagged In Fraud Registry*.
+- **Severity badge** — e.g. **MEDIUM** or **HIGH**.
+- **Detail** — e.g. "Order failed — Failed By Vendor / Customer / Cashboy / Cashkr", or "Risk score N · reason" for fraud-registry entries.
+- **Subject** — Customer or vendor, with the order number where relevant.
+- **Date**
+
+If there are no events in the selected period, the trail shows "No trust events in the last N days."
+
+<Callout kind="tip">
+Start with **Repeat offenders** sorted by the **High** column, then filter the trail by signal type to review that subject's history.
+</Callout>
+
+<Callout kind="info">
+This screen is read-only. Act on findings from the related modules — for example block a customer under Customers, or put a vendor on hold under Vendors.
+</Callout>

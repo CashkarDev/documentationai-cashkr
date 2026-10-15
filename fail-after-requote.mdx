@@ -1,11 +1,36 @@
 ---
-title: Fail After Requote
+title: Failed After Requote
 description: >-
-  Record a failed order after requote when the customer rejects the revised
-  price or the device is not sellable, including fields, states, and system
-  updates.
+  Review orders that failed after a requote in the Admin Panel, and understand
+  how vendors record a failure after sharing a revised quote.
 ---
-## Overview
+## Admin Panel: Failed After Requote list
+
+Open **Orders → Closed → Failed After Requote** (breadcrumb *Dashboard / Orders / Failed After Requote*) to see every order that was failed after the vendor shared a revised quote. Its companion view **Failed (No Requote)** lists failed orders that were never requoted.
+
+### What the table shows
+
+| Column | Description |
+| --- | --- |
+| **Created At** | Date and time the order was created |
+| **Model** | Device model |
+| **City** | Pickup city |
+| **Type** | Device category badge |
+| **Status** | Failure status badge, for example Failed By Vendor |
+
+The list is paginated with Previous, page numbers and Next. Click a row to open the order detail drawer, where the **Pricing** section shows the Quoted Price, Requote Price, Final Price and Expected Price, and the **Activity Timeline** shows the REQUOTED events (see [All Orders](/all-orders#order-detail-drawer)).
+
+### Filters and search
+
+- **Search orders...** box in the header.
+- Click **Filters** to open: **Device Type**, **City**, **From date / To date**, and **Show orders with Test accounts**.
+- Click **Apply Filters** to apply or **Reset** to clear.
+
+<Callout kind="info" collapsed="false">
+  This is a read-only list for review and reporting. Pending failure decisions (accept/reject, credit reversal) are handled in **Orders → To Be Failed**.
+</Callout>
+
+## Vendor flow overview
 
 Fail After Requote lets the vendor close an order as failed after sharing a revised quote with the customer. Use it when the customer does not accept the updated offer or the device cannot be purchased in its current condition.
 
@@ -151,7 +176,5 @@ Watch for these common issues when working with Fail After Requote.
   - Ensure customer app and website status updates match the failed state and do not continue to show the order as pending or in progress.
 
   - Test error handling for missing signature, invalid amounts, and offline submissions, including retry and sync behavior.
-
-  ##
 </Callout>
 

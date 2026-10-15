@@ -1,0 +1,68 @@
+---
+title: Retention
+description: Win back customers whose orders failed — call them quickly, log every contact attempt, and track recovery by how fast the first call went out.
+---
+
+## Overview
+
+Open **B2C Sales → To Work → Retention** (breadcrumb *Dashboard / B2C Sales / Retention*). Retention lists **failed orders** so the sales team can call the customer and try to re-book the pickup.
+
+## Age chips and sorting
+
+The chips at the top split the queue by how long the failure has been waiting. Each shows a count.
+
+| Chip | Meaning |
+| --- | --- |
+| **All** | Every failed order in the queue |
+| **Fresh** | Just failed |
+| **Today** | Failed today |
+| **Follow-up** | Already contacted and due for another attempt |
+| **Ageing** | Waiting a long time without recovery |
+| **Past 60 min, uncalled** (red) | Failures older than 60 minutes that nobody has called |
+
+The sort dropdown offers **Recommended order**, **Oldest failure first** and **Newest failure first**. The **Mine / All / Unassigned** toggle limits the list by owner.
+
+## Recovery rate by age band
+
+A collapsible panel, *How often a customer is won back, by how fast the first call went out*. Pick a date range to see the recovery rate. A row is counted only once someone has logged a call attempt **and** the order has been re-booked or closed as lost; until then the panel shows *Nothing to measure yet.*
+
+## What the table shows
+
+| Column | Description |
+| --- | --- |
+| **Created At** | When the original order was created |
+| **Failed At** | When the order failed |
+| **Waiting** | Time since failure |
+| **Customer** | Customer name and order token |
+| **Quoted** | Quoted price |
+| **Assigned** | Sales executive working it, or *Unassigned* |
+| **Attempts** | Contact attempts logged, with a **Log** button |
+| **Sub-Status** | Retention progress, for example *Untouched* |
+| **Clearing** | Ops clearing state: *Pending with ops* or *Cleared* |
+| **Model / City / Type** | Device and location |
+| **Status** | Failure status (Failed By Vendor, Failed By Customer, Failed By Cashkr) |
+| **SLA** | SLA state, for example *Settled* |
+
+## Filters and search
+
+- **Search orders...** box in the header.
+- Click **Filters** to open: **Device Type**, **City**, **From date / To date**, **All sources** (failure source) and **Show orders with Test accounts**.
+
+## Log a contact attempt
+
+Click **Log** in the Attempts column to open **Log a contact attempt** (shows the customer and attempt number):
+
+| Field | Description |
+| --- | --- |
+| **What happened on the call?** | Choose **Callback** or **Not reachable** |
+| **Note — optional** | Anything the outcome doesn't cover |
+
+Click **Log attempt** to save or **Cancel** to close.
+
+<Callout kind="tip">
+  Speed matters: recovery drops sharply the longer a customer waits for the first call. Clear the **Past 60 min, uncalled** chip first.
+</Callout>
+
+<Callout kind="info">
+  Customers who refuse to re-book are closed as lost and appear in **Lost Leads** under the **Retention** source.
+</Callout>

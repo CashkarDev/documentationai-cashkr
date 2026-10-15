@@ -1,0 +1,53 @@
+---
+title: Live Floor
+description: Real-time view of each sales executive's lead load and calling activity, retention breaches, and CX support coverage.
+---
+
+## Overview
+
+**Sidebar:** B2C Sales → Team → **Live Floor** (`/team/live-floor`)
+
+Live Floor shows what the sales and support floor is doing right now. It refreshes automatically every two minutes.
+
+## What the screen shows
+
+### Retention breaches
+
+A red badge at the top right: "*n* retention breaches · past 60 min, uncalled" — failed orders in retention that have gone more than 60 minutes without a call.
+
+### Executive table
+
+| Column | Meaning |
+| --- | --- |
+| Executive | Sales executive name. |
+| Open | Open leads assigned to them. |
+| Untouched today | Assigned leads with no activity today. |
+| Oldest untouched | Age of their oldest untouched lead (red when old). |
+| Calls today | Calls logged today. |
+| Last activity | Time since their last logged action ("never" if none). |
+
+<Callout kind="info">
+
+Calls today and Last activity read the actor recorded in the activity log, which only started being recorded recently — both look thin until the team has worked a full day with it.
+
+</Callout>
+
+### CX Support
+
+Lists admins with the **CX** role. If nobody has it, the card says "No CX associates yet" — give someone the CX role and they appear here.
+
+Below the card:
+
+- **Callbacks pending** — floor total of callbacks waiting.
+- **Missed during working hours today** — support calls missed while the desk was open.
+
+<Callout kind="tip">
+
+Missed calls during working hours appear only on this screen, never on an associate's own numbers. A rising miss rate means the coverage model needs resizing — it is not a coaching signal. Callbacks carry no assignee, so they are a floor total rather than a per-person column.
+
+</Callout>
+
+## Related pages
+
+- [Lead Assignment](/admin-panel/team/assignment)
+- [Day Close](/admin-panel/team/day-close)

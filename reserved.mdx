@@ -1,11 +1,11 @@
 ---
 title: Reserved
-description: Monitor and manage orders exclusively reserved for a single vendor in the Admin Panel Orders - B2C Reserved view, with flows and controls explained.
+description: Monitor and manage orders exclusively reserved for a single vendor in the Admin Panel Orders → Reserved view, with flows and controls explained.
 ---
 
 ## Overview
 
-The Reserved page in Orders - B2C displays all orders that have been reserved for a specific vendor. Admins use this page to monitor reserved orders and ensure they are being acted upon by the intended vendor.
+The Reserved page (**Orders → Active → Reserved**, breadcrumb *Dashboard / Orders / Reserved*) displays all orders that have been reserved for a specific vendor. Admins use this page to monitor reserved orders and ensure they are being acted upon by the intended vendor.
 
 <Callout kind="info">
   A reserved order is locked to one specific vendor. Only that vendor can see and act on the order until an admin removes the reservation.
@@ -18,8 +18,9 @@ Each row in the Reserved list represents one order that has been reserved for a 
 - **Created At** — Date and time the order was created.
 - **Model** — Device model the customer wants to sell.
 - **City** — City where the pickup is scheduled.
-- **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
+- **Type** — Device category such as Mobile, Laptop, Tablet or Macbook.
 - **Status** — Current status of the reserved order.
+- **SLA** — Time left or time late against the order SLA.
 
 When no reserved orders are present, the page displays a `No Orders Found` message indicating there are currently no orders matching the reserved criteria.
 
@@ -46,16 +47,18 @@ Reserved orders are typically created when:
 
 Use filters and search controls to focus on the reserved orders that matter for your review.
 
-- **Device Type Filter** — Filter reserved orders by device category: Mobile, Laptop, Tablet, or Mac.
+Click **Filters** in the header to open the filter panel.
+
+- **Device Type Filter** — Filter reserved orders by device category (Mobile, Laptop, Macbook, Tablet, AC, Desktop, Camera, Console, TV, Headphone, Watch, Drone).
 - **City Filter** — Filter reserved orders by the city where the pickup is scheduled.
 - **From Date / To Date** — Filter orders by their creation date range.
-- **Show Orders with Test Accounts** — Toggle to include or exclude orders created with test accounts.
+- **Show Orders with Test Accounts** — Checkbox to include or exclude orders created with test accounts.
 
 <Callout kind="alert">
   Uncheck **Show Orders with Test Accounts** for normal operations so you see only real customer orders. Use it only when you explicitly need to review test data.
 </Callout>
 
-- **Search** — Search for a specific reserved order by order details, device name, or customer information.
+- **Search** — Use the **Search orders...** box in the header to find a specific reserved order.
 - **Apply Filters** — Apply the selected filters to update the Reserved list.
 - **Reset** — Clear all filters and return to the full Reserved orders list.
 
@@ -66,7 +69,7 @@ For orders listed in the Reserved page, admins can:
 - Monitor whether the reserved vendor is acting on the order in a timely manner.
 - Contact the reserved vendor directly if the order is sitting idle.
 - Remove the reservation and reassign the order to a different vendor if the reserved vendor is unable to complete the pickup.
-- Open the order detail to see which vendor the order is reserved for and when it was reserved.
+- Click a row to open the order detail drawer and see the vendor in **Vendor Details** and the reservation events in the **Activity Timeline**. Use **Reassign Vendor** in the drawer to move the order to another vendor (see [All Orders](/all-orders#order-detail-drawer)).
 - Escalate to operations if a reserved order becomes delayed.
 
 ## Reserved order flow
@@ -75,7 +78,7 @@ For orders listed in the Reserved page, admins can:
 
 <Steps>
   <Step title="Order created or converted" icon="download">
-    The order is created by the customer or converted from a lead and enters the Orders - B2C pipeline.
+    The order is created by the customer or converted from a lead and enters the Orders pipeline.
   </Step>
   <Step title="Admin reserves the order" icon="settings">
     An admin reserves the order for a specific vendor, locking it to that vendor only.
@@ -141,5 +144,5 @@ Reserved interacts with several other Admin Panel and vendor flows:
   src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774516987405-iht5gdbw6j-reserved.reserved?q=85&fm=auto&auto=compress%2Cformat"
   width="1568"
   height="678"
-  alt="Admin Panel Orders - B2C Reserved page showing reserved order list, filters, and controls"
+  alt="Admin Panel Orders Reserved page showing reserved order list, filters, and controls"
 />

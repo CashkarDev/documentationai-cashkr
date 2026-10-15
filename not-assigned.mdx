@@ -1,11 +1,11 @@
 ---
 title: Not Assigned
-description: Use the Not Assigned view in Orders - B2C to track unassigned customer orders, understand statuses, apply filters, and take corrective admin actions.
+description: Use the Not Assigned view under Orders to track unassigned customer orders, understand statuses, apply filters, and take corrective admin actions.
 ---
 
 ## Overview
 
-The Not Assigned page in **Admin Panel → Orders - B2C → Not Assigned** shows all orders that customers created or that were converted from leads but are not yet picked up or assigned to any vendor. Admins use this view to monitor unassigned orders and act before they become further delayed.
+The Not Assigned page in **Admin Panel → Orders → Needs Attention → Not Assigned** (breadcrumb *Dashboard / Orders / Not Assigned*) shows all orders that customers created or that were converted from leads but are not yet picked up or assigned to any vendor. Admins use this view to monitor unassigned orders and act before they become further delayed.
 
 <Callout kind="info">
   An order qualifies as **Not Assigned** when it is visible in the vendor app for the relevant pincode and device type, but **no vendor has accepted, picked up, or been manually assigned to the order yet**.
@@ -20,6 +20,9 @@ Each row in the Not Assigned list represents one order that is currently waiting
 - **City** — City where the pickup needs to happen.
 - **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
 - **Status** — Current status of the order: **Generated** or **Pickup Delayed**.
+- **SLA** — Time left or time late against the order SLA (same column as the other order lists).
+
+When there are no unassigned orders, the page shows **No Orders Found**. Click a row to open the order detail drawer (see [All Orders](/all-orders#order-detail-drawer)).
 
 ### Order statuses on this page
 
@@ -43,14 +46,16 @@ An order appears in the Not Assigned page when:
 
 Use the filters and controls at the top of the Not Assigned page to narrow down which orders you see:
 
-- **Device Type Filter** — Filter orders by device category (Mobile, Laptop, Tablet, or Mac).
+Click **Filters** in the header to open the filter panel.
+
+- **Device Type Filter** — Filter orders by device category (Mobile, Laptop, Macbook, Tablet, AC, Desktop, Camera, Console, TV, Headphone, Watch, Drone).
 - **City Filter** — Filter orders by the city where the pickup is required.
 - **From Date / To Date** — Filter orders by their creation date range.
-- **Show Orders with Test Accounts** — Toggle to include test account orders in the view. Turn this **off** during normal operations to see only real customer orders.
-- **Search** — Search for a specific order using order details, device name, or customer information.
+- **Show Orders with Test Accounts** — Checkbox to include test account orders in the view. Turn this **off** during normal operations to see only real customer orders.
+- **Search** — Use the **Search orders...** box in the header to find a specific order.
 - **Apply Filters** — Apply the selected filter values to update the order list.
 - **Reset** — Clear all filters and return to the default view.
-- **Pagination Controls** — Navigate across pages of results using Previous and Next. The total result count appears below the table.
+- **Pagination Controls** — Navigate across pages of results using Previous, page numbers and Next.
 
 <Callout kind="alert">
   During day-to-day operations, keep **Show Orders with Test Accounts** turned off so you do not mix real customer orders with internal test data.
@@ -60,7 +65,8 @@ Use the filters and controls at the top of the Not Assigned page to narrow down 
 
 For orders sitting in Not Assigned, especially those with **Pickup Delayed** status, admins should:
 
-- **Manually assign vendors** — Open the order detail and assign it to a specific vendor.
+- **Assign a vendor** — Open the order detail drawer and use **Reassign Vendor** in the Vendor Details section.
+- **Check Coverage Gaps** — Use **Orders → Coverage Gaps** to see which pincodes have no vendor, a device gap, or vendors that are out of credits, at capacity or inactive.
 - **Nudge existing vendors** — Contact vendors in the matching pincode and prompt them to accept the order.
 - **Reassign to nearby areas** — Assign the order to a vendor from a nearby pincode if none are available in the exact pincode.
 - **Reschedule with customers** — Contact the customer to reschedule the pickup appointment when needed.
@@ -102,7 +108,7 @@ Use the Not Assigned view as a daily operational queue:
 - Check the Not Assigned page every day to spot orders without a vendor.
 - Prioritise **Pickup Delayed** orders, as these have already crossed the customer's expected pickup date.
 - Manually assign delayed orders to available vendors to prevent further dissatisfaction.
-- Monitor the count badge on **Not Assigned** in the sidebar; a rising count suggests a coverage gap in a specific city or pincode.
+- A rising number of Not Assigned orders suggests a coverage gap in a specific city or pincode — confirm it in **Coverage Gaps**.
 - Cross-check with the **Expansion → Area** page to confirm vendor coverage for affected pincodes.
 
 ## Connections to other modules

@@ -1,0 +1,50 @@
+---
+title: Vendor Account Deletions
+description: Handle partner-app vendor requests to delete their account — call, refund unused credits, then approve or reject.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Roster → **Account Deletions** (`/vendors/account-deletions`)
+
+Partner-app vendors can ask to delete their account. Each request lands here for an admin to handle.
+
+<Callout kind="alert">
+
+Approving a deletion **permanently erases** the vendor's profile, documents, chats and cashboy accounts. Orders and payments are kept against an anonymous vendor. This cannot be undone.
+
+</Callout>
+
+## Status tabs
+
+**Pending** (default) · **Deleted** · **Rejected** · **Cancelled by vendor** · **All**
+
+## Table
+
+| Column | What it shows |
+| --- | --- |
+| Vendor | The vendor who requested deletion. |
+| Reason | Reason given in the partner app. |
+| Requested | When the request was made. |
+| Wallet | Unused credit balance to settle. |
+| Status | Pending, Deleted, Rejected or Cancelled by vendor. |
+
+Empty states: "No requests waiting." (Pending) or "Nothing here."
+
+## How to handle a request
+
+<Steps>
+  <Step title="Call the vendor" icon="phone" title-type="p">
+    Confirm the request and the reason. Many requests can be resolved without deleting the account.
+  </Step>
+  <Step title="Refund unused credits" icon="wallet" title-type="p">
+    Check the **Wallet** column and refund any unused credits before deciding.
+  </Step>
+  <Step title="Approve or reject" icon="check-circle" title-type="p">
+    Approve to erase the account (irreversible), or reject to keep it. A vendor can also cancel their own request, which moves it to **Cancelled by vendor**.
+  </Step>
+</Steps>
+
+## Related pages
+
+- [Vendors - B2C](/b2c-vendors)

@@ -1,123 +1,92 @@
 ---
 title: Review Refund
-description: Verify vendor review photo submissions, approve or reject them, and manage 5% credit rewards with full audit trails and concurrency safeguards.
+description: Verify vendor-uploaded customer review proofs, accept, reject or revoke them, and refund a configurable percentage of order credits to the vendor.
 ---
 
 ## Overview
 
-Review Refund is where you verify vendor-submitted review photos and decide whether to grant a 5% credit reward. You can find this section under **Vendors — B2C** in the Admin Panel.
+**Sidebar:** Vendors → Money → **Review Refunds** (`/review-refunds`)
 
-## What this section is for
+Vendors upload proof of a customer review for a completed order. On this screen you verify each proof and decide whether the vendor gets a credit refund. The refund is a **percentage of the order credits** — the current rate is shown in the page subtitle (for example, "Current refund: 5% of order credits") and is configured on [Review Refund Settings](/admin-panel/vendors/review-refund-settings) via the **Refund Settings** button (top right).
 
-Use Review Refund to control review-based credit rewards, validate that each submission is legitimate, and maintain a complete record of every decision. When you approve a valid review photo, the vendor earns a credit reward equal to 5% of the device credit value.
+## What the screen shows
 
-## Pending submissions queue
+### Status tabs
 
-Pending submissions appear as a queue of review items in the `SUBMITTED` state. Each item shows the vendor name, order ID, device, device credit value, photo thumbnail, and submission timestamp so you can triage and review quickly.
+| Tab | Shows |
+| --- | --- |
+| **Pending** (default) | Newly uploaded proofs waiting for a decision. |
+| **Accepted** | Proofs that were accepted and refunded. |
+| **Rejected** | Proofs that were rejected (no refund). |
+| **Revoked** | Previously accepted refunds that were revoked. |
+| **All** | Every submission. |
 
-<Callout kind="info">
+### Table columns
 
-Only `SUBMITTED` items appear in the pending queue by default. Items in `APPROVED` and `REJECTED` state are filtered out unless you view them through reporting or history tools.
+| Column | Description |
+| --- | --- |
+| Proof | Thumbnail of the uploaded review screenshot/photo. Click it to open the **Review Proof** dialog. |
+| Order | Order token and device (category · model). |
+| Vendor | Vendor name and phone. Removed accounts show as "Deleted Vendor". |
+| Order Credits | Credits charged to the vendor for the order. |
+| Refund | Credits to be refunded (Accepted rows also show the % used, e.g. "4 (5%)"). |
+| Status | Pending, Accepted, Rejected or Revoked badge. |
+| Uploaded | Date the vendor uploaded the proof. |
+| Action | Depends on status (see below). |
 
-</Callout>
+The refund is calculated as **order credits × refund %** and rounded to whole credits (for example, at 5%: 80 credits → 4, 30 credits → 2).
+
+## Filters & search
+
+- **Status tabs** — Pending / Accepted / Rejected / Revoked / All.
+- **Search** — by order token, vendor name or phone ("Search order token / vendor / phone").
+
+## Actions
+
+| Status | Action | Result |
+| --- | --- | --- |
+| Pending | **Accept** | Marks the proof Accepted and credits the refund to the vendor's wallet. |
+| Pending | **Reject** | Marks the proof Rejected; no credits are given. A reason is recorded and shown in the Review Proof dialog. |
+| Accepted | **Revoke** | Reverses an accepted refund and moves the item to Revoked. |
+| Rejected / Revoked | — | No further action. |
+
+### Review Proof dialog
+
+Clicking a proof thumbnail opens **Review Proof — &lt;order token&gt;**, showing the vendor and device, the full-size proof image, **Order credits**, **Refund** (with %), and — for rejected items — the **Reason**.
 
 ## Verification flow
 
 <Steps>
-<Step title="Open Review Refund" icon="list">
-
-Open **Review Refund** under **Vendors — B2C** in the Admin Panel.
-
+<Step title="Open the Pending tab" icon="list" title-type="p">
+Go to **Vendors → Review Refunds**. The Pending tab lists proofs waiting for review, newest first.
 </Step>
-
-<Step title="Open a pending submission" icon="image">
-
-Select a pending item and review the full-resolution photo together with the order details, vendor information, and device credit value.
-
-A valid review decision depends on both the uploaded photo and the order context, so check them together before you act.
-
+<Step title="Open the proof" icon="image" title-type="p">
+Click the thumbnail to view the full image alongside the order credits and refund amount.
 </Step>
-
-<Step title="Verify the review photo" icon="search">
-
-Confirm that the review is genuine, readable, and tied to the actual customer and completed order.
-
-If the photo is unclear, unrelated, or does not satisfy review requirements, do not approve it.
-
+<Step title="Verify the review" icon="search" title-type="p">
+Confirm the review is genuine, readable and tied to the actual customer and order. If it is unclear, unrelated or does not meet the criteria, do not accept it.
 </Step>
-
-<Step title="Approve a valid submission" icon="check">
-
-Approve the submission when the evidence is valid. The system grants the vendor 5% of the device credit value and closes the item.
-
-After approval, the submission moves to `APPROVED` and no further action is required on that item.
-
-</Step>
-
-<Step title="Reject an invalid submission" icon="x">
-
-Reject the submission when the photo or review details do not meet the criteria. No credit is granted.
-
-Capture a rejection reason when you reject the item so the decision is recorded clearly.
-
+<Step title="Accept or Reject" icon="check" title-type="p">
+Click **Accept** to refund the credits, or **Reject** (with a reason) to decline. Use **Revoke** on the Accepted tab if an accepted refund later turns out to be invalid.
 </Step>
 </Steps>
 
-## Approve action
-
 <Callout kind="info">
-
-Approving a submission grants 5% of the device credit value to the vendor's total available credit. The submission state changes to `APPROVED`, and the system records your admin ID, the approval timestamp, and the credit amount.
-
-Example: if the device credit value is `30`, the vendor earns `1.5` credit.
-
+If the feature is turned off in Review Refund Settings, accepting a review records no refund.
 </Callout>
 
-## Reject action
-
-<Callout kind="warning">
-
-Rejecting a submission grants no credit and changes the state to `REJECTED`. You must capture a rejection reason.
-
-The vendor sees the rejection outcome and reason in the app. Whether the vendor can upload again depends on your operational policy.
-
-</Callout>
-
-## Audit trail
-
-Every review decision should be traceable without relying on memory or separate notes. The audit trail records what was submitted, who reviewed it, what decision was made, and what credit impact followed.
-
-| Field | Description |
-| --- | --- |
-| Submission ID | Unique identifier for the review submission |
-| Vendor ID | The vendor who submitted the review |
-| Order ID | The completed order associated with the review |
-| Submitted at | When the vendor uploaded the photo |
-| Reviewed by | Admin who made the decision |
-| Reviewed at | When the decision was made |
-| Decision | `APPROVED` or `REJECTED` |
-| Credit amount | Amount granted if approved |
-| Rejection reason | Reason captured if rejected |
-
-## Concurrency safeguards
-
-<Callout kind="warning">
-
-The system prevents double credit on the same submission. A single submission cannot be approved twice, even if someone double-clicks the action or two admins act at nearly the same time.
-
-Once a submission reaches a terminal state such as `APPROVED` or `REJECTED`, the action buttons are disabled and any further API attempts are rejected server-side. Only authorized Ops roles can approve or reject submissions, while other roles remain read-only.
-
+<Callout kind="alert">
+A submission can only be refunded once. Once it is accepted or rejected, the Pending actions disappear, which prevents double credit even if two admins open the same item.
 </Callout>
 
 ## Common issues
 
 | Issue | Cause | Resolution |
 | --- | --- | --- |
-| Photo not loading in the submission | Network or storage issue | Refresh the page. If the photo still does not load, escalate to tech support. |
-| Credit not applied after approval | Credit write may have failed | Check the vendor credit ledger. An approval should have a matching ledger entry. If the entry is missing, escalate. |
-| Duplicate submissions from same vendor | Vendor attempted multiple uploads | Only one submission per order is valid. The system should block duplicates. |
-| Vendor disputes a rejection | Vendor believes the review was valid | Review the photo again. If the rejection was incorrect, consult your lead on remediation options. |
-| Two admins see the same pending item | Both may try to act | Only the first action succeeds. The second action is safely rejected by the system. |
+| Proof image not loading | Network or storage issue | Refresh the page. If it still does not load, escalate to tech support. |
+| Credit not applied after accept | Credit write may have failed | Check the vendor's history on **Vendor Fines** (Fines History). If the entry is missing, escalate. |
+| Vendor disputes a rejection | Vendor believes the review was valid | Re-check the proof. If the rejection was wrong, consult your lead on remediation. |
+| Refund given by mistake | Proof later found invalid | Use **Revoke** on the Accepted tab. |
 
 ## Related pages
 

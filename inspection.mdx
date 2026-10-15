@@ -5,6 +5,8 @@ description: Track and manage on-site device inspections for Buyback B2B deals, 
 
 ## Overview
 
+**Sidebar path:** Channels → Buyback B2B → Inspection (`/buyback-b2b/inspection`). The page header reads **Scheduled Inspections — View and complete pending inspections**.
+
 The Inspection page is part of the Buyback B2B section and is used primarily by the Operations Team. It provides a queue of all device inspections that the pricing team has scheduled as part of active B2B deals, and captures the detailed device assessment that feeds back into pricing on the Deals page.
 
 ## Summary cards
@@ -45,11 +47,12 @@ On the scheduled date the operations team visits the corporate client's office o
 
 For every device the operations team fills in all required inspection fields:
 
-- IMEI number
+- IMEI / serial number (one entry per unit, so the number stays attached to the right device)
 - Device model and variant confirmation
-- Physical condition assessment
-- Any identified issues such as screen damage, battery health, or technical faults
-- Assessed price based on condition
+- Condition / notes — physical condition and any issues such as screen damage, battery health or technical faults
+- Max quote (incl. GST) based on condition
+
+These results appear on the deal under **Items & Inspection Results**, and the Activity Log records *Inspection Completed* with the number of units inspected.
 
 </Step>
 
@@ -98,7 +101,7 @@ Missing or rescheduling a confirmed inspection without prior notice damages the 
 
 <Callout kind="info">
 
-Every device must have its IMEI number recorded during inspection. The IMEI is the key identifier used throughout the deal and payment process.
+Every device must have its IMEI or serial number recorded during inspection. The IMEI is the key identifier used throughout the deal and payment process.
 
 </Callout>
 

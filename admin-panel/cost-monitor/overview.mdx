@@ -1,0 +1,54 @@
+---
+title: Cost Monitor Overview
+description: Track spend across all third-party services in one view — monthly and yearly totals, category mix, providers, renewals and budgets.
+---
+
+## Overview
+
+Cost Monitor ("All services, one view") tracks what Cashkr spends on third-party services and providers.
+
+Open it from **Cost Monitor → Overview** in the left sidebar (route `/cost-monitor`).
+
+## Header controls
+
+| Control | Description |
+| --- | --- |
+| Period | This month (default), Last month, Last 3 months, Last 6 months, Year to date, Last 12 months |
+| Export CSV | Download the cost data |
+| Settings (gear) | Opens **Cost Monitor · Settings** |
+| ₹ INR / $ USD | Switch the display currency |
+
+## Summary cards
+
+| Card | Meaning |
+| --- | --- |
+| Spend · This Month | Month-to-date spend in both currencies |
+| Last Month | Last month's spend and change versus this month |
+| YTD | Year-to-date spend with year-on-year comparison |
+| Renewals · 30D | Renewals due in the next 30 days |
+
+When nothing is tracked yet, an empty state explains how to add a service: click a provider in the sidebar under Cost Monitor and configure an account.
+
+## Sections
+
+- **12-Month Spend by Category** — Monthly spend for the last 12 months, by category.
+- **Providers** — Table with Provider, Category, MTD, Last Month, MoM, Next Renewal and Status, plus a count of active providers.
+- **Upcoming Renewals · 30D** — Renewals due in the next 30 days.
+- **Category Mix · MTD** — Share of this month's spend by category.
+- **Budget Status** — Progress against configured budgets.
+
+## Cost Monitor settings
+
+The gear icon opens a settings page with:
+
+| Section | Description |
+| --- | --- |
+| Global Budget | A single monthly ceiling for total spend (**Set global budget**) |
+| Category Budgets | One budget per category (**Add budget**) |
+| Provider Budgets | One budget per provider (**Add budget**) |
+| Exchange Rates | USD↔INR rate used for conversions, with **Refresh now** |
+| Alert Routing | Status of budget alert delivery to Slack, with **Send test alert** |
+
+<Callout kind="info">
+Budget alerts are sent only when alert routing is configured on the server. If it shows "Not configured", alerts are skipped silently — ask the tech team to set it up.
+</Callout>

@@ -1,0 +1,44 @@
+---
+title: Order Audit
+description: Sign off completed orders that were paid below the quoted price, working through automatic-check results first.
+---
+
+## Overview
+
+Open **Orders → Closed → Order Audit**. *Every completed order paid below the quoted price gets a person's sign-off.* Clear **Needs a look** first.
+
+Audit results also show up as order statuses elsewhere: **Completed · Awaiting audit**, **Completed · Audited** and **Completed · Audit flagged** (available in the All Orders Status filter).
+
+## Queues
+
+The page is split into four queue cards. Each shows a count; click a card to open that queue.
+
+| Queue | Meaning |
+| --- | --- |
+| **Needs a look** | An automatic check failed — go through it properly |
+| **Looks clean** | Every check passed — compare the screenshot and approve |
+| **Flagged** | Waiting on your follow-up |
+| **Approved** | Orders approved today |
+
+When a queue is empty the page shows *Nothing waiting here.*
+
+## Filters and search
+
+- **Search** box — find an order by order ID, token or phone.
+- **Show test orders** — checkbox to include test-account orders.
+
+<Steps>
+  <Step title="Start with Needs a look" icon="alert-triangle" title-type="p">
+    These orders failed an automatic check. Review the price drop, inspection photos and timeline carefully before deciding.
+  </Step>
+  <Step title="Clear Looks clean" icon="check-circle" title-type="p">
+    All checks passed. Compare the screenshot with the order and approve.
+  </Step>
+  <Step title="Follow up on Flagged" icon="flag" title-type="p">
+    Orders you flagged wait here until the follow-up with the vendor or customer is done.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Only completed orders paid **below** the quoted price enter the audit. Orders paid at the quoted price do not need a sign-off.
+</Callout>

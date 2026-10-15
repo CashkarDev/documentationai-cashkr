@@ -1,120 +1,125 @@
 ---
 title: Expenses
-description: |-
-
-  Track and manage all business expenses
+description: Track and manage all business expenses — add them one by one or upload them in bulk from Excel
 ---
-The Expenses page is part of the Finance module. It allows admins to record, track, and manage all business-related expenses in one place. Expenses can be added manually one by one or uploaded in bulk via an Excel file.
+## Overview
 
----
+**Sidebar path:** Finance → Expenses (`/finance/expenses`)
 
-**Summary Cards**
-
-Four summary cards at the top provide a quick snapshot of all expense activity based on the active filter:
-
-- **Total Expenses** — Total INR value of all recorded expenses
-
-- **Total Entries** — Total number of individual expense records
-
-- **Top Category** — The category with the highest total spend
-
-- **Categories** — Total number of expense categories in use
-
-Summary card values update dynamically based on the active date range, category, and payment method filters.
+The Expenses page lets admins record, track and manage all business expenses in one place. Expenses can be added one at a time or uploaded in bulk from an Excel/CSV file.
 
 ---
 
-**Expenses Table**
+## What the screen shows
 
-Each row in the expenses table represents a single business expense entry:
+### Summary cards
 
-- **Date** — Date the expense was incurred
+| Card | What it shows |
+| --- | --- |
+| **Total Expenses** | Total value of expenses matching the filters |
+| **Total Entries** | Number of expense records |
+| **Top Category** | Category with the highest total spend |
+| **Categories** | Number of categories in use |
 
-- **Title** — Name or short description of the expense
+Card values update with the active date range, category and payment method filters.
 
-- **Category** — The category the expense belongs to (e.g. Travel, Operations, Marketing)
+### Expenses table
 
-- **Amount** — INR value of the expense
+| Column | Description |
+| --- | --- |
+| **Date** | Date the expense was incurred |
+| **Title** | Expense title, with the description shown below it |
+| **Category** | Category badge (e.g. Rent, Bills, Salaries) |
+| **Amount** | Expense amount |
+| **Payment** | Payment method used |
+| **Created By** | Admin who logged the expense |
+| **Recurring** | Whether the expense is recurring (- if not) |
+| **Actions** | **⋯** menu with **Edit** and **Delete** |
 
-- **Payment** — Payment method used to pay the expense
+### Category Breakdown
 
-- **Created By** — Admin who logged the expense entry
-
-- **Recurring** — Whether the expense is a recurring entry or a one-time record
-
-- **Actions** — Edit or delete the expense entry
-
----
-
-**Filters & Controls**
-
-Date Range Filter Click Pick a date range to filter expenses between specific dates. Useful for monthly expense reporting, budget reviews, and finance audits.
-
-Search Search for a specific expense by title or description. Press Enter after typing to apply the search.
-
-Category Filter Filter expenses by category using the All Categories dropdown. This helps isolate spending in a specific area such as logistics, salaries, or office costs.
-
-Payment Method Filter Filter expenses by how they were paid using the All Methods dropdown. Useful for reconciling cash payments vs. bank transfers vs. UPI.
-
-Export Click Export to download the current filtered expense list for reporting, audits, or sharing with the finance team.
+Below the table, the **Category Breakdown** panel shows the total spend per category for the filtered period.
 
 ---
 
-**Adding an Expense**
+## Filters & search
 
-Click the green Add Expense button (top right) to manually log a new business expense. Fill in the title, category, amount, payment method, date, and whether it is a recurring expense. Confirm to save the entry.
-
----
-
-**Uploading Expenses via Excel**
-
-Click Upload Excel (top right) to bulk import multiple expense entries at once. This is useful for uploading monthly expense sheets or migrating existing expense records into the system.
-
-Ensure the Excel file follows the required format before uploading — incorrect formats may cause import errors.
-
----
-
-**Recurring Expenses**
-
-Expenses marked as Recurring are regular, repeating costs such as monthly rent, salaries, or subscription fees. These are flagged separately in the Recurring column so finance teams can distinguish fixed ongoing costs from one-time expenses.
+| Control | Options / behaviour |
+| --- | --- |
+| **Pick a date range** | Filter by expense date |
+| **Search** | Search title or description (press **Enter**) |
+| **Category** | All Categories, Salaries, Rent, Bills, Costs, Marketing, Operations, Miscellaneous |
+| **Payment method** | All Methods, Cash, UPI, Bank Transfer, Card, Cheque |
+| **Export** | Download the filtered expense list |
+| **Refresh** (icon, top right) | Reload the data |
 
 ---
 
-**Admin Responsibilities**
+## Actions
 
-- Log all business expenses promptly to keep records up to date
+### Add Expense
 
-- Assign the correct category to every expense for accurate reporting
+Click **+ Add Expense** to open the form:
 
-- Use the date filter regularly to review monthly and quarterly spending
+| Field | Description |
+| --- | --- |
+| **Title** \* | e.g. `Office Rent - January` |
+| **Amount (INR)** \* | Expense amount |
+| **Date** \* | Defaults to today |
+| **Category** \* | One of the categories listed above |
+| **Payment Method** | Cash, UPI, Bank Transfer, Card or Cheque |
+| **Description** | Optional notes |
+| **Transaction ID** \* | Bank transaction ID / reference number |
+| **Receipt / Invoice** | Upload an image of the receipt or invoice |
 
-- Upload bulk expenses via Excel to save time for large volumes
+Click **Add Expense** to save, or **Cancel** to close.
 
-- Review the Top Category card to identify the highest areas of spend
+### Upload Excel (bulk import)
 
-- Export expense data monthly for finance reconciliation
+Click **Upload Excel** to open **Upload Expenses**:
+
+- Drag and drop or click to upload a **.xlsx**, **.xls** or **.csv** file.
+- Use **Download Template** to get the correct format.
+- **Required columns:** Title, Amount, Category, Date
+- **Optional columns:** Payment Method, Description, Recurring
+- **Categories:** Salaries, Rent, Bills, Costs, Marketing, Operations, Miscellaneous
+
+Click **Upload** to import.
+
+<Callout kind="alert">
+Category values in the file must match the allowed categories exactly, otherwise rows may fail to import.
+</Callout>
+
+### Edit / Delete
+
+Use the **⋯** menu on a row to **Edit** the expense or **Delete** it. Deleted expenses are permanently removed and no longer appear in reports.
 
 ---
 
-**Connections to Other Modules**
+## Recurring expenses
 
-- **Cash In Hand** — Cash payment expenses are reflected in the cash flow tracker
-
-- **Reports** — All expense data feeds into the finance reports module
-
-- **Credits** — Expense records help reconcile overall business costs against revenue
+Expenses marked **Recurring** (set via the Excel upload's Recurring column) are regular costs such as rent, salaries or subscriptions. Review them periodically to make sure they are still active and the amounts are current.
 
 ---
 
-**Important Notes**
+## Admin responsibilities
 
-Expenses added here are for internal business cost tracking only. They are not linked to vendor orders or device transactions.
+- Log expenses promptly and with the correct category.
+- Always record the transaction ID and attach the receipt where available.
+- Review the **Top Category** card and Category Breakdown to spot the highest spend areas.
+- Export expense data monthly for reconciliation.
 
-Recurring expenses should be reviewed periodically to ensure they are still active and the amounts are current.
+---
 
-Deleted expenses are permanently removed and will not appear in the Logs or Reports.
+## Connections to other modules
+
+- **Cash In Hand** — cash expenses are reflected in cash tracking.
+- **Reports** — expense data feeds Profit & Loss and Money Flow reports.
+
+<Callout kind="info">
+Expenses here are internal business costs only. They are not linked to vendor orders or device transactions.
+</Callout>
 
 ## Snapshot
 
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774347896634-4t42skpp1vx-expeses.expeses?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="822" alt="" />
-
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774347896634-4t42skpp1vx-expeses.expeses?q=85&fm=auto&auto=compress%2Cformat" width="1918" height="822" alt="Expenses page" />

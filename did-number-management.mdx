@@ -1,17 +1,15 @@
 ---
 title: DID Number Management
-description: Assign, change, and audit dedicated DID numbers for B2C vendors from the Admin Panel so outbound vendor calls present a Cashkr-controlled caller ID.
+description: Manage the pool of dedicated Acefone DID numbers on the Vendor DIDs screen and see which vendor holds each number, so outbound vendor calls present a Cashkr-controlled caller ID.
 ---
 
 ## Overview
 
-Admins assign a **dedicated DID number** to each B2C vendor. Once assigned, every call that vendor places to a customer from the Vendor App presents that number as the caller ID instead of the vendor's personal mobile.
+**Sidebar:** Vendors → Roster → **Vendor DIDs** (`/vendors/dids`) — "Dedicated Acefone numbers — the spare pool and who holds what".
 
-Assignment is admin-only. Vendors cannot select, request, or change their own DID, in the same way they cannot set their own vendor type or tier access.
+Admins give each B2C vendor a **dedicated DID number**. Once assigned, calls that vendor places to customers from the Vendor App present that number as the caller ID instead of the vendor's personal mobile. Vendors without a dedicated number use the **shared DID**.
 
-<Callout kind="info">
-DID assignment sits alongside the other vendor-level controls — devices, pincodes, Max Leads, vendor type, and tier access — in the vendor detail panel. See [Vendors - B2C](/b2c-vendors).
-</Callout>
+Assignment is admin-only. Vendors cannot select, request or change their own DID.
 
 ## What DID assignment controls
 
@@ -20,27 +18,52 @@ DID assignment sits alongside the other vendor-level controls — devices, pinco
     The caller ID presented to the customer when this vendor calls from the Vendor App.
   </Card>
   <Card title="Why it matters" icon="shield-check">
-    Keeps the vendor's personal number private, gives customers a consistent recognisable number, and makes calls attributable for quality and disputes.
+    Keeps the vendor's personal number private, gives customers a consistent number, and makes calls attributable for quality and disputes.
   </Card>
   <Card title="Where it impacts" icon="arrow-right">
-    The Vendor App calling flow for that vendor, and any admin view that surfaces vendor call activity.
+    The Vendor App calling flow for that vendor, and admin views of vendor call activity.
   </Card>
 </Columns>
 
-## Assigning a DID number
+## What the screen shows
+
+### Add numbers to the pool
+
+Paste one or more numbers separated by spaces, commas or new lines, then click **Add**. The added numbers become **Spare**.
+
+<Callout kind="alert">
+Point each number at the **Unified Call Handler** in the Acefone panel first — a number added here but not routed there will ring nowhere.
+</Callout>
+
+### Status tabs
+
+**All**, **Assigned**, **Spare** and **Retired**, each with a count. A search box filters by number or vendor.
+
+### Numbers table
+
+| Column | What it shows |
+| --- | --- |
+| Number | The DID number. |
+| State | assigned, spare or retired. |
+| Vendor | The vendor holding the number (assigned numbers). |
+| Since | Date the number entered its current state. |
+| Notes | Optional notes. |
+| Action | **Release** on assigned numbers — frees the number from the vendor. |
+
+## Assigning a DID to a vendor
 
 <Steps>
-  <Step title="Open the vendor" icon="search">
-    Go to **Operations B2C → Vendors - B2C** and click the vendor row to open the detail panel.
+  <Step title="Make sure a spare exists" icon="list" title-type="p">
+    On Vendor DIDs, check the **Spare** tab. If it is empty, add routed numbers to the pool first.
   </Step>
-  <Step title="Locate the DID field" icon="phone">
-    In the vendor profile, find the dedicated DID number field alongside the other vendor-level configuration.
+  <Step title="Open the vendor" icon="search" title-type="p">
+    Go to **Vendors → Roster → All Vendors** and click the vendor row. The panel opens on the Details tab.
   </Step>
-  <Step title="Assign the number" icon="user-check">
-    Assign an available DID number to this vendor. One number maps to one vendor.
+  <Step title="Use the Dedicated DID section" icon="phone" title-type="p">
+    The **Dedicated DID** section shows the vendor's current number, or "No dedicated number — using the shared DID" and whether spare numbers are available in the pool. Assign a spare from here. One number maps to one vendor.
   </Step>
-  <Step title="Verify" icon="check-circle">
-    Confirm the assignment is reflected on the vendor profile, then verify with a test call that the customer-facing caller ID matches.
+  <Step title="Verify" icon="check-circle" title-type="p">
+    Confirm the number now shows against the vendor on Vendor DIDs, then make a test call to check the customer-facing caller ID.
   </Step>
 </Steps>
 
@@ -50,9 +73,9 @@ Always verify with a real test call after assigning or changing a number. A misc
 
 ## Operational guidance
 
-- **Assign before going Live.** A vendor being activated should have a DID assigned as part of activation, alongside pincodes and Max Leads. Activating without one leaves calling behaviour undefined.
-- **Treat numbers as identifying.** A DID that a customer has in their call history points at a specific vendor. Reassigning it to a different vendor will connect that customer to the wrong person.
-- **Record changes.** When you change a vendor's DID, note why. Number changes are hard to debug retrospectively when a customer reports being called from an unexpected number.
+- **Assign before going Live.** A vendor being activated should get a DID alongside pincodes and Max Leads.
+- **Treat numbers as identifying.** A DID in a customer's call history points at a specific vendor. Releasing it and giving it to another vendor can connect that customer to the wrong person.
+- **Record changes.** Use Notes, or your team's log, to record why a number was released or reassigned.
 
 ## Underlying integration
 
@@ -67,19 +90,19 @@ The feature routes through **Acefone**. The backend registers the vendor-to-cust
 ## Known gaps
 
 <Callout kind="alert">
-Several behaviours are **not yet confirmed**, including inbound calls to the DID, the fallback when no DID is assigned, whether agents share the parent vendor's number, call recording and retention, and what happens to the number when a vendor goes on Hold.
+Several behaviours are **not yet confirmed**, including inbound calls to the DID, whether agents share the parent vendor's number, call recording and retention, what happens to the number when a vendor goes on Hold or is Barred, and when a number moves to Retired.
 
-The full list is on [Dedicated DID Number](/dedicated-did-number). These should be resolved before the feature is treated as fully documented.
+The full list is on [Dedicated DID Number](/dedicated-did-number).
 </Callout>
 
 ## Related pages
 
 <Columns cols={2}>
   <Card title="Dedicated DID Number" href="/dedicated-did-number" icon="phone-call" cta="How it works">
-    Feature overview, routing model, telephony integration, and the open questions.
+    Feature overview, routing model, telephony integration and open questions.
   </Card>
   <Card title="Vendors - B2C" href="/b2c-vendors" icon="users" cta="Open vendor list">
-    The vendor list and detail panel where DID assignment sits with devices, pincodes, Max Leads, and tier access.
+    The vendor detail panel where the Dedicated DID section sits.
   </Card>
   <Card title="Calling the Customer" href="/vendor-app-calling" icon="phone" cta="See vendor flow">
     What the vendor experiences on the other side of this configuration.

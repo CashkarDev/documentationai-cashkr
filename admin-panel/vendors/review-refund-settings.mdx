@@ -1,0 +1,38 @@
+---
+title: Review Refund Settings
+description: Configure the global percentage of order credits refunded to vendors when their uploaded customer review is accepted, and turn the feature on or off.
+---
+
+## Overview
+
+**Sidebar:** Vendors → Money → **Review Refund Settings** (`/settings/review-refund`). Also reachable from the **Refund Settings** button on the Review Refunds screen.
+
+This screen controls how many credits a vendor gets back when an admin accepts their uploaded customer review on **Review Refunds**.
+
+## What the screen shows
+
+A single **Global Refund Percentage** card:
+
+| Field | Description |
+| --- | --- |
+| **Refund percentage (%)** | Applied to every accepted review: **refund = order credits × this %**. Helper text gives an example, e.g. at 5% a 100-credit order → vendor gets 5 credits. |
+| **Feature enabled** | Toggle with an **Active** badge when on. When off, accepting a review records no refund. |
+| **Save Settings** | Saves both fields. |
+
+## Changing the refund percentage
+
+<Steps>
+<Step title="Open the settings" icon="settings" title-type="p">
+Go to **Vendors → Review Refund Settings**.
+</Step>
+<Step title="Update the values" icon="percent" title-type="p">
+Enter the new **Refund percentage (%)** and/or switch **Feature enabled** on or off.
+</Step>
+<Step title="Save" icon="save" title-type="p">
+Click **Save Settings**. The new rate appears in the Review Refunds subtitle ("Current refund: X% of order credits").
+</Step>
+</Steps>
+
+<Callout kind="info">
+The percentage is global — it applies to every review accepted after the change. Reviews accepted earlier keep the refund that was credited at the time.
+</Callout>

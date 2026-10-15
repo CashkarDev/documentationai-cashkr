@@ -1,100 +1,80 @@
 ---
 title: Headphone
-description: Manage headphone models, brands, condition classes, and pricing for Cashkr buyback with a simplified assessment and flat deductions.
+description: Manage headphone models, brands, condition classes, and pricing for Cashkr buyback with a simplified assessment.
 ---
 
 ## Manage headphone devices
 
-The Headphone page in **Admin Panel → Devices** controls every headphone model available for buyback. Use it to manage models, brands, condition classes, and pricing rules for devices that follow a simplified assessment flow.
+The Headphone page (**Headphone Management**, route `/headphone`) in **Admin Panel → Devices** controls every headphone and earbud model available for buyback. It has four tabs: **Models**, **Brands**, **Classes**, and **Pricing**, using the shared device layout described on the [Phone](/phone) page.
 
-Headphones use the `mobilePriceEvaluation` strategy, but the condition assessment is narrower than other device types. Only **age** codes `W1` to `W4`, **physical and functional** codes `P1` to `P8`, and **accessories** codes `A1` to `A3` apply.
-
-No body, screen, or technical fault codes are used for headphones. Pricing also has no additions, so `finalPrice` is always calculated from `basePrice` minus deductions, then clamped to `deadPrice`.
+Headphones use the `mobilePriceEvaluation` strategy with a narrow condition set: **age** `W1`–`W4`, **physical and functional** `P1`–`P3`, and **accessories** `A1`–`A3`. There are no body, battery, screen, or technical fault codes, and no additions, so `finalPrice` is `basePrice` minus deductions, floored at `deadPrice`.
 
 <Tabs>
   <Tab title="Models" icon="database">
 
   ### What you see
 
-  The Models tab lists every headphone model configured for buyback. Each row shows the information needed to control availability and pricing at a glance.
-
-  The table includes these columns:
+  The Models tab lists headphone models, 20 per page.
 
   | Column | Description |
   | --- | --- |
-  | Model name | The headphone model name shown in assessment and pricing flows |
-  | Brand | The brand linked to the model |
-  | Base price | The starting buyback value before deductions |
-  | Class | The condition class used to calculate deductions |
-  | Status | Whether the model is active and available for use |
+  | Checkbox | Select rows for bulk actions |
+  | Model | Image, model name, and brand • URL slug |
+  | Code | Unique code, for example `PODA0001` |
+  | Price | Base buyback price |
+  | Class | Assigned condition class |
+  | Actions | Row menu |
+
+  Headphones have no variants.
 
   ### Search and filters
 
-  Search the list by **model name** when you need to find a specific headphone quickly. Use the **brand** filter to narrow the table to one manufacturer.
+  - **Search models…** with **Filter**, and a refresh icon.
+  - **All Brands** — Apple, Bose, Google, Marshall, Nothing, OnePlus, Samsung.
 
-  These controls help when the catalog grows and multiple variants exist under the same brand.
+  ### Row actions
+
+  **Edit Model**, **View SEO**, **Duplicate**, **Delete**.
 
   ### Add
 
-  Add a model when you want to make a new headphone available for assessment and pricing.
-
   <Steps>
-    <Step title="Enter the model name" icon="edit">
+    <Step title="Open the form" icon="plus">
 
-    Type the headphone model name exactly as you want it to appear in the admin panel and buyback workflow.
-
-    Use a consistent naming format so search results stay predictable.
+    Click **Add Model** ("Add a new headphone model").
 
     </Step>
-    <Step title="Select the brand" icon="folder">
+    <Step title="Basic Info" icon="edit">
 
-    Choose the correct brand from the existing Headphone brands list.
-
-    If the brand does not exist yet, create it first in the **Brands** tab.
+    Select **Brand***, enter **Model Name*** (for example WH-1000XM5), optional **Series** (for example WH, AirPods), and **Image** (URL or Upload).
 
     </Step>
-    <Step title="Set the base price" icon="bar-chart">
+    <Step title="URL & Code and SEO" icon="link">
 
-    Enter the model's `basePrice` as a flat rupee value.
-
-    This value is the starting point for the final pricing calculation before any age, physical or functional, and accessory deductions are applied.
+    Generate or enter **Base URL** and **Model Code**. Use **Auto-Generate SEO** or fill Page Description, H1 Heading, and Image Alt Text.
 
     </Step>
-    <Step title="Assign the class" icon="settings">
+    <Step title="Pricing" icon="bar-chart">
 
-    Select the condition class that stores the headphone deduction values.
-
-    The selected class determines the `deadPrice` floor and all supported deduction amounts for this model.
+    Enter **Base Price (₹)*** and choose **Pricing Class***. The class sets the `deadPrice` floor and all deduction amounts.
 
     </Step>
-    <Step title="Save the model" icon="check-circle">
+    <Step title="Save" icon="check-circle">
 
-    Save the record to add the model to the headphone catalog.
-
-    After saving, the new model appears in the table with its linked brand, class, and base price.
+    Click **Create Model**.
 
     </Step>
   </Steps>
 
-  ### Edit
-
-  Edit a model to update its name, brand, base price, assigned class, or status. Changes apply to future assessments that use the updated configuration.
-
-  Review pricing changes carefully before saving. A class or base price update can change the final offer for every assessment created after the update.
-
   <Callout kind="info">
 
-  If you change the assigned class, the model starts using that class's `deadPrice` and deduction values immediately for new evaluations.
+  If you change the assigned class, new evaluations use that class's `deadPrice` and deductions immediately.
 
   </Callout>
 
-  ### Delete
-
-  Delete a model when it should no longer appear in the headphone buyback flow. Remove only models that are no longer needed operationally.
-
   <Callout kind="alert">
 
-  Deleting a model can remove it from active assessment flows. Confirm that the model is not still required before you delete it.
+  Deleting a model removes it from active assessment flows. Confirm the model is no longer required before you delete it.
 
   </Callout>
 
@@ -104,74 +84,9 @@ No body, screen, or technical fault codes are used for headphones. Pricing also 
 
   ### What you see
 
-  The Brands tab stores the manufacturers available for headphone models. Each brand record supports catalog organization, model linking, and display metadata.
+  Headphone brands: **Apple**, **Bose**, **Google**, **Marshall**, **Nothing**, **OnePlus**, and **Samsung**. The table shows Brand ID, Brand Name, Device Type, Brand Link, Brand Image, and Title.
 
-  Common headphone brands include Sony, Bose, Sennheiser, JBL, Apple, Beats, and Audio-Technica.
-
-  ### Search and filters
-
-  Search by **brand name** to find an existing entry before creating a new one. This helps avoid duplicates with slightly different naming.
-
-  If your admin panel includes status or device-type filters, use them to confirm the brand is configured specifically for Headphone.
-
-  ### Add
-
-  Add a brand before creating models that belong to it.
-
-  <Steps>
-    <Step title="Enter the brand name" icon="edit">
-
-    Add the manufacturer name exactly as it should appear across the device catalog.
-
-    Keep naming consistent with existing brand records.
-
-    </Step>
-    <Step title="Set the device type to Headphone" icon="settings">
-
-    Choose **Headphone** as the device type.
-
-    This keeps the brand available only where headphone models are managed.
-
-    </Step>
-    <Step title="Add the brand URL" icon="external-link">
-
-    Enter the brand URL or slug used by your admin setup.
-
-    Use a clean, readable value so internal references and SEO fields stay consistent.
-
-    </Step>
-    <Step title="Upload the brand image" icon="upload">
-
-    Add the image used for the brand in the admin panel or customer-facing flows, if supported.
-
-    Check that the file matches your usual naming and asset guidelines.
-
-    </Step>
-    <Step title="Fill in SEO metadata" icon="code">
-
-    Add the SEO title, description, and any other metadata fields required by your setup.
-
-    Use metadata that matches the brand and device type accurately.
-
-    </Step>
-    <Step title="Save the brand" icon="check-circle">
-
-    Save the brand to make it available in the Headphone model form.
-
-    After saving, you can select the new brand while creating or editing headphone models.
-
-    </Step>
-  </Steps>
-
-  ### Edit
-
-  Edit a brand to correct naming, update URLs, replace images, or revise metadata. These changes help keep the headphone catalog clean and consistent.
-
-  If multiple models already use the brand, check the updated values carefully before saving.
-
-  ### Delete
-
-  Delete a brand only after confirming no active headphone models depend on it. Removing a brand that is still linked can break model management workflows.
+  Search, Filters, **Add New Product** (Add New Brand dialog), and Brand Details (Edit, Delete) work as on the Phone Brands tab. Set **Device Type** to Headphone.
 
   <Callout kind="alert">
 
@@ -185,98 +100,52 @@ No body, screen, or technical fault codes are used for headphones. Pricing also 
 
   ### What you see
 
-  The Classes tab stores the condition pricing matrix used for headphone assessments. Each class defines the `deadPrice` floor and every supported flat deduction value.
+  The **Headphone Classes** table has five classes (A–E) with ID, Class Type, Credit, Dead Price, Tier, and these codes:
 
-  Headphone classes are simpler than classes for most other device types because they use fewer condition groups.
+  | Group | Codes | Options |
+  | --- | --- | --- |
+  | Warranty | `W1`–`W4` | 0–3 months, 3–6 months, 6 to 11 months, above 11 months |
+  | Physical | `P1`–`P3` | Speaker/Mic Issue, Connectivity Issue, Physical Issue |
+  | Accessories | `A1`–`A3` | Bill, Box, Charging Cable |
 
   <Callout kind="info">
 
-  Headphone devices use a simplified assessment with NO body and NO screen questions. Condition codes: Age W1–W4, Functional/Physical P1–P8, Accessories A1–A3 only. There are no body `B` codes, no screen `S` codes, and no technical fault `T` codes for headphones.
+  Headphones have no body `B`, screen `S`, battery, or technical `T` codes.
 
   </Callout>
-
-  <Callout kind="alert">
-
-  All amounts for Headphone are flat rupees `Int`. Percentage-based deductions are NOT supported.
-
-  </Callout>
-
-  ### Search and filters
-
-  Search by class name to locate a pricing profile quickly. Use filters such as status, if available, to separate active classes from archived ones.
-
-  This is useful when several headphone classes exist for different product segments.
 
   ### Add
 
-  Add a class when you need a new deduction matrix for one or more headphone models.
-
   <Steps>
-    <Step title="Create the class record" icon="plus">
+    <Step title="Open the form" icon="plus">
 
-    Enter the class name and any status fields required by your admin panel.
-
-    Use a name that clearly identifies the pricing profile.
+    Click **Add New Class** ("Create a new pricing model for Headphone devices"). Tabs: Basic Info, Warranty, Physical, Accessories.
 
     </Step>
-    <Step title="Set the dead price" icon="bar-chart">
+    <Step title="Basic Info" icon="bar-chart">
 
-    Enter the `deadPrice` as a flat rupee value.
-
-    This value is the lowest possible final price after all deductions are applied.
+    Enter **Class Type***, **Tier**, **Credit**, and **Dead Price** (the lowest possible final price).
 
     </Step>
-    <Step title="Add age deductions" icon="settings">
+    <Step title="Deductions" icon="settings">
 
-    Fill in flat rupee deductions for `W1`, `W2`, `W3`, and `W4`.
-
-    These values reduce the `basePrice` according to the device age selected during assessment.
-
-    </Step>
-    <Step title="Add physical and functional deductions" icon="settings">
-
-    Fill in flat rupee deductions for `P1` through `P8`.
-
-    These codes cover the supported physical and functional assessment outcomes for headphones.
-
-    </Step>
-    <Step title="Add accessory deductions" icon="settings">
-
-    Enter flat rupee deductions for `A1`, `A2`, and `A3`.
-
-    Each missing accessory deducts its configured rupee amount from the model's `basePrice`.
+    Fill `W1`–`W4`, `P1`–`P3`, and `A1`–`A3`. Each field accepts a flat amount or a percentage ("e.g. 500 or 10%").
 
     </Step>
     <Step title="Save the class" icon="check-circle">
 
-    Save the class to make it available for model assignment.
-
-    After saving, you can link the class to one or more headphone models in the Models tab.
+    Click **Create Class**.
 
     </Step>
   </Steps>
 
-  ### Edit
-
-  Edit a class to change `deadPrice` or any deduction amount. Updates affect every model that uses that class for future pricing calculations.
-
-  Review class edits carefully because even a small deduction change can alter offer values across many headphone models.
-
-  ### Delete
-
-  Delete a class only when no active models still reference it. Remove dependencies first to avoid broken pricing setups.
+  Use the row menu to **Edit** or **Delete**, and **Export CSV** to download.
 
   <Callout kind="alert">
 
-  Do not delete a class that is still assigned to headphone models. Reassign those models to another class first.
+  Do not delete a class that is still assigned to headphone models. Reassign those models first.
 
   </Callout>
-
-  ### Export
-
-  Export classes when you need to review or audit the current headphone deduction setup outside the admin panel. This is useful for pricing reviews, catalog validation, and operational checks.
-
-  Verify the exported values before making bulk updates elsewhere, especially for `deadPrice`, `W` codes, `P` codes, and `A` codes.
 
   </Tab>
 
@@ -284,103 +153,28 @@ No body, screen, or technical fault codes are used for headphones. Pricing also 
 
   ### What you see
 
-  The Pricing tab explains how headphone offers are calculated from the model's `basePrice` and assigned class deductions. Headphones use the simplest pricing formula of all device types.
-
-  Only three deduction groups apply: age, physical or functional condition, and accessories. No additions are supported.
-
-  <Callout kind="info">
-
-  Headphones have the fewest deduction categories of any device type — only age, physical or functional, and accessories. This means the pricing calculation is simpler and faster than other device types.
-
-  </Callout>
-
-  ### Search and filters
-
-  Use search and filters, if available, to inspect pricing setups by model, brand, or class. This helps you verify that a headphone uses the intended base price and deduction matrix.
-
-  When troubleshooting unexpected offers, start by confirming the model, class, and active deduction values.
-
-  ### Add
-
-  Pricing entries are not added separately for headphones. Pricing is created by combining a model's `basePrice` with the assigned class values.
-
-  <Steps>
-    <Step title="Set the model base price" icon="bar-chart">
-
-    Open the model and enter the starting buyback amount.
-
-    This amount becomes the top line for all later deductions.
-
-    </Step>
-    <Step title="Configure the class deductions" icon="settings">
-
-    Open the class linked to the model and fill in `deadPrice`, `W1` to `W4`, `P1` to `P8`, and `A1` to `A3`.
-
-    Make sure every value is entered as a flat rupee amount.
-
-    </Step>
-    <Step title="Assign the class to the model" icon="shield">
-
-    Link the class in the model record.
-
-    After saving, the model can use that pricing logic during assessment.
-
-    </Step>
-    <Step title="Save and verify the setup" icon="check-circle">
-
-    Save the model and class changes, then run a test assessment if your workflow supports it.
-
-    A correct setup produces a final price based only on age, physical or functional condition, and missing accessories, with the result never going below `deadPrice`.
-
-    </Step>
-  </Steps>
-
-  ### Edit
-
-  Edit pricing by changing the model `basePrice` or updating class deduction values. There is no separate additions layer to maintain for headphones.
-
-  Keep edits controlled and test important changes before relying on them in live assessments.
-
-  ### Delete
-
-  Delete pricing by removing the related model or class configuration only when it is no longer needed. Because pricing depends on linked records, verify the operational impact before removal.
-
-  <Callout kind="alert">
-
-  Headphone pricing does not support additions. The final offer can only decrease from `basePrice`, and the result stops at `deadPrice`.
-
-  </Callout>
+  The Headphone Pricing tab uses the shared layout: Pricing Overview, BuyBack bonus and Bulk bonus, Filters, All Brands, search, Export, and Import. Each row shows Model, Specs, Class (dropdown), Base Price (✎), Bonus, and the **3-6 Months**, **6-11 Months**, and **11+ Months** prices with % change. The row menu has **Price History**. Select rows to use **Update Price** or **Update Class**.
 
   ### Deduction groups
 
-  Headphone pricing uses only three deduction categories.
-
   | Group | Codes | How it works |
   | --- | --- | --- |
-  | Age | `W1`–`W4` | Deduct the flat rupee amount for the selected age band |
-  | Physical and functional | `P1`–`P8` | Deduct the flat rupee amount for the selected physical or functional condition |
-  | Accessories | `A1`–`A3` | Deduct the configured amount for each missing accessory |
+  | Age | `W1`–`W4` | Deduct the amount for the selected age band |
+  | Physical and functional | `P1`–`P3` | Deduct the amount for the selected issue |
+  | Accessories | `A1`–`A3` | Deduct the amount for each missing accessory |
 
   ### Formula
-
-  Use this formula to calculate the final headphone offer:
 
   ```text
   finalPrice = basePrice - age(W) - functional(P) - missingAccessories(A)
   finalPrice = max(finalPrice, deadPrice)
   ```
 
-  The result can never be higher than `basePrice` because headphones do not support additions. The result can never be lower than `deadPrice`.
+  The result can never be higher than `basePrice` (no additions) or lower than `deadPrice`. Separately, the BuyBack bonus, when switched on, adds a flat ₹ amount per model on top of the device price.
 
   </Tab>
 </Tabs>
 
 ## What to review before going live
 
-Check the model, brand, class, and pricing setup together before enabling a headphone for production use. Most pricing issues come from the wrong class assignment, missing accessory deductions, or an incorrect `deadPrice`.
-
-<Callout kind="info">
-
-A complete headphone setup includes one brand, one model, one linked class, and verified flat deduction amounts for `W1` to `W4`, `P1` to `P8`, and `A1` to `A3`.
-
-</Callout>
+A complete headphone setup includes one brand, one model with a base price, one linked class, and verified deduction amounts for `W1`–`W4`, `P1`–`P3`, and `A1`–`A3`. Most pricing issues come from the wrong class, missing accessory deductions, or an incorrect `deadPrice`.

@@ -1,0 +1,49 @@
+---
+title: Lost Leads
+description: Leads and failed-order customers closed as lost, with reason breakdown, ringing leads still in play, and the competitor price gap.
+---
+
+## Overview
+
+Open **B2C Sales → Outcomes → Lost Leads**. The page lists everything closed as lost in the selected period and explains why, so pricing and operations can act on the reasons.
+
+## Filters
+
+| Control | Options |
+| --- | --- |
+| **Reason** dropdown | All reasons, Better Price Elsewhere, Higher Expectations, Condition Deduction Disputed, Doesn't Trust Online Buyback, Area Not Serviceable, Not Selling Anymore, Sold Elsewhere, Was Just Checking, Unreachable After 3 Attempts, Wrong Number, App Issue During Sell Flow, Declined Revised Price, Already Sold Elsewhere After Failure, Lost Trust After Failed Pickup, Refused To Re-book, Do Not Contact, Device Not Eligible |
+| **Source** chips | **All**, **Retention** (failed orders), **Leads** |
+| **Date range** | From / to date (defaults to the last 7 days) |
+
+The count of lost records is shown next to a **CSV** export button.
+
+## What the screen shows
+
+### Lost list
+
+| Column | Description |
+| --- | --- |
+| **Lost On** | When it was closed as lost |
+| **Customer** | Customer |
+| **Device** | Device model |
+| **Quoted** | Quoted price |
+| **Reason** | Lost reason |
+| **Closed By** | Who closed it |
+
+When nothing was lost the table shows *No lost leads in this period.*
+
+### Ringing — still being called, not lost
+
+Shows how many **leads** and **calls that rang out** were marked *Not Connected → Ringing* in the period. These leads are **not** closed — they stay in **Callbacks** and are not part of the lost count or the reasons.
+
+### Reason breakdown
+
+How many were closed in the period, grouped by reason, with the owning function shown against each reason.
+
+### Competitor gap
+
+Built from closures where the competitor platform and their price were captured. *This is what goes to pricing.*
+
+<Callout kind="info">
+  Capture the competitor platform and price whenever a customer says they got a better price elsewhere — it feeds the Competitor gap panel.
+</Callout>

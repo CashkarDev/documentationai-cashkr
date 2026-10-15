@@ -29,7 +29,7 @@ The **Influencer Affiliate** page opens, subtitled *"Funnel, payouts and code pe
 
 <Callout kind="info">
 
-The Influencers item sits alongside Growth, Operations / SLA, CX & Reviews, Vendors, Inventory & Pricing, Coupons, and Referrals in the same Dashboards group.
+The Influencers item sits alongside Growth, Operations / SLA, CX & Reviews, Vendors, Inventory & Pricing, Finance, Coupons, Referrals, and Nurture Analytics in the same Dashboards group (`/influencers`).
 
 </Callout>
 
@@ -48,7 +48,7 @@ The top-right toolbar controls the reporting window and page actions.
 
 | Control | Function |
 | --- | --- |
-| **Date range** (e.g. *Jun 01, 2026 – Jun 25, 2026*) | Scopes every card, chart, and table on the page. Changing it recalculates all metrics. |
+| **Date range** (defaults to the current month to date, e.g. *Oct 01, 2026 – Oct 12, 2026*) | Scopes every card, chart, and table on the page. Changing it recalculates all metrics. |
 | **Refresh** (circular arrow) | Reloads the latest data for the current date range. |
 | **+ New code** | Opens the *New influencer code* form (see Creating a New Code). |
 
@@ -96,7 +96,7 @@ Three conversion ratios and a device split help you read traffic quality and ord
 | **Lead → Order** | Orders ÷ Leads |
 | **Order → Done** | Completed ÷ Orders |
 
-The **device** lines below show how leads and orders break down by device, e.g. *Mobile — 18 leads · 13 orders* and *Tablet — 2 leads · 2 orders*.
+The **device** lines below show how leads and orders break down by device, e.g. *Mobile — 18 leads · 13 orders*. When there is no traffic in the range the panel shows *No device data in range.*
 
 <Callout kind="info">
 
@@ -129,7 +129,7 @@ Enter the code details.
 | --- | --- | --- |
 | **Name** | ✅ Yes | Influencer's display name (e.g. *Riya Sharma*). The code is generated from this. |
 | **Code (optional)** | No | A custom code. Leave blank to auto-generate (placeholder: **Auto**). |
-| **Platform** | No | Social platform label (dropdown). Informational only — sharing isn't restricted. |
+| **Platform** | No | Social platform label: Instagram, YouTube, Facebook, X, Threads, Telegram or Other. Informational only — sharing isn't restricted. |
 | **Contact** | No | Phone, email, or social handle. |
 | **Customer bonus (₹)** | No | Extra amount the **customer** gets for ordering through this code. Default **500**. |
 | **Commission %** | No | Percentage payout owed to the **influencer**. Default **0**. |
@@ -172,13 +172,11 @@ Subtitle: *"One row per code — click to drill down."*
 | **Conv.** | Conversion indicator for the code. |
 | **Actions** | Quick controls (see Row Actions). |
 
-**Sample rows:**
+**Sample row (illustrative):**
 
 | Influencer | Code | Status | Bonus | Visits | Unique | Leads | Orders | Done | Failed | Payout | Conv. |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TestCode | TESTCODE63 | ACTIVE | ₹500 | 6 | 3 | 12 | 8 | 0 | 0 | ₹0 | 200.0% |
-| Sharukh Khan | SHARU20 | ACTIVE | ₹300 | 1 | 1 | 6 | 5 | 0 | 0 | ₹0 | 600.0% |
-| Shahid | SHAHID21 | ACTIVE | ₹0 | 4 | 2 | 2 | 0 | 0 | 0 | ₹0 | 50.0% |
+| Sample Creator | SAMPLE20 | ACTIVE | ₹300 | 10 | 8 | 4 | 2 | 1 | 0 | ₹0 | 40.0% |
 
 Click a row to open that influencer's drill-down page.
 
@@ -188,9 +186,25 @@ Each leaderboard row has an **Actions** column with three controls.
 
 | Action | Icon | Use it to |
 | --- | --- | --- |
-| **Copy** | ⧉ | Copy the influencer's code/link for sharing. |
-| **Edit** | ✎ | Open the code to change its details (bonus, commission, validity, etc.). |
+| **Copy share link** | ⧉ | Copy the influencer's share link. |
+| **Edit** | ✎ | Open the *Edit influencer* dialog (see Editing a Code). |
 | **Open** | ⬈ | Jump to the influencer's drill-down page. |
+
+### Editing a Code
+
+The **Edit influencer** dialog — *"Update details, bonus, validity, or activate / pause the code."* — has the same fields as the create form, plus **Status**.
+
+| Field | Notes |
+| --- | --- |
+| **Name \*** | Required. |
+| **Code** | Shown read-only; a code cannot be renamed after creation. |
+| **Platform** | Instagram, YouTube, Facebook, X, Threads, Telegram or Other. |
+| **Contact** | Phone, email or handle. |
+| **Customer bonus (₹)** / **Commission %** | Change for future orders. |
+| **Valid from** / **Valid until** | Validity window. |
+| **Status** | **ACTIVE**, **PAUSED** or **DISABLED**. |
+
+Click **Save changes** to apply, or **Cancel** to close without saving.
 
 ## Influencer Drill-Down Page
 
@@ -201,8 +215,8 @@ The drill-down page opens from a leaderboard row and scopes every metric to one 
 
 ### Header
 
-- Influencer name + status (e.g. **Sharukh Khan — ACTIVE**)
-- Summary line: code, platform, bonus (e.g. *SHARU20 · Instagram · Bonus ₹300*)
+- Influencer name + status (e.g. **Sample Creator — ACTIVE**)
+- Summary line: code, platform, bonus (e.g. *SAMPLE20 · Instagram · Bonus ₹300*)
 - **Share link** button (top-right) to copy the shareable URL
 - The same **date-range picker** as the dashboard
 - A **back arrow** to return to the leaderboard
@@ -222,6 +236,10 @@ Scoped to this code: **Visits, Unique, Leads, Orders, Completed, Failed, Payout,
 
 A time-series chart plotting **Clicks · Leads · Orders** by day across the selected range.
 
+### Platform
+
+Clicks by device and leads by app/web.
+
 ### Traffic sources (by UTM source)
 
 Where the traffic actually came from (e.g. *(direct)*) — captured independently of the optional Platform label on the code.
@@ -238,6 +256,7 @@ Shows a **record count** and an **All statuses** filter. Columns:
 | **Customer** | Name and email. |
 | **Phone** | Customer phone. |
 | **Status** | Order status (e.g. **InProgress**). |
+| **Source** | Where the lead came from. |
 | **Device** | Device used. |
 | **City** | Customer city. |
 | **Quoted** | Initial quoted amount (₹). |
@@ -270,7 +289,7 @@ When a vendor requotes an order, the influencer bonus on that order does **not**
 </Expandable>
 <Expandable title="Change a code's bonus or validity">
 
-**Steps:** Leaderboard → row **Edit** action → update fields → save.
+**Steps:** Leaderboard → row **Edit** action → update fields → **Save changes**. To stop a code temporarily, set **Status** to **PAUSED**.
 
 </Expandable>
 <Expandable title="Check a single influencer's performance">
@@ -313,7 +332,9 @@ When a vendor requotes an order, the influencer bonus on that order does **not**
 | Entity | Status | Meaning |
 | --- | --- | --- |
 | **Code** | ACTIVE | Live and usable. |
-| **Code** | Inactive / Expired | Outside its Valid from/until window or disabled. |
+| **Code** | PAUSED | Temporarily stopped; can be reactivated from Edit. |
+| **Code** | DISABLED | Switched off. |
+| **Code** | Expired | Outside its Valid from/until window. |
 | **Order** | InProgress | Placed, not yet completed. |
 | **Order** | Completed / Done | Finished successfully. |
 | **Order** | Failed | Did not complete. |

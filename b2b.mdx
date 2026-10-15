@@ -5,16 +5,20 @@ description: Manage and track all B2B corporate buyback payments in the Finance 
 
 ## Overview
 
+**Sidebar path:** Finance → B2B Buyback (`/finance/b2b`). The page header reads **B2B Payments — Manage B2B buyback payments**.
+
 The B2B Payments page in the Finance module lists all payment records linked to approved B2B corporate buyback deals that are awaiting or have completed payment processing. Payment records appear after the sales team requests payment from the Clients page in the Buyback B2B section. The finance team uses this page to process payments, upload payment confirmation details, and mark payments as complete.
 
 ## Summary cards
 
 Use the four summary cards at the top to track overall B2B payment activity in real time:
 
-- **Pending payments** — Total number of deals with payments not yet processed and their total INR value.
-- **Pending amount** — Total INR value of all outstanding payments awaiting processing.
-- **Completed** — Total number of deals where payment has been successfully made.
-- **Total paid** — Total INR value of all completed B2B payments.
+- **Pending Payments** — Number of deals with payments not yet processed.
+- **Pending Amount (incl. GST)** — Total value of all outstanding payments awaiting processing, including GST.
+- **Completed** — Number of deals where payment has been made.
+- **Total Paid (incl. GST)** — Total value of all completed B2B payments, including GST.
+
+The cards reflect the selected status filter and date range.
 
 ## How payment records are created
 
@@ -48,10 +52,11 @@ The payments table lists one row per B2B deal payment record:
 
 - **Deal #** — Unique deal reference number that links back to the Deals page.
 - **Client** — Name of the corporate client.
-- **Quote** — Final agreed buyback value from the approved quotation.
-- **Paid** — Amount actually transferred to the client.
-- **Mode** — Payment method used: NEFT, RTGS, UPI, or Cash.
-- **Status** — Current payment status: Pending or Completed.
+- **Client** also shows the client's contact phone below the name.
+- **Quote (incl. GST)** — Final agreed buyback value from the approved quotation, including GST (shows — if no quote is recorded).
+- **Paid (incl. GST)** — Amount actually transferred to the client, including GST.
+- **Mode** — Payment method used, e.g. NEFT, RTGS, IMPS, UPI or Cash.
+- **Status** — Current status of the payment / deal (for example, paid deals show **Closed**).
 - **Date** — Date the payment was recorded or completed.
 - **Action** — Available actions to update the payment record and mark payment as done.
 
@@ -86,7 +91,7 @@ Use this workflow to manage all B2B payments consistently and maintain a clean a
 Use filters and controls at the top of the page to manage and review payment records efficiently:
 
 - **Date range filter** — Filter payment records between specific dates for monthly reconciliation or period-based reporting.
-- **Status filter** — Filter by Pending or Completed to focus on records requiring action or to review completed transactions.
+- **Status filter** — Defaults to **Pending**. Options: **Pending**, **Upcoming (not payable yet)**, **Completed** and **All**.
 - **Export** — Click Export to download the filtered payment list for finance reporting, audits, or management review.
 - **Refresh** — Click Refresh (top right) to reload the latest payment data before processing or exporting.
 
@@ -95,6 +100,7 @@ Use filters and controls at the top of the page to manage and review payment rec
 Choose the correct payment mode based on deal value and urgency:
 
 - **NEFT** — National Electronic Funds Transfer used for most standard B2B bank transfers.
+- **IMPS** — Immediate Payment Service for instant bank transfers.
 - **RTGS** — Real Time Gross Settlement used for high-value same-day payments above ₹2 lakhs.
 - **UPI** — Unified Payments Interface for instant digital transfers.
 - **Cash** — Physical cash payment at the time of pickup, used rarely for B2B corporate deals.

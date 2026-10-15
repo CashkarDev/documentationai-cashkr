@@ -1,11 +1,13 @@
 ---
 title: Demo Users
-description: Manage demo user accounts in Settings to test customer flows with fixed OTP logins without affecting real customer data.
+description: Manage demo user accounts to test customer flows with fixed OTP logins without affecting real customer data.
 ---
 
 ## Overview
 
-The Demo Users page in Settings lists all demo customer accounts used for testing and simulation. Demo users are stored separately from real customers so admin and QA teams can test the customer app and website without affecting production data.
+**Sidebar path:** Users → Demo Users (`/demo-users`)
+
+The Demo Users page lists the phone numbers that log in with a fixed OTP instead of a real SMS. Admin and QA teams use them to test the customer app and website.
 
 <Callout kind="info">
   Demo users use a fixed OTP for login instead of receiving an SMS. The platform always accepts the configured OTP for that demo account, and no real SMS is sent for these logins.
@@ -27,11 +29,11 @@ Each row in the Demo Users table represents one demo customer account:
 
 ## Common actions
 
-Use the Actions column or toolbar on the Demo Users page to create, edit, or delete demo accounts.
+Use **Add User** (top right) and the **Edit** / **Delete** buttons on each row. The list is not paginated or searchable — all demo users are shown on one page.
 
 <Steps>
   <Step title="Add a new demo user" icon="plus">
-    Click Add User in the top-right corner, then enter the first name, last name, phone number, and a fixed OTP that will always be accepted for this account; after you save, the new demo user appears in the list immediately and can be used to log in to the customer app or website for testing.
+    Click **Add User** in the top-right corner. The **Add User** dialog asks for **First Name**, **Last Name**, **Email**, **OTP** (the fixed code that will always be accepted) and **Phone**. Click **Create**; the new demo user appears in the list immediately and can be used to log in to the customer app or website for testing.
   </Step>
   <Step title="Edit an existing demo user" icon="edit">
     Click Edit in the Actions column for any row to update the demo user's name, phone number, or fixed OTP; use this to change the test phone number, rotate or adjust the OTP for security or testing scenarios, or correct name details so the account is easy for the team to recognize.
@@ -73,11 +75,11 @@ Admins manage demo users to keep testing reliable and data clean:
 
 Demo users interact with several other modules in the Admin Panel and across the platform:
 
-- **Users — Cashkr** — Demo users are stored separately from real customers and do not appear in the main Users — Cashkr list unless specifically included.
+- **Users / Customers** — A demo phone number that has signed in also exists as a normal customer record, so it shows up in the Users and Customers lists like any other account.
 - **Orders - B2C** — Orders placed using demo accounts appear in order views; use the **Show Orders with Test Accounts** filter to include or exclude them.
 - **Coupons** — Coupon redemptions by demo accounts help verify coupon validity and discount logic without affecting real usage counts.
 - **Referrals** — Demo accounts can be used to test the referral code and reward flow end to end.
-- **Customer App and Website** — Demo accounts log in using the fixed OTP configured in Settings; the platform does not trigger any real SMS for these logins.
+- **Customer App and Website** — Demo accounts log in using the fixed OTP configured here; the platform does not trigger any real SMS for these logins.
 
 ## Important notes
 

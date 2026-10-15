@@ -1,0 +1,120 @@
+---
+title: Operations / SLA
+description: The Operations / SLA dashboard — desk-by-desk tabs for live orders, coverage, supply pipeline, failures & trust, cancellations, vendor SLA and the desk roll-up.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → **Operations / SLA** (`/dashboard/operations`)
+
+Operations / SLA is organised by **desk**. Each tab belongs to an owner on the ops team and answers "what needs a decision right now" for that desk. The **Desk Roll-up** tab summarises all desks on one screen.
+
+| Tab | Question it answers |
+| --- | --- |
+| **Live Orders** | Which open orders are breaching SLA now? |
+| **Coverage** | Which pincodes have open orders that no vendor can serve? |
+| **Supply Pipeline** | Are recently approved vendors ramping up? |
+| **Failures & Trust** | What trust signals and repeat offenders are there? |
+| **Cancellations** | Why are customers cancelling in the app? |
+| **Vendor SLA** | Which vendors are breaching SLA? |
+| **Desk Roll-up** | Which desks need attention today? |
+
+<Callout kind="info">
+Each tab's subtitle names the desk owner. The live tabs auto-refresh (Coverage refreshes every minute) and also have a **Refresh** button.
+</Callout>
+
+## Live Orders
+
+No date filter — this tab is always "now".
+
+| Element | Description |
+| --- | --- |
+| **KPI cards** | Not assigned, No action, Delayed, SLA breached. |
+| **Coverage alert** | "Nudging won't fix these" — pincodes with open orders and no live vendor, listed as chips with **Open coverage gaps →**. |
+| **Breach worklist** | Late, awaiting pickup and unclaimed orders that are breaching SLA, with **Refresh**. Shows "Nothing is breaching SLA right now" when clear. |
+
+<Callout kind="info">
+The worklist covers real orders from the last 30 days, excluding test cities. Older live orders are excluded — they need a bulk close-out decision, not a nudge.
+</Callout>
+
+## Coverage
+
+| Element | Description |
+| --- | --- |
+| **KPI cards** | Orders at risk, No coverage, Out of credits, At capacity / inactive. |
+| **City filter** | All cities or a single city. |
+| **Gap filter** | All, No coverage, Device gap, Out of credits, At capacity, Vendor inactive. |
+| **Table** | Pincode (tagged *Non-serviceable* where relevant), City, Gap, Open, Unclaimed, Late, Vendors, What to do. |
+
+The **What to do** column suggests the fix, for example *Assign a vendor to this pincode*, *Widen an existing vendor's device types*, or *Funded and under cap but not accepting — call the vendor*.
+
+## Supply Pipeline
+
+Ramp progress and blockers for recently approved vendors.
+
+| Element | Description |
+| --- | --- |
+| **KPI cards** | Approved in window, Blocked, Ready · no orders, Ramping, Median days to 1st pickup. |
+| **Window** | 30d, 60d, 90d, 180d, All. |
+| **Stage filter** | Blocked, Ready · no orders, Ramping, Active. |
+| **Table** | Vendor, City, Stage, Since approval, Pincodes, Credits, Orders, 1st pickup, Next step. |
+
+Approval dates are read from the vendor status-change log.
+
+## Failures & Trust
+
+Every trust signal in one trail, with repeat offenders surfaced.
+
+| Element | Description |
+| --- | --- |
+| **KPI cards** | Trust events, High severity, Repeat offenders, Unresolved flags. |
+| **Window** | 7d, 30d, 90d, 180d, All. |
+| **Type filter** | Fraud registry, Suspicious failure, Order flag, Vendor flag. |
+| **Event trail** | Chronological list of trust events. |
+
+## Cancellations
+
+Reason codes customers give when they cancel in the app.
+
+| Element | Description |
+| --- | --- |
+| **Window** | 30d, 90d, 180d. |
+| **KPI cards** | Cancellations, Preventable (our fault) with % of all, Customer's own choice (changed mind, better price, no longer selling). |
+| **Reasons** | Bar list: Changed Mind, No Longer Selling, Better Price Elsewhere, Other, Wrong Device Selected, Quote Too Low, Vendor Unresponsive (*Preventable*). |
+| **Cancelled at stage** | Order status at the time of cancellation (for example InProgress, PickupDelayed). |
+| **Vendors losing customers to preventable causes** | Vendor and number of cancellations caused. |
+
+<Callout kind="info">
+This tab counts only customer-initiated cancellations from the app chat flow. Vendor- and admin-recorded failures are in the Failed Orders queues.
+</Callout>
+
+## Vendor SLA
+
+**Operations & Vendor SLA** — vendor performance, SLA breaches and operational metrics, with a date range (default 30 days) and **AI Analyst Insight**.
+
+| Element | Description |
+| --- | --- |
+| **Vendor SLA Health Index** | Score with *Critical* → *Healthy* band, plus Completion, Vendor fail %, Violations, Vendors. |
+| **KPI cards** | Assigned, Completed, Failed, Requotes, SLA Violations, Completion Rate, Vendor Fail %, Same Day TAT. |
+| **Panels** | Completion, Vendor Failures, Pickup TAT (Same day, 1–2 days, 3+ days), Ops Health — each with **View Details**. |
+| **Daily Operations Trend** | Assigned, completed, failed per day. |
+| **Top Performers / Needs Attention** | Vendor score, completion % and fails. |
+| **Detail tabs** | **SLA Violations**, **City Ops**, **Failure Reasons**. |
+| **All Vendors Performance** | Vendor (with live/barred tag and SLA count), Assigned, Completed, Comp %, V.Fail %, Requote %, On-Time %, Score. |
+
+### SLA definitions
+
+| Term | Definition |
+| --- | --- |
+| **Completion Rate** | Completed ÷ Assigned × 100 |
+| **Vendor Fail Rate** | Vendor-initiated failures ÷ Assigned × 100 |
+| **SLA Violation** | Completion below 60%, Vendor Fail above 15%, Delay above 30%, or Requote above 20% |
+| **Efficiency Score** | Base 50 + (Completion × 0.4) − (Vendor Fail × 2) − (Delay × 0.5) |
+
+## Desk Roll-up
+
+One row per desk — Live orders, Coverage, Supply pipeline, Failures & trust, Customer cancellations — with the owner, a status icon (green tick or amber warning), the headline (for example *0 breaching SLA*, *1 pincode uncovered*, *33 preventable cancels*) and an arrow to open that tab. Business numbers live on **Leadership**.
+
+## Actions
+
+The dashboard is read-only. Use the tabs, filters and **Refresh**. Fixes (assigning vendors, calling vendors, closing orders) are done in the **Orders** and **Vendors** modules.

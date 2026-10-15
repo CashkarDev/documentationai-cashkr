@@ -1,16 +1,14 @@
 ---
-title: Call Back
-description: View and manage leads where customers have requested a callback, update dispositions, and convert qualified leads into confirmed orders.
+title: Callbacks
+description: Work leads that need another call — customer-requested callbacks and not-connected attempts — see why calls are not connecting, update dispositions, and convert qualified leads into orders.
 ---
 
 ## Overview
 
-Callbacks shows leads where the customer has requested a call and the disposition is marked as Connected with the reason set to callback.
+Open **B2C Sales → To Work → Callbacks** (breadcrumb *Dashboard / B2C Sales / Callbacks*). The page lists leads that need another call: customers who asked to be called back (**Connected - Callback**) and leads whose last call did not connect (**Not Connected** — Ringing, Not Reachable, Switched Off).
 
 <Callout kind="info">
-
-Callbacks includes only leads with **disposition status = Connected** and **reason = Callback**, so you always see customers expecting a follow-up call.
-
+  Use the status chips to switch between customer-requested callbacks and not-connected retries. Leads marked **Not Connected → Ringing** stay here and are not counted as lost in **Lost Leads**.
 </Callout>
 
 ## At a glance
@@ -19,77 +17,91 @@ Callbacks includes only leads with **disposition status = Connected** and **reas
 
 <Card title="What it shows" icon="list">
 
-- Leads where the customer requested a callback
-- Disposition status is **Connected**
-- Reason is **Callback**
-- Device, city, and contact details for each lead
+- Leads with a **Connected - Callback** disposition
+- Leads with a **Not Connected** disposition
+- The scheduled **Call Back On** time, with overdue callbacks highlighted
 
 </Card>
 
 <Card title="When to use" icon="clock">
 
-- During daily follow-ups to honor callback promises  
-- When you need a focused list of leads expecting a call  
-- To avoid missing time-bound customer requests
+- During daily follow-ups to honor callback promises
+- To retry customers who did not pick up
+- To spot why calls are not connecting
 
 </Card>
 
 <Card title="What happens next" icon="arrow-right">
 
-- Call the customer at the requested time  
-- Update disposition as Connected or Not Connected with the right reason  
+- Call the customer at the requested time
+- Update the disposition with the right reason
 - Convert interested customers to confirmed orders
 
 </Card>
 
 </Columns>
 
+## Why calls are not connecting
+
+A summary panel at the top shows how many calls did not connect in the selected period (for example *0 of 0 calls did not connect*). Switch the period with **Today**, **7 days** or **30 days**.
+
+## Status chips and scope
+
+| Control | Options |
+| --- | --- |
+| Status chips | **All**, **Connected - Callback**, **All Not Connected**, **Ringing**, **Not Reachable**, **Switched Off** |
+| Scope toggle | **Mine**, **All**, **Unassigned** |
+
+## What the table shows
+
+| Column | Description |
+| --- | --- |
+| **Order Date** | When the lead was created |
+| **Call Back On** | Scheduled callback date and time. Past callbacks show an **Overdue** label with how long ago it was due |
+| **Model** | Device model |
+| **Assigned** | Sales executive the lead is assigned to, or *Unassigned* |
+| **Type** | Device category badge |
+| **Status** | Disposition, for example *Connected - Callback* or *Not Connected - Ringing* |
+| **Notes** | Notes from the last call, or *No Notes* |
+
+Click a row to open the lead drawer with device specifications, **Update Disposition** (Select Status, reason, remarks), **Create Lead**, customer information with **Click to call**, and activity logs (see [New Leads](/new-leads)).
+
 ## Filters and search
 
-Use filters to narrow down callback leads:
-
-- **Disposition status**: Connected  
-- **Device type**: Mobile, Laptop, Tablet, Mac  
-- **City**: Filter leads by customer city  
-- **Search**: Find leads by lead ID, device name, or customer phone number
+- **Search leads...** box in the header.
+- Click **Filters** to open: **Type** (device type), **All Tiers** (High End, Mid End, Low End), **City**, and a from/to date range.
+- Click **Apply Filters** to apply or **Reset** to clear.
 
 ## Callback workflow
 
 <Steps>
 
-<Step title="Open a callback lead" icon="list">
+<Step title="Open a callback lead" icon="list" title-type="p">
 
-- Go to **Admin Panel → Leads → Callbacks**.
-- Select a lead from the callbacks list to view its details.
+- Go to **B2C Sales → Callbacks**.
+- Start with overdue callbacks, then pick a lead to open its drawer.
 
 </Step>
 
-<Step title="Call the customer" icon="phone">
+<Step title="Call the customer" icon="phone" title-type="p">
 
-- Call the customer on the registered phone number.
+- Use **Click to call** in the drawer.
 - Confirm interest, timing, and any questions about the offer.
 
 </Step>
 
-<Step title="Update status and disposition" icon="edit">
+<Step title="Update status and disposition" icon="edit" title-type="p">
 
-- Set **status** as **Connected** or **Not Connected**.
-- Select the appropriate **reason** based on the call outcome (see Dispositions below).
-
-</Step>
-
-<Step title="Add notes" icon="file-text">
-
-- Add brief call notes (intent, objections, timing, special requests).
-- Use clear notes to make future follow-ups faster and more effective.
+- In **Update Disposition**, set **Select Status** to **Connected** or **Not Connected**.
+- Select the appropriate reason based on the call outcome (see Dispositions below), add remarks and click **Update Disposition**.
 
 </Step>
 
-<Step title="Convert to order (if qualified)" icon="check-circle">
+<Step title="Convert to order (if qualified)" icon="check-circle" title-type="p">
 
-- If the customer wants to proceed, click **Create lead**.
+- If the customer wants to proceed, click **Create Lead**.
 - Enter pickup address, payment details, and appointment date and time.
-- The lead moves to the **Orders** module as a confirmed order.
+- The lead moves to **Orders** as a confirmed order and appears in **Converted Orders**.
 
 </Step>
 
@@ -105,13 +117,13 @@ Use consistent dispositions so reporting and follow-ups stay accurate.
 
 When you reach the customer and speak to them, set **status = Connected** and choose one of these reasons:
 
-- **Callback** – Customer asked to be called again later.  
-- **Sold elsewhere** – Customer sold the device to another buyer.  
-- **Order already placed** – Customer has already placed an order with Cashkr.  
-- **Better price elsewhere** – Customer received a higher offer from another platform.  
-- **Higher expectation** – Customer expects a higher price than the current quote.  
-- **Was just checking** – Customer was only exploring and is not currently interested.  
-- **Not selling anywhere** – Customer has decided not to sell the device.  
+- **Callback** – Customer asked to be called again later.
+- **Sold elsewhere** – Customer sold the device to another buyer.
+- **Order already placed** – Customer has already placed an order with Cashkr.
+- **Better price elsewhere** – Customer received a higher offer from another platform.
+- **Higher expectation** – Customer expects a higher price than the current quote.
+- **Was just checking** – Customer was only exploring and is not currently interested.
+- **Not selling anywhere** – Customer has decided not to sell the device.
 - **Out of town** – Customer is not currently available due to travel.
 
 </Tab>
@@ -120,9 +132,9 @@ When you reach the customer and speak to them, set **status = Connected** and ch
 
 When you cannot connect to the customer, set **status = Not Connected** and choose one of these reasons:
 
-- **Switched off** – Phone is switched off.  
-- **Not reachable** – Network issue or number temporarily unreachable.  
-- **Ringing** – Phone keeps ringing but no one answers.  
+- **Switched off** – Phone is switched off.
+- **Not reachable** – Network issue or number temporarily unreachable.
+- **Ringing** – Phone keeps ringing but no one answers.
 - **Wrong number** – Number is invalid or does not belong to the customer.
 
 </Tab>

@@ -1,0 +1,62 @@
+---
+title: Expansion
+description: The Growth → Geography tab (Geographic Expansion) — city coverage, expansion readiness scores, vendor demand pressure, risk zones and the city master table.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → Growth → **Geography** tab (`/dashboard/growth?tab=geography`)
+
+**Geographic Expansion** shows city readiness, vendor demand and coverage, so BD and Vendor Ops can decide where to add vendors or expand.
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days. |
+| **AI Analyst Insight → Analyze Data** | Generates an AI summary. |
+
+## What the screen shows
+
+### KPI cards
+
+Cities, Total Leads, Orders, Completed, Failed, Comp %, Uncovered, Pressure.
+
+### Health
+
+A *Weak* → *Strong* band with Cities, Gaps, Ready and Demand (leads per vendor), for example *Gaps Found*.
+
+### Panels
+
+| Panel | Contents |
+| --- | --- |
+| **Coverage Stats** | Active Cities, Covered Cities %, No Vendors, Uncovered Leads, Uncovered Pincodes. |
+| **Expansion Readiness** | Ready Cities, Completion Rate, Avg Demand/Vendor, High Performers, Low Completion. |
+| **Vendor Demand** | Pressure Zones, Avg Demand Ratio, and the cities with the most leads per vendor. |
+| **Risk Zones** | Coverage Gaps, Failed Orders, and at-risk cities with vendor count and completion. |
+| **Daily Expansion & Order Trend** | Leads, orders and completed per day. |
+| **Expansion Readiness (top cities)** | Readiness score per city with Leads, Comp % and Vendors. |
+| **Vendor Demand Heatmap** | Leads per vendor, Leads, Vendors and avg Pickup time per city. |
+
+### City Master Table
+
+Switch between **City Master Table** and **Coverage Gaps**.
+
+| Column | Meaning |
+| --- | --- |
+| **City** | City and main device category |
+| **Leads / Orders / Completed / Failed** | Volume in the period |
+| **Comp %** | Completion rate |
+| **Vendors** | Live vendors serving the city |
+| **Demand** | Leads per vendor |
+| **Readiness** | Expansion readiness score |
+
+A footer shows how many cities are **Covered** and how many have **No Vendors**.
+
+## Actions
+
+The tab is read-only.
+
+<Callout kind="tip">
+A city with high **Demand** (many leads per vendor) and a good readiness score is a candidate for onboarding more vendors. Cities in **Coverage Gaps** should go to Vendor Ops first.
+</Callout>
