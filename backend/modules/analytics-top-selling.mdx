@@ -1,0 +1,52 @@
+---
+title: "Analytics / Top Selling"
+description: "Public \"top selling\" brand/model lists for the website (social proof, SEO pages) and the recent-completed-orders ticker."
+---
+
+## Purpose
+
+Public "top selling" brand/model lists for the website (social proof, SEO pages) and the recent-completed-orders ticker.
+
+## Folder / Files
+
+src/routes/topSelling/route.ts (mounted /api/v1/analytics); src/controllers/topSelling/index.ts (TopSellingController, 1944 lines); src/controllers/public/completedOrders.ts (getRecentCompletedOrders, mounted in routes/index.ts as GET /api/v1/public/completed-orders).
+
+## Data Models
+
+Reads MasterLeads (deviceType, primaryStatus, secondaryStatus, city, createdAt, updatedAt, modelName, deviceFinalPrice, device&lt;Type&gt;sId) joined to the Device&lt;Type&gt; tables (brand, model, img, baseURL, price, ram/storage/size, titles) and Data&lt;Type&gt; tables (laptop/desktop/TV/AC specs). MarketingMetrics (date+campaign+source unique, spend, clicks, impressions) and SEOMetrics (date, clicks, impressions, ctr, position) — **not referenced anywhere in `src/` or `scripts/`** (admin-panel-only tables). SystemIntegrations (serviceName unique, isActive, credentials Json, lastSyncAt) is referenced, but only as a kill-switch/flag store (bbd_kill, warmup_kill, p1_kill, SES event handling) in src/campaigns/\*, src/utils/warmupHealth.ts, src/controllers/email/sesEvents.controller.ts and scripts — it is not an analytics table.
+
+## API Endpoints
+
+Results cached in Redis 300 s via OptimizedPrismaClient.executeQuery.
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/analytics/top-brands?deviceType=&timeframe=&startDate=&endDate=&city=&brand=&limit= | Brands ranked by count of leads with primaryStatus = Completed AND secondaryStatus = Completed (optionally within a date window / city), for one device type or all 12. |
+| GET | /api/v1/analytics/top-brands/count | Same filters; counts per brand (plus totals). |
+| GET | /api/v1/analytics/top-models?... | Models ranked by completed-lead count with catalog details (image, slug — Watch slug stripped of case size —, titles, price, RAM/storage/processor/size, per-city breakdown). |
+| GET | /api/v1/analytics/top-models/count | Same, counts only. |
+| GET | /api/v1/public/completed-orders | Last 24 h: count of MasterLeads with primaryStatus = "Completed" and updatedAt &gt;= now-24h, and the latest 20 \{deviceType, deviceName, price (deviceFinalPrice), city, completedAt (updatedAt)\}. Cached 120 s in Redis (CacheManager prefix public:completed-orders, key last-24h). |
+
+## Core Business Logic
+
+zod topSellingQuerySchema: deviceType optional, timeframe ∈ day\|week\|month\|year\|custom\|all (default all), startDate/endDate YYYY-MM-DD, limit 1..50 default 10, city, brand. generateDateRange derives the window from startDate + timeframe (custom uses endDate). For each device type the controller groups completed leads by device&lt;Type&gt;sId, loads the catalog rows and (for Laptop/Desktop/TV/AC) the Data rows for specs, merges across types, sorts by count and slices to limit.
+
+## Status / State Machine
+
+None; relies on Orders statuses LeadPrimaryStatus.Completed / LeadSecondaryStatus.Completed.
+
+## Validations & Rules
+
+zod as above; Redis cache keys include every filter; limit max 50.
+
+## Dependencies
+
+Orders (MasterLeads statuses), Device Catalog, Redis (src/lib/database.ts, src/lib/cache.ts).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Customer web (home/SEO widgets, "recently sold" ticker).

@@ -1,0 +1,90 @@
+---
+title: "Coupon"
+description: "Lets a customer attach a coupon to an unfinished order. The coupon amount is a flat rupee bonus added to the customer's payout. Also serves signed abandoned-cart coupon tokens."
+---
+
+> *GET /api/v1/public/coupons is counted here; the Marketing section also lists it.*
+
+<Callout kind="alert">The order stores only `couponId`, never the coupon amount. The amount is re-read from `Coupon.discount` each time, so editing a coupon's amount changes it for every open order using it. See [Device Price Lifecycle](/backend/device-price-lifecycle).</Callout>
+
+## Purpose
+
+Lets a customer attach a discount coupon to an unfinished order (MasterLeads in status New). The coupon amount is a flat rupee bonus ADDED to the customer's payout (CashKr pays the customer, so a "discount" raises the price). Also serves single-use, HMAC-signed "abandoned-cart" coupon tokens (cp_t links in nurture email/WhatsApp) that auto-apply at checkout.
+
+## Folder / Files
+
+src/routes/coupon/index.ts, src/controllers/Coupon/index.ts, src/services/Coupon/index.ts (CouponService), src/services/Coupon/couponToken.service.ts (CouponTokenService), src/services/Coupon/types.ts, src/types/coupon.ts, src/controllers/public/coupons.ts (public feed). Redemption bookkeeping lives in src/services/lead/createLead.ts (updateLeadStatus) and src/services/lead/masterLead.service.ts (updateLead, requote preservation). Token generators: src/services/lead/notification/nurtureContext.ts, src/services/lead/notification/pabblySyncLead.service.ts, src/services/lead/abandonedCart.service.ts. Tests: tests/privateCouponDeviceTypes.test.ts.
+
+## Data Models
+
+- Coupon (id uuid, code unique, discount Float rupees, maxUses Int?, usedCount Int, startDate, endDate, isActive, title, description, deviceTypes DeviceType\[\], accessibility CouponAccessibility default ALL, platform CouponPlatform, maxUsers Int?, userLimitType UserLimitType default AllCustomers, brand String? (JSON array of brand names), minValue Float?, maxValue Float?, isPrivate Boolean default false). hasMany customerCoupon.
+
+- customerCoupon (id, customersCustomerId, couponId, leadId @unique). belongsTo Coupon, Customers, MasterLeads; hasMany StoreLeads. One row = one redemption on one order.
+
+- CouponToken (id, token unique VarChar(512), code unique VarChar(10), discount Float, leadId, expiresAt, isUsed, usedAt, brandCode String? e.g. "FAST300"/"FIRST500", programId Int?). belongsTo MasterLeads; optional belongsTo AbandonedCouponProgram.
+
+- MasterLeads.couponId String? (bare column, no FK) and MasterLeads.customerCouponId Int?. StoreLeads also has couponId / customerCouponId.
+
+- Enums: CouponAccessibility \{ ALL, FirstCustomer \}, UserLimitType \{ AllCustomers, Custom \}, CouponPlatform \{ APP, WEB, BOTH \}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/coupon?platform=&deviceType=&price=&brand= | Lists coupons the calling customer can still use for this platform/device/price/brand. Private coupons never listed. |
+| POST | /api/v1/coupon/apply | Body \{code, leadId, platform, deviceType?\} (zod ApplyCouponSchema). Validates and sets MasterLeads.couponId. Falls back to CouponToken codes. Logs activity COUPON_APPLIED. |
+| DELETE | /api/v1/coupon/:leadId | Clears MasterLeads.couponId on the lead. |
+| GET | /api/v1/coupon/verify-token?token= | Verifies HMAC signature + expiry of a cp_t token and returns \{code, discount, leadId, brandCode\}. Does NOT mark it used. |
+| GET | /api/v1/public/coupons | Active, non-private, accessibility=ALL, in-date coupons for the website. |
+
+## Core Business Logic
+
+1.  **Listing (`getCoupons`)**: DB filter = platform in \[X, BOTH\], deviceTypes has deviceType, isActive, isPrivate=false, date window, minValue&lt;=price&lt;=maxValue (when price sent), brand pre-filter (untargeted or substring match). Then in memory: exact brand match (case-insensitive against the JSON array; brand-targeted coupons are hidden when no brand is sent), per-user limit check (see rules), then FirstCustomer check (customer has 0 Completed leads AND registered after the coupon was created).
+
+2.  **Apply, normal coupon**: find by code (case-insensitive), active, startDate&lt;=now&lt;endDate. Then: platform check → FirstCustomer check → FAST300 special 24 h-from-lead-creation window → lead must have no coupon already (ALREADY_APPLIED) → per-user / per-coupon limits → lead exists and primaryStatus === "New" → device-type check (couponAcceptsDeviceType) → request deviceType must equal lead deviceType. Then MasterLeads.update(\{couponId\}) only. No customerCoupon row and no usedCount increment at apply time.
+
+3.  **Apply, token coupon (fallback when no Coupon row matches)**: look up CouponToken by code; token must belong to the same leadId, not be expired; FIRST500 is rejected if the customer has any Completed lead. If token already used → "last-click-wins" re-attach of the transient Coupon (lead must still be New). Otherwise: lead must be New, deviceType matches; any existing coupon on the lead is cleared (last click wins); a transient Coupon row is created (or reused) with code=token.code, title=brandCode, platform=BOTH, isActive=false, usedCount=1, maxUses=1, maxUsers=1, userLimitType=Custom; in one transaction the token is marked used, AbandonedCouponProgram.totalRedemptions is incremented when programId is set, a customerCoupon row is upserted, and MasterLeads.couponId is set.
+
+4.  **Redemption is counted when the order is placed**, not at apply: createLead.updateLeadStatus (checkout completion) increments Coupon.usedCount and creates customerCoupon if none exists for the lead. masterLead.service.updateLead does the same through a nested update.
+
+5.  **Where the discount is stored**: nowhere as an amount on the order. MasterLeads.couponId is the only link; the rupee value is re-read from Coupon.discount whenever it is needed: requote (adds coupon.discount to the preserved bonuses only if the requoted price still satisfies minValue/maxValue), gift-card amount (same min/max rule), and customer order views (flattens Coupon.discount/code/id). deviceGeneratedPrice written at checkout = quote + influencer bonus + referral bonus, and the comment in giftCardAmount.ts states the raw quote carries NO coupon. Whether the website already includes the coupon in the quote it sends: Unclear from backend code.
+
+6.  **Token generation (`CouponTokenService.generateToken`)**: 6-char A-Z0-9 code (unique, 5 retries), HMAC-signed token stored in CouponToken. Default expiry COUPON_TOKEN_EXPIRY_HOURS (72). Callers: nurture WhatsApp buttons (nurtureContext.ts: FAST300 ₹300/24 h, FIRST500 ₹500/30 d), Pabbly email sync (same two), abandoned-cart service (program amounts or defaults ₹200 / ₹350). Appended to the checkout URL as cp_t; the website (ck-web2.0 checkout pages) calls verify-token then apply.
+
+## Status / State Machine
+
+No status enum on Coupon. Token: isUsed false → true (one-way; usedAt set). Coupon can only be attached while MasterLeads.primaryStatus = "New".
+
+## Validations & Rules
+
+- Expiry: startDate &lt;= now &lt; endDate (UTC) on Coupon; token has signature expiry AND expiresAt in DB (both checked). FAST300 additionally expires 24 h after MasterLeads.createdAt.
+
+- Platform: coupon platform must be BOTH or equal the request platform (APP/WEB); error text tells the user to open the other platform.
+
+- Per-user limit: userLimitType=AllCustomers: maxUses=null → once per customer, else up to maxUses per customer (counted from customerCoupon rows of that customer). userLimitType=Custom: requires maxUsers; a new customer is rejected once distinct users &gt;= maxUsers; per-customer maxUses as above; global cap usedCount &gt;= maxUses × maxUsers → MAX_USES_EXCEEDED. Because customerCoupon rows are only created at order placement, "uses" means placed orders, not applies.
+
+- Price band: minValue/maxValue are used for listing and for keeping the coupon at requote / gift-card calculation.
+
+- Brand: used for listing (exact match on JSON array of names).
+
+- Device type: couponAcceptsDeviceType — empty deviceTypes = all; otherwise lead's deviceType must be listed; exception: private coupons created before 2026-10-01 IST accept every device. Request deviceType must also equal the lead's.
+
+- FirstCustomer: 0 Completed leads AND customer.createdAt &gt;= coupon.createdAt.
+
+- Stacking: a lead holds ONE coupon (couponId); influencer bonus, referral bonus and BuyBack bonus are separate columns/ledgers and all stack with the coupon (orderBonuses.ts: "intentionally NO combined cap").
+
+- Error codes (CouponErrorCodes): COUPON_NOT_FOUND, LEAD_NOT_FOUND, COUPON_EXPIRED (declared, never thrown), MAX_USES_EXCEEDED, CUSTOMER_MAX_USES_EXCEEDED, MAX_USERS_EXCEEDED, INVALID_DEVICE_TYPE, ALREADY_APPLIED, INVALID_STATUS. Token errors: INVALID_SIGNATURE, TOKEN_EXPIRED, TOKEN_ALREADY_USED, TOKEN_NOT_FOUND, GENERATION_FAILED.
+
+- Zod: ApplyCouponSchema (code, leadId, platform enum APP/WEB/BOTH, deviceType optional). getCoupons query zod (platform, deviceType required; price, brand optional).
+
+## Dependencies
+
+Orders (MasterLeads status/couponId; redemption counted in createLead.ts / masterLead.service.ts), Lead & Nurture (token generation in nurtureContext / pabblySyncLead / abandonedCart; CheckoutUrlGenerator), Abandoned Coupon Program (programId, totalRedemptions), Gift Cards (re-read Coupon.discount), Customer / User (Customers.createdAt), Admin (activityLogger → CustomerActivityLog), Redis for the public feed. External: none directly.
+
+## Background Jobs / Events
+
+None owned. Tokens are minted by the lead-nurture cron path (every 10 minutes) via nurtureContext.ts, and by the Pabbly lead sync. Activity event COUPON_APPLIED written on apply.
+
+## Who Uses It
+
+Customer web (ck-web2.0 calls /coupon, /coupon/apply, /coupon/verify-token, /public/coupons), Customer app (same APIs), Admin panel (creates/edits Coupon rows directly in the DB — no backend admin coupon endpoint exists; CouponService.createCoupon has no caller in src).

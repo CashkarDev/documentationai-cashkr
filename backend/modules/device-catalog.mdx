@@ -1,0 +1,102 @@
+---
+title: "Device Catalog"
+description: "The sellable catalog: brands, series, models, variants and base prices for the 12 device types CashKr buys, plus the Device / Class / Data table triple behind every quote."
+---
+
+<Callout kind="tip">Catalog base prices and class deductions only affect **new** quotes. See [Device Price Lifecycle](/backend/device-price-lifecycle) for what happens to existing orders.</Callout>
+
+## Purpose
+
+The sellable catalog: brands, series, models, variants and base prices for the 12 device types CashKr buys (Mobile, Tablet, Laptop, Camera, Headphone, Console, Drone, TV, AC, Desktop, Mac, Watch). Every quote, lead and search starts from a row in one of these tables.
+
+## Folder / Files
+
+src/routes/brands/index.ts, src/routes/device/index.ts, src/routes/series/index.ts, src/routes/variants/index.ts, src/routes/cameraLens/index.ts (all mounted in src/routes/index.ts); src/controllers/devices/index.ts (DeviceController, 1100 lines); src/config/deviceRegistry.ts (single source of truth per device type: table names, zod schemas, condition mappers, slug/URL rules); src/config/deviceSummary.ts + src/services/deviceSummary.service.ts (turn stored condition codes into human "question/answer" rows for order views); src/utils/deviceSelection.ts (Prisma select presets for Device\*/Data\* tables used by order queries); src/utils/watchSlug.ts (Watch case-size slug helpers); src/utils/productPageUrl.ts (builds the public product page URL from a catalog row); src/lib/database.ts (OptimizedPrismaClient.executeQuery = Redis read-through cache, CACHE_TTL = 300 s); background doc docs/DEVICE_TYPE_CONTEXT.md.
+
+## Data Models
+
+- Brands (id, brandName, deviceType DeviceType, brandLink, brandImg, title, description). One row per brand per device type. No relation to device tables (joined by name).
+
+- BrandAliases (brand_canonical, alias, unique pair, trigram GIN index). Only read/written by raw SQL in Search (add_brand_alias, resolve_brand); no Prisma usage.
+
+- enum DeviceType \{ Mobile Tablet Laptop Camera Headphone Console Drone TV AC Desktop Mac Watch \} (mirrored in src/interfaces/deviceType.ts).
+
+- **The Device / Class / Data triple** (one triple per device type, selected via deviceRegistry\[type\].deviceTable / classTable / dataTable or getTriad()):
+
+  - Device&lt;Type&gt; = catalog row (what the customer picks). Key fields: id (uuid string), brand, model, modelCode, slug column (baseURL, or pageURL for Desktop/Drone/TV; Watch and Console map Prisma baseURL onto the DB column pageURL), img, price (Int everywhere except DeviceConsoles.price String), series?, isParent (1 = parent card, 0 = variant row; only meaningful where hasVariants), variant axes (storage, ram for Mobile/Tablet/Mac; size for Watch), SEO fields (pageTitle, pageDescription, variantTitle, variantDescription, h1, alt), simOptions String\[\] (Mobile only), classId → Class&lt;Type&gt;. Relations: MasterLeads\[\], StoreLeads\[\] (a lead stores device&lt;Type&gt;sId).
+
+  - Class&lt;Type&gt; = pricing class / deduction matrix shared by many models. Key fields: classType ("Apple A"), coded columns holding either a flat amount or a percentage as VarChar(32) ("500" or "5%"): W1..W4 warranty/age, B1..B4 body, S1..S5 screen, P1..Pn physical, T1..T15 technical, A1..A8 accessories, plus type-specific ones (ESIM on ClassMobile, D1/P0 on ClassAC, E0..E8/CD0..CD10 add-ons on ClassConsole); credit (vendor credits for the lead; absent on ClassLaptop/ClassDesktop which use AddCreditAlgorithm price bands), deadPrice (price paid when the device does not turn on), tier (1-3, drives vendor access; absent on ClassAC).
+
+  - Data&lt;Type&gt; = the customer's condition answers for ONE lead. Key fields: warrantyStatus, bodyCondition, isDeviceTurnedOn, physicalCondition String\[\], technicalCondition String\[\], screenCondition, accessories String\[\], type extras (simType, extraLensIds, extraControllers, numberOfCDs, size, watchCase, connectivity, laptop processor/ram/storage/graphicCard/screenSize/touchScreen/isExternalGraphicsCard), six image columns (bodyConditionImage, bodyConditionImage1..3, physicalConditionImage, screenConditionImage), leadId @unique → MasterLeads (cascade delete), storeLeadId @unique → StoreLeads.
+
+- Device type → tables (from deviceRegistry):
+
+| **DeviceType** | **Device table** | **Class table** | **Data table** | **Strategy** | **Series** | **Variants (isParent)** | **Slug col** | **URL path** | **Credit** | **Tier** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Mobile | DeviceMobiles | ClassMobile | DataMobiles | mobile | Y | Y (storage/ram) | baseURL | sell-old-mobile-phones | flat (class.credit) | class |
+| Tablet | DeviceTablets | ClassTablet | DataTablets | mobile | Y | Y | baseURL | sell-old-tablets | flat | class |
+| Laptop | DeviceLaptops | ClassLaptop | DataLaptops | laptop | N | N | baseURL | sell-old-laptops | algorithm (AddCreditAlgorithm) | class |
+| Desktop | DeviceDesktops | ClassDesktop | DataDesktops | mobile | N | N | pageURL | sell-old-desktops | algorithm | class |
+| Mac | DeviceMacs | ClassMac | DataMacs | mobile | Y | Y | baseURL | sell-old-macs | flat | class |
+| Camera | DeviceCameras | ClassCamera | DataCameras | mobile (+lens) | Y | N | baseURL | sell-old-cameras | flat | class, default 1 |
+| Headphone | DeviceHeadphones | ClassHeadphone | DataHeadphones | mobile | Y | N | baseURL | sell-old-headphones | flat | class, default 1 |
+| Console | DeviceConsoles | ClassConsole | DataConsoles | mobile | N | N | baseURL(=pageURL) | sell-old-consoles | flat | class, default 1 |
+| Watch | DeviceWatches | ClassWatch | DataWatches | mobile | Y | N, variantAxis: "size" (one row per case size) | baseURL(=pageURL) | sell-old-watches | flat | class, default 1 |
+| Drone | DeviceDrones | ClassDrone | DataDrones | mobile | Y | N | pageURL | sell-old-drones | flat | default 1 |
+| TV | DeviceTVs | ClassTV | DataTVs | mobile | Y | N | pageURL | sell-old-tvs | flat | default 1 |
+| AC | DeviceACs | ClassAC | DataACs | mobile (empty mapper) | Y | N | baseURL | sell-old-acs | flat | default 1 |
+
+- Laptop component lookup tables (returned by /device/components/:deviceType, added to the laptop price by id): Processor (processor, generation, value), Ram (size, value), Storage (size, value), GraphicCard (name, value), ScreenSizes (size, value, type).
+
+- CameraLens (brand, lensName, value Int) — extra-lens value-add for Camera quotes; the client sends ids, the server re-reads value.
+
+- PriceHistory (deviceId, deviceType, oldPrice, newPrice, changedBy, changeType) — **not referenced anywhere in `src/` or `scripts/`** (written by the admin panel, if at all).
+
+- temp_mobile_updates_staging — ignored staging copy of DeviceMobiles columns; not referenced in code.
+
+## API Endpoints
+
+OptimizedPrismaClient.executeQuery caches each response in Redis for 300 s under the keys shown.
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/brands?deviceType=&page= | Brands for a device type. Cache brands:&lt;type&gt;:&lt;id&gt;:&lt;page&gt;:&lt;limit&gt;. |
+| GET | /api/v1/device/:brand?deviceType=&page=&limit=&model= | Paginated parent models for a brand (brand matched case-insensitively, - → space). Includes the class classType, tier (and credit when creditMode=flat). Sorted tier asc → class letter → price desc → storage desc → model → id. De-duplicated by modelCode/baseURL; Watch collapses case sizes to one card (highest price) before paging. Also returns the brand's distinct series list. 404 when empty. Cache devices:&lt;type&gt;:&lt;brand&gt;:&lt;model&gt;:&lt;page&gt;:&lt;limit&gt;. |
+| GET | /api/v1/device/components/:deviceType | Laptop/Desktop component pick-lists: processors grouped by family with generations, plus storage, ram, graphicCard, screenSize tables. Not cached. |
+| GET | /api/v1/series?deviceType=&series=&brand=&page=&limit= | Devices in a series (exact series, exact brand match, parents only when hasVariants). Cache series:&lt;type&gt;:&lt;series&gt;:&lt;brand&gt;:&lt;page&gt;:&lt;limit&gt;. |
+| GET | /api/v1/variants?deviceType=&slug= | All rows sharing a slug: parent (isParent=1) then variants (isParent=0) for Mobile/Tablet/Mac; for Watch, every case-size row for the size-free slug, one per size, sorted by size, with a canonical model name. 404 when none. Cache variants:&lt;type&gt;:&lt;slug&gt;. |
+| GET | /api/v1/camera-lenses?brand= | CameraLens rows (id, brand, lensName, value) for a brand, ordered by value. Cache cameraLenses:&lt;brand or all&gt;. |
+
+## Core Business Logic
+
+1.  Customer flow: /brands → /device/:brand (model cards with "up to ₹price") → /variants?slug= (storage/RAM or case-size choice) → /evaluateDevice (Pricing module) → /lead.
+
+2.  Query params are parsed with zod (deviceQuerySchema, brandQuerySchema, variantQuerySchema, seriesQuerySchema, laptopComponentSchema); page&gt;=1, limit 1..100 default 10; a ZodError → 400 with errors.
+
+3.  normalizeDevicePrices coerces Console's string price to a number (blank/invalid → 0) so clients and /evaluateDevice always get numbers.
+
+4.  deviceRegistry also carries, per type, the zod schemas for lead creation / evaluation / requote and mapCondition() which maps DeviceOptions from a lead body into the Data&lt;Type&gt; columns (de-duplicating code arrays, splitting camera lens ids out of physicalCondition, normalising console counts "1" → "E1"/"CD1"). assertDeviceRegistry(prisma) checks every registry table exists as a Prisma delegate (throws outside production).
+
+5.  buildDeviceSummary(deviceType, dataRow) resolves stored codes to labels via IssuesImages (deviceType + issueId) and CameraLens; codes ending in 0 (P0/A0/CD0) mean "none". Used by order/customer-order views, vendor views and failed-lead mails.
+
+6.  buildProductPageUrl composes HOST_URL/&lt;urlSlug&gt;/&lt;brand&gt;/&lt;model&gt;\[/&lt;variant&gt;\]; variant segment is &lt;ram&gt;-gb-&lt;storage&gt;-gb or tb for Mobile, &lt;storage&gt;-gb for Tablet, &lt;size&gt;-mm for Watch, last path part of baseURL for AC variants. Returns null without HOST_URL.
+
+## Status / State Machine
+
+None (catalog rows have no status; isParent 1/0 only).
+
+## Validations & Rules
+
+zod on every query; brand match is case-insensitive in /device/:brand but exact in /series; Watch de-dup keys on the size-free slug; /brands ignores client limit (always 50); 404 (not empty 200) when a brand/series/slug has no rows; Redis cache TTL 300 s with no invalidation hook (admin price edits made directly in the DB show up after ≤5 min).
+
+## Dependencies
+
+Redis (src/lib/database.ts, src/lib/cache.ts); Issues Images / Inspection (IssuesImages labels in deviceSummary.service.ts); consumed by Pricing & Evaluation, Orders, Customer Orders, Search, Analytics, Model Request, BuyBack Bonus.
+
+## Background Jobs / Events
+
+None in this module.
+
+## Who Uses It
+
+Customer web (ck-web2.0), customer Flutter app, vendor app (device summaries), admin panel (reads/writes the tables directly).

@@ -1,0 +1,42 @@
+---
+title: "Customer / User"
+description: "Customer account lifecycle for the B2C sell-your-device flow: registration after OTP, profile, payout details (UPI/bank), addresses, and self-service account deletion."
+---
+
+## Purpose
+
+Customer account lifecycle for the B2C sell-your-device flow: registration after OTP, profile read/update, payout details (UPI/bank), addresses, and self-service account deletion with anonymisation, token revocation and a fraud fingerprint.
+
+## Folder / Files
+
+src/routes/user/index.ts, src/controllers/user/index.ts (getCustomer, refreshToken, updateCustomerInfo), src/controllers/user/registerUser.ts, src/controllers/user/deleteAccount.ts, src/controllers/customerPayment/index.ts (mounted at /user/payment), src/controllers/customerAddress/customerAddress.ts, src/utils/fraudFingerprint.ts, src/utils/fieldEncryption.ts (payout field encryption), src/services/onboardCampaign/register.ts, src/utils/webhooks.ts (sendReferralWebhook).
+
+## Data Models
+
+- Customers (customerId uuid, firebaseId, fcmPlatform "android"\|"ios", firstName, lastName, phone @unique, email (not unique), emailVerifiedAt, isDeleted, isBlocked, doNotContact/At/By, whatsappOptIn (default true), whatsappOptInAt, lastMarketingWhatsappAt, marketingMsgCount, marketingMsgWindowStart, lastMarketingPushAt, dob, PaymentId @unique). hasMany Addresses, MasterLeads, StoreLeads, Reviews, ChatRoom, customerCoupon, CustomerActivityLog, Wipe\*, CxCase, InternalSale; hasOne Payments.
+
+- Addresses (addressId uuid, address, city, pincode Int, addressType AddressType \{Home, Office, Other\}, lat?, lng?, customerId) belongsTo Customers (Cascade); hasMany MasterLeads.
+
+- Payments (paymentId uuid, bankBeneficiaryName, bankName, bankIFSC, bankAccNumber, upiNo, customerId @unique) belongsTo Customers; hasMany MasterLeads. Sensitive fields are stored encrypted via encryptField (fieldEncryption.ts).
+
+- DeletedCustomerArchive (id, originalCustomerId, phone, email, firstName?, lastName?, deletedAt, createdAt; indexes on originalCustomerId, phone, email) — copy of contact details kept at deletion.
+
+- FraudRegistry (see Admin) — a self_deleted row is written at deletion.
+
+- CustomerMarketingState (customerId @id, waState VarChar(10) "ACTIVE"\|"BACKOFF"\|"SUPPRESSED", waConsecutiveUnengaged, waBackoffUntil, waBackoffCount, lastEngagementAt, updatedAt). Only touched by src/services/lead/notification/marketingSuppression.service.ts (Marketing / Lead & Nurture), not by user routes.
+
+- ExchangeToken is a store-settlement token (StoreLeads/StoreVendors/DailySettlement). It is **not** used by any user route.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/user/registercustomer | zod body \{email, firstname, lastname, phonenumber (10 digits), dob?\} (+ optional referralCode). 409 if an active (isDeleted:false) customer has the phone or email; 403 if that phone is blocked; 400 "Unable to create account" if checkFraudRegistry(\{phone,email\}) finds a row with riskScore &gt;= 50. |
+| GET | /api/v1/user/getcustomer | The logged-in customer's profile, plus the referral summary proxied from the referral service. |
+| PATCH | /api/v1/user/updateCustomerInfo | zod \{firstName?, lastName?, email?, whatsappOptIn?\}. Email must not belong to another active customer (400). Changing the email clears emailVerifiedAt. whatsappOptIn also sets whatsappOptInAt. Logs NAME_UPDATED / EMAIL_UPDATED. |
+| POST | /api/v1/user/deleteaccount | Self-service deletion, see [Customer Address](/backend/modules/customer-address) for the full flow. 403 if active orders exist. Clears the cookie, 200. |
+| POST | /api/v1/user/payment | zod \{paymentType: UPI or Bank or Cash, upiNo? (UPI id or 10-digit mobile), bankName?, bankAccNumber?, bankBeneficiaryName?, bankIFSC?\}. Encrypts the sensitive fields, 409 if an identical payment row exists, otherwise updates the existing Payments row or creates one and connects it to the customer. 201, returns decrypted details. |
+| GET | /api/v1/user/payment | Returns the customer's Payments row, decrypted. |
+| PATCH | /api/v1/user/payment | Same schema; 404 if no payment row; overwrites either the UPI field or the four bank fields (the other set is not cleared despite the comment). |
+
+GET /refreshToken is counted under Auth & OTP. Address routes, registration, deletion and payout rules are described on the [Customer Address](/backend/modules/customer-address) page.

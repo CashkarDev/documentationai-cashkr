@@ -1,0 +1,68 @@
+---
+title: "Wipe (ckwipe)"
+description: "Backend for the ckwipe data-erasure tool: records wipe reports, issues verifiable certificates (HMAC digital identifier + PDF), and sells wipe licenses via PhonePe."
+---
+
+## Purpose
+
+Backend for the ckwipe data-erasure tool: records wipe reports, issues verifiable data-destruction certificates (HMAC digital identifier + PDF), and sells wipe licenses via PhonePe.
+
+## Folder / Files
+
+src/routes/wipe/route.ts (mounted /api/v1/wipe), src/controllers/wipe/index.ts (handlers + PDF via pdfkit), src/controllers/wipe/schemas.ts (zod schemas + WipeModel data layer + HMAC), src/services/phonepe/index.ts (shared PhonePe SDK wrapper), prisma/wipe_baseline_prod.sql (hand-applied baseline creating enums EraseMethod, WipeStatus, WipeTool and tables Wipe, WipeLicenseBatch, WipeLicenseConsumption, WipeLicenseOrder on prod), scripts/add-wipe-license-order-table.sql, scripts/add-wipe-two-phase.sql.
+
+## Data Models
+
+- Wipe — customerId→Customers, clientWipeUuid unique (idempotency key minted by the tool), digitalIdentifier? unique (server HMAC), tool WipeTool (WIPE_LAPTOP \| WIPE_MAC \| WIPE_PHONE), toolVersion, machine fields (machineVendor/Model/Serial, boardSerial, cpuModel, cpuCores, ramBytes BigInt), disk fields (diskModel/Serial/SizeBytes/MediaType/SmartStatus), erase fields (method EraseMethod? = NVME_FORMAT \| ATA_SECURE_ERASE \| OVERWRITE \| CRYPTO_ERASE, passes, verification, startedAt, endedAt, durationSeconds), status WipeStatus (PENDING \| COMPLETED \| FAILED \| RELEASED), technicianName, validatorName, hardwareTest Json, pdfUrl; 1:1 WipeLicenseConsumption.
+
+- WipeLicenseBatch — customerId, quantity, orderRef? unique, purchasedAt, expiresAt?; hasMany consumptions.
+
+- WipeLicenseConsumption — batchId, wipeId unique.
+
+- WipeLicenseOrder — customerId, quantity, amount (INR incl. GST), status string (PENDING \| COMPLETED \| FAILED), phonepeMerchantOrderId unique (WLO…), phonepeOrderId, phonepeTransactionId, gatewayResponse Json.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/wipe/verify/:digitalIdentifier | Public certificate verification: returns identifier, tool, machine vendor/model/serial, disk serial, method, start/end, status. |
+| GET | /api/v1/wipe/verify/:digitalIdentifier/pdf | Streams a generated PDF "Data Destruction Certificate" (pdfkit). |
+| POST | /api/v1/wipe/phonepe-webhook | Fulfils or fails the license order. |
+| POST | /api/v1/wipe/ | v1 single-call report (WipeReportSchema): create wipe; COMPLETED spends one license (402 if none); FAILED is stored free. Idempotent on clientWipeUuid. |
+| POST | /api/v1/wipe/reserve | v2 phase 1: create PENDING wipe and hold a license (consumption row) before erasing; 402 NoLicenseError. |
+| POST | /api/v1/wipe/confirm | v2 phase 2a: PENDING → COMPLETED, sets erase fields + digitalIdentifier; 400 if reservation missing, 409 if RELEASED/FAILED. |
+| POST | /api/v1/wipe/release | v2 phase 2b: PENDING → RELEASED, deletes the hold (license freed); 409 if already COMPLETED. |
+| GET | /api/v1/wipe/licenses | License summary (purchased/used/remaining, derived from batches minus consumptions). |
+| GET | /api/v1/wipe/ | List the customer's wipes. |
+| POST | /api/v1/wipe/buy | Body \{quantity\} → PhonePe web checkout order; amount = qty × WIPE_LICENSE_PRICE_INR (default 999); creates WipeLicenseOrder PENDING; returns redirect URL to PhonePe page, redirect back to CKWIPE_WEB_URL/checkout/verify?merchantOrderId=. |
+| POST | /api/v1/wipe/verify-payment | Body \{merchantOrderId\}; order must belong to caller (403); polls getOrderStatus; COMPLETED → fulfil (batch created), FAILED → fail, else pending. |
+
+## Core Business Logic
+
+1.  **Authentication:** customer login (the ckwipe tool/web logs in as a CashKr customer); /verify\* public for auditors; webhook authenticated by PhonePe SDK callback validation.
+
+2.  **Certificate:** digitalIdentifier = HMAC-SHA256 over \{clientWipeUuid, machineSerial, diskSerial, endedAt\} with a server secret. Computed at create (v1) or confirm (v2). /verify looks it up; PDF embeds it as the signature box.
+
+3.  **License accounting:** remaining = Σ batch.quantity − count(consumptions), never stored. Spending locks an available batch with SELECT … FOR UPDATE (raw SQL in WipeModel) so two concurrent last-license spends cannot both succeed.
+
+4.  **Purchase:** buy → PhonePe hosted checkout (createWebCheckoutOrder) → either verify-payment polling or webhook (CHECKOUT_ORDER_COMPLETED/PG_ORDER_COMPLETED → fulfillLicenseOrder creates WipeLicenseBatch\{quantity, orderRef=merchantOrderId\} once, idempotent; \*\_FAILED → failLicenseOrder).
+
+## Status / State Machine
+
+WipeStatus: v1 → COMPLETED \| FAILED directly; v2 PENDING → COMPLETED (confirm) or PENDING → RELEASED (release); confirm on COMPLETED is idempotent, release on RELEASED idempotent, cross transitions → 409. WipeLicenseOrder.status: PENDING → COMPLETED \| FAILED.
+
+## Validations & Rules
+
+zod WipeReportSchema, WipeReserveSchema, WipeConfirmSchema, WipeReleaseSchema (UUID clientWipeUuid, enums, coerced dates/bigints); quantity must be a positive int; 402 for no license; raw body required for webhook.
+
+## Dependencies
+
+Payment Gateway (src/services/phonepe), Customer / User (Customers FK), Auth & OTP (authorize). External: PhonePe, pdfkit.
+
+## Background Jobs / Events
+
+PhonePe webhook above. No cron (the phonepeReconcile job covers vendor payments, not wipe orders).
+
+## Who Uses It
+
+ckwipe desktop tool + ckwipe web (CKWIPE_WEB_URL), auditors (public verify). Not referenced in ck-web2.0.

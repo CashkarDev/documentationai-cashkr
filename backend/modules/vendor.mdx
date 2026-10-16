@@ -1,0 +1,167 @@
+---
+title: "Vendor"
+description: "The partner (vendor) side of CashKr: registration and profile, finance views, Training Hub, Redis leaderboard and stats, app config, and how vendor fields gate which orders a vendor sees."
+---
+
+> *Counted endpoints: 26. The six /api/v1/vendor/notifications\* routes below are counted under **Notifications**.*
+
+## Purpose
+
+The partner ("vendor") side of CashKr: field vendors and store vendors who buy devices from customers. This module covers vendor registration and profile, the vendor's finance views (credit logs, failed-lead refunds, invoices), the Training Hub, the Redis leaderboard and performance stats, the vendor-app feature flags, and the admin switch that approves / holds a vendor. Lead browsing and claiming live in the Orders module (/api/v1/order/available, /api/v1/order/lock); this section explains how the vendor's fields gate them.
+
+## Folder / Files
+
+- src/routes/vendor/index.ts (mounted at /api/v1/vendor; /api/v1/vendor/stories is mounted first and belongs to Vendor Stories)
+
+- src/routes/user/index.ts (vendor registration / profile endpoints under /api/v1/user)
+
+- src/routes/admin/vendors/vendors.routes.ts (mounted at /api/v1/admin/vendors in src/app.ts)
+
+- src/controllers/vendor/index.ts (2864 lines), src/controllers/vendor/schemas.ts (zod), src/controllers/adminVendor/index.ts + schemas.ts
+
+- src/lib/leaderboard.ts (LeaderboardManager, Redis ZSETs), src/lib/leaderboardReindex.ts, src/jobs/leaderboard.reindex.job.ts
+
+- src/utils/vendorSession.ts (midnight-IST session rule), src/utils/partnerSelfie.ts (selfie upload shared by login + attendance), src/config/featureFlags.ts
+
+- src/services/lead/availableOrders.service.ts, src/services/lead/lead-reservation.service.ts (Orders module; read here for the vendor gates)
+
+- src/services/dailyLimit/DailyLimit.service.ts is **customer-side** (used by src/routes/lead), not vendor-side; see Orders / Lead & Nurture.
+
+- src/services/exchangeToken/index.ts is Store-side (StoreVendors / StoreLeads / DailySettlement); see Store / Settlement.
+
+## Data Models
+
+- Vendors (line 1887) — PK vendorId uuid.
+
+  - Identity/KYC: firstName, lastName, email, address, city, phoneNumber (unique), shopName, shopImage, panCardImage, aadharCardImageFront/Back, selfImage, gstinImage, gumastaImage, aadharUdhyogImage, gstNumber (written by ck-admin, read for invoices).
+
+  - Status/approval: isApproved Boolean, status Status (pending \| live \| hold \| barred \| rejected), isInternal, isDeleted, deletedAt.
+
+  - Tier/type: vendorType Int? (1–5, drives lead tier access via LeadPricingSystem.getAccessibleTiers), userType vendorUserType (Vendor \| Store), deviceAssigned String\[\], maxLeads Int (concurrent lead cap; reservation code defaults to 4 when null).
+
+  - Credits: creditsAvailable Int (indexed). Ledger tables are in Vendor Payments & Credits.
+
+  - Push/session: firebaseId, fcmPlatform, deviceToken, lastLoginAt, availableOrdersPushedAt.
+
+  - Relations: hasMany VendorPincodes, Cashboy, MasterLeads, ReservedLeads, VendorCreditLogs, VendorPayments, VendorCreditOperation, VendorFlag, VendorLevelHistory, VendorScore, VendorActivityLog, VendorDID, VendorAttendance, VendorTrainingView/Like/Comment, VendorStoryPage\*, VendorAccountDeletionRequest, Reviews, ChatRoom, PartnerLoginSession; many-to-many Zone.
+
+- StoreVendors (line 1964) — separate table with the same KYC columns plus storeId (unique) → Store. No isApproved/status columns.
+
+- VendorPincodes (line 2013) — id, vendorId → Vendors (cascade), pincode Int\[\]. One vendor may have several rows; code flattens them.
+
+- VendorLevelHistory (line 3840) — vendorId, previousLevel/newLevel VendorLevelEnum, previousScore/newScore Int, reason. VendorLevelEnum = Bronze \| Silver \| Gold \| Platinum \| Diamond.
+
+- VendorScore (line 3856) — per period: finalScore Int, level VendorLevelEnum, completionScore, requoteScore, slaScore, reviewScore, reliabilityScore, pricingAccuracyScore, areaPerformanceScore, volumeMultiplier, totalEligibleLeads, totalCompletedLeads, breakdown Json, periodStart/End, computedAt, computedBy; unique (vendorId, periodStart, periodEnd).
+
+- VendorFlag (line 3066) — vendorId, optional leadId → MasterLeads, reason, createdBy.
+
+- VendorOnboardingLead (line 3081) — sales pipeline for prospective vendors: businessName, phoneNumber (unique), address, city, status VendorOnboardingStatus (New \| Contacted \| Interested \| NotInterested \| FollowUp \| Converted \| Invalid \| Duplicate), disposition, notes, nextFollowUp, assignedTo → Admin, callAttempts, source. VendorOnboardingLog — leadId, action, description, previousStatus, newStatus, createdBy.
+
+- VendorActivityLog (line 3333) — vendorId, adminId → Admin, action, field, oldValue, newValue, remark.
+
+- VendorTypeConfig (line 3448) — typeNumber (unique), name, isActive; has ExtraCreditRule\[\], TierAccessRule\[\].
+
+- VendorTrainingVideo (line 4877) — title, description, VideoUrl, thumbnailUrl, step Int, isActive. VendorTrainingView — unique (videoId, vendorId, cashboyId), playCount, firstViewedAt, lastViewedAt. VendorTrainingLike — unique (videoId, vendorId, cashboyId). VendorTrainingComment — comment, cashboyId default "".
+
+- VendorDID, VendorDIDHistory, LeadCallMapping — used only by Acefone Telephony.
+
+- ReservedLeads (line 652) — leadId? → MasterLeads, vendorId → Vendors, requiredCredits, reservationReason ReservationReason (CREDITS \| MAX_LEADS \| BOTH), status ReservationStatus (PENDING \| FULFILLED \| CANCELLED \| EXPIRED \| RESERVED), attempts, expiresAt, fulfilledAt.
+
+- Enums: vendorUserType (Vendor \| Store); Role (Admin \| Sales) is used only as VendorCreditOperation.operationBy.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/user/registerVendor | Zod vendorSchema; requires 5 files (requiredFilesForVendor); uploads to S3 vendorOnboard/&lt;first&gt;-&lt;last&gt;/; rejects if phone exists in Vendors or Cashboy; creates Vendors with isApproved=false, status="pending", creditsAvailable=0, maxLeads=0; sets accessToken cookie (30 days) and returns token. |
+| POST | /api/v1/user/registerStoreVendor | Zod StoreVendorSchema (vendorType "1"–"5", userType Vendor/Store); creates StoreVendors row with creditsAvailable=0; returns token. |
+| GET | /api/v1/user/getVendor | Vendor profile incl. cashboys, VendorPincodes.pincode, credits, maxLeads, terms-acceptance status, vendorCategory INTERNAL/EXTERNAL. |
+| GET | /api/v1/user/getStoreVendor | StoreVendors profile + store + features flags. |
+| GET | /api/v1/user/getAgent | Cashboy profile + vendorCategory. |
+| PATCH | /api/v1/user/updateVendorOrAgentInfo | Updates firstName, lastName, email on Vendors, else on Cashboy. |
+| GET | /api/v1/vendor/me | Same handler as getStoreVendor (StoreVendors profile + store). |
+| GET | /api/v1/vendor/app-config | \{ features: \{ merchandise \} \} from env MERCHANDISE_ENABLED. |
+| GET | /api/v1/vendor/stats | Counts of completed / failed / in-progress / total / requoted MasterLeads for this vendor (optional startDate,endDate), percentages, plus Redis rank, smoothed completion, composite. |
+| GET | /api/v1/vendor/leaderboard | metric = credits (default) or composite or completion or completion_rate or on_time or requote_rate; timeframe = all or week or month or range; startDate,endDate, page, limit, includeSelf, city. Fast path reads Redis ZSETs; falls back to DB aggregation when the ZSET is empty or a custom range is used. Returns leaderboard\[\], pagination, yourRank. |
+| GET | /api/v1/vendor/creditLogs | Paginated VendorCreditLogs grouped per lead, with date filters. |
+| GET | /api/v1/vendor/creditTransactions | Paginated VendorCreditOperation rows (admin credit additions/deductions), status = Addition or Deduction. |
+| GET | /api/v1/vendor/failedLeadTransactions | Merged list from VendorCreditLogs + LeadLogs: type = failed-accept or failed-reject or reverse-to-vendor or all. |
+| GET | /api/v1/vendor/invoices/completedOrders | Paginated completed MasterLeads (primaryStatus=Completed, secondaryStatus=Completed, no failedLead, isCompleted=1); limit capped at 100. |
+| GET | /api/v1/vendor/invoices/completedOrders/pdf | InvoiceController.generateCompletedOrdersInvoicePDF (Invoice module). |
+| GET | /api/v1/vendor/invoices/order/pdf?orderId= | generateSingleOrderInvoicePDF (Invoice module). |
+| GET | /api/v1/vendor/invoices/order/:orderId/pdf | Same handler, path param form. |
+| GET | /api/v1/vendor/invoices/creditPurchases | Paginated VendorPayments and/or VendorCreditOperation (type = payments or operations or all). |
+| GET | /api/v1/vendor/invoices/creditPurchases/pdf | generateCreditPurchasesInvoicePDF (Invoice module). |
+| GET | /api/v1/vendor/trainingVideos | Active VendorTrainingVideo ordered by step, createdAt; adds likeCount, commentCount, hasLiked. |
+| POST | /api/v1/vendor/trainingVideos/:videoId/view | Upsert VendorTrainingView; increments playCount on repeat. 404 if video missing. |
+| POST | /api/v1/vendor/trainingVideos/:videoId/like | Toggle VendorTrainingLike; returns hasLiked, likeCount. |
+| GET | /api/v1/vendor/trainingVideos/:videoId/comments | Paginated comments (page, limit default 20), isMine flag. |
+| POST | /api/v1/vendor/trainingVideos/:videoId/comments | Create comment (400 if empty). |
+| DELETE | /api/v1/vendor/trainingComments/:commentId | Delete own comment (scoped by vendorId + cashboyId). |
+| GET | /api/v1/vendor/notifications | Inbox list (Notifications module). |
+| GET | /api/v1/vendor/notifications/counts | Unread counts (Notifications). |
+| PATCH | /api/v1/vendor/notifications/read-all | Mark all read (Notifications). |
+| GET | /api/v1/vendor/notifications/active | Admin in-app banners (Notifications). |
+| POST | /api/v1/vendor/notifications/:id/event | Impression/click/dismiss (Notifications). |
+| PATCH | /api/v1/vendor/notifications/:id/read | Mark one read (Notifications). |
+| PATCH | /api/v1/admin/vendors/:vendorId/status | Zod updateVendorStatusSchema: isApproved?: boolean, status?: "pending" or "live" or "hold" (at least one). Updates Vendors and calls notifyAccountStatusChange (ALERT to vendor notification inbox). 404 if vendor missing. |
+
+Related endpoints documented elsewhere: POST /api/v1/user/registerCashBoy (Cashboy), GET /api/v1/order/available, GET /api/v1/order/reservedOrders, POST\|GET /api/v1/order/lock (Orders), POST /api/v1/otp/verifyotpforvendor (Auth & OTP), /api/v1/payment/\* (Vendor Payments & Credits).
+
+## Core Business Logic
+
+1.  **Onboarding / approval.** The app posts registerVendor with KYC photos. The row is created status="pending", isApproved=false, zero credits, maxLeads=0. There is no approval endpoint in the vendor app; approval is done by staff. Vendor login only finds vendors with status "live" and isApproved true; a pending/hold/barred vendor cannot log in. Deleted users are always refused.
+
+2.  **Seeing available orders** (src/services/lead/availableOrders.service.ts, used by GET /api/v1/order/available). resolveAvailableOrdersScope(vendorId) requires: Vendors row with status="live" (else VENDOR_NOT_LIVE); vendorType in 1–5 (VENDOR_TYPE_NOT_ASSIGNED); at least one pincode in VendorPincodes (NO_PINCODES_ASSIGNED); non-empty deviceAssigned (NO_DEVICES_ASSIGNED). Then it builds a MasterLeads filter: vendorId = null, no reservation in any status, customer not deleted, primaryStatus not in InProgress/Completed/Reserved/New/Failed, no failedLead, tier in the tiers allowed for the vendorType (LeadPricingSystem.getAccessibleTiers), isCompleted=1, deviceType in deviceAssigned, and the lead address pincode in the vendor's pincodes.
+
+3.  **Reserving / claiming** (src/services/lead/lead-reservation.service.ts, POST /api/v1/order/lock). If the vendor lacks credits or is at maxLeads capacity, a ReservedLeads row is created (status PENDING, requiredCredits = lead.creditPoints, expiresAt = now + 24h, reservationReason CREDITS / MAX_LEADS / BOTH). On later checks the reservation is cancelled if the lead is gone or the vendor is no longer live; it is fulfilled inside a transaction when creditsAvailable &gt;= requiredCredits and active leads &lt; maxLeads (default 4), which assigns the lead, debits credits and sets FULFILLED. Full lifecycle is in the Orders module.
+
+4.  **Leaderboard** (src/lib/leaderboard.ts). Redis ZSET keys leaderboard:&lt;metric&gt;:&lt;timeframe&gt;:&lt;identifier&gt; for metrics credits, completion, completion_rate, requotes, requote_rate, on_time, composite; timeframes week (ISO week), month (YYYY-MM), all. Rates use Bayesian smoothing with m = LEADERBOARD_SMOOTHING_M (default 10) and a global prior cached in Redis for 300 s. Composite = 0.4 × completion rate + 0.2 × (avg Reviews.rating/5×100) + 0.2 × (100 − requote rate) + 0.2 × on-time rate. Updates are fire-and-forget from credit approval and lead completion. When a vendor crosses into top 10 / top 3 of the composite board a Firebase push "Leaderboard Milestone" is sent. A nightly job re-indexes every vendor that appears in VendorCreditLogs or MasterLeads.
+
+5.  **Levels and scores.** VendorScore, VendorLevelHistory and VendorLevelEnum exist in the schema but are **not referenced anywhere in `src/`**. They are written/read by ck-admin directly. The backend's only "score" is the Redis leaderboard composite above.
+
+6.  **Training Hub.** Read-only feed of VendorTrainingVideo (ck-admin owns CRUD). Views/likes/comments are keyed by (videoId, vendorId, cashboyId) where cashboyId="" means the vendor themselves, so an agent acting on the vendor's account gets its own row.
+
+7.  **Daily order limit.** src/services/dailyLimit/DailyLimit.service.ts (checkOrderLimit) limits **customers** to DAILY_LIMIT = 5 orders/day (demo users exempt, 429 ORDER_LIMIT_EXCEEDED). The vendor-side cap is Vendors.maxLeads (concurrent, not daily), enforced in the reservation/lock flow.
+
+## Status / State Machine
+
+- Vendors.status (Status enum): pending (set at registration) → live (admin approve) ↔ hold (admin); barred is set by account deletion; rejected exists in the enum but no code path sets it. Admin endpoint accepts only pending \| live \| hold. Login requires live + isApproved=true.
+
+- ReservedLeads.status: PENDING → FULFILLED \| CANCELLED \| EXPIRED; RESERVED also exists (Orders module).
+
+- VendorOnboardingStatus (admin pipeline, no backend code): New, Contacted, Interested, NotInterested, FollowUp, Converted, Invalid, Duplicate.
+
+- VendorLevelEnum: Bronze, Silver, Gold, Platinum, Diamond (no backend transitions).
+
+## Validations & Rules
+
+- vendorSchema / StoreVendorSchema / CashboySchema (zod): required names/address/email/phone (min 10), deviceAssigned from Mobile, Tablet, Laptop, Camera, Headphone, Console, Drone, TV, AC, Desktop, Mac, Watch; deviceAssigned string body is JSON-parsed. Zod errors are thrown (handled by the global error handler), not returned as 422.
+
+- requiredFilesForVendor = panCardImage, aadharCardImageFront, aadharCardImageBack, shopImage, selfImage; multer limit 20 MB per file.
+
+- Demo numbers upload to a demo path.
+
+- updateVendorStatusSchema requires at least one of isApproved / status.
+
+- Pagination: invoices cap limit at 100.
+
+- Leaderboard priors cached 300 s; LEADERBOARD_REDIS_HOST/PORT override REDIS_HOST/PORT.
+
+- Feature flag MERCHANDISE_ENABLED is read per request.
+
+## Dependencies
+
+Auth & OTP (partner tokens, login gates); Orders (available orders, reservation, MasterLeads); Vendor Payments & Credits (VendorCreditLogs, VendorPayments, VendorCreditOperation); Invoice (PDF handlers); Notifications (vendorNotification, vendorAppNotification, notifyAccountStatusChange, FCM push for leaderboard badge); Terms & Conditions (acceptance status); Reviews (Reviews.rating in composite); File Upload (uploadToS3Bucket); Cashboy (registerCashBoy, getAgent); Acefone Telephony (VendorDID, LeadCallMapping). External: S3-compatible object storage, Redis (ioredis), Firebase FCM.
+
+## Background Jobs / Events
+
+- src/jobs/leaderboard.reindex.job.ts: cron LEADERBOARD_REINDEX_CRON or '0 3 \* \* \*' (daily 03:00 Asia/Kolkata), started on the primary instance; calls reindexAll(\{ notify: false \}).
+
+- Leaderboard ZSET updates are triggered inline (fire-and-forget) from credit approval and lead completion.
+
+- FCM push "Leaderboard Milestone" (pageRoute: /leaderboard) on top-10 / top-3 crossing.
+
+## Who Uses It
+
+Vendor (Partner) Flutter app — all /api/v1/vendor/\* and /api/v1/user/\*Vendor\* routes; Admin panel (ck-admin) — PATCH /api/v1/admin/vendors/:vendorId/status, and direct DB writes to Vendors / VendorPincodes / VendorScore / VendorLevelHistory / VendorFlag / VendorOnboardingLead / VendorActivityLog / VendorTrainingVideo.

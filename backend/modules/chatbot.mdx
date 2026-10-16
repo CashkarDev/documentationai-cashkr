@@ -1,0 +1,73 @@
+---
+title: "Chatbot (CX Genie)"
+description: "One lookup endpoint that the CX Genie chatbot (website/WhatsApp support bot) calls to answer \"where is my order\" by phone number or order token."
+---
+
+## Purpose
+
+One lookup endpoint that the CX Genie chatbot (website/WhatsApp support bot) calls to answer "where is my order" by phone number or order token.
+
+## Folder / Files
+
+src/routes/chatbot/index.ts (mounted at /api/v1/chatbot in src/routes/index.ts), src/controllers/chatbot/cxgenieOrderStatus.controller.ts, src/middleware/cxgenieAuth.middleware.ts.
+
+## Data Models
+
+Reads MasterLeads (+ customer) only. The Cx\* tables exist in prisma/schema.prisma but are **schema-only for this backend** (no prisma.cx… reference anywhere in src; they are owned/used by the ck-admin CX Support desk):
+
+- CxCase (@@map cx_case) — channel CxChannel (Call \| Chat \| Email), externalRef, customerId?→Customers, leadId?→MasterLeads, assignedToId?→Admin, chatSessionId, heldById, respondedById, firstResponseAt, resolvedAt, reasonCode→CxReasonCode, causeCode→CxCauseCode, resolutionCode→CxResolutionCode, state CxCaseState (Open \| WaitingOnFunction \| Escalated \| Resolved \| HandedToSales), waitingOnFunctionCode, customerUpdateDueAt, isReopened, parentCaseId (self-relation), category/autoCategory CxCategory (Operations \| Sales), categorySource CxCategorySource (Rule \| Human \| Model), categoryConfidence.
+
+- CxCaseActivity (cx_case_activity) — caseId, actorAdminId?, actorName, type CxActivityType (Created, Assigned, Responded, StateChanged, Referred, Escalated, NoteAdded, Resolved, Reopened, Recategorized), payload.
+
+- CxReferral (cx_referral) — case → CxFunction with expectedBy, chasedCount, closedAt, outcome.
+
+- CxCallback (cx_callback) — customerPhone, source CxCallbackSource (MissedOutOfHours \| MissedInHours \| Promised), missedAt, dueBy, attemptCount, completedAt, caseId?.
+
+- CxAiEscalation (cx_ai_escalation) — caseId?, bucket CxAiBucket (Green \| Amber \| Red), type CxAiEscalationType (NoAnswer \| AnsweredRejected), eventName, recognised, failedIntent, rawPayload.
+
+- CxAiConversation (cx_ai_conversation) — per-day conversation counter, unique (day, conversationRef), escalated.
+
+- CxCall (cx_call) — 1:1 with case, acefoneCallId unique, direction, agentNumber, durationSec, talkSec, recordingUrl, recordingArchivedUrl, hangupCause.
+
+- CxAgentNumber (cx_agent_number) — agentNumber unique → Admin. CxConfig (cx_config) key/value. CxFunction (cx_function) code/label/owner/defaultExpectedByHours. CxReasonCode, CxCauseCode (→ owning CxFunction), CxResolutionCode — code lists. CxCategoryModel (cx_category_model) — trained classifier weights + holdout accuracy, isActive.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/chatbot/order-status | Query ?query= / ?token= / ?phone= (+ ?customerPhone= from the pre-chat form). Returns order status summary. |
+| POST | /api/v1/chatbot/order-status | Same handler; body \{query or token or phone, customerPhone\} because the CX Genie API block only interpolates variables in the body. |
+
+## Core Business Logic
+
+1.  Middleware: CX Genie API key check; if the key is not configured the endpoint refuses (fail closed).
+
+2.  Resolve rawQuery from query string first, then body. customerPhone (pre-chat form) is cleaned; only a full 10-digit value activates pairing. If CHATBOT_REQUIRE_PHONE === "true" and no usable customerPhone → polite failure (HTTP 200, success:false).
+
+3.  If rawQuery is empty or has no digit and doesn't start with WPH, fall back to customerPhone; still nothing → 200 with "we couldn't pick up your phone number" message (logged as a flow misconfiguration).
+
+4.  Reject if length &gt; 64 or contains characters other than letters, digits, spaces and ( ) . \_ + - (echoes the received value back so a wrong template placeholder is visible).
+
+5.  Phone vs order id decided on digits (10–13 digits and not WPH… = phone). Order-id path: masterLeads.findFirst by token/leadId, and when customerPhone is present the order's customer phone must match (mismatch answers like a miss). Phone path: only allowed when customerPhone is absent or equal to the typed phone; findMany where customer.phone endsWith, latest 5.
+
+6.  Response always includes formattedSummary (the single field CX Genie extracts) built by getHumanReadableStatus(primary, secondary) with a nextStep sentence and support number 88288 88258. Multiple orders: shows up to MAX_ORDERS_SHOWN = 3 with "+N older orders" footer and guidance for the newest non-closed order. Full device/price detail only on order-id lookups.
+
+## Status / State Machine
+
+None owned. Maps lead statuses (Completed, Failed, OutForPickup, InspectionStarted, Assigned, Reserved, …) to customer-facing text.
+
+## Validations & Rules
+
+MAX_QUERY_LENGTH 64, allowed-character check, phone pairing rules above, take: 5. Error path returns HTTP 500 with a friendly formattedSummary.
+
+## Dependencies
+
+Orders (reads MasterLeads), Customer / User (reads Customers.phone). External: CX Genie (caller).
+
+## Background Jobs / Events
+
+None. (The CX Genie webhook/escalation ingestion implied by CxAiEscalation is not in this backend.)
+
+## Who Uses It
+
+Third party (CX Genie bot blocks). ck-web2.0 embeds the CX Genie widget (components/cx-genie-wrapper.tsx) but does not call this API directly.

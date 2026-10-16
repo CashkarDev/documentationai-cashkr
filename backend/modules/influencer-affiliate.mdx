@@ -1,0 +1,80 @@
+---
+title: "Influencer Affiliate"
+description: "Affiliate program: each influencer has a code; customers who arrive via /r/:code or type the code at checkout get a flat bonus added to their payout, and admin sees a per-influencer funnel."
+---
+
+## Purpose
+
+Self-contained affiliate program: each influencer has a code; customers who arrive via /r/:code (cookie) or type the code at checkout get a flat customerBonus added to their payout, and admin sees per-influencer funnel (clicks → leads → orders → completed → payout). No commission percentage exists (dropped); influencers are paid off the leaderboard numbers outside the system.
+
+## Folder / Files
+
+src/routes/influencer/index.ts (public redirect + customer API), src/routes/admin/influencers/influencers.routes.ts, src/controllers/influencer/influencer.controller.ts, src/services/influencer/influencer.service.ts, src/services/influencer/leaderboard.query.ts, src/services/lead/orderBonuses.ts, hooks in src/controllers/Lead/index.ts (ck_ref → influencerId), src/services/lead/createLead.ts (stamp + recordAttribution, confirmOrderBonuses), src/services/lead/failedLead.ts and src/services/lead/orderCancellation.service.ts (releaseRedemption), src/services/lead/masterLead.service.ts (requote preservation), src/services/giftCard/giftCardAmount.ts. Migrations: 20260606000001_add_influencer_affiliate_program, 20260606000002_drop_influencer_max_redemptions, 20260612000001_drop_influencer_commission_pct, plus 20260618000001_coderedemption_per_order_scope (drops the per-customer unique) and 20260727090000_add_influencer_attribution (new table + backfill).
+
+## Data Models
+
+- Influencer (id uuid, name, contact?, platform?, code unique VarChar(64), customerBonus Int default 500 rupees, validFrom?, validUntil?, status InfluencerStatus default ACTIVE). hasMany ReferralClick, CodeRedemption, InfluencerAttribution (all onDelete: Cascade).
+
+- ReferralClick (id, influencerId, landingPath, referrer, utm_source/medium/campaign/content/term, ipHash (HMAC of IP, never raw), device android/ios/desktop/unknown (older rows "mobile"/"tablet"), createdAt). belongsTo Influencer. Influencer only.
+
+- CodeRedemption (id, influencerId, orderId unique = MasterLeads.leadId, customerKey HMAC of customerId, amount Int snapshot, createdAt). belongsTo Influencer. Influencer only.
+
+- InfluencerAttribution (id, leadId unique, influencerId, code snapshot, source AttributionSource, clickId?, timestamps). belongsTo Influencer.
+
+- MasterLeads.influencerId String? (bare, indexed; still the checkout input).
+
+- Enums: InfluencerStatus \{ ACTIVE, PAUSED, DISABLED \}, AttributionSource \{ LINK, TYPED \}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /r/:code?to=&utm\_\* | Logs ReferralClick (fire-and-forget), sets cookies ck_ref=influencerId and ck_ref_c=clickId (domain .cashkr.com, 30 d, httpOnly, secure, SameSite=Lax) when the code is attributable, then 302: android/ios → app launcher URL /app?ref=CODE, else LANDING_BASE_URL (default https://www.cashkr.com) + to. Always redirects, even for unknown codes. |
+| GET | /api/v1/r/:code | Same handler, second mount (proxy/tooling consistency). |
+| POST | /api/v1/influencer/validate | Body \{code, basePrice?\} → \{valid, reason, influencerId, code, discount, finalAmount\}. Read-only preview; amount read server-side. |
+| GET | /api/v1/influencer/lead-bonus?leadId=&basePrice= | Pending influencer + referral bonus for the lead via previewOrderBonuses; also returns BuyBack bonus separately. |
+| POST | /api/v1/influencer/apply | Typed-code flow: validates, stamps MasterLeads.influencerId, upserts InfluencerAttribution(source=TYPED). No redemption yet. |
+| POST | /api/v1/influencer/remove | Clears influencerId and deletes the attribution row. |
+| POST | /api/v1/admin/influencers | Create; code auto-generated from name (e.g. RIYA42) or manual (normalised A-Z0-9, min 3, unique). |
+| GET | /api/v1/admin/influencers | List all. |
+| GET | /api/v1/admin/influencers/leaderboard?from=&to= | One row per influencer: visits, uniqueVisitors, totalLeads, ordersPlaced (primaryStatus not 'New'), completed, payout (SUM deviceFinalPrice on Completed), conversion. |
+| GET | /api/v1/admin/influencers/overview?from=&to= | Program-wide totals, money, conversion, device split. |
+| GET | /api/v1/admin/influencers/:id | Get one. |
+| GET | /api/v1/admin/influencers/:id/clicks?days=30 | Daily clicks + unique visitors by ipHash. |
+| GET | /api/v1/admin/influencers/:id/stats?from=&to= | Scorecard: funnel, payout, bonusPaid (SUM CodeRedemption.amount on Completed), rates, device/surface/platform/source splits, daily series. |
+| GET | /api/v1/admin/influencers/:id/orders?from=&to=&status= | Named customer list behind the code with lead status/prices/bonus. |
+| PATCH | /api/v1/admin/influencers/:id | Update name/contact/platform/customerBonus/validFrom/validUntil/status. Never deletes. |
+
+## Core Business Logic
+
+1.  **ck_ref attribution**: /r/:code sets ck_ref only if isInfluencerAttributable (ACTIVE and inside validFrom/validUntil; a ₹0 bonus still attributes). At lead creation the cookie's influencerId is re-checked against the DB with the same rule; if still attributable it is stamped on MasterLeads.influencerId and mirrored to InfluencerAttribution(source=LINK, clickId=ck_ref_c). Last touch wins: a typed code overwrites a link attribution.
+
+2.  **Validate / preview**: evaluate() → INVALID if missing, not ACTIVE, or customerBonus &lt;= 0; EXPIRED if outside the window; otherwise discount = customerBonus, finalAmount = basePrice + discount. No per-customer single-use check (per-order scope since migration 20260618).
+
+3.  **Confirm at checkout** (confirmOrderBonuses → confirmRedemption): re-validates by influencerId and inserts CodeRedemption\{orderId, customerKey, amount\}; P2002 on orderId → returns the existing amount (idempotent). The amount is added to deviceGeneratedPrice together with the referral bonus. See [Device Price Lifecycle](/backend/device-price-lifecycle).
+
+4.  **Release**: on vendor/cashboy fail or customer cancellation the CodeRedemption row is deleted.
+
+5.  **Preservation**: requote adds CodeRedemption.amount back on top of the requoted price; gift-card amount does the same (or live customerBonus if no redemption yet).
+
+6.  **Commission reporting**: there is no commission field (commissionPct dropped 2026-06-12; influencers are paid a flat amount or per user they bring). Reporting = leaderboard.query.ts SQL over InfluencerAttribution ⨝ MasterLeads ⨝ CodeRedemption: payout = SUM(deviceFinalPrice) on Completed, bonusPaid = SUM(CodeRedemption.amount) on Completed (a component of payout, not additive), conversion rates, device/UTM breakdowns.
+
+## Status / State Machine
+
+InfluencerStatus: ACTIVE → PAUSED → ACTIVE / DISABLED via PATCH only; no deletion. Redemption rows: created at order placement, deleted on fail/cancel.
+
+## Validations & Rules
+
+Codes are upper-cased and stripped to A-Z0-9; manual code min 3 chars, unique. Status must be one of ACTIVE/PAUSED/DISABLED. Owner-only and primaryStatus === "New" for apply/remove; owner-only for lead-bonus. Dedup per order only (CodeRedemption.orderId @unique). No combined cap with referral/coupon/BuyBack bonuses. ?from/?to snapped to UTC day start/end; invalid dates → 400. /:id/clicks default 30 days.
+
+## Dependencies
+
+Orders / Lead & Nurture (Lead/index.ts, createLead.ts), Customer Orders (cancellation release), Referral Program (shared orderBonuses.ts), BuyBack Bonus Campaigns (buybackBonusForLead in lead-bonus), Gift Cards, Encryption & Security utils (fraudFingerprint.hashIdentifier), Admin. External: none.
+
+## Background Jobs / Events
+
+None. Click insert is fire-and-forget.
+
+## Who Uses It
+
+Customer web (ck-web2.0 calls /influencer/lead-bonus, /influencer/apply, /influencer/remove), Customer app, public share links (/r/:code), Admin panel (/api/v1/admin/influencers/\*).

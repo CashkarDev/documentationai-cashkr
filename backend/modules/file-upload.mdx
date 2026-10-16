@@ -1,0 +1,50 @@
+---
+title: "File Upload"
+description: "Internal helpers for multipart uploads (multer, memory storage) and pushing files to S3-compatible object storage (DigitalOcean-Spaces-style env names)."
+---
+
+## Purpose
+
+Internal helpers for multipart uploads (multer, memory storage) and pushing files to S3-compatible object storage (DigitalOcean-Spaces-style env names).
+
+## Folder / Files
+
+src/utils/MulterUpload.ts, src/utils/fileValidation.ts, src/services/uploadService/index.ts, src/services/careers/careersStorage.ts (separate private-bucket client, see Careers).
+
+## Data Models
+
+None (URLs/keys are stored on the owning tables, e.g. vendor KYC docs, payment proofs, review proofs).
+
+## API Endpoints
+
+None of its own.
+
+## Core Business Logic
+
+- MulterUpload.ts exports four multer(\{storage: memoryStorage()\}) instances: Fileupload (fileSize 20 MB; comment wrongly says 5 MB), IssueEvidenceUpload (50 MB, max 7 files), PetrolBillUpload (20 MB, 1 file), PayoutQrUpload (10 MB, 1 file).
+
+- fileValidation.ts validateFiles(files, requiredFields) checks presence of required field names (returns \{success:false,message\}).
+
+Config from DO_SPACES_KEY, DO_SPACES_SECRET, DO_SPACES_ENDPOINT, DO_SPACES_NAME, DO_SPACES_REGION (default "blr1"); a new S3Client is created per call.
+
+- Callers of Fileupload\* in routes: routes/index.ts (uploadRequoteImage fields), routes/user/index.ts (vendor/cashboy documents, payoutQrImage), routes/otp/index.ts (verifyotpforvendor selfie), routes/store/index.ts (store documents), routes/storeLead/index.ts (failed store lead image), routes/settlement/index.ts (paymentProof), routes/reviewProof/index.ts (proofImage), routes/issueReport/index.ts (evidence), routes/petrolSurge/index.ts (billPhoto). Callers of uploadToS3Bucket: controllers/Orders/OrdersMutation.ts, controllers/otp/LeadOtpController.ts, controllers/storeLead/registerNewLead.ts, controllers/vendor/index.ts, controllers/vendorAccountDeletion/index.ts, controllers/vendorPayment/index.ts, services/issueReport, services/petrolSurge, services/reviewProof, services/settlement, services/store, services/vendorAccountDeletion/\*, utils/partnerSelfie.ts.
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+Size limits above; required-field check. Per-module services may add their own MIME checks.
+
+## Dependencies
+
+@aws-sdk/client-s3 (and @aws-sdk/s3-request-presigner only in Careers). sharp is in package.json (^0.33.5) but **no `src` file imports it**.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Internal (Vendor, Store, Settlement, Reviews & Review Proof, Issue Report, Petrol Surge, Vendor Account Deletion, Orders, Auth & OTP, Careers).

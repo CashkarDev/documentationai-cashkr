@@ -1,0 +1,46 @@
+---
+title: "Inspection Code"
+description: "The 4-digit code the customer reads out so the vendor can start the inspection, sent on WhatsApp once per order, plus a repair job for orders placed without one."
+---
+
+## Purpose
+
+The 4-digit code the customer reads out so the vendor can start the inspection: sending it to the customer on WhatsApp (once per order) and a safety-net job that creates codes for orders that were placed without one.
+
+## Folder / Files
+
+src/routes/sendInspectionCode/route.ts (mounted at /api/v1/sendInspectionCode), src/controllers/sendInspectionCode/sendInspectionCode.ts, src/services/lead/inspectionCode.service.ts (sendInspectionCodeOnce, ensureOpenOrdersHaveCodes), src/jobs/inspectionCodeRepair.job.ts. Code creation: createLead.ts updateLeadStatus (same update as order placement). Verification: POST /api/v1/otp/lead/verify (src/controllers/otp/LeadOtpController.ts, Lead & Nurture / Auth & OTP module). Tests: tests/inspectionCodeOnce.test.ts.
+
+## Data Models
+
+**leadOtp** (leadId unique → MasterLeads, otp String, isVerified Boolean, sentAt DateTime? claim stamp, timestamps).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/sendInspectionCode?leadId= | Looks up the lead's leadOtp.otp, device model and customer, then fires sendInspectionCodeOnce asynchronously (WhatsApp template start_order_inspection with \[customerName, token, model, otp\]). Answers 200 when a code exists; 400 no leadId, 404 lead or code not found. |
+
+## Core Business Logic
+
+sendInspectionCodeOnce claims the send with a conditional updateMany(\{leadId, sentAt: null\} → sentAt now); if zero rows matched it returns already_sent (re-slides and the InspectionStarted status change do not re-send). On a failed Pabbly send it resets sentAt to null so the next trigger retries. Returns sent \| already_sent \| failed \| no_code. Two triggers share it: this endpoint (vendor slide-to-unlock) and LeadService.updateOrderStatus on InspectionStarted.
+
+## Status / State Machine
+
+leadOtp.sentAt null → set (sent); isVerified false → true by the verify endpoint.
+
+## Validations & Rules
+
+Code is 4 digits 1000-9999; ensureOpenOrdersHaveCodes only touches isCompleted 1 orders with primaryStatus in \[Generated, Reserved, InProgress, PickupDelayed\], updatedAt within 30 days, leadOtp missing, batch 500, skipDuplicates.
+
+## Dependencies
+
+Messaging Utilities (WhatappsUtility.sendWhatappsMessage → Pabbly), Orders (updateOrderStatus trigger), Lead & Nurture (LeadService2.getDeviceModel, code creation on placement), Auth & OTP (verify route).
+
+## Background Jobs / Events
+
+src/jobs/inspectionCodeRepair.job.ts: CronJob("\*/15 \* \* \* \*", …, "Asia/Kolkata") → ensureOpenOrdersHaveCodes; logs \[inspection-code\]\[repaired\] N open order(s) had no inspection code when it had to create any (signals a creation path dropped codes; happened for admin-panel conversions from 4 Sep).
+
+## Who Uses It
+
+Vendor app (slide-to-start-inspection).

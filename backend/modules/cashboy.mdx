@@ -1,0 +1,51 @@
+---
+title: "Cashboy"
+description: "A \"cashboy\" is a vendor's field runner / pickup agent: a separate login that a vendor registers under their account and then assigns to individual orders."
+---
+
+## Purpose
+
+A "cashboy" is a vendor's field runner / pickup agent: a separate login (OTP, own JWT with userKind: "cashboy") that a vendor registers under their account and then assigns to individual orders. The cashboy app gets the pickup push, can start inspection / complete the order on the vendor's behalf (OrdersMutation.ts accepts Vendor or Cashboy actors and stamps completedBy: "cashboy"), submits reviews, attendance, issue reports, etc.
+
+## Folder / Files
+
+src/routes/cashboy/index.ts (mount /api/v1/cashboy), src/controllers/Cashboy/index.ts, src/controllers/Cashboy/schemas.ts, src/services/cashboy/index.ts; registration lives in src/controllers/vendor/index.ts registerCashBoy (route POST /api/v1/user/registerCashBoy, Vendor/User module); login in src/controllers/otp; prisma/migrations/20260130_cashboy_vendor_id_optional (ALTER TABLE "Cashboy" ALTER COLUMN "vendorId" DROP NOT NULL).
+
+## Data Models
+
+Cashboy (cashboyId uuid, vendorId? → Vendors (onDelete Cascade), firstName, lastName, email, phoneNumber @unique, address, aadharFront?, aadharBack?, selfPhoto?, deviceToken?, firebaseId?, fcmPlatform? ("android"\|"ios"), lastLoginAt?). Relations: hasMany MasterLeads (MasterLeads.cashboyId), StoreLeads, Reviews, PartnerLoginSession, VendorAttendance. belongsTo Vendors (optional since the 2026-01-30 migration so a cashboy can be detached without losing order history).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| PUT | /api/v1/cashboy/assign | Body cashboyId, leadId, deviceToken; vendor + cashboy must exist; zod CashboySchemas; sets MasterLeads.cashboyId where leadId AND vendorId = caller (404 "Unauthorized lead" if not the vendor's lead), writes a LeadLogs entry "Cashboy X Assigned to Order By Vendor Y", sends FCM push to the cashboy's firebaseId (title "Order Assigned For You", route /inprogressdetail). |
+| DELETE | /api/v1/cashboy/remove | Body cashboyId, leadId; disconnects the cashboy from the lead. Note: the zod schema requires cashboyName, vendorName, deviceToken too, which this handler never supplies → always 422 (dead in practice). |
+| POST | /api/v1/cashboy/delete | Body cashboyId; hard-deletes the Cashboy row where cashboyId AND vendorId = caller. |
+| DELETE | /api/v1/cashboy/removeCashBoy | Body cashboyId; checks ownership, then sets the cashboy's vendorId to NULL — detaches the cashboy, keeps rows and lead history. |
+
+Related elsewhere: POST /api/v1/user/registerCashBoy (vendor + Aadhaar/selfie uploads; re-registers if the phone exists), OTP login for cashboys (/api/v1/otp), POST/GET /api/v1/reviews/cashboy.
+
+## Core Business Logic
+
+Vendor registers cashboy → cashboy logs in by OTP and registers FCM token → vendor assigns a lead (assign) → cashboy receives the push and works the order; OrdersMutation checks the lead's cashboyId matches the caller for cashboy actions. remove unlinks from one lead; removeCashBoy unlinks from the vendor; delete removes the account (effect on MasterLeads.cashboyId: Unclear from code beyond Prisma default).
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+CashboySchemas (zod) requires all of cashboyId, leadId, cashboyName, vendorName, vendorId, deviceToken non-blank. Ownership enforced via where: \{leadId, vendorId\} on assign and vendorId match on removeCashBoy/delete. vendorId optional on the model.
+
+## Dependencies
+
+Orders (MasterLeads.cashboyId, LeadLogs), Vendor (LeadService.checkUserExists, getDeviceModel), Notifications (FCMUtility.firebaseMessaging.sendMessage), Auth & OTP (cashboy login), Attendance, Reviews.
+
+## Background Jobs / Events
+
+FCM push on assign. No crons.
+
+## Who Uses It
+
+Vendor app (manage/assign cashboys); Cashboy app (same partner app with cashboy login).

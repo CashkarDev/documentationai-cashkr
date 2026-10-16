@@ -1,0 +1,46 @@
+---
+title: "Exchange Token"
+description: "For Store (walk-in shop) leads: when a store vendor completes a device purchase, the customer gets an SMS token code worth the device price (+ BuyBack bonus)."
+---
+
+> *Counted endpoints: 0. The three token routes below are mounted under /api/v1/storeLead and are counted under **Store / Store Leads / Store Vendors**.*
+
+## Purpose
+
+For Store (walk-in shop) leads: when a store vendor completes a device purchase, the customer gets an SMS token code (&lt;STORECODE&gt;-XXXXXX) worth the device price (+ BuyBack bonus). The store redeems the token at the counter, which rolls the amount into that day's DailySettlement (see Settlement & Cash).
+
+## Folder / Files
+
+src/services/exchangeToken/index.ts, src/controllers/storeLead/\{generateToken,verifyToken,redeemToken\}.ts, routes in src/routes/storeLead/index.ts (mount /api/v1/storeLead), SMS template ExchangeToken in src/utils/SmsUtility.ts sendExchangeTokenSMS (2factor).
+
+## Data Models
+
+ExchangeToken (tokenId uuid, tokenCode @unique, leadId @unique → StoreLeads (Cascade), storeVendorId → StoreVendors, storeId → Store, settlementId? → DailySettlement, amount String, generatedAt, expiresAt (+48 h), redeemedAt?, status TokenStatus). Enum TokenStatus \{ACTIVE, REDEEMED, EXPIRED, CANCELLED\}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/storeLead/generate-token | Body leadId; returns the existing token if any; lead must belong to the caller (lead.vendorId === user.vendorId) and have a storeVendor with a store; code = storeCode prefix + 6 random base36 chars; amount = (deviceFinalPrice ?? deviceGeneratedPrice) + buybackBonusAmount; expires in 48 h; SMS to the customer. |
+| POST | /api/v1/storeLead/verify-token | Body tokenCode; 404 invalid; 400 if REDEEMED/CANCELLED/EXPIRED or past expiresAt (marks EXPIRED); returns amount, vendor/shop name, customer phone, device info. |
+| POST | /api/v1/storeLead/redeem-token | Body tokenCode; must be ACTIVE and unexpired; finds/creates today's settlement for the token's store; marks REDEEMED with redeemedAt, settlementId; adds amount/count to the settlement. |
+
+## Core Business Logic
+
+generate (store vendor) → SMS → verify (store counter) → redeem (store counter) → settlement totals. masterLead.service.ts (~line 1663) also sends sendExchangeTokenSMS on store-lead completion using the lead token field — a second SMS path that does not create an ExchangeToken row.
+
+## Status / State Machine
+
+ACTIVE → REDEEMED (redeem) \| EXPIRED (lazy, on verify/redeem after 48 h). CANCELLED is checked in verify but never set anywhere.
+
+## Dependencies
+
+Store / Store Leads / Store Vendors, Settlement & Cash, Messaging Utilities (SMS 2factor), BuyBack Bonus Campaigns (buybackBonusAmount).
+
+## Background Jobs / Events
+
+None (no expiry cron).
+
+## Who Uses It
+
+Store vendor app (generate), store counter app/web (verify, redeem). Exact clients Unclear from code.

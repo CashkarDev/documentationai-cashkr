@@ -1,0 +1,189 @@
+---
+title: "Orders (MasterLeads lifecycle)"
+description: "The core of CashKr: one MasterLeads row per device sale, from checkout draft to placed order, vendor lock, pickup, inspection requote, completion or failure."
+---
+
+<Callout kind="tip">Price fields on this page (deviceGeneratedPrice, deviceRequotePrice, deviceFinalPrice) are explained end to end in [Device Price Lifecycle](/backend/device-price-lifecycle).</Callout>
+
+## Purpose
+
+The core of CashKr. A MasterLeads row is one customer device sale: it starts as a checkout draft (lead), becomes an order when the customer places it, is picked up ("locked") by a vendor who inspects the device at the doorstep, re-quotes it if the condition differs, pays the customer and completes it, or fails it. This module is the vendor/cashboy side of that lifecycle (available orders, lock, status steps, requote, complete, fail, reschedule, payout method) plus the customer's saved payout account.
+
+## Folder / Files
+
+- Routes: src/routes/orders/index.ts (mounted at /api/v1/order), src/routes/index.ts (PUT /api/v1/upload/reqoteImages), src/routes/user/index.ts lines 63-65 (/api/v1/user/payment, handled by src/controllers/customerPayment/index.ts).
+
+- Controllers: src/controllers/Orders/OrdersMutation.ts (class LeadController: lock/complete/fail/status/requote/reschedule/call-request/payment-method/customer-payment/gift-card status/activity/requote images), src/controllers/Orders/GetOrders.ts (available, in-progress, reservations, details), src/controllers/Orders/schemas.ts (zod schemas + multer field sets), src/controllers/customerPayment/index.ts.
+
+- Services: src/services/lead/masterLead.service.ts (LeadService, 4400 lines: processLeadLock, lockMultipleLeads, updateOrderStatus, requoteOrder, completeLead, finalizeLeadCompletion, pollGiftCardIssueStatus, updateLeadPaymentMethod, updateCustomerPaymentDetails, setCallRequest, RescheduleOrder, getLeadDetails), src/services/lead/failedLead.ts (FailedLeadService.cancelOrder/getFailedOrder/getCompleteOrder), src/services/lead/lead-reservation.service.ts, src/services/lead/lead-assignment.service.ts + src/services/lead/createLead.ts (order placement + auto-assign/broadcast, owned by Lead & Nurture but drives the first transitions), src/services/lead/availableOrders.service.ts, src/services/lead/inspectionTimer.service.ts, src/services/lead/pickupSlot.service.ts, src/services/lead/pickupReminder.service.ts, src/services/lead/pickupDelayed.service.ts, src/services/lead/orderCancellation.service.ts, src/services/dailyLimit/DailyLimit.service.ts (middleware checkOrderLimit used on POST /api/v1/lead), src/services/checkoutCart/index.ts (documented under Customer Orders).
+
+- Utils/constants: src/utils/checkoutUrlGenerator.ts (builds the website checkout resume URL per device type: HOST_URL/sell-old-…/brand/model\[/variant\]/checkout?lead=&lt;leadId&gt;\[&cp_t=&lt;coupon token&gt;\], incl. the Mobile "-tb" storage slug and the 4-segment Watch path), src/utils/deviceTokenGenerator.ts (GenerateUniqueToken), src/utils/paymentFields.ts (encrypted payout fields bankAccNumber, bankIFSC, upiNo, bankBeneficiaryName), src/constants/pickupSlots.ts (SLOT_10_13 "10:00 AM - 01:00 PM", SLOT_13_16 "01:00 PM - 04:00 PM", SLOT_16_19 "04:00 PM - 08:00 PM"; legacy label "07:00 PM - 10:00 PM" keeps priority 3).
+
+- Jobs: src/jobs/pickupReminder.job.ts, src/jobs/pickupDelayed.job.ts (see Background Jobs).
+
+- Background docs: docs/order-fail-process.md, docs/inspection-timer.md.
+
+## Data Models
+
+- **MasterLeads** (leadId uuid PK) — the order. Key fields grouped:
+
+  - Identity: token (unique human order id shown to customer/vendor), isCompleted Int (0 = checkout draft, 1 = placed order), primaryStatus LeadPrimaryStatus, secondaryStatus LeadSecondaryStatus, createdBy, customerId → Customers, desposition + isCallRequested (last vendor call disposition / count), assignedAdminId → Admin, altPhone, isDuplicateConfirmed, createdAt/updatedAt.
+
+  - Device: deviceType DeviceType, one of deviceMobilesId/deviceTabletsId/…/deviceWatchesId → catalog row, modelName, deviceImei (set at completion), 1:1 answers row dataMobiles/…/dataWatches (the condition codes W/B/S/P/T/A plus condition photos).
+
+  - Pricing: deviceGeneratedPrice String (**Quoted** = first system quote at checkout, includes influencer/referral bonus when applied), deviceRequotePrice String? (**Requote** = system price at inspection, written by requoteOrder), deviceFinalPrice String? (**Final** = what the vendor paid, written by completeLead; also written by cancelOrder with finalAmountOffered), creditPoints (base vendor credit cost), vendorCreditsPoints (credits actually charged to the locking vendor), tier Int (1-3, decides which vendor types may see it), buybackBonusAmount/buybackBonusCampaignId (BuyBack Days bonus snapshot, paid on top of price), couponId, customerCouponId, quoteRefreshedAt (cart re-price), cartDismissedAt.
+
+  - Vendor assignment: vendorId → Vendors, cashboyId → Cashboy, reservations ReservedLeads\[\], inspectionStartedAt/inspectionExpiresAt (server timer), inspectionTakenMinutes/inspectionDelayReason (reported by vendor app at complete/fail), notReachableMsgCount.
+
+  - Payment: paymentType (Bank/UPI/Cash/Wallet/GiftCard), paymentId → Payments (customer's saved account).
+
+  - Cancellation: cancellationSource, cancellationReasonCode, cancellationReasonText, cancellationRequestedById, cancellationRequestedAt; 1:1 failedLead FailedLead; leadClosure, retentionContacts, escalations (B2C sales).
+
+  - Attribution/marketing: referralId, affiliateId, influencerId, pushLabSaleId/Status, LeadAttribution (UTM), nurture flags (owned by Lead & Nurture).
+
+  - Relations used here: leadLogs LeadLogs\[\] (free-text audit, action/reason/actorId/disposition/remark), statusHistory OrderStatusHistory\[\], RequoteLogs\[\], completedDocuments, InspectionImages, leadOtp (4-digit inspection code, sentAt), reviews, reviewProof, VendorCreditLogs\[\], LeadFlag\[\], VendorFlag\[\], chatRoom, leadCallMapping\[\], customerCoupon, couponTokens, PriceVerification, identityVerifications, cxCases. Indexes: \[primaryStatus, secondaryStatus\], \[vendorId\], \[inspectionExpiresAt\], \[pickupType, claimedAt\], attribution ids.
+
+- **OrderStatusHistory** (orderId → MasterLeads, fromStatus, toStatus, source CancellationSource?, actorType, actorId, reasonCode, reasonText) — append-only; today written only by the customer cancellation path.
+
+- **InspectionDurations** (deviceType unique, minutes) — inspection timer length per device type; no endpoints, admin panel edits the table directly; fallback 20 minutes.
+
+- **MasterLeadAddress** (masterLeadId unique → MasterLeads, address, city, pincode, addressType (Home/Office/Other), lat, lng) — pickup address snapshot.
+
+- **ReservedLeads** (leadId → MasterLeads, vendorId → Vendors, requiredCredits, reservationReason, status, statusReason, attempts, expiresAt (+24h), fulfilledAt, storeLeadsLeadId) — a vendor "holding" an order they cannot yet afford.
+
+- **RequoteLogs** (leadId → MasterLeads, logs String\[\] of JSON \{timestamp, previousPrice, newPrice, previousState, updatedState, changedFields, buybackBonusRemoved?\}).
+
+- **CompletedDocuments** (leadId unique, signaturePhoto, idCardFront, idCardBack, imeiNumber, billPhoto?, paymentProof?) — S3 URLs captured at completion.
+
+- **FailedLead** (leadId unique → MasterLeads, isCompleteFailed Boolean (false = "to-be-failed" queue awaiting admin, true = finalised), primaryStatus FailedLeadPrimaryStatus (who), secondaryStatus FailedLeadSecondaryStatus (why), failedCustomerExpectedPrice, failedFinalOfferedAmt, reviews) hasOne **FailedDocuments** (signaturePhoto, selfPhoto, proofPhoto) and hasOne **FailedReason** (reason, createdBy FailedReasonBy).
+
+- **LeadFlag** (leadId, problemType, description, flaggedBy, flaggedVendorId, isResolved, resolvedAt/By, resolutionNotes) — ops flags; no endpoints in this module (admin DB-direct).
+
+- **LeadClosure**, **ClosureReason**, **RetentionContact**, **Escalation**, **CoachingNote** — B2C Sales Phase 1 tables; written by ck-admin directly, no backend endpoints found.
+
+- **Payments** (paymentId, customerId unique → Customers, bankBeneficiaryName, bankName, bankIFSC, bankAccNumber, upiNo; sensitive columns encrypted at rest) hasMany MasterLeads.
+
+- **LeadAttribution** (leadId unique, utmSource/utmMedium/utmCampaign/utmContent, …).
+
+- Enums: PickupType \{ SCHEDULED, INSTANT \}; PickupSlot \{ SLOT_10_13, SLOT_13_16, SLOT_16_19, SLOT_19_22 \}; LeadPrimaryStatus \{ New, Generated, InProgress, Completed, Failed, Reserved, PickupDelayed \}; LeadSecondaryStatus \{ Initiated, OrderGenerated, Completed, Assigned, OutForPickup, InspectionStarted, Failed, Reserved \}; FailedLeadPrimaryStatus \{ FailedByVendor, FailedByCashboy, FailedByCustomer, FailedByCashkr, FailedByStore \}; FailedLeadSecondaryStatus \{ AreaNotServicable, DuplicateLead, DealerLead, NotReachableOrResponding, SoldDeviceElsewhere, BetterPriceElsewhere, OutofTown, WasJustChecking, WrongModel, RequotePriceNotAccepted, FailedByCustomer, NotInterestedInSelling, NotRespondingReachable, GettingBetterPriceElsewhere, CustomerUnabletoVerifyOwnership, DeviceDiscontinuedNoLongerSupported, DeviceLockedtoCloudAccount, PriceNotAccepted, RescheduledMultipleTimes, CustomerOutOfTownArea, RoadSidePickup, CloneDevice, IncorrectInfo, FinancePhone, AgedUnclaimedCleanup \}; FailedReasonBy \{ Cashkr, Vendor, Sales, Customer \}; CancellationSource \{ VENDOR_APP, CUSTOMER_CHAT, ADMIN_PANEL, SYSTEM \}; CancellationReasonCode \{ CHANGED_MIND, BETTER_PRICE_ELSEWHERE, QUOTE_TOO_LOW, VENDOR_UNRESPONSIVE, WRONG_DEVICE_SELECTED, NO_LONGER_SELLING, OTHER \}; ReservationStatus \{ PENDING, FULFILLED, CANCELLED, EXPIRED, RESERVED \}; ReservationReason \{ CREDITS, MAX_LEADS, BOTH \}; paymentType \{ Bank, UPI, Cash, Wallet, GiftCard \}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/order/available?page&limit | Open orders the vendor may lock: vendorId null, no reservation rows, customer not deleted, primaryStatus not in \[InProgress, Completed, Reserved, New, Failed\], no FailedLead, tier in tiers for the vendor type, isCompleted 1, deviceType in vendor.deviceAssigned, pincode in VendorPincodes. Returns credit cost (Laptop: AddCreditAlgorithm by price band and vendor type; others: creditPoints + tier extraCredits), payoutPrice (gift-card +2% when GiftCard). 404 if vendor not live, 409 with reason VENDOR_TYPE_NOT_ASSIGNED / NO_PINCODES_ASSIGNED / NO_DEVICES_ASSIGNED. |
+| GET | /api/v1/order/inProgress?page&limit | Orders assigned to this vendor (or, for a cashboy, only those with cashboyId = agent) with primaryStatus in \[InProgress, PickupDelayed\], secondaryStatus in \[Assigned, InspectionStarted, OutForPickup\], no FailedLead. 403 for customers. |
+| GET | /api/v1/order/reservedOrders?page&limit | The vendor's ReservedLeads with status PENDING, not expired, lead not Completed/Failed/New, plus device info. |
+| GET | /api/v1/order/details?leadId&deviceType | Full order detail for the vendor app (LeadService.getLeadDetails): address with lat/lng, customer name+phone, customer payout account, inspection code, requote count, completed IMEI, payoutPrice, plus timer (inspection countdown). |
+| GET | /api/v1/order/complete?startDate&endDate&page&limit | Completed orders of the caller (cashboy or vendor), filtered on pickupDate. |
+| GET | /api/v1/order/activity?leadId | Timeline for one order built from VendorCreditLogs + LeadLogs from the lock onward, IST timestamps; also returns timer and (for the vendor) stamps the inspection timer via startIfNotStarted. |
+| GET | /api/v1/order/failed?isFailed=true or false&page&limit&startDate&endDate | isFailed=false → the caller's orders in the to-be-failed queue (FailedLead.isCompleteFailed=false); isFailed=true → finalised fails. Sorted present/future pickup first, then slot priority. |
+| POST | /api/v1/order/lock | Body \{leadId\}. Vendor claims an order: LeadService.processLeadLock (see Core Logic). Idempotent for the same vendor. 403/404/409/422 on Vendor Not Found, Lead not found, Insufficient Credit Points, Max Leads Limit Reached, Lead already locked. |
+| GET | /api/v1/order/lock?id= | DEPRECATED duplicate of the POST (same handler), kept until the vendor app moves. |
+| POST | /api/v1/order/complete?a=Vendor or Cashboy | Multipart. Completes the pickup: body completeOrderSchema (leadId, imeiNumber, finalAmount digits, optional takenMinutes ≤600, delayReason ≤500), required files signaturePhoto, idCardFront, idCardBack, billPhoto (+ optional selfPhoto, paymentProof) uploaded to S3 customerVerification/&lt;leadId&gt;/. Calls LeadService.completeLead → finalizeLeadCompletion. Returns timer and, for GiftCard, giftCardStatus issued or issuing. 409 when gift card over cap/not issued (vendor must switch payout method), 409 when the lead is no longer assigned. |
+| POST | /api/v1/order/failed?failedType=BeforeRequote or AfterRequote&a=Vendor or Cashboy | Multipart. Vendor fails the order into the to-be-failed queue: FailedBeforeRequoteSchema / FailedAfterRequoteSchema (status = reason enum, reason, reviews, finalAmountOffered, finalAmountExpected, takenMinutes, delayReason). Proof files: WrongModel/CloneDevice → selfPhoto+proofPhoto; AfterRequote → signaturePhoto; else selfPhoto. Calls FailedLeadService.cancelOrder. 409 if already failed. |
+| PUT | /api/v1/order/reschedule | Body \{leadId, pickupDate, pickupTime, pickupSlot?\}. Changes pickup date/slot after resolvePickupSelection (slot must still be bookable, 7-day window, IST). Vendor/cashboy reschedule from OutForPickup resets to InProgress/Assigned. |
+| PUT | /api/v1/order/updateVendorLeadStatus | Body \{leadId, primaryStatus, secondaryStatus\}. Vendor app "Step 1/2/3": updateOrderStatus with a forward-only rank guard; stamps the inspection timer on InspectionStarted; returns timer. 409 when the transition goes backwards. |
+| PUT | /api/v1/order/requote | Multipart. Inspection requote: device-type schema from deviceRegistry\[deviceType\].requoteSchema, condition images → S3 requote/&lt;leadId&gt;/. Writes deviceRequotePrice, the Data&lt;Type&gt; answers, RequoteLogs; returns timer and giftCardUnavailable. 409 "Order Already Requoted"; 422 for rejected watch-size/SIM corrections. |
+| PUT | /api/v1/order/setCallRequest | Body \{leadId, deviceType, desposition?\}. Logs a call disposition (isCallRequested++, desposition, LeadLogs). "Not Connected - …" dispositions increment notReachableMsgCount and notify the customer (WhatsApp customer_not_reachable for the first 2 attempts by default, push CUSTOMER_NOT_REACHABLE afterwards). |
+| PATCH | /api/v1/order/:id/payment-method | Body \{paymentType: Cash or UPI or Bank or GiftCard\}. Sets how the customer is paid (updateLeadPaymentMethod). Blocked when a GiftCardOrder is COMPLETE/PENDING or the lead is Completed; GiftCard pre-validated against the ₹10,000 cap and rollout list; switching a FAILED/REFUND_REQUIRED gift-card lead to an instant method finalises the order. |
+| PATCH | /api/v1/order/:id/customer-payment | Vendor saves the customer's Bank (bankBeneficiaryName, bankName, bankAccNumber 9-18 digits, valid IFSC) or UPI (VPA or 10-digit mobile) into the customer's single Payments row (encrypted) and links it to the lead; refused once Completed/Failed. Logs PAYMENT_DETAILS_UPDATED activity without account numbers. |
+| GET | /api/v1/order/:id/giftcard-status | Vendor app polls while a gift card is issuing: pollGiftCardIssueStatus live-reconciles the Woohoo order (deadline 3 minutes by default) and finalises the order when it completes. |
+| PUT | /api/v1/upload/reqoteImages | Multipart deviceSide1..6. Uploads up to six device photos to S3 devicePhotos/&lt;leadId&gt;/ and upserts InspectionImages. 409 if the order is already failed. |
+| POST | /api/v1/user/payment | Customer saves a payout account (paymentType UPI, Bank or Cash; UPI id format; bank fields). Encrypts, de-dups, upserts the customer's single Payments row and connects it. 409 "Payment Already Exists" when identical. |
+| GET | /api/v1/user/payment | Returns the customer's saved account. |
+| PATCH | /api/v1/user/payment | Updates the existing Payments row for UPI or Bank; 404 when none exists. |
+
+Order creation itself is POST /api/v1/lead (checkout draft, guarded by checkOrderLimit) and POST /api/v1/lead/:id (place order) in src/routes/lead/index.ts → src/controllers/Lead/index.ts → src/services/lead/createLead.ts; those endpoints are counted under Lead & Nurture but are described below because they start the lifecycle.
+
+## Core Business Logic
+
+1.  **Checkout draft (New/Initiated).** POST /api/v1/lead (LeadController.registerNewLead → LeadService2.createLead) writes MasterLeads with isCompleted 0, primaryStatus New, secondaryStatus Initiated, the device + answers row, deviceGeneratedPrice (the **Quoted** price from Pricing & Evaluation), tier, creditPoints, attribution (influencerId, affiliateId, UTM). checkOrderLimit allows 5 drafts per customer per day (429 ORDER_LIMIT_EXCEEDED); demo users bypass it. Drafts appear in the customer's checkout cart (Customer Orders) and drive abandoned-cart/nurture messages (Lead & Nurture).
+
+2.  **Place order (Generated/OrderGenerated).** POST /api/v1/lead/:id (LeadController.completeLead): validates CompleteLeadSchema (address, price, optional paymentType/paymentId — paymentId required for UPI/Bank/Wallet, forbidden for Cash/GiftCard; pickupDate + pickupTime or pickupSlot, couponId, referralId, affiliateId, pickupType only SCHEDULED), rejects an expired quote with 410 unless re-priced, re-checks the slot, validates the referral, then LeadService2.completeLead → updateLeadStatus in ONE update: isCompleted 1, Generated/OrderGenerated, deviceGeneratedPrice (quote + influencer + referral bonus), pickup fields, referralId/affiliateId, BuyBack bonus snapshot, address snapshot, LeadLogs "Lead Converted to Order", and the 4-digit inspection code. Then: coupon usedCount++ + customerCoupon, WhatsApp order_placed_successfully (1 s later, demo phones skipped), ck-admin cache invalidation, Pabbly markLeadAsCustomer, marketing-suppression engagement. Finally processLeadAssignmentAsync: (a) **auto-assign** to a vendor who already has an in-progress order for the same customer (→ InProgress/Assigned, credits debited, customer push LEAD_AUTO_ASSIGNED + email LEAD_ASSIGNED, vendor push + email LEAD_AVAILABLE); (b) else, if that vendor exists but lacks credits/capacity, **reserve** for them (→ Reserved/Reserved, vendor push VENDOR_NEEDS_CREDITS / VENDOR_MAX_LEADS_REACHED / VENDOR_BOTH_LIMITS_REACHED / LEAD_RESERVED); (c) else **broadcast** (customer push + email ORDER_GENERATED, FCM multicast LEAD_AVAILABLE to eligible vendors: live, device assigned, pincode match, tier).
+
+3.  **Vendor lock (→ InProgress/Assigned).** POST /api/v1/order/lock → processLeadLock(leadId, vendorId): vendor must exist, creditsAvailable &gt; 0, status live; lead must have vendorId null (same vendor → idempotent success), primaryStatus in \[Generated, Reserved, PickupDelayed\], secondaryStatus in \[OrderGenerated, Reserved\] (any secondary when PickupDelayed), customer not deleted. Credits needed = calculateDynamicCreditPoints (Laptop: AddCreditAlgorithm band by price; others creditPoints + tier extraCredits for the vendor type; tier not accessible → "Access denied"). If credits &lt; needed → reserveLeadForVendor (24 h ReservedLeads, lead → Reserved/Reserved, vendor + customer push LEAD_RESERVED) and return reservationId. maxLeads: for a *new* customer with no capacity → fail "Max Leads Limit Reached"; same-customer orders bypass it. Other open orders of the same customer in the vendor's pincodes/devices are bundled: locked too while credits last (cheapest first), otherwise reserved. lockMultipleLeads runs one transaction: each lead → InProgress/Assigned, vendorId, vendorCreditsPoints; LeadLogs "Order locked by Vendor …"; debitVendorCredits (atomic, VendorCreditLogs category OrderLocked); leaderboard cache invalidation. After commit: in-app CREDIT "Credits deducted"; existing ReservedLeads for the locked leads deleted; customer WhatsApp vendor_assigned, email + push LEAD_ASSIGNED, vendor email LEAD_AVAILABLE.
+
+4.  **Reservations.** A Reserved order is held for one vendor for 24 h while they buy credits or free capacity. A vendor can still lock a Reserved lead directly (step 3).
+
+5.  **Pickup steps.** The vendor app calls PUT /api/v1/order/updateVendorLeadStatus with InProgress/OutForPickup, then InProgress/InspectionStarted (after the customer's inspection code is verified at POST /api/v1/otp/lead/verify). updateOrderStatus ranks New/Initiated 0 &lt; Generated/OrderGenerated 1 &lt; InProgress/Assigned 2 &lt; InProgress/OutForPickup 3 &lt; InProgress/InspectionStarted 4 &lt; Completed/Completed 5; target rank must be ≥ current (equal allowed for retries); PickupDelayed is outside the map and never blocked. OutForPickup → WhatsApp out_for_pickup, push VENDOR_OUT_FOR_PICKUP, email vendorOutForPickup, chat system message VENDOR_ARRIVING. InspectionStarted → WhatsApp start_order_inspection (once per order) and chat INSPECTION_STARTED; the inspection timer starts using InspectionDurations.minutes for the device type. The timer is read-only after that (NOT_STARTED / RUNNING / EXPIRED / DONE) and returned on details, activity, requote and complete responses; expiry blocks nothing.
+
+6.  **Requote.** PUT /api/v1/order/requote → requoteOrder: writes the vendor's corrected answers to the Data&lt;Type&gt; row, optional Watch case-size correction (another DeviceWatches row of the same brand+model; lead repointed), optional Mobile SIM correction, removes the BuyBack bonus when the device does not turn on, preserves customer bonuses on top of the app's requote price (influencer bonus always, coupon only if the new price still meets minValue/maxValue, referral referee discount) → deviceRequotePrice. Logs LeadLogs "Order requoted by … Previous price: X, New price: Y" and a RequoteLogs diff. Notifies customer: WhatsApp requote_done (12 params incl. before/after body/screen/functionality/accessories names) and email REQUOTE_DONE. Flags giftCardUnavailable when a GiftCard payout now grosses over ₹10,000.
+
+7.  **Complete.** POST /api/v1/order/complete → completeLead: strips a BuyBack bonus the vendor typed into the total; for GiftCard orders first checks the ₹10,000 cap on final + bonus and issues the card synchronously (Gift Cards module) — failed/skipped → 409 and nothing is written; then persists collection data (deviceImei, deviceFinalPrice = **Final**, CompletedDocuments) while the order is still InProgress or PickupDelayed. If the card is still issuing the order stays InProgress (pendingPayout) until the vendor poll, the gift-card reconcile job, or a payout-method switch finalises it. Otherwise finalizeLeadCompletion (the ONLY place an order becomes Completed/Completed; idempotent): LeadLogs "Order Completed By Vendor/Cashboy - name", deactivates LeadCallMapping (Acefone), closes the chat room (PICKUP_COMPLETE), leaderboard update, first-order referral webhook order-completed (reward becomes PENDING only), Meta CAPI SuccessfulPickup, ck-admin cache invalidation, then customer push ORDER_COMPLETED, email ORDER_COMPLETED (only if email exists), WhatsApp order_completed (price + bonus, demo phones skipped). Controller then stores inspectionTakenMinutes/DelayReason and logs customer activity ORDER_COMPLETED.
+
+8.  **Fail (vendor/cashboy).** POST /api/v1/order/failed → FailedLeadService.cancelOrder: creates FailedLead (FailedByVendor or FailedByCashboy, secondaryStatus = chosen reason, isCompleteFailed false, offered/expected amounts, FailedDocuments, FailedReason createdBy Vendor), sets MasterLeads Failed/Failed (and deviceFinalPrice = finalAmountOffered when given), deactivates call mapping, closes chat (ORDER_CANCELLED), releases the influencer redemption, deletes the first ReservedLeads row, LeadLogs "Order cancelled by Vendor(reason)", customer email ORDER_FAILED (the WhatsApp order_failed send is commented out because the template does not exist). Credits are NOT reversed here: an admin later accepts/rejects the fail in ck-admin (LeadLogs actions failed-accept, failed-reject, reverse-to-vendor, isCompleteFailed → true); that admin step has no endpoint in this backend.
+
+9.  **Fail (customer).** POST /api/v1/customer/lead/:leadId/cancel-request (and the chat socket) → orderCancellationService.requestCustomerCancellation (see Customer Orders): FailedLead FailedByCustomer with the reason mapped to a FailedLeadSecondaryStatus, MasterLeads Failed/Failed + cancellation columns, OrderStatusHistory row, LeadLogs action CUSTOMER_CHAT_CANCEL, customer email ORDER_FAILED, assigned vendor push ORDER_CANCELLED_BY_CUSTOMER.
+
+10. **Reschedule.** PUT /api/v1/order/reschedule → RescheduleOrder: writes pickupDate/pickupTime/pickupSlot; vendor/cashboy reschedule of an OutForPickup order resets to InProgress/Assigned; LeadLogs "Order Rescheduled By Vendor/Cashboy/Customer - name". Controller logs activity ORDER_RESCHEDULED.
+
+11. **Pickup delayed.** The 09:00 cron (below) moves overdue open orders to primaryStatus PickupDelayed (secondary unchanged) after notifying the customer; such orders remain lockable, listable in /inProgress and completable.
+
+12. **Payout account.** Customers save one Payments row (/api/v1/user/payment); vendors can fill it at the doorstep (PATCH /order/:id/customer-payment); GiftCard/Cash orders carry no paymentId.
+
+## Status / State Machine
+
+| **From (primary/secondary)** | **To** | **Performed by** | **Notifications (function → channel)** |
+|---|---|---|---|
+| — | New/Initiated (isCompleted 0) | POST /api/v1/lead → LeadService2.createLead | none here (abandoned-cart/nurture crons, Lead & Nurture) |
+| New/Initiated | Generated/OrderGenerated (isCompleted 1, inspection code created) | POST /api/v1/lead/:id → LeadService2.completeLead/updateLeadStatus | WhatsApp order_placed_successfully; broadcast: customer push + email ORDER_GENERATED, vendors FCM multicast LEAD_AVAILABLE |
+| Generated/OrderGenerated | InProgress/Assigned (auto-assign) | createLead.ts autoAssignLeadToVendor | customer push LEAD_AUTO_ASSIGNED + email LEAD_ASSIGNED; vendor push + email LEAD_AVAILABLE; vendor CREDIT notification |
+| Generated/OrderGenerated or Reserved/Reserved or PickupDelayed/\* | InProgress/Assigned (vendor lock) | POST /api/v1/order/lock → processLeadLock → lockMultipleLeads | WhatsApp vendor_assigned, email LEAD_ASSIGNED, push LEAD_ASSIGNED (customer); email LEAD_AVAILABLE (vendor); vendor CREDIT "Credits deducted" |
+| Generated/OrderGenerated | Reserved/Reserved | processLeadLock (insufficient credits) or createLead.ts (same-customer vendor ineligible) → reserveLeadForVendor | vendor push LEAD_RESERVED, customer push LEAD_RESERVED; from createLead: vendor push VENDOR_NEEDS_CREDITS / VENDOR_MAX_LEADS_REACHED / VENDOR_BOTH_LIMITS_REACHED |
+| Reserved/Reserved | InProgress/Assigned | LeadReservationService.checkReservedLead | WhatsApp vendor_assigned; vendor CREDIT notification |
+| InProgress/Assigned | InProgress/OutForPickup | PUT /api/v1/order/updateVendorLeadStatus → updateOrderStatus | WhatsApp out_for_pickup, customer push VENDOR_OUT_FOR_PICKUP, email vendorOutForPickup; chat VENDOR_ARRIVING |
+| InProgress/OutForPickup | InProgress/InspectionStarted (+ timer stamped) | same endpoint | WhatsApp start_order_inspection (if not already sent); chat INSPECTION_STARTED |
+| InProgress/InspectionStarted (status unchanged) | requote written | PUT /api/v1/order/requote → requoteOrder | WhatsApp requote_done; email REQUOTE_DONE |
+| InProgress/\* or PickupDelayed/\* | Completed/Completed | POST /api/v1/order/complete → completeLead → finalizeLeadCompletion; also gift-card poll, reconcile job, payout switch (deferred gift card) | customer push ORDER_COMPLETED, email ORDER_COMPLETED, WhatsApp order_completed; chat PICKUP_COMPLETE; referral webhook; Meta CAPI SuccessfulPickup |
+| any non-terminal | Failed/Failed + FailedLead(isCompleteFailed=false) | POST /api/v1/order/failed → FailedLeadService.cancelOrder | customer email ORDER_FAILED; chat ORDER_CANCELLED |
+| New/Generated/InProgress/Reserved/PickupDelayed with secondary not OutForPickup/InspectionStarted | Failed/Failed (FailedByCustomer, cancellationSource CUSTOMER_CHAT) | POST /api/v1/customer/lead/:leadId/cancel-request or chat socket | customer email ORDER_FAILED, vendor push ORDER_CANCELLED_BY_CUSTOMER; chat ORDER_CANCELLED |
+| Failed queue | FailedLead.isCompleteFailed=true (accept/reject, credit reversal) | ck-admin, DB-direct (LeadLogs actions failed-accept/failed-reject/reverse-to-vendor) | Unclear from code |
+| Generated/InProgress/Reserved with past pickupDate | PickupDelayed/&lt;unchanged&gt; | cron pickupDelayed.job.ts | WhatsApp pickup_delayed + push PICKUP_DELAYED (status flipped only if one succeeded) |
+| InProgress/OutForPickup | InProgress/Assigned | vendor/cashboy PUT /api/v1/order/reschedule | push PICKUP_RESCHEDULED, WhatsApp rescheduled_by_customer |
+
+Completed and Failed are terminal for updateOrderStatus (rank 5) and for finalizeLeadCompletion. The vendor app can only send New/Initiated, Generated/OrderGenerated, InProgress/\{Assigned, OutForPickup, InspectionStarted\}, Completed/Completed.
+
+## Validations & Rules
+
+- zod schemas in src/controllers/Orders/schemas.ts: completeOrderSchema, OrderStatusSchema, per-device requote schemas (Mobile requires bodyCondition, warrantyStatus, non-empty accessories, physicalCondition, technicalCondition; Laptop additionally storage/ram/processor, graphicCard required when isExternalGraphicsCard; Camera/Watch/Console/Headphone use loose string codes and optional fields; image URL fields ≤ 500 chars), FailedBeforeRequoteSchema (19 reasons) / FailedAfterRequoteSchema (10 reasons), RescheduleSchema, setCallRequestSchema, updateCustomerPaymentSchema; customerPayment paymentSchema (UPI id or 10-digit mobile).
+
+- Uploads: memory storage, 20 MB per file; field whitelists uploadCompleteLeadDocument, uploadFailedLeadDocument, uploadRequoteLeadDocument, uploadRequoteImage.
+
+- Lock: vendor live, credits &gt; 0, tier access by vendor type, maxLeads for new customers, single transaction, atomic debit prevents negative balances.
+
+- Completion: lead must be isCompleted 1, primaryStatus in \[InProgress, PickupDelayed\], owned by the vendor (and cashboyId match for cashboys), customer not deleted; gift card cap ₹10,000, +2 % gross-up; GIFTCARD_ALLOW_SKU_OVERRIDE must never be true in prod.
+
+- Pickup slots: 7-day window, a slot is bookable until its start hour (IST) on the same day; reschedule and placement share resolvePickupSelection.
+
+- Daily limit: 5 drafts/day/customer, demo users exempt.
+
+- Inspection timer: duration from InspectionDurations, fallback 20 min; takenMinutes 1-600, delayReason ≤ 500.
+
+- Demo isolation: demo leads/phones upload to a demo prefix and skip WhatsApp.
+
+- Status regression guard in updateOrderStatus; gift-card double-pay guard in updateLeadPaymentMethod.
+
+## Dependencies
+
+Pricing & Evaluation (LeadPricingSystem/TierPriceSystem, AddCreditAlgorithm, computeEvaluationPrice), Vendor (Vendors, VendorPincodes, deviceAssigned, leaderboard), Vendor Payments & Credits (debitVendorCredits, VendorCreditLogs), Notifications (NotificationService → FCM; notifyVendor), Messaging Utilities (Pabbly WhatsApp; EngineMailer email), Gift Cards (Woohoo), Coupon, Influencer Affiliate (releaseRedemption, CodeRedemption), Referral Program (sendReferralWebhook, getGrantedRefereeDiscount), BuyBack Bonus Campaigns (orderBonuses.ts, stripBonusFromInclusiveFinal, buybackBonusRemovedAtInspection), Chat (closeChatRoomForLead/sendSystemMessage), Acefone Telephony (LeadCallMapping, resolveCallDid), Marketing (Meta CAPI, marketingSuppression, Pabbly markLeadAsCustomer), Issues Images (names in requote messages), Inspection Code (sendInspectionCodeOnce, leadOtp), Admin (activityLogger, ck-admin cache invalidation), File Upload (S3-compatible storage), Encryption & Security utils (fieldEncryption), Device Catalog (deviceRegistry, getTableNames), Customer Address (Addresses). External: Firebase FCM, Pabbly WhatsApp, EngineMailer, Woohoo, Referral microservice, Meta CAPI, Redis, S3.
+
+## Background Jobs / Events
+
+- src/jobs/pickupReminder.job.ts: daily 08:00 Asia/Kolkata → orders with pickupDate = today, isCompleted 1, primaryStatus InProgress, no FailedLead, customer not deleted → one channel per customer: FCM push PICKUP_REMINDER, falling back to WhatsApp pickup_day_reminder only when the push fails/no token; email intentionally dropped. No status change.
+
+- src/jobs/pickupDelayed.job.ts: daily 09:00 Asia/Kolkata → orders with a pickupDate before today, isCompleted 1, primaryStatus not in \[Completed, Failed, New, PickupDelayed\], no FailedLead → WhatsApp pickup_delayed and push PICKUP_DELAYED concurrently; if either succeeded sets primaryStatus = "PickupDelayed" (so it is notified once).
+
+- src/jobs/inspectionCodeRepair.job.ts (every 15 minutes) — see Inspection Code.
+
+- Gift-card reconcile job (Gift Cards module) can finalise deferred GiftCard orders.
+
+- All jobs are started in src/server.ts only on the primary PM2 instance.
+
+- Socket events: chat system messages VENDOR_ARRIVING, INSPECTION_STARTED, PICKUP_COMPLETE, ORDER_CANCELLED (Chat module); customer cancel socket handler src/socket/orderCancelHandler.ts.
+
+- Outbound webhooks: referral service order-completed; Meta CAPI SuccessfulPickup; Pabbly markLeadAsCustomer.
+
+## Who Uses It
+
+Vendor/partner Flutter app and cashboy (agent) accounts: every /api/v1/order/\* route and /upload/reqoteImages. Customer app/web: /api/v1/user/payment, /api/v1/order/reschedule (customer actor), order placement via /api/v1/lead. Admin panel (ck-admin) reads/writes MasterLeads, FailedLead, LeadFlag, LeadClosure, InspectionDurations, OrderStatusHistory directly in the shared DB.

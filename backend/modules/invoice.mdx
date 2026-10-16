@@ -1,0 +1,52 @@
+---
+title: "Invoice"
+description: "PDF invoices for a completed pickup (customer or vendor copy) generated on the fly, plus the vendor-side statement PDFs (completed orders, single order, credit purchases)."
+---
+
+> *Counted endpoints: 1. The four /api/v1/vendor/invoices/\*/pdf routes below are mounted in the Vendor router and are counted under **Vendor**; they are repeated here because the handlers live in InvoiceController.*
+
+## Purpose
+
+PDF invoices for a completed pickup (customer or vendor copy) generated on the fly, plus the vendor-side statement PDFs (completed orders, single order, credit purchases) that share this controller.
+
+## Folder / Files
+
+src/routes/getInvoice/route.ts (mounted at /api/v1/Invoice — capital I), src/controllers/InvoiceController/index.ts (1757 lines: generateInvoice, generateCustomerInvoice, generateVendorInvoice, generateCompletedOrdersInvoicePDF, generateSingleOrderInvoicePDF, generateCreditPurchasesInvoicePDF, calculateExcludingGST, resolveIssueNames, buildDeviceDisplay, convertRupeesToWords, loadLogoBuffer), src/controllers/InvoiceController/fonts/NotoSans-Regular.ttf + NotoSans-Bold.ttf, src/services/giftCard/payoutDisplay.ts (payoutFields, invoiceBonusBreakdown). Vendor statement routes live in src/routes/vendor/index.ts lines 52-57.
+
+## Data Models
+
+Reads MasterLeads with customer, payment, all device\* relations, completedDocuments.imeiNumber, customerCoupon.Coupon, Addresses, vendor; vendor statements read VendorCreditLogs/credit purchases and IssuesImages for names. No tables of its own.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | `/api/v1/Invoice/:leadId?userType=vendor or customer` | Streams application/pdf as attachment `Cashkr-Customer-Invoice-<first 8 chars of leadId>.pdf` (or Vendor). Invoice number VIN-/INV- + leadId prefix; amount = `payoutFields(lead).payoutAmount` (gift-card +2 % grossed) falling back to deviceFinalPrice ?? deviceRequotePrice ?? deviceGeneratedPrice; amount in words via convertRupeesToWords. 400 no leadId, 404 lead not found, 500 otherwise. |
+| GET | /api/v1/vendor/invoices/completedOrders/pdf | Vendor statement of completed orders (generateCompletedOrdersInvoicePDF). Mounted in the Vendor router; listed here because the code lives in this controller. |
+| GET | /api/v1/vendor/invoices/order/pdf?orderId=&lt;token&gt; | Single-order PDF (generateSingleOrderInvoicePDF), order id in query. |
+| GET | /api/v1/vendor/invoices/order/:orderId/pdf | Same, order id (token) in path. |
+| GET | /api/v1/vendor/invoices/creditPurchases/pdf | Credit purchase statement with GST split (generateCreditPurchasesInvoicePDF, calculateExcludingGST). |
+
+## Core Business Logic
+
+generateInvoice loads the lead, builds a device description per type (brand model storage), IMEI from CompletedDocuments, computes the payout, creates a pdfkit PDFDocument(\{margin 40, size A4, bufferPages true, info\{Title, Author "CashKr Technologies"\}\}), sets download headers, pipes to the response, downloads the CashKr logo from object storage (3 s timeout; continues without it), then draws the layout with built-in Helvetica/Helvetica-Bold fonts (header, parties, item table, totals, amount in words, footer) and doc.end(). Both userType values use generateCustomerInvoice; generateVendorInvoice is never called. The vendor statements follow the same pattern (loadLogoBuffer, shared colors).
+
+## Status / State Machine
+
+None; the statement functions filter by LeadPrimaryStatus.Completed/LeadSecondaryStatus.Completed.
+
+## Validations & Rules
+
+Only leadId presence; anything other than userType "vendor" renders the customer copy.
+
+## Dependencies
+
+Orders (MasterLeads, CompletedDocuments), Gift Cards (payoutDisplay), Issues Images (resolveIssueNames), Vendor Payments & Credits (credit purchase statements), Coupon (customerCoupon). External: pdfkit, axios (logo from object storage).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Customer app/web and vendor app download links; vendor app statements.

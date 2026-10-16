@@ -1,0 +1,88 @@
+---
+title: "Chat (Socket.IO customer chat & cancellation)"
+description: "In-app chat between the customer and the assigned vendor for one order, with anti-contact-sharing filtering, live location sharing and an in-chat \"Cancel Order\" action."
+---
+
+## Purpose
+
+In-app chat between the customer and the assigned vendor (or his cashboy) for one order, with strict anti-contact-sharing filtering, live location sharing, and a structured "Cancel Order" action that pushes the order into the to-be-failed queue.
+
+## Folder / Files
+
+src/routes/chatRoutes.ts (mounted at /api/v1/chat in src/app.ts), src/controllers/chatController.ts, src/services/chatService.ts, src/socket/chatSocket.ts (Socket.IO server + handlers), src/socket/io.ts (module-level getIO()/setIO()), src/socket/orderCancelHandler.ts, src/socket/orderCancelReasons.ts, src/socket/cancelRateLimiter.ts, src/utils/chatFilter.ts, root getChatRoom.ts (one-off dev script), scripts/close-stale-chat-rooms.ts, migration prisma/migrations/20260529000000_add_customer_chat_cancellation/migration.sql.
+
+## Data Models
+
+- ChatRoom — id, leadId (unique; belongsTo MasterLeads, cascade), customerId (belongsTo Customers), vendorId (belongsTo Vendors), status ChatRoomStatus (ACTIVE \| CLOSED \| SUSPENDED), hasMany ChatParticipant, ChatMessage.
+
+- ChatParticipant — chatRoomId, userId, role ChatParticipantRole (CUSTOMER \| VENDOR \| SUPPORT), isOnline, lastSeenAt; unique (chatRoomId, userId).
+
+- ChatMessage — chatRoomId, senderId (user id or literal "SYSTEM"), senderRole, content, originalContent, type ChatMessageType (TEXT \| SYSTEM \| TEMPLATE \| LOCATION \| ORDER_CANCEL_REQUEST \| SYSTEM_ORDER_CANCELLED), status ChatMessageStatus (SENT \| DELIVERED \| READ \| BLOCKED \| FAILED, never changed in code), wasFiltered, filterDetails Json, isDeleted, hasMany ChatMessageRead.
+
+- ChatMessageRead — messageId, userId, readAt; unique (messageId, userId).
+
+- ChatAuditLog — chatRoomId, userId, action ChatAuditAction (MESSAGE_SENT \| MESSAGE_BLOCKED_NUMBER \| USER_JOINED \| USER_LEFT \| ROOM_CLOSED \| ROOM_SUSPENDED \| LOCATION_SHARED \| LOCATION_STOPPED), details Json, ipAddress, userAgent. No FK to ChatRoom.
+
+- Migration 20260529000000_add_customer_chat_cancellation (additive, idempotent): adds FailedReasonBy.Customer, ChatMessageType.ORDER_CANCEL_REQUEST/SYSTEM_ORDER_CANCELLED, enums CancellationSource (VENDOR_APP, CUSTOMER_CHAT, ADMIN_PANEL, SYSTEM) and CancellationReasonCode (CHANGED_MIND, BETTER_PRICE_ELSEWHERE, QUOTE_TOO_LOW, VENDOR_UNRESPONSIVE, WRONG_DEVICE_SELECTED, NO_LONGER_SELLING, OTHER), nullable columns on MasterLeads (cancellationSource, cancellationReasonCode, cancellationReasonText, cancellationRequestedById, cancellationRequestedAt) and new table OrderStatusHistory (FK to MasterLeads.leadId, cascade).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/chat/rooms | Body \{leadId\}. chatService.getOrCreateChatRoom(leadId); caller must be the room's customer or vendor (a cashboy passes through his parent vendor's seat). 409 ORDER_NOT_ACTIVE if the lead is not chat-eligible and has no room. |
+| GET | /api/v1/chat/rooms/:chatRoomId | Room + participants; 403 unless caller is a participant. |
+| GET | /api/v1/chat/rooms/:chatRoomId/messages | Cursor-paginated history (?cursor&limit, default 50); participant check inside getChatHistory; createdAt returned as IST string. |
+| POST | /api/v1/chat/rooms/:chatRoomId/system-message | Always returns 403 "Admin access required" (locked; see controller comment). |
+| POST | /api/v1/chat/rooms/:chatRoomId/close | Always returns 403 (locked). |
+| GET | /api/v1/chat/rooms/:chatRoomId/audit | Always returns 403 (locked). |
+
+### Socket events
+
+Default namespace, server created in initializeChatSocket(server) from src/server.ts. Handshake carries the login token. CORS uses the shared allowlist. pingInterval 25000, pingTimeout 60000, connectionStateRecovery.maxDisconnectionDuration 120000.
+
+| **Direction** | **Event** | **Payload** | **Notes** |
+|---|---|---|---|
+| in | join_room | chatRoomId string or \{chatRoomId\}/\{id\} | Must be a participant (SUPPORT exempt). Joins room, sets isOnline=true, emits message_history (last 50, oldest first) to caller, user_online to room, and one user_online per other online participant to caller. |
+| in | send_message | \{chatRoomId, content, type?='TEXT', tempId?\} (string JSON accepted) | Room must be ACTIVE (else message_failed ROOM_INACTIVE); participant check. TEXT goes through filterMessage; non-TEXT stored as-is. Persists ChatMessage + ChatAuditLog MESSAGE_SENT, broadcasts new_message, then FCM push to participants not live in the room. |
+| in | share_location | \{chatRoomId, latitude, longitude, accuracy?, sharingSessionId (UUID), tempId?\} | First call per session creates a LOCATION message (content JSON with status:'ACTIVE') + audit LOCATION_SHARED + push; later calls emit location_update only (no DB write). Session map is in-memory (activeLocationSessions). |
+| in | stop_location_sharing | \{sharingSessionId\} | Marks the location message content status:'STOPPED', audit LOCATION_STOPPED, emits location_sharing_stopped. |
+| in | typing | \{chatRoomId, isTyping\} | — |
+| in | messages_read | \{chatRoomId, messageIds\[\]\} | Upserts ChatMessageRead for each id (room must be ACTIVE), emits messages_seen. |
+| in | order_cancel_template | none | Replies order_cancel_template with the reason menu from getCancelTemplate(). |
+| in | order_cancel_request | \{chatRoomId, orderId, reasonCode, reasonText?\} | Customer-only structured cancel (see flow below). |
+| in | disconnect | — | Sets isOnline=false, lastSeenAt for all of the user's participant rows, emits user_offline to each room. |
+| out | message_history, new_message, message_failed, message_blocked, room_suspended, room_closed, user_online, user_offline, user_typing, messages_seen, location_update, location_sharing_stopped, order_cancel_template, order_cancel_success, order_cancel_failed, order_status_changed, error | — | message_failed codes: INVALID_CHAT_ROOM_ID, ROOM_INACTIVE, UNAUTHORIZED, INVALID_COORDINATES, INVALID_SESSION_ID, SERVER_ERROR. order_status_changed carries \{chatRoomId, leadId, primaryStatus:'Failed', secondaryStatus:'Failed', source:'CUSTOMER_CHAT', reasonCode\}. |
+
+## Core Business Logic
+
+1.  Room creation: lead-assignment.service.ts calls chatService.createChatRoom(leadId) when a vendor is assigned (errors swallowed). Creates the room with CUSTOMER + VENDOR participants, a SYSTEM welcome message ("sharing contact details is prohibited") and audit USER_JOINED. Requires lead.vendorId.
+
+2.  getOrCreateChatRoom (REST POST /rooms): lead must be in InProgress \| Reserved \| PickupDelayed (CHAT_ELIGIBLE_LEAD_STATUSES) to open/revive; a CLOSED room on an eligible lead is re-opened and the VENDOR seat moved to the current vendor (reviveRoomIfStale); SUSPENDED rooms stay suspended but still get the vendor seat synced; a non-eligible lead with an existing room returns it read-only; non-eligible lead without a room → ChatRoomUnavailableError.
+
+3.  Message filtering (chatFilter.ts): normalise (strip zero-width chars), whitelist times/dates/prices/durations/distances, then score +50 each for: non-map URL (only Google/Apple maps links allowed), any digit, English/Hindi number words (ek, do, teen…), profanity list. Decision: score ≥80 BLOCK_AND_SUSPEND (room → SUSPENDED, audit ROOM_SUSPENDED, emit room_suspended), ≥50 BLOCK_AND_WARN, ≥25 BLOCK (audit MESSAGE_BLOCKED_NUMBER, reply message_blocked with 24h warning count), sanitized → ALLOW_SANITIZED (stores original + sanitized), else ALLOW.
+
+4.  Push: sendChatMessagePush checks io.in(room).fetchSockets(); participants without a live socket get an FCM message (type: 'CHAT_MESSAGE') via firebaseMessaging.sendMessage using the customer/vendor firebaseId; isFcmSkipped handles dead tokens.
+
+5.  Customer cancel (orderCancelHandler.ts): role must be CUSTOMER → room must exist, belong to the customer and to the order → Redis rate limit (max 5 per 60 s per customer and order) → orderCancellationService.requestCustomerCancellation(\{orderId, customerId, reasonCode, reasonText\}, \{closeChatRoom:false\}) (module Customer Orders / Orders; it enforces CUSTOMER_CANCELLABLE_PRIMARY_STATUSES = New, Generated, InProgress, Reserved, PickupDelayed and blocks OutForPickup/InspectionStarted, maps the reason code to a FailedLeadSecondaryStatus, writes the FailedLead queue row). If not transitioned → order_cancel_success \{alreadyRequested:true\}. Else persist an ORDER_CANCEL_REQUEST message (JSON content) and a SYSTEM_ORDER_CANCELLED card, broadcast both as new_message, emit order_status_changed, then closeChatRoomForLead(orderId) and ack.
+
+6.  Room closing: closeChatRoom sets CLOSED, posts "This chat room has been closed." SYSTEM message, audit ROOM_CLOSED, emits room_closed. Called from masterLead.service.ts (on OutForPickup→VENDOR_ARRIVING, InspectionStarted, Completed→PICKUP_COMPLETE+close, Failed→ORDER_CANCELLED+close), failedLead.ts, orderCancellation.service.ts.
+
+## Status / State Machine
+
+ChatRoomStatus: ACTIVE → CLOSED (order completed/failed/cancelled, manual close), ACTIVE → SUSPENDED (filter score ≥80), CLOSED → ACTIVE (revive on re-booked eligible lead). SUSPENDED is never lifted in code.
+
+## Validations & Rules
+
+Login required on socket; participant checks on join/send/share; room must be ACTIVE for send/read receipts; OTHER reason requires text (requiresText); cancel rate limit 5/min per (customer, order); history page size default 50; system message templates: VENDOR_ASSIGNED, VENDOR_ARRIVING, VENDOR_ARRIVED, INSPECTION_STARTED, PRICE_FINALIZED, PICKUP_COMPLETE, ORDER_CANCELLED.
+
+## Dependencies
+
+Orders / Customer Orders (services/lead/orderCancellation.service, masterLead.service, lead-assignment.service, failedLead), Notifications (FCMUtility.firebaseMessaging, fcmTokenCleanup.isFcmSkipped), Encryption & Security utils (config/corsOrigins, utils/prisma), Redis.
+
+## Background Jobs / Events
+
+No cron. Socket events above. scripts/close-stale-chat-rooms.ts exists as a manual script (not scheduled).
+
+## Who Uses It
+
+Customer app and Vendor app (Flutter; the Hinglish labels live in the client). No references found in ck-web2.0.

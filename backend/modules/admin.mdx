@@ -1,0 +1,72 @@
+---
+title: "Admin"
+description: "The admin-panel-facing surface inside this backend: admin guard, customer block/unblock, stolen-device registry, customer activity log search/export, vendor account status, and the activity logger."
+---
+
+## Purpose
+
+The admin-panel-facing surface inside this backend: the admin JWT guard, customer block/unblock, fraud/stolen-device registry, customer activity log search/export, vendor account status changes, and the activityLogger service that every customer-facing module writes to.
+
+## Folder / Files
+
+src/middleware/admin-auth.middleware.ts (authenticateAdmin, checkAdminRole), src/routes/admin/customers/customers.routes.ts, src/routes/admin/fraud/fraud.routes.ts, src/controllers/admin/fraud/fraudController.ts, src/routes/admin/customerActivityLogs/customerActivityLogs.routes.ts, src/routes/admin/vendors/vendors.routes.ts, src/controllers/adminVendor/index.ts + schemas.ts, src/services/activityLogger.ts, src/constants/activityActions.ts, src/jobs/cleanupActivityLogs.job.ts, src/utils/token-blacklist.ts (blacklistAllUserTokensForBlocked, removeBlockedUserMarker), src/utils/fraudFingerprint.ts. (src/controllers/admin/attendance.controller.ts belongs to Attendance.)
+
+## Data Models
+
+- Admin (id Int, name, email @unique, password, isActive, isRootAdmin, department, managerId -&gt; self relation, role AdminRole default EXECUTIVE, avatar, lastLoginAt, phone). hasMany AdminPermission, AdminActivityLog, and relations to MasterLeads, B2B\*, CashTransaction, Expense, Escalation, CoachingNote, Cx\* etc. Admin accounts and login are managed by ck-admin.
+
+- AdminRole enum: SUPER_ADMIN, MANAGER, TEAM_LEAD, EXECUTIVE, CX_AGENT. Schema comment says Postgres and ck-admin also have SALES_AGENT and VENDOR_ONBOARDING_AGENT (known drift).
+
+- AdminPermission (id, adminId, pageKey -&gt; Page.key, canView default true, canEdit default false; @@unique \[adminId, pageKey\]). Page (key, name, icon, parentKey, sortOrder, isActive). Not read by any route in this backend.
+
+- AdminActivityLog (id, adminId, action, entity, entityId, description, metadata Json, ipAddress, userAgent, createdAt). Not written by this backend (ck-admin owns it).
+
+- CustomerActivityLog (customer_activity_logs: id cuid, customerId -&gt; Customers Cascade, action VarChar(100), category LogCategory, description VarChar(500), entityType, entityId, metadata Json, ipAddress, userAgent, platform Platform default WEB, createdAt). Indexes on \[customerId, createdAt desc\], \[category, createdAt desc\], action, createdAt.
+
+- LogCategory enum: AUTH, ORDER, QUOTE, PROFILE, PAYMENT, COUPON, REFERRAL. Platform enum: WEB, ANDROID, IOS, ADMIN_PANEL, SYSTEM.
+
+- FraudRegistry (id uuid, phoneHash, emailHash, imeiHashes String\[\], originalCustomerId, riskScore Int default 0, fraudReason?, deletionType default "self_deleted" (also "admin_flagged"), deletedAt, createdAt, updatedAt; indexes on the hashes and originalCustomerId). Hashes = salted HMAC-SHA256 of the lowercased trimmed value.
+
+- VendorFlag (id, vendorId -&gt; Vendors, leadId? -&gt; MasterLeads, reason, createdBy, createdAt). **No code in src/ touches it**; ck-admin writes it directly.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| PATCH | /api/v1/admin/customers/:customerId/block | Body \{isBlocked: boolean\}. 404 if the customer is missing; idempotent if already in that state. Sets Customers.isBlocked; when blocking inserts a TokenBlacklist marker ACCOUNT_BLOCKED\_&lt;id&gt;\_&lt;ts&gt; (10-year expiry) so every live token dies; when unblocking deletes those markers. Token work is best-effort (logged, not failed). |
+| POST | /api/v1/admin/fraud/mark-stolen | Body \{leadId\}. Lead must exist and have deviceImei. Inserts FraudRegistry row with riskScore:100, fraudReason:"Stolen Device", deletionType:"admin_flagged", hashes of the customer's phone/email and the IMEI. |
+| GET | /api/v1/admin/fraud/stolen-devices | Lists all FraudRegistry rows with fraudReason="Stolen Device", joins the customers and their MasterLeads whose IMEI hash is in imeiHashes (device tables, completedDocuments, Addresses included). |
+| GET | /api/v1/admin/customer-activity-logs | zod query \{customerId?, category?, action?, startDate?/endDate? (ISO datetime), search? (description contains, case-insensitive), page&gt;=1 default 1, limit 1..100 default 50\}. Paginated list with customer name/phone/email. |
+| GET | /api/v1/admin/customer-activity-logs/customer/:customerId | zod query \{category?, limit 1..500 default 100\}. Timeline for one customer plus per-category counts (groupBy category). |
+| GET | /api/v1/admin/customer-activity-logs/customer/:customerId/export | CSV download of up to 10,000 rows (Timestamp, Category, Action, Description, Platform, IP Address, Entity Type, Entity ID). |
+| PATCH | /api/v1/admin/vendors/:vendorId/status | zod \{isApproved?: boolean, status?: pending or live or hold\} (at least one, 422 otherwise). 404 if vendor missing. Updates Vendors.isApproved/status, then notifyAccountStatusChange sends an ALERT vendor notification (referenceType:"ACCOUNT_STATUS", ignoreVendorSession:true). |
+
+## Core Business Logic
+
+1.  **There is no admin login endpoint in this backend.** Admin JWTs are minted by ck-admin (the Next.js admin panel) and passed through the admin gateway guard. Exactly which ck-admin code signs them: Unclear from code in this repo.
+
+2.  Customer activity logging (activityLogger): log() is fire-and-forget, logSync() awaits. It truncates description to 500 chars, redacts sensitive metadata keys (password, otp, token, pin, cvv, aadhaar, pan and similar), takes the first x-forwarded-for IP, and detects platform: admin panel header -&gt; ADMIN_PANEL; UA contains CashkrApp/Android or Dart/ -&gt; ANDROID; CashkrApp/iOS -&gt; IOS; else WEB; no request -&gt; SYSTEM. Actions come from ACTIVITY_ACTIONS (AUTH: LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, OTP_REQUESTED, OTP_VERIFIED, SIGNUP, ACCOUNT_DELETED; ORDER: ORDER_PLACED, ORDER_CANCELLED, ORDER_RESCHEDULED, ORDER_COMPLETED, PICKUP_SCHEDULED; QUOTE: QUOTE_GENERATED/ACCEPTED/REJECTED/EXPIRED; PROFILE: NAME_UPDATED, EMAIL_UPDATED, PHONE_UPDATED, ADDRESS_ADDED/UPDATED/DELETED; PAYMENT: PAYMENT_RECEIVED/FAILED, REFUND_INITIATED/COMPLETED, PAYMENT_DETAILS_UPDATED; COUPON: COUPON_APPLIED/REDEEMED/EXPIRED; REFERRAL: REFERRAL_SENT/SIGNUP/REWARDED).
+
+3.  Block/unblock: flag + blacklist marker; authorize, isTokenBlacklisted, sendOtpToCustomer, verifyOtpForCustomer and registerUser all refuse blocked customers.
+
+4.  Fraud: registry rows come from self-deletion (self_deleted, riskScore 0 — only blocks re-registration once an admin raises riskScore &gt;= 50, which happens outside this backend) and from mark-stolen (admin_flagged, riskScore 100).
+
+## Status / State Machine
+
+Vendor account standing: Status enum pending, live, hold, barred, rejected; this endpoint only allows pending\|live\|hold, plus isApproved boolean. Login requires live + isApproved. Customer: isBlocked true/false.
+
+## Validations & Rules
+
+zod schemas as quoted; CSV export capped at 10,000 rows; list limit max 100, timeline max 500; blacklist marker expiry 10 years.
+
+## Dependencies
+
+Auth & OTP (TokenBlacklist helpers); Vendor (Vendors table, notifyAccountStatusChange in src/services/vendorNotification/vendorNotification.service.ts -&gt; Notifications); Orders (MasterLeads for fraud); Customer / User (Customers); Encryption & Security utils (hashIdentifier). External: none directly.
+
+## Background Jobs / Events
+
+startCleanupActivityLogsJob (src/jobs/cleanupActivityLogs.job.ts): cron "0 4 \* \* \*" Asia/Kolkata, deletes CustomerActivityLog rows older than 90 days in batches of 10,000; started in src/server.ts on the primary instance. Vendor status change emits a vendor ALERT notification.
+
+## Who Uses It
+
+Admin panel (ck-admin); ck-admin also reads/writes Admin, AdminPermission, AdminActivityLog, VendorFlag and FraudRegistry.riskScore directly in the shared DB.

@@ -1,0 +1,77 @@
+---
+title: "Pricing & Evaluation"
+description: "Turns a catalog base price plus the customer's condition answers into the quoted offer (deviceGeneratedPrice), and decides how many vendor credits a lead costs per vendor type and tier."
+---
+
+> *Counted endpoints: 1. POST /api/v1/customer/cart/:leadId/reprice is mounted in the Customer Orders router and is counted under **Customer Orders**.*
+
+<Callout kind="tip">For how the quote becomes Requote and Final price, and what changes when a price is edited, see [Device Price Lifecycle](/backend/device-price-lifecycle).</Callout>
+
+## Purpose
+
+Turns a catalog base price plus the customer's condition answers into the quoted offer (deviceGeneratedPrice), and decides how many vendor credits a lead costs per vendor type and tier.
+
+## Folder / Files
+
+src/routes/evaluation/index.ts (mounted at /api/v1/evaluateDevice); src/controllers/Evaluations/index.ts (evaluationStrategies, computeEvaluationPrice, Evaluations handler); src/controllers/Evaluations/schemas.ts (zod per type); src/utils/deductionResolver.ts (resolveDeduction); src/utils/simType.ts (eSIM deduction); src/utils/TierPriceSystem.ts (LeadPricingSystem — vendor credits by tier/vendor type); src/services/checkoutCart/index.ts (reprice re-runs computeEvaluationPrice on an expired cart quote); src/services/lead/createLead.ts (persists the quote); migration prisma/migrations/20250308000000_class_deduction_flat_or_percent/migration.sql; background docs/PRICING_ALGORITHM.md.
+
+## Data Models
+
+- Reads Device&lt;Type&gt; (+ simOptions), Class&lt;Type&gt; (deduction matrix, deadPrice, credit, tier), Processor/Ram/Storage/GraphicCard (laptop add-ons), CameraLens (lens add-ons). See Device Catalog.
+
+- Migration 20250308000000_class_deduction_flat_or_percent: converts every deduction column (W/B/S/P/T/A) of ClassMobile (36 cols), ClassTablet (36), ClassMac (26) and ClassLaptop (30) from Int to VARCHAR(32) so a cell can hold "500" (flat) or "5%" (percent). Other Class tables were created as VarChar already.
+
+- Persisted result: MasterLeads.deviceGeneratedPrice String (first quote), deviceRequotePrice (system price at inspection), deviceFinalPrice (what the vendor paid), creditPoints Int, tier Int, quoteRefreshedAt, buybackBonusAmount/buybackBonusCampaignId (kept separate from price).
+
+- Vendor credit pricing tables: TierConfig (tier unique, name, baseCredits, isActive), VendorTypeConfig (typeNumber unique 1..5, name, isActive), TierAccessRule (vendorTypeId+tier unique → may this vendor type see this tier), ExtraCreditRule (vendorTypeId+tier unique, extraCredits, isActive), AddCreditAlgorithm (deviceType, from, to, credit, Type1..Type5 — price bands for Laptop/Desktop credits).
+
+- Zone (name, city, state; Pincodes.zoneId, Vendors) and PriceVerification (leadId unique, vendorId, generatedPrice, vendorFinalPrice, verifiedPrice, accuracy, verifiedBy Admin) — **both unreferenced in `src/` and `scripts/`**; schema-only (admin panel).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/evaluateDevice | Body \{deviceId, deviceType, price, isDeviceTurnedOn, warrantyStatus, bodyCondition?, screenCondition?, physicalCondition\[\], technicalCondition\[\], accessories\[\], simType?, extraLensIds?, numberOfCDs?, extraControllers?, processorId?, ramId?, storageId?, graphicCardId?, screenSize?\}. Validates with the registry schema for the type, prices it, returns \{deviceId, deviceType, credit, price, buybackBonus?, totalPrice?\}. |
+| POST | /api/v1/customer/cart/:leadId/reprice | (Mounted in the Customer Orders router.) If the lead's quote is past QUOTE_VALIDITY_DAYS, rebuilds the evaluation request from the saved Data&lt;Type&gt; row and the catalog price, calls computeEvaluationPrice, writes the new deviceGeneratedPrice, quoteRefreshedAt and a LeadLogs line. Only for REPRICEABLE_TYPES = Mobile, Tablet, Mac, Camera, Headphone, Console, Watch; else REPRICE_UNSUPPORTED. |
+
+## Core Business Logic
+
+1.  **Validation**: deviceRegistry\[deviceType\].evaluationSchema (fallback Mobile). Strict schemas (Mobile/Tablet/Desktop/Drone/TV/AC share MobileEvaluationRequestSchema, Mac, Laptop) require warrantyStatus W1-W4, isDeviceTurnedOn, coded enums for body (B1-B4), screen (S0-S5), physical/technical/accessory codes, and "at least one of physicalCondition or accessories". Loose schemas (Camera, Headphone, Console, Watch) make everything optional and default accessories to \[\]. price must be a non-negative number.
+
+2.  **Lookup**: computeEvaluationPrice finds the device by deviceId in the registry table with its class included; 404 "Device not found"/"Class data not found".
+
+3.  **Pre-normalisation**: Camera — numeric strays in physicalCondition are moved to extraLensIds; Console — "1" → "E1", "2" → "CD2"; Mobile — resolveSimType(device.simOptions, simType) (400 if the answer is not one of the model's options when it has ≥2; SIM3 = eSIM-only → deduct column ESIM).
+
+4.  **`resolveDeduction(cell, base)`**: number → flat; "5%" → round(base × 5 / 100); "500" → 500; null/blank/NaN → 0.
+
+5.  **`mobilePriceEvaluation`** (all types except Laptop; Camera wraps it): if the device does not turn on and the class has a deadPrice → return deadPrice. Else base −= ESIM (Mobile eSIM only); final = base − W − B − S − Σunique(P) − Σunique(T) + CD-code + E-code − Σ(missing accessory codes). Missing accessories = registry.accessoryCodes (Camera A1-A8, Headphone/Console A1-A3, Watch A1-A4) or legacy A1-A4 for types without the field, minus the ones the customer owns. Every % is of the (eSIM-reduced) base. If final &lt;= 0 → deadPrice.
+
+6.  **`laptopPriceEvaluation`** (Laptop only): dead check; total = base + Processor.value + Ram.value + Storage.value (+ GraphicCard.value) — only when processorId, ramId and storageId are all present — + class\[screenSize\] + Σunique(owned accessories) (laptops ADD owned accessories); then final = total − W(total) − B(total) − ΣP(total) − ΣT(total); floor at deadPrice.
+
+7.  **`cameraPriceEvaluation`**: body via the mobile strategy, then + Σ CameraLens.value for cameraLensIds (skipped when dead). computeEvaluationPrice afterwards adds Σ CameraLens.value for extraLensIds as well.
+
+8.  **BuyBack bonus**: if isDeviceTurnedOn !== false, tryGetActiveBonusForDevice adds buybackBonus \{amount, campaignId, campaignName, endsAt\} and totalPrice = price + amount; price itself is never changed.
+
+9.  **Persistence**: the evaluation itself is not stored. POST /api/v1/lead saves the chosen quote as deviceGeneratedPrice, with creditPoints = Class.credit (or AddCreditAlgorithm band for Laptop/Desktop) and tier via getLeadTier() (class tier, or defaultTier 1 for Drone/TV/AC). At booking the BuyBack bonus is re-derived server-side (buybackSnapshotForBooking) and stamped in its own columns.
+
+10. **Vendor credit price (`LeadPricingSystem`)**: loads VendorTypeConfig(active) + TierAccessRule + ExtraCreditRule(active) + TierConfig(active) into an in-process cache (CONFIG_TTL_MS = 10 min). canAccessTier(vendorType 1-5, tier 1-3), getLeadPrice(vendorType, tier) = \{baseCredits: TierConfig.baseCredits, extraCredits: ExtraCreditRule, totalCredits\} (throws if no access rule / missing tier), getAccessibleTiers, getVendorsByTier. Used by lead assignment, reservation, available-orders list and notifications (Orders / Vendor modules). GetOrdersController.getLaptopCreditPoints(price, vendorType) reads AddCreditAlgorithm.Type1..Type5 bands for laptops.
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+Codes are fixed enums (W1-W4, B1-B4, S0-S5, P…, T…, A…, SIM1-SIM3, E0-E8, CD0-CD10); code arrays are de-duplicated before pricing; lens ids not in CameraLens are ignored; price must be ≥ 0; unknown class cell → 0 deduction (silent); deadPrice is the floor for a turned-on device that nets ≤ 0.
+
+## Dependencies
+
+Device Catalog (tables, registry), BuyBack Bonus Campaigns (bonusCampaign.service), Redis cache (OptimizedPrismaClient), Customer Orders (cart reprice calls into it), Orders / Vendor (consume LeadPricingSystem).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Customer web + customer app (/evaluateDevice, cart reprice); vendor flows indirectly through credits.

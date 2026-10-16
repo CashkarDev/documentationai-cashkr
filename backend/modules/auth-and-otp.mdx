@@ -1,0 +1,84 @@
+---
+title: "Auth & OTP"
+description: "Phone-OTP login for customers, vendors, cashboys and store vendors, email OTPs and email verification, JWT issue/refresh, token blacklisting, and the inspection OTP a vendor enters at pickup."
+---
+
+## Purpose
+
+Phone-OTP login for customers, vendors, cashboys and store vendors (2Factor SMS), email OTPs, JWT issuing/refresh, token blacklisting, and the lead-inspection OTP that a vendor types in at pickup. Also holds the OTP abuse controls (per-number throttle, client check).
+
+## Folder / Files
+
+src/routes/otp/index.ts, src/routes/otp/leadOtp/index.ts, src/routes/user/index.ts (/refreshToken), src/controllers/otp/index.ts (1390 lines), src/controllers/otp/LeadOtpController.ts, src/controllers/otp/emailOtpTemplate.ts, src/controllers/otp/twofactorconfig.ts, src/middleware/authorize.ts, src/middleware/optionalAuthorize.ts, src/utils/auth.middleware.ts (VerifyJWT, verifyToken, generateAccessToken, generateAccessTokenForVendor), src/utils/token-blacklist.ts, src/utils/otpThrottle.ts, src/utils/otpClientCheck.ts, src/utils/demoUser.util.ts, src/utils/vendorSession.ts, src/utils/partnerSelfie.ts (selfie parse/upload used by vendor login). Tests: tests/otpThrottle.test.ts, tests/otpClientCheck.test.ts.
+
+## Data Models
+
+- Otp (id, email, otp VarChar(6), sessionId @unique, expiresAt, isUsed, createdAt; index \[email, createdAt\]) — email OTPs only. Phone OTPs are never stored; 2Factor holds the session.
+
+- leadOtp (id, leadId @unique, otp, isVerified, sentAt, createdAt, updatedAt) belongsTo MasterLeads (onDelete Cascade). Rows are created by the Orders / Inspection Code modules; this module only verifies them.
+
+- TokenBlacklist (id, tokenId @unique, userId, expiresAt, createdAt; index \[expiresAt\]). Holds revoked JWTs and "marker" rows: ACCOUNT_DELETED\_&lt;userId&gt;\_&lt;ts&gt; and ACCOUNT_BLOCKED\_&lt;userId&gt;\_&lt;ts&gt;.
+
+- PartnerLoginSession (id cuid, vendorId?, cashboyId?, userType VarChar(20) "Vendor"\|"Cashboy", selfieImageUrl, loginAt, ipAddress, userAgent) belongsTo Vendors / Cashboy. Login-selfie audit row.
+
+- DemoUsers (id, phone @unique, firstName/lastName, otp). Phones here skip SMS (used for store review / QA).
+
+- IdentityVerification (id, leadId -&gt; MasterLeads, method VerificationMethod \{AADHAAR_OTP, PAN, PASSPORT, MANUAL\}, status VerificationStatus \{INITIATED, PENDING, VERIFIED, FAILED, EXPIRED\}, providerRefId @unique, verified identity fields, faceMatchScore, failureReason, attemptCount, verifiedBy, consentAt, verifiedAt, expiresAt). **No code in src/ reads or writes this table** — schema only.
+
+- Customers.emailVerifiedAt is stamped by confirmEmailVerification; Vendors.lastLoginAt, Vendors.deviceToken, Cashboy.lastLoginAt, Cashboy.deviceToken, StoreVendors.deviceToken are written at partner login.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/otp/sendotptocustomer | zod \{phone: 10 chars, userType: customer or vendor or cashboy\}. Blocked customer -&gt; 403. For vendor/cashboy userType the phone must exist and the vendor be approved (404/401). Then throttle check, 2Factor SMS (template CashkarCustomerRegOtp). Returns sessionid. |
+| POST | /api/v1/otp/verifyotpforcustomer | \{phone, otp, sessionid\}. Blocked customer -&gt; 403. On a match -&gt; 202 with isRegistered and, if the customer exists, a 30-day access token. Logs LOGIN_SUCCESS to CustomerActivityLog. No token when unregistered (client then calls /user/registercustomer). |
+| POST | /api/v1/otp/sendotptovendor | \{phone\}. A cashboy removed from his vendor (and not also an active vendor) -&gt; 403. Unregistered numbers still get an OTP (that is how new partners reach /user/registerVendor). Template CashkarVendorLoginOtp. |
+| POST | /api/v1/otp/verifyotpforvendor | AuthenticationService.verifyOtpForPartner. Finds Vendors (status "live", isApproved) else Cashboy still linked to a vendor. On match: rotates deviceToken, sets lastLoginAt, uploads the login selfie + creates PartnerLoginSession (best-effort), punches attendance in (never fails the login), returns 202 \{partnerType:"Vendor" or "Cashboy", token\}; the partner token expires at the next 00:00 IST. No vendor/agent -&gt; 202 isRegistered:false. |
+| POST | /api/v1/otp/verifyotpforstorevendor | Same as above for StoreVendors. Rotates deviceToken, marks attendance (kind storeVendor), returns partnerType:"Vendor" and a midnight-IST token. |
+| POST | /api/v1/otp/emailOtp | \{email\} must belong to an existing Customers/Vendors/Cashboy row (404 otherwise). Replaces unused Otp rows for the email with a new 6-digit OTP + sessionId, 10-minute expiry, emailed with EmailOtpTemplate. Returns sessionId. |
+| POST | /api/v1/otp/verifyEmailOtp | \{email, otp, sessionId\}. Matches an unused, unexpired Otp, marks it used, cleans up old rows, and issues an access token for the matching customer/vendor/cashboy. |
+| POST | /api/v1/otp/sendEmailVerification | Ownership proof for any address. If the signed-in customer already verified this email -&gt; 409 alreadyVerified. Creates Otp row (10 min) and sends via EngineMailer (EMAIL_VERIFICATION template); 500 if the mail did not go out. |
+| POST | /api/v1/otp/confirmEmailVerification | Matches the Otp row, marks used, stamps Customers.emailVerifiedAt only on the caller's own row (if signed in), returns a 30-minute verificationToken for the email (not an access token). |
+| POST | /api/v1/otp/lead/verify | \{leadId, otp\} + selfie image. The vendor must be assigned to the lead (404 "Vendor Not Authorized"). Compares leadOtp.otp, uploads the image to S3 leads/&lt;leadId&gt;/, sets leadOtp.isVerified=true, upserts inspectionImages.selfPhoto. |
+| GET | /api/v1/user/refreshToken | Verifies the current token, looks up Customers/Vendors/Cashboy, rejects deleted users, issues a new 30-day access token and sets it as an httpOnly accessToken cookie (sameSite strict, maxAge 30 d). |
+
+## Core Business Logic
+
+1.  Customer login: /otp/sendotptocustomer -&gt; 2Factor SMS -&gt; /otp/verifyotpforcustomer. If the phone is not a customer the client registers via /user/registercustomer (Customer / User module), which returns the token.
+
+2.  Partner login: /otp/sendotptovendor -&gt; /otp/verifyotpforvendor (or /verifyotpforstorevendor). Vendor must be status=live and isApproved=true; cashboy must still be linked to a vendor. Login rotates deviceToken, records lastLoginAt (push gate: hasActiveVendorSession in vendorSession.ts), stores the selfie session, and is the punch-in moment for attendance.
+
+3.  Token verification (authorize): token from Authorization: Bearer or cookie accessToken -&gt; blacklist check -&gt; JWT verify -&gt; lookup in Customers / Vendors / Cashboy / StoreVendors -&gt; reject deleted, blocked or anonymised accounts -&gt; req.user with userKind.
+
+4.  Blacklist check: exact token row, ACCOUNT_DELETED\_ marker, ACCOUNT_BLOCKED\_ marker, user missing/deleted/blocked.
+
+5.  Email verification token is deliberately not an access token.
+
+## Status / State Machine
+
+No status enum of its own. Partner session = "today in IST": token expires at next 00:00 IST (vendorSessionExpiry). Vendors must be Status live (enum: pending, live, hold, barred, rejected) to log in.
+
+## Validations & Rules
+
+- Throttle (otpThrottle.ts, Redis): per-number cooldown plus hourly and daily caps, and a global hourly alert. Refusal = 429 + Retry-After. Phone normalised to last 10 digits.
+
+- Client check (otpClientCheck.ts): web requests are checked with Cloudflare Turnstile and app requests with Firebase App Check. Refusal = 403 code:"CLIENT_CHECK_FAILED".
+
+- Email OTP: 6 digits, 10-minute expiry, one unused OTP per email.
+
+- Selfie: max 5 MB; lead OTP image 5 MB (multer limit).
+
+- Customer token: 30 days. Partner token: until next 00:00 IST.
+
+## Dependencies
+
+2Factor SDK (TWOFACTOR_APIKEY); NodeMailerUtility and EngineMailerUtility (Messaging Utilities); S3 via uploadToS3Bucket / uploadPartnerSelfie (File Upload); Firebase Admin App Check (Notifications); Cloudflare Turnstile; ioredis; AttendanceService (Attendance); LeadService.verifyUserLead (Orders); activityLogger (Admin); GenerateUniqueToken (src/utils/deviceTokenGenerator.ts). Internal modules: Attendance, Orders, Inspection Code (owner of leadOtp rows), Notifications, Messaging Utilities, File Upload, Admin (activity log), Vendor, Cashboy, Store / Store Vendors.
+
+## Background Jobs / Events
+
+None owned here. Used OTP rows are cleaned inline on every successful email-OTP verify. The chat socket verifies tokens on its own (Chat module).
+
+## Who Uses It
+
+Customer web (ck-web2.0 server route /api/auth/sendotp), Customer app, Vendor/partner app (vendor, cashboy, store vendor login + lead OTP), internal (demo users for store review/QA).

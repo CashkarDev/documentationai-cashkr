@@ -1,0 +1,50 @@
+---
+title: "Model Request"
+description: "Lets a logged-in customer ask for a model CashKr does not list yet, and tells them on WhatsApp once ops adds it to the catalog."
+---
+
+## Purpose
+
+Lets a logged-in customer ask for a model CashKr does not list yet, and tells them on WhatsApp once ops adds it to the catalog.
+
+## Folder / Files
+
+src/routes/modelRequest/route.ts (mounted /api/v1/model-request); src/controllers/modelRequest/index.ts (createModelRequest); src/services/modelRequest/modelRequestAvailable.service.ts; src/jobs/modelRequestAvailable.job.ts (started in src/server.ts on the primary PM2 instance).
+
+## Data Models
+
+ModelRequest (id uuid, deviceType DeviceType, brandName, modelName, customerName, customerPhone, customerId?, status ModelRequestStatus default pending, notifiedAt?, linkedProductId? = catalog row id set by ops, createdAt, updatedAt; indexes deviceType, customerId, status). No FK relations. enum ModelRequestStatus \{ pending reviewed added rejected \}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/model-request | Body \{deviceType, brandName, modelName\}. Validates deviceType against the enum, trims names (400 if empty), loads the customer's name/phone (404 if missing), returns the existing row (200) if the same customer already has a pending request for the same type+brand+model, otherwise creates one (201). |
+
+## Core Business Logic
+
+1.  Customer submits; row stored with status = pending and the customer's name/phone snapshot.
+
+2.  Ops reviews in the admin panel (directly in the DB): sets status = added and linkedProductId to the new Device&lt;Type&gt;.id (no backend route does this).
+
+3.  Cron sweep (processModelRequestAvailableSweep): every run takes up to MODEL_REQUEST_NOTIFY_BATCH = 25 rows with status = "added" AND notifiedAt IS NULL, builds the product page URL (buildProductPageUrl via deviceRegistry), sends WhatsApp template model_request_available with body params \[customerName, brandName, modelName\] and the URL as button param, then sets notifiedAt whether or not the send succeeded.
+
+## Status / State Machine
+
+pending → reviewed \| added \| rejected (set by admin panel; the backend only creates pending and reads added). No transition guard in code.
+
+## Validations & Rules
+
+deviceType enum check; non-empty trimmed brand/model; duplicate check only against pending; batch 25 per sweep; env MODEL_REQUEST_AVAILABLE_SWEEP_ENABLED=false disables the sweep.
+
+## Dependencies
+
+Auth & OTP (authorize), Customer / User (Customers lookup), Device Catalog (deviceRegistry, productPageUrl), Messaging Utilities (WhatappsUtility.sendWhatappsMessage → Pabbly WhatsApp), Cron Jobs.
+
+## Background Jobs / Events
+
+modelRequestAvailable.job.ts: CronJob("\*/10 \* \* \* \*", …, null, true, "Asia/Kolkata"), primary instance only (isPrimaryInstance() in server.ts).
+
+## Who Uses It
+
+Customer web + customer app (submit); admin panel (review/link); customer gets WhatsApp.

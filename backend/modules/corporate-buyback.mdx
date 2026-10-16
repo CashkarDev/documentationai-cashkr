@@ -1,0 +1,46 @@
+---
+title: "Corporate Buyback"
+description: "Public \"corporate / bulk buyback\" enquiry form on cashkr.com; the submission becomes a B2B lead that the sales team works in the admin panel."
+---
+
+## Purpose
+
+Public "corporate / bulk buyback" enquiry form on cashkr.com; the submission becomes a B2B lead that the sales team works in the admin panel.
+
+## Folder / Files
+
+src/routes/corporateBuypack/route.ts (mounted /api/v1/corporateBuyback); src/controllers/corporateBuypack/index.ts (CorporateBuybackController.createEnquiry); src/controllers/corporateBuypack/schemas.ts (CorporateBuybackSchema, CorporateBuybackModel.create).
+
+## Data Models
+
+- B2BLead — **the only B2B model this backend writes.** Fields: companyName, contactName, contactEmail, contactPhone, jobTitle, city, state, pincode, subject, query, status String default "New", source, notes, lastContactDate, nextFollowUp, isConverted, convertedClientId, assignedToId → Admin, assignedAt; hasMany B2BLeadInteraction.
+
+- Schema-only for this backend (no Prisma usage in src/ or scripts/; used by the admin panel directly): B2BClient (company + leadId @unique), B2BDeal (dealNumber, status B2BDealStatus, first/final quote amounts and dates, inspection fields), B2BDealItem (dealId, deviceType, brand, model, serial, quantity, first/final quote price, condition), B2BDealLog (dealId, action, description, performedBy), InventoryBuyer, InternalSale (totalAmount, customer fields, inventoryBuyerId, salesCustomerId, paymentMethod, receivedAmount), FinanceReturnLog, SalesCustomer (type SalesCustomerType), PurchaseContact, ExcessBuyback.
+
+- enum B2BDealStatus \{ Format DataRequested DataReceived FirstQuoteSent InspectionScheduled InspectionComplete FinalQuoteSent Approved InvoiceReceived PaymentPending PaymentComplete Closed Cancelled PaymentRequested \} — transitions are implemented in the admin panel, not here.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/corporateBuyback | zod: name (required), email (valid), mobile (10 digits), jobTitle?, state?, city (required), pincode (6 digits), subject, query (required), status? (ignored). Creates B2BLead with status: "New", source: "Website"; name split on the first comma into companyName, contactName (same value for both when no comma). Returns 201 \{id, companyName, contactName, email\}; 400 with zod errors; 500 on DB error. |
+
+## Core Business Logic
+
+Single insert; no email/WhatsApp/Slack notification is sent to the sales team from this backend; follow-up (assignment, interactions, conversion to B2BClient, deals) is admin-panel work on the shared DB.
+
+## Status / State Machine
+
+B2BLead.status is a free string ("New" on create); B2BDealStatus enum above (admin panel only).
+
+## Dependencies
+
+None internal (Prisma only).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Customer web (corporate page); admin panel consumes the rows.

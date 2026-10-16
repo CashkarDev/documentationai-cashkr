@@ -1,0 +1,70 @@
+---
+title: "Attendance"
+description: "Daily attendance for partners (field vendors, store vendors, cashboys): login auto punch-in, selfie + GPS punch in/out, location heartbeats, and admin summary, live map, roster and overrides."
+---
+
+## Purpose
+
+Daily attendance for partners (field vendors, store vendors, cashboys): the morning OTP login auto punches in, the app can punch in/out with selfie + GPS, send location heartbeats during the shift, and admins see a summary, live map, roster, CSV export, overrides and store geofences.
+
+## Folder / Files
+
+src/routes/attendance/attendance.routes.ts (mounted at /api/v1/attendance), src/routes/admin/attendance/attendance.routes.ts (mounted at /api/v1/admin/attendance), src/controllers/attendance/attendance.controller.ts, src/controllers/admin/attendance.controller.ts, src/services/attendance/attendanceService.ts (1119 lines), src/services/attendance/attendanceIdentity.ts, src/utils/geofence.ts, src/utils/partnerSelfie.ts, src/jobs/attendanceAutoPunchOut.job.ts. Login hook: src/controllers/otp/index.ts (markAttendanceForLogin, line ~496). Tests: tests/attendance.test.ts.
+
+## Data Models
+
+- VendorAttendance (line 4703) — exactly one of vendorId → Vendors, storeVendorId → StoreVendors, cashboyId → Cashboy (all cascade); storeId? → Store (SetNull); userType AttendanceUserType (STORE_VENDOR \| VENDOR \| CASHBOY); date @db.Date (IST calendar day pinned to UTC midnight); punch-in: punchInTime, punchInSource AttendanceSource (LOGIN \| MANUAL), punchInLat/Lng?, punchInAddress?, punchInSelfieUrl?, punchInDistanceMtrs?, isPunchInGeofenced; punch-out: punchOutTime?, punchOutLat/Lng?, punchOutAddress?, punchOutSelfieUrl?; status AttendanceStatus, isLate, totalHoursWorked?, isMockLocation, deviceBatteryLevel?, remarks? (≤500). Unique (vendorId,date), (storeVendorId,date), (cashboyId,date). hasMany AttendanceLocationHeartbeat.
+
+- AttendanceLocationHeartbeat (line 4768) — attendanceId (cascade), latitude, longitude, batteryLevel?, currentLeadId?, recordedAt.
+
+- Store.latitude/longitude, Store.geofenceRadiusMeters Int? @default(100) (line 3276) are the geofence centre/radius.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/attendance/punch-in | Body latitude, longitude, address, deviceMetadata\{isMock,batteryLevel\}, selfieUrl (http URL, base64 or data URI) or multipart selfie. Selfie required (400). Creates today's row or completes a LOGIN-created row; 409 if already marked. 201. |
+| POST | /api/v1/attendance/punch-out | Requires valid coordinates (400); optional selfie. 404 if no punch-in today, 409 if already out. Sets punchOutTime, totalHoursWorked, status CHECKED_OUT (keeps DISPUTED). |
+| POST | /api/v1/attendance/heartbeat | Body attendanceId, latitude, longitude, batteryLevel?, currentLeadId?. Scoped to caller's own row; 404 if not theirs, 409 if shift closed. |
+| GET | /api/v1/attendance/status | Today's row for the caller + userType, with store name/address. |
+| GET | /api/v1/attendance/team | Query date or startDate+endDate or month+year. Cashboy: own attendance with vendor info. Vendor/store vendor: own row plus each cashboy's rows, with live shift timer (shiftStatus, formattedTimer). |
+| GET | /api/v1/admin/attendance/summary | Today's KPI counts: totalClockedIn, present, late (by isLate), onField, checkedOut, disputed, storeVendorsCount, cashboysCount. |
+| GET | /api/v1/admin/attendance/live-map | Active stores with coordinates + today's attendance, and today's field agents in PRESENT/ON_FIELD/LATE/DISPUTED with latest heartbeat. |
+| GET | /api/v1/admin/attendance/roster | Paginated roster; filters startDate, endDate, status (enum-validated, 400 otherwise), userType, search, storeId, page, limit (max 1000). |
+| GET | /api/v1/admin/attendance/export | Same filters, first 1000 rows as CSV (attendance_export\_&lt;ts&gt;.csv, UTF-8 BOM, formula-injection escaping). |
+| PATCH | /api/v1/admin/attendance/:id/override | Body status (required, enum), remarks?. Appends Override: &lt;remarks&gt;; LATE also sets isLate=true. |
+| PATCH | /api/v1/admin/attendance/stores/:storeId/geofence | Body latitude, longitude, geofenceRadiusMeters? (10–5000). Updates Store. |
+
+## Core Business Logic
+
+1.  **Identity** (attendanceIdentity.ts): the principal is resolved from the login token only. Cashboy → CASHBOY. Otherwise vendorId is looked up in Vendors and StoreVendors (using userKind when present): StoreVendors → STORE_VENDOR with storeId; Vendors → VENDOR, or STORE_VENDOR when Vendors.userType === "Store" (no storeId). Customers get 403.
+
+2.  **Auto punch-in at login** (otp/index.ts markAttendanceForLogin → AttendanceService.punchInFromLogin): partner sessions end at IST midnight, so the first OTP login of the day is the punch-in (punchInSource=LOGIN, time = login instant, selfie/coords optional). Retried 3 times (150 ms apart), never fails login. Idempotent for a second login the same day. Store vendors outside the geofence are flagged DISPUTED, not rejected.
+
+3.  **Manual punch-in**: if today's row came from LOGIN and lacks selfie or coordinates, the call backfills them (completeLoginPunchIn; outside-geofence → DISPUTED + remark). Otherwise a new row: store vendors with a configured store geofence must be within geofenceRadiusMeters (default 100 m, Haversine) or get 403 "Punch-in failed: You are Xm away from &lt;store&gt;"; unconfigured store or missing location → remark only. Status PRESENT for store vendors, ON_FIELD for field vendors/cashboys; isLate if IST time &gt; ATTENDANCE_LATE_CUTOFF_IST (default 10:15); deviceMetadata.isMock → DISPUTED. Unique index catches races (P2002 → 409).
+
+4.  **Punch-out**: computes totalHoursWorked (2 decimals), CHECKED_OUT unless DISPUTED.
+
+5.  **Auto punch-out job**: autoPunchOutOpenShifts() closes every row with punchOutTime=null and date &lt;= today, capping each at 23:59:59.999 IST of its own day, appends remark "Auto punched out at day end", leaves coords/selfie null.
+
+6.  **Selfies** (partnerSelfie.ts): accepts multipart file, base64 or data URI; types jpeg/png/webp/heic (sniffed from magic bytes if needed); max 5 MB; uploaded to partner-attendance-selfies/ (login uses partner-login-selfies/); only the URL is stored.
+
+## Status / State Machine
+
+AttendanceStatus = PRESENT, LATE, HALF_DAY, ON_FIELD, CHECKED_OUT, ABSENT, DISPUTED. Code transitions: new row → PRESENT (store) or ON_FIELD (field); mock GPS or outside geofence → DISPUTED; punch-out / auto punch-out → CHECKED_OUT (DISPUTED stays DISPUTED); admin override → any value. LATE, HALF_DAY, ABSENT are only set by admin override (isLate is the real lateness flag; ABSENT is also used by team-view filtering).
+
+## Validations & Rules
+
+parseCoordinates rejects non-finite, out-of-range and (0,0); punch-out and heartbeat require coordinates; address truncated to 500; remarks clamped to 500; geofence radius 10–5000; roster limit ≤ 1000; admin enum params validated (400). IST day boundaries via dayjs Asia/Kolkata (normalizeAttendanceDate, endOfAttendanceDay). Body vendorId/userType are ignored by design.
+
+## Dependencies
+
+Auth & OTP (login hook), Vendor / Cashboy / Store (identity, store geofence), File Upload (uploadToS3Bucket via partnerSelfie), Vendor Account Deletion (nulls attendance selfie URLs on purge). External: S3-compatible storage.
+
+## Background Jobs / Events
+
+src/jobs/attendanceAutoPunchOut.job.ts: cron ATTENDANCE_AUTO_PUNCHOUT_CRON or "55 23 \* \* \*" (23:55 Asia/Kolkata), started on the primary instance in src/server.ts.
+
+## Who Uses It
+
+Vendor app (punch-in/out, heartbeat, status, team); Admin panel (summary, live map, roster, export, override, geofence).

@@ -1,0 +1,75 @@
+---
+title: "Gift Cards (Woohoo)"
+description: "Customers can take their device payout as an Amazon e-gift card with a bonus on top. CashKr issues the card at completion through Woohoo; includes reconcile job and admin monitoring."
+---
+
+<Callout kind="tip">Gift card value = (Final, else Requote, else Generated) + BuyBack bonus, then the gift-card % on top, capped at ₹10,000. See [Device Price Lifecycle](/backend/device-price-lifecycle).</Callout>
+
+## Purpose
+
+Lets a customer take their device payout as an Amazon e-gift card (paymentType GiftCard) instead of Cash/UPI/Bank, with a bonus on top (fixed WOOHOO_GIFT_BONUS_BPS, e.g. 200 = +2%, else Woohoo's per-SKU corporateDiscounts). CashKr issues the card at order completion through Woohoo (Pine Labs/Qwikcilver) from its prepaid SVC balance; the vendor pays nothing in cash.
+
+## Folder / Files
+
+src/routes/giftcard/index.ts (mount /api/v1/giftcard), src/routes/admin/giftCards/giftCards.routes.ts (mount /api/v1/admin/gift-cards, handlers inline), src/controllers/giftCard/giftCardOptions.controller.ts, src/services/giftCard/\{access,region,giftCardRate,giftCardAmount,giftCardDisplay,payoutDisplay,giftCardOrder.service,giftCardPayout.service\}.ts, src/integrations/woohoo/\{config,redis,auth,signature,client,catalog,orders,recovery,types\}.ts, src/jobs/giftCardReconcile.job.ts, completion hooks in src/services/lead/masterLead.service.ts, customer read in src/controllers/Lead/index.ts getLeadGiftCard, src/utils/fieldEncryption.ts, scripts scripts/woohoo-\*.ts, tests tests/integrations/woohoo/\*, tests/services/giftCard/\*. Migrations 20260519063302_add_gift_card_models, 20260529145732_add_giftcard_payment_type, 20260530094505_giftcard_base_bonus_columns (baseAmountInPaise, bonusBps).
+
+## Data Models
+
+- GiftCardOrder (id uuid, provider GiftCardProvider, refNo @unique (CK\_ + leadId, 18 chars), leadId?, customerId?, sku, amountInPaise (face), baseAmountInPaise?, bonusBps?, quantity, providerOrderId?, status GiftCardOrderStatus, syncOnly, deliveryMode "API", cardNumberEncrypted?, cardPinEncrypted?, cardExpiry?, cardActivationCode?, cardActivationUrl?, requestPayload Json, responsePayload?, statusResponses?, recoveryOutcome?, errorCode?, errorMessage?, failedAt?, placedAt?, completedAt?, deliveredAt?, refundedAt?). No FK relations declared; linked to MasterLeads by leadId.
+
+- GiftCardCategory and GiftCardProduct — catalog cache tables; **no code in `src/` or `scripts/` writes or reads them**.
+
+- Enums: GiftCardProvider \{WOOHOO\}, GiftCardPriceType \{RANGE, SLAB\}, GiftCardOrderStatus \{PENDING, PROCESSING, COMPLETE, FAILED, TIMEOUT_RECOVERY, CANCELLED, REFUND_REQUIRED, REFUNDED\}, paymentType \{Bank, UPI, Cash, Wallet, GiftCard\} on MasterLeads.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/giftcard/options?leadId= | Live quote: base payout for the lead (resolveGiftCardBaseRupees, incl. influencer/coupon/BuyBack bonuses), bonusBps, grossed-up payoutRupees, eligible, ineligibleReason (not_in_rollout/exceeds_cap), maxRupees. Customer may only query own lead; vendor/cashboy must pass leadId. |
+| GET | /api/v1/admin/gift-cards | List orders; filters status, leadId, customerId, q (refNo/providerOrderId), page, limit ≤ 100. Never returns card number/PIN (only hasCard). |
+| GET | /api/v1/admin/gift-cards/stats | Count + ₹ sum per status. |
+| GET | /api/v1/admin/gift-cards/value/:leadId | Authoritative card value: issued COMPLETE order → actual face (provisional:false); else live estimate (provisional:true). |
+| GET | /api/v1/admin/gift-cards/:id | Single order (safe projection). |
+| POST | /api/v1/admin/gift-cards/:id/reconcile | Manual reconcilePendingOrder (query by refNo, never re-places). |
+
+Related endpoints documented under Orders / Customer Orders: GET /api/v1/lead/:id/giftcard (owning customer only; returns the card for COMPLETE, status otherwise), GET /api/v1/order/:id/giftcard-status (vendor poll), PATCH /api/v1/order/:id/payment-method (vendor payout switch).
+
+## Core Business Logic
+
+1.  **Eligibility & quote.** Rollout allowlist WOOHOO_GIFT_ALLOWED_PHONES (empty = everyone). Base = deviceFinalPrice ?? deviceRequotePrice ?? deviceGeneratedPrice (+ influencer bonus and coupon discount when only the raw quote exists) + BuyBack bonus (giftCardAmount.ts). Bonus bps: WOOHOO_GIFT_BONUS_BPS if &gt; 0, else Woohoo corporateDiscounts for the SKU cached in Redis for 24 h, capped at 5000 bps. Face = round-to-rupee(base × (1 + rate)). Must be within ₹1–₹10,000 (RBI cap). payoutDisplay.ts / giftCardDisplay.ts add the same overlay for display in order lists, invoices and the vendor app.
+
+2.  **Choosing GiftCard.** Customer picks paymentType = GiftCard at checkout (web) or the vendor sets it pre-completion via PATCH /order/:id/payment-method (pre-validated for cap + rollout). After completion the method is locked; a COMPLETE or PENDING GiftCardOrder blocks any switch (double-pay guard).
+
+3.  **Issuance at completion** (masterLead.service.ts completeLead): if paymentType === "GiftCard": final + BuyBack bonus must be within the cap, else 409 "exceeds ₹10,000"; issueGiftCardForLeadSync → prepareGiftCardIssue (allowlist, base, bonus, cap, refNo idempotency, delivery address and state) → insert GiftCardOrder PENDING → Woohoo create order (timeout 35 s in prod, else 10 s). Inline COMPLETE → cards fetched → status COMPLETE, card number/PIN encrypted at rest, customer FCM push + GIFT_CARD_ISSUED email → order finalized. Not COMPLETE inline or timeout → order stays PENDING, lead stays InProgress with collection data saved, response giftCardStatus:"issuing", pendingPayout:true; vendor app polls /order/:id/giftcard-status. Provider rejection (e.g. invalid SKU) → order FAILED, 409 to vendor "switch to Cash/UPI/Bank".
+
+4.  **Woohoo integration.** OAuth2 bearer token cached in Redis (6 days, refreshed once on rejection); every request is HMAC-signed as Woohoo requires. client.ts wraps axios into WoohooApiError / WoohooTimeoutError (timeouts route to the pending path).
+
+5.  **Catalog.** catalog.ts exposes the Woohoo catalog endpoints. Only getProductBySku is used in src (bonus rate); listing calls are used by scripts. There is no catalog → DB sync.
+
+6.  **Recovery / reconciliation** (recovery.ts). resolveByRefNo queries the order status; "order not available" while within the deadline → pending_processing, after the deadline → never_created_retry_safe; COMPLETE → success (via 'status_poll'); other status after deadline → failed_refund_required. reconcileStuckPendingOrders(\{floorMinutes:1, deadlineMinutes:3\}) polls PENDING orders every run. pollGiftCardIssueStatus (vendor poll) applies the same 3-minute deadline and finalizes the lead on success; the vendor switches to Cash/UPI/Bank on failure.
+
+7.  **Customer access.** GET /api/v1/lead/:id/giftcard decrypts and returns the card only to the owning customer; admin endpoints never expose it.
+
+## Status / State Machine
+
+GiftCardOrder.status: PENDING (created) → COMPLETE (card issued, via inline or status_poll) \| FAILED (provider rejection, or never-created after deadline) \| REFUND_REQUIRED (provider says not complete after deadline). PROCESSING, TIMEOUT_RECOVERY, CANCELLED, REFUNDED are defined but never written in src/. recoveryOutcome ∈ inline \| status_poll \| pending_processing \| failed_refund_required \| never_created_retry_safe. Lead-side: giftCardStatus issued \| issuing \| failed.
+
+## Validations & Rules
+
+Cap ₹1–₹10,000 on the grossed-up face; one card per lead via unique refNo; allowlist gate at quote and issuance; admin limit ≤ 100 and status validated against the enum; max 5000 bps; whole-rupee faces; card secrets encrypted at rest; email/phone normalized to +91XXXXXXXXXX.
+
+## Dependencies
+
+Orders (completion, payout switch, finalizeLeadCompletion), Customer Orders (display), Invoice (invoiceBonusBreakdown), BuyBack Bonus Campaigns (buybackBonusForLead), Influencer Affiliate (CodeRedemption), Coupon (Coupon min/max), Customer Address (Pincodes, MasterLeadAddress), Notifications (notifyGiftCardIssued FCM), Messaging Utilities (GIFT_CARD_ISSUED email), Encryption & Security utils (fieldEncryption), Admin (admin routes). External: Woohoo REST v3, Redis.
+
+## Background Jobs / Events
+
+startGiftCardReconcileJob (src/jobs/giftCardReconcile.job.ts): cron GIFTCARD_RECONCILE_CRON default every minute (Asia/Kolkata), floor 1 min, deadline 3 min; for each order resolved to success it calls finalizeLeadCompletion(leadId, \{giftCardIssueStatus:"issued"\}). Manual script scripts/woohoo-reconcile-pending.ts. Customer push + email on COMPLETE.
+
+## Env vars
+
+WOOHOO_HOST, WOOHOO_CLIENT_ID, WOOHOO_CLIENT_SECRET, WOOHOO_USERNAME, WOOHOO_PASSWORD, WOOHOO_SVC, WOOHOO_ORDER_TIMEOUT_MS, WOOHOO_GIFT_SKU, WOOHOO_DEFAULT_STATE (Maharashtra), WOOHOO_GIFT_MIN_PAISE (100), WOOHOO_GIFT_MAX_PAISE (1,000,000), WOOHOO_GIFT_BONUS_BPS (0), WOOHOO_RATE_TTL_SECONDS (86400), WOOHOO_GIFT_ALLOWED_PHONES, GIFTCARD_ALLOW_SKU_OVERRIDE (QC only, never true in prod), GIFTCARD_ISSUE_DEADLINE_MINUTES, GIFTCARD_RECONCILE\_\*, ENCRYPTION_KEY, REDIS_HOST, REDIS_PORT, ENGINEMAILER_GIFT_CARD_TEMPLATE_ID, GIFT_CARD_EMAIL_LINK.
+
+## Who Uses It
+
+Customer web/app (options quote, card retrieval), Vendor/Cashboy app (options check at completion, giftcard-status poll, payout switch), Admin panel (monitoring + manual reconcile), internal cron, Woohoo (third party).

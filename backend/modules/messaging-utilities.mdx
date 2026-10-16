@@ -1,0 +1,66 @@
+---
+title: "Messaging Utilities"
+description: "Provider wrappers for SMS (2factor), transactional email (EngineMailer), WhatsApp templates (Pabbly Chatflow, three numbers), plus the SES/SNS email-suppression endpoints."
+---
+
+> *Counted endpoints: 0. /u/:token and /ses/events below are counted under **Marketing**; they are repeated here because they feed the email suppression logic.*
+
+## Purpose
+
+Thin provider wrappers for SMS (2factor), transactional email (EngineMailer), WhatsApp templates (Pabbly Chatflow, three numbers), the Pabbly Email Marketing API (see Webhooks), plus the SES/SNS email-suppression endpoints. Everything else in the backend calls these instead of talking to providers directly.
+
+## Folder / Files
+
+src/utils/SmsUtility.ts, src/utils/EngineMailerUtility.ts, src/utils/NodeMailerUtility.ts (disabled stub), src/utils/WhatappsUtility.ts, src/utils/PabblyEmailUtility.ts, src/utils/pabblyEmailLists.ts, src/controllers/email/sesEvents.controller.ts + src/routes/sesEvents/index.ts (mounted /ses in app.ts), src/controllers/email/unsubscribe.controller.ts + src/routes/unsubscribe/index.ts (mounted /u), src/controllers/templates/Invoice.hbs (the only Handlebars file in the repo; used by the Invoice module, not by any mailer here), src/controllers/otp/twofactorconfig.ts, src/utils/snsSignature.ts, src/utils/unsubscribeToken.ts.
+
+## Data Models
+
+- EmailSuppression (email PK, customerId?, source VarChar 20: one_click, link, ses_bounce, ses_complaint, ses_validation, ses_acct_supp; sesSuppressedAt, createdAt). Migration 20260919120000_add_email_suppression. Read by src/campaigns/buyback/audience.ts, src/campaigns/warmup/audience.ts, src/utils/warmupHealth.ts (Marketing module); **not** consulted by EngineMailerUtility (transactional).
+
+- SystemIntegrations row serviceName = "ses_sns" is upserted as a liveness marker when SNS events arrive.
+
+- Customers.whatsappOptIn / whatsappOptInAt (migration 20260507000000_add_whatsapp_opt_in_and_brand_code, default true; the same migration adds CouponToken.brandCode VarChar 20 used for FAST300/FIRST500 tokens). DemoUsers (phones that must never be messaged).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /ses/events | Handles SNS SubscriptionConfirmation and Notification events from SES config set "cashkr-marketing": hard bounces / complaints upsert EmailSuppression with ses_bounce / ses_complaint; not-attempted sub-types map to ses_validation / ses_acct_supp without overwriting a stronger source; rejects/rendering failures are logged only. |
+| POST | /u/:token | RFC 8058 one-click unsubscribe (mailbox providers call it): upserts EmailSuppression (source = one_click) first, then PutSuppressedDestinationCommand (SESv2, reason COMPLAINT) and stamps sesSuppressedAt; replies unsubscribed text. |
+| GET | /u/:token | Human-visible unsubscribe link: same logic with source = link, renders a small HTML confirmation page. |
+
+## Core Business Logic (per channel)
+
+- **SMS — 2factor** (SmsUtility.ts): 2factor transactional SMS API, sender "CSHKR", DLT template by name. sendExchangeTokenSMS (template ExchangeToken, VAR1 token, VAR2 amount, VAR3 vendorName) — callers src/controllers/storeLead/generateToken.ts, masterLead.service.ts (store completion). sendAccountDeletionSMS (template AccountDeleted by default, refuses DELETED\_\* placeholder numbers) — caller src/services/vendorAccountDeletion/vendorAccountDeletion.service.ts. Login OTP SMS is sent directly from src/controllers/otp/index.ts (Auth & OTP module), not through this util. No opt-in or suppression check for SMS.
+
+- **Email — EngineMailer** (EngineMailerUtility.ts): EngineMailer REST API, sender noreply@cashkr.com, dashboard templates by numeric ID with SubstitutionTags. Template map ENGINEMAILER_TEMPLATE_IDS: Order_Completed 11, ORDER_COMPLETED_TO_VENDOR 12, ORDER_GENERATED 13, RESCHEDULED_BY_CUSTOMER 14, RESCHEDULED_BY_VENDOR 15, CUSTOMER_NOT_REACHABLE 16, VENDOR_OUT_FOR_PICKUP 17, LEAD_ASSIGNED 18, LEAD_AVAILABLE 19, REQUOTE_DONE 20, ACCOUNT_DELETED 21, ORDER_FAILED 22, PICKUP_REMINDER 25, PICKUP_DELAYED 26, GIFT_CARD_ISSUED = ENGINEMAILER_GIFT_CARD_TEMPLATE_ID (0 → no-op), EMAIL_VERIFICATION 29. sendNotificationEmail(\{toEmail, notificationType, variables\}) resolves the template, builds tags (firstName/first_name, deviceModel, price, orderId, token, imeiNumber, pickupDate, pickupTime, vendorName, didNumber, url_link, checkoutUrl, requote diff fields, couponCode, gift-card fields). EngineMailer returns HTTP 200 on errors, so Result.StatusCode === "200" is checked. Callers: notification.service.ts, masterLead.service.ts, src/services/giftCard/giftCardOrder.service.ts, src/controllers/otp/index.ts (EMAIL_VERIFICATION). No EmailSuppression or unsubscribe check (transactional).
+
+- **Email — SMTP / Nodemailer** (NodeMailerUtility.ts): the transporter is commented out; SendEmailNotification logs "Nodemailer is disabled" and returns \{success:false\}. Only importer: src/controllers/otp/index.ts:1016.
+
+- **Email — Amazon SES**: the HTTP app only uses SESv2 for PutSuppressedDestination (unsubscribe). Actual SES marketing sends live in scripts/warmup-ses-send.ts, scripts/buyback-email.ts, scripts/ses-pipeline-probe.ts, scripts/ses-suppression-sync.ts and src/campaigns/\* (Marketing module). Bounce/complaint feedback arrives on /ses/events.
+
+- **WhatsApp — Pabbly Chatflow** (WhatappsUtility.ts): POST /messages with \{to: "91"+phone, type:"template", templateName, bodyParams, buttonParams?, components?\} (header image and URL-button components in Meta Cloud API shape). Sender routing table WA_SENDERS: transactional → PABBLY_CHATFLOW_API_TOKEN, marketing → PABBLY_MARKETING_API_TOKEN, bot → PABBLY_BOT_API_TOKEN; sender param wins over legacy useMarketingNumber; botSender() reads BOT_WA_NUMBER (default marketing, never falls back to transactional). Returns \{ ok, body \} where deliverySucceeded(body) treats explicit non-success status / error / metaResponse.status &gt;= 400 as failure (async Meta refusals are not visible here). Guard: isDemoCustomerPhone → skipped. **No opt-in check inside the util** — whatsappOptIn is enforced by callers for marketing only: nurture cron findDueLeads, push fallback, abandonedCart.service.ts, src/campaigns/\*/audience.ts & waveSender.ts; transactional templates ignore opt-in by design (TCCCPR comment in leadNurture.service.ts). Transactional template names used in src/: order_placed_successfully, order_completed, vendor_assigned, new_order_placed, pickup_day_reminder, pickup_delayed, rescheduled_by_customer, customer_not_reachable, out_for_pickup, requote_done, order_failed, start_order_inspection, model_request_available, leaderboard_badge; marketing/bot: sell_quote_leads_v2, sell_quote_reengage, quote_confirmation_bonuss, speed_bonus_expiry.
+
+- **Pabbly Email Marketing**: see Webhooks module (PabblyEmailUtility.ts, pabblyEmailLists.ts).
+
+- **Template mechanism summary:** SMS → DLT template names on 2factor; Email → EngineMailer dashboard template IDs + substitution tags (no local HTML rendering in live code; Invoice.hbs is for PDFs); WhatsApp → Meta/Pabbly approved template names + positional bodyParams; Pabbly email drip → Pabbly workflows driven by subscriber custom fields.
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+Demo-phone guard (WhatsApp, EngineMailer), deleted-account guard (@deleted.cashkr.local, DELETED\_ phones), SNS signature + topic check before any write, unsubscribe token signature, 512 kb body limit on /ses/events, SES suppression written after the local row so a provider failure never un-suppresses.
+
+## Dependencies
+
+Internal: Customer / User (DemoUsers, Customers lookups), Encryption & Security utils (snsSignature, unsubscribeToken, logRedaction maskPhone/maskEmail), Marketing (readers of EmailSuppression). External: 2factor, EngineMailer, Pabbly Chatflow, Pabbly Email, AWS SESv2 + SNS.
+
+## Background Jobs / Events
+
+No crons in this module. SNS → /ses/events is an inbound event stream. scripts/pabbly-delivered-cache.ts (nightly, run outside the app) refreshes the delivered-address cache.
+
+## Who Uses It
+
+Internal (every module that notifies), mailbox providers and SES/SNS (/u, /ses), ops scripts.

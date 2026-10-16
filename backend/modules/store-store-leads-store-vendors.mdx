@@ -1,0 +1,73 @@
+---
+title: "Store / Store Leads / Store Vendors"
+description: "The walk-in store channel: a customer brings the device to a partner store, a store vendor completes the deal on the spot, and the customer gets an exchange token that is settled against the store."
+---
+
+## Purpose
+
+The walk-in ("store") channel: a customer brings the device to a partner store; a store vendor completes the deal on the spot (no pickup, no inspection code), and the customer gets an exchange token (SMS) that is redeemed and settled against the store. Also store onboarding (KYC documents) and assigning a store vendor to a store.
+
+## Folder / Files
+
+src/routes/store/index.ts (mounted /api/v1/store), src/routes/storeLead/index.ts (mounted /api/v1/storeLead), src/controllers/store/index.ts + schemas.ts, src/services/store/index.ts (StoreService), src/controllers/storeLead/registerNewLead.ts (StoreLeadController), generateToken.ts, verifyToken.ts, redeemToken.ts, schemas.ts, src/services/lead/createLead.ts (createStoreLead), src/services/lead/masterLead.service.ts (completeStoreLead), src/services/lead/storeFailedLead.ts, src/services/exchangeToken (ExchangeToken + DailySettlement helpers — Settlement & Cash module). Test: tests/buybackBonusStoreAndAdmin.test.ts.
+
+## Data Models
+
+- Store (storeId uuid, storeName, storeCode unique, address, city, state, pincode Int, contactPhone, contactEmail, storeType, openingTime, closingTime, isActive, isVerified, 9 document image URLs: gstinImage, gumastaImage, udyamImage, panCardImage, idCardImage, bankProofImage, addressProofImage, storeFrontImage, storeInsideImage, latitude, longitude, geofenceRadiusMeters default 100). hasOne StoreVendors; hasMany ExchangeToken, DailySettlement, VendorAttendance.
+
+- StoreVendors (vendorId uuid, firstName, lastName, email, phoneNumber unique, KYC images, creditsAvailable, deviceAssigned\[\], shopName, vendorType, userType vendorUserType default Vendor, isInternal, storeId unique → Store, firebaseId/fcmPlatform/deviceToken). hasMany StoreLeads, ExchangeToken, DailySettlement, VendorCreditLogs, VendorAttendance. Logs in through /api/v1/otp/verifyotpforstorevendor (Auth & OTP module).
+
+- StoreLeads (leadId uuid, token unique, isCompleted Int, status StoreLeadStatus, createdBy, deviceType, deviceGeneratedPrice, deviceRequotePrice, deviceFinalPrice, deviceImei, buybackBonusAmount, buybackBonusCampaignId, creditPoints, pickupDate/pickupTime (unused here), customerId, paymentId → StorePayments, vendorId → StoreVendors, cashboyId, couponId, one FK per device table). hasMany StoreLeadLogs, VendorCreditLogs; hasOne StoreCompletedDocuments, FailedStoreLead, ExchangeToken. Index \[vendorId\], \[status\].
+
+- StoreLeadLogs (leadId → StoreLeads, description, creditPoints).
+
+- StorePayments (paymentId, bankBeneficiaryName, bankName, bankIFSC, bankAccNumber — beneficiary/IFSC/account stored encrypted via encryptField).
+
+- StoreCompletedDocuments (storeLeadId unique, signaturePhoto, idCardFront, idCardBack, imeiNumber, billPhoto).
+
+- FailedStoreLead (leadId unique → StoreLeads, isCompleteFailed, primaryStatus FailedLeadPrimaryStatus, secondaryStatus FailedLeadSecondaryStatus, failedCustomerExpectedPrice, failedFinalOfferedAmt, failedReason). hasOne StoreFailedDocuments (failedleadId, deviceSide1–6, signaturePhoto).
+
+- ExchangeToken (tokenCode unique, leadId unique → StoreLeads, storeVendorId, storeId, settlementId → DailySettlement, amount, expiresAt, redeemedAt, status TokenStatus: ACTIVE, REDEEMED, EXPIRED, CANCELLED).
+
+- Enums: StoreLeadStatus \{ New, Generated, Completed, Failed \}, StorePaymentType \{ Bank, Buyback, Cash \}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/store/create | Onboards a store: zod StoreRegistrationSchema (storeName, address, city, pincode, contactPhone 10 digits, optional storeCode/email/type/hours); requires files panCardImage, idCardImage, bankProofImage, addressProofImage, storeFrontImage, storeInsideImage and at least one of gstinImage/gumastaImage/udyamImage (422 otherwise); 409 if storeCode exists; uploads to S3 under storeOnboard/&lt;storeName&gt;/; creates Store with isActive = true. |
+| GET | /api/v1/store/all | Lists all stores newest first with assigned store vendor and counts of exchangeTokens / settlements. |
+| GET | /api/v1/store/:storeId | One store with its store vendor; 404 if missing. |
+| POST | /api/v1/store/assign-vendor | Body \{ storeId, vendorId \}; sets StoreVendors.storeId (one vendor per store — storeId is unique). |
+| POST | /api/v1/storeLead/ | Creates a StoreLeads row (createStoreLead): same device/zod validation as the pickup lead, rejects a duplicate token, status = Generated, isCompleted = 0, with tier/creditPoints. No attribution, no Pabbly, no nurture. Returns \{ storeLeadId \}. |
+| POST | /api/v1/storeLead/complete | completeStoreLead: zod completeStoreLeadSchemas (leadId, imeiNumber, finalAmount numeric string, paymentType StorePaymentType, optional bank fields); requires files signaturePhoto, idCardFront, idCardBack, billPhoto; 409 if already Completed; 403 if the customer is deleted; uploads to S3 customerVerification/&lt;leadId&gt;/; LeadService.completeStoreLead strips a double-counted BuyBack bonus, sets status = Completed, isCompleted = 1, deviceFinalPrice, vendorId, paymentType, creates StorePayments (encrypted) when all bank fields are present and StoreCompletedDocuments; then (1 s later) EngineMailer ORDER_COMPLETED email, sendExchangeTokenSMS (2factor) with the lead token and amount (+ BuyBack bonus), WhatsApp order_completed. |
+| POST | /api/v1/storeLead/failed | failedStoreLead: zod StoreFailedLeadSchemas (leadId, status from a 23-value reason enum, optional reason/finalAmountOffered/finalAmountExpected); at least one device photo; verifyUserLead on vendorId/cashboyId/customerId; 409 if already failed; StoreFailedLeadService.FailedOrder creates FailedStoreLead (primaryStatus = "FailedByStore"), StoreFailedDocuments, sets StoreLeads.status = Failed, writes StoreLeadLogs. |
+| POST | /api/v1/storeLead/generate-token | Creates an ExchangeToken for a store lead: idempotent (returns existing), requires the vendor to be assigned to a store; tokenCode = &lt;storeCode prefix or "SPA"&gt;-&lt;6 random alnum&gt;; amount = (deviceFinalPrice, else deviceGeneratedPrice) + buybackBonusAmount; SMS to customer via sendExchangeTokenSMS. |
+| POST | /api/v1/storeLead/verify-token | Body \{ tokenCode \}; returns token amount, vendor/store name, customer phone, device info, status; 400 if REDEEMED / CANCELLED / EXPIRED or past expiresAt (marks EXPIRED). |
+| POST | /api/v1/storeLead/redeem-token | Body \{ tokenCode \}; only ACTIVE and unexpired tokens; finds/creates today's DailySettlement for the store+vendor, marks token REDEEMED linked to the settlement, adds amount and count to the settlement totals. |
+
+## Core Business Logic (store vs pickup)
+
+- **Pickup flow** (Lead & Nurture / Orders): customer quotes online → MasterLeads (New/Initiated) → nurture → checkout with address + pickup slot → Generated/OrderGenerated → vendor assignment/reservation/broadcast → out for pickup → inspection code (leadOtp) → requote → completion → vendor credits/payout.
+
+- **Store flow**: customer (logged in) creates a StoreLeads row (status Generated) — no address, pickup slot, OTP, attribution, Pabbly or nurture. A store vendor completes it in one call with KYC photos, IMEI, final amount and payment type (Bank \| Buyback \| Cash) → Completed. A failed walk-in goes to FailedStoreLead with six device photos. There is no vendor credit debit, inspection timer, reschedule, or cancellation path for store leads in this code.
+
+## Status / State Machine
+
+StoreLeads.status: Generated (created) → Completed (complete) or Failed (failed). New exists in the enum but is never written here. ExchangeToken.status: ACTIVE → REDEEMED (redeem) / EXPIRED (verify/redeem after expiresAt) / CANCELLED (not set in this module).
+
+## Validations & Rules
+
+zod schemas above; file presence via validateFiles; ?a must be Vendor or Cashboy; store pincode coerced to number; contactPhone exactly 10 chars; isDemoCustomerPhone routes S3 uploads to a demo prefix; BuyBack bonus double-count guard (stripBonusFromInclusiveFinal); StoreFailedLeadSchemas.status enum: AreaNotServicable, DuplicateLead, DealerLead, NotReachableOrResponding, SoldDeviceElsewhere, BetterPriceElsewhere, OutofTown, WasJustChecking, WrongModel, RequotePriceNotAccepted, FailedByCustomer, NotInterestedInSelling, NotRespondingReachable, GettingBetterPriceElsewhere, RescheduledMultipleTimes, CustomerOutOfTownArea, RoadSidePickup, CustomerUnabletoVerifyOwnership, DeviceDiscontinuedNoLongerSupported, DeviceLockedtoCloudAccount, PriceNotAccepted, CloneDevice, IncorrectInfo.
+
+## Dependencies
+
+Internal: Lead & Nurture (LeadService2.createStoreLead, LeadService.completeStoreLead, checkUserExists, verifyUserLead); Device Catalog; Pricing & Evaluation (tier/credits); BuyBack Bonus Campaigns (buybackSnapshotForStoreLead); Settlement & Cash (ExchangeTokenService, DailySettlement); File Upload (Fileupload, uploadToS3Bucket, validateFiles); Encryption & Security utils (encryptField); Messaging Utilities (SmsUtility.sendExchangeTokenSMS, WhatappsUtility, EngineMailerUtility); Auth & OTP (store vendor login). External: S3, 2factor SMS, Pabbly Chatflow, EngineMailer.
+
+## Background Jobs / Events
+
+None in this module. Token expiry is checked lazily on verify/redeem (no cron).
+
+## Who Uses It
+
+Customer app/web (POST /storeLead), vendor/partner app as store vendor (complete, failed, generate-token), store counter / settlement tooling or admin for verify-token, redeem-token, /store/\* (callers not identifiable from this repo).

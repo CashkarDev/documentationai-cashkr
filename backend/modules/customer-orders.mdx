@@ -1,0 +1,54 @@
+---
+title: "Customer Orders (customer-facing order views/cancellation)"
+description: "What the customer app/web shows under \"My orders\": placed orders, a checkout draft, the checkout cart (list / remove / re-price) and the customer's own cancellation request."
+---
+
+## Purpose
+
+What the customer app/web shows under "My orders": the placed orders list and detail, a single checkout lead (draft), the checkout cart of unfinished orders (list / remove / re-price an expired quote) and the customer's own cancellation request.
+
+## Folder / Files
+
+src/routes/customerOrders/index.ts (mounted at /api/v1/customer), src/controllers/customerOrder/index.ts (CustomerOrdersController), src/services/customerOrder/index.ts (CustomerOrdersService), src/controllers/checkoutCart/index.ts + src/services/checkoutCart/index.ts (CheckoutCartService), src/services/lead/orderCancellation.service.ts, src/socket/orderCancelReasons.ts (reason table + guards), src/services/deviceSummary.service.ts (human labels), src/repository/baseRepository.ts (BaseRepo.findAll pagination).
+
+## Data Models
+
+MasterLeads (reads; cancellation writes primaryStatus/secondaryStatus, cancellation\*, cartDismissedAt, quoteRefreshedAt, deviceGeneratedPrice), FailedLead + FailedReason (customer cancel), OrderStatusHistory, LeadLogs, ReservedLeads (deleted on cancel), MasterLeadAddress, Payments, customerCoupon/Coupon, leadOtp (the inspection code is shown to the customer), Reviews (reviewedBy Customer, one per lead), the device\*/data\* relations.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/customer/orders?page&limit | Placed orders (isCompleted 1) of the customer, newest first, via BaseRepo.findAll: statuses, pickup, prices, payoutAmount (gift-card grossed by grossUpPaise + BuyBack bonus), vendor/cashboy name+phone, leadOtp, failedLead statuses, own review (rating, hasReviewed), buybackBonus, merged deviceInfo. |
+| GET | /api/v1/customer/orders/:ordersId | One placed order: as above plus desposition \{status, isCallRequested\}, coupon, saved payment, customer, callDid (vendor DID or shared, resolveCallDid), deviceSummary (answers resolved to labels), Addresses = MasterLeadAddress fallback Addresses. Returns 200 with data: null for an unknown/foreign id. |
+| GET | /api/v1/customer/lead/:leadId | A checkout draft (isCompleted 0): price, coupon, address, leadOtp, device/answers and quote \{expiresAt, isExpired, canReprice\}. 404 "Lead not found", 400 "Lead is completed". |
+| GET | /api/v1/customer/cart?page&limit(≤50) | Checkout cart: drafts with isCompleted 0, primaryStatus New, cartDismissedAt null, no FailedLead, created within CART_RETENTION_DAYS = 90; one card per device (newest), dropped once a later order for the same device was placed (pickCartLeads). Each card has price (= deviceGeneratedPrice), quote status, checkoutPath (from CheckoutUrlGenerator, site-relative) and evaluatePath. |
+| DELETE | /api/v1/customer/cart/:leadId | Sets cartDismissedAt (row kept; stops abandoned-cart nudges). 404 unknown, 409 ALREADY_PLACED. Idempotent. |
+| POST | /api/v1/customer/cart/:leadId/reprice | If the quote window (QUOTE_VALIDITY_DAYS from quoteRefreshedAt ?? createdAt) has expired and the type is in REPRICEABLE_TYPES (Mobile, Tablet, Mac, Camera, Headphone, Console, Watch), rebuilds an evaluation request from the stored answers (buildEvaluationRequest) and runs computeEvaluationPrice; writes the new deviceGeneratedPrice, quoteRefreshedAt, LeadLogs "Quote refreshed from checkout cart: ₹a → ₹b". Unexpired → returned unchanged (repriced:false). 422 REPRICE_UNSUPPORTED for Laptop/Desktop/Drone/TV/AC. |
+| POST | /api/v1/customer/lead/:leadId/cancel-request | Body \{reasonCode, reasonText?\}. orderCancellationService.requestCustomerCancellation: moves the order into the to-be-failed queue as FailedByCustomer (see Orders state machine). 422 INVALID_REASON_CODE/missing code, 404, 403, 409 INVALID_STATE (terminal, or vendor OutForPickup/InspectionStarted). Idempotent (alreadyCancelled). |
+
+## Core Business Logic
+
+List/detail are read-only projections of MasterLeads with display helpers (withPayoutAmount, withReview, withBuybackBonus, mergeDeviceInfo, transformOrderResponse, formatOrderDates; compactObject in the controller strips the per-type relations). Cart = unfinished drafts the customer can resume on the website via the checkout URL; placing one reuses POST /api/v1/lead/:id, which refuses an expired quote (410) until re-priced here. Cancellation: reason code → CANCEL_REASONS (CHANGED_MIND→NotInterestedInSelling, BETTER_PRICE_ELSEWHERE→BetterPriceElsewhere, QUOTE_TOO_LOW→RequotePriceNotAccepted, VENDOR_UNRESPONSIVE→NotReachableOrResponding, WRONG_DEVICE_SELECTED→WrongModel, NO_LONGER_SELLING→NotInterestedInSelling, OTHER→FailedByCustomer, text required client-side), ownership + state guards, one transaction (FailedLead, MasterLeads Failed/Failed + cancellation columns, LeadCallMapping off, releaseRedemption, reservation delete, OrderStatusHistory, LeadLogs), unique-constraint race → no-op, then notifications and chat close after commit.
+
+For how the price shown here is chosen, see [Device Price Lifecycle](/backend/device-price-lifecycle).
+
+## Status / State Machine
+
+Customer may cancel from New, Generated, InProgress, Reserved, PickupDelayed unless secondaryStatus is OutForPickup or InspectionStarted; result is always Failed/Failed with FailedLead.isCompleteFailed=false (admin finalises). Cart drafts: New/Initiated → dismissed (cartDismissedAt) or placed (isCompleted 1).
+
+## Validations & Rules
+
+page ≥1, limit 1-50 on cart.
+
+## Dependencies
+
+Orders (MasterLeads), Pricing & Evaluation (computeEvaluationPrice), Lead & Nurture (QUOTE_VALIDITY_DAYS, abandoned-cart flags), Coupon, Reviews & Review Proof, Gift Cards (grossUpPaise, woohooConfig), BuyBack Bonus Campaigns, Influencer Affiliate (releaseRedemption), Chat (chatService, socket cancel handler), Acefone Telephony (resolveCallDid), Notifications (handleCustomerCancelledNotifications), Device Catalog (deviceRegistry.getTriad, getTableNames), Customer / User (Customers existence check).
+
+## Background Jobs / Events
+
+None of its own; the chat socket (src/socket/orderCancelHandler.ts) calls the same cancellation service with closeChatRoom:false; abandoned-cart/nurture crons (Lead & Nurture) read the same drafts.
+
+## Who Uses It
+
+Customer Flutter app and ck-web2.0 website.

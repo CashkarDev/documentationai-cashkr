@@ -1,0 +1,76 @@
+---
+title: "BuyBack Bonus Campaigns"
+description: "\"BuyBack Days\": a time-boxed campaign that pays an extra flat bonus per catalog model on top of the device price, plus the WhatsApp/email wave sender that markets it."
+---
+
+<Callout kind="tip">The bonus is never inside deviceGeneratedPrice, deviceRequotePrice or deviceFinalPrice. See [Device Price Lifecycle](/backend/device-price-lifecycle).</Callout>
+
+## Purpose
+
+"BuyBack Days" — a time-boxed campaign that pays an extra flat bonus (per catalog model) on top of the device price, shown on model pages and quotes and stamped on orders; plus the WhatsApp/email wave sender that markets the campaign to past customers and quoters.
+
+## Folder / Files
+
+src/routes/buybackBonus/index.ts (public preview, mounted /api/v1/buyback-bonus); src/routes/admin/buybackBonus/buybackBonus.routes.ts (mounted /api/v1/admin/buyback-bonus in app.ts); src/services/bonusCampaign/bonusCampaign.service.ts + logic.ts; campaign sender src/campaigns/buyback/\{plan,dayPlan,audience,guards,holdout,weeklyCap,waveSender,waCopy,emailCopy\}.ts; CLI scripts scripts/buyback-day.ts, buyback-wave.ts, buyback-email.ts, buyback-scoreboard.ts, buyback-coupons.ts, buyback-telecaller-csv.ts; runbook docs/buyback-days-runbook.md.
+
+## Data Models
+
+- BonusCampaign (id, name, startAt, endAt, isEnabled default false, warnAmountAbove 2000, warnPercentAbove 25, createdById/updatedById Admin ids) hasMany BonusCampaignModel, BonusAuditLog.
+
+- BonusCampaignModel (campaignId, deviceType, modelId = parent Device&lt;Type&gt;.id, amount Int, updatedById; unique campaignId+deviceType+modelId).
+
+- BonusAuditLog (campaignId, deviceType?, modelId?, action BonusAuditAction, oldValue/newValue Json, actorId, bulkOperationId) — written only by the admin panel.
+
+- On the lead: MasterLeads.buybackBonusAmount Int?, buybackBonusCampaignId String? (not a FK); same pair on StoreLeads.
+
+- enum BuybackStatus and ExcessBuyback — **not referenced anywhere in `src/` or `scripts/`**; they belong to the admin-panel inventory feature, not to this campaign.
+
+- Sender ledger: MarketingTouch rows with templateKey BBD\_&lt;CODE&gt; (WhatsApp) / BBD_E1 (email); kill switch row SystemIntegrations.serviceName = 'bbd_kill'.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/buyback-bonus?deviceType=&deviceId= | Live bonus for one catalog row → \{buybackBonus: \{amount, campaignId, campaignName, endsAt\} or null\}. 400 if params missing. Cache-Control: public, max-age=30. Never errors (lookup failure → null). |
+| GET | /api/v1/buyback-bonus/campaign | Is any campaign live with at least one model amount &gt; 0 → \{campaign: \{id, name, startAt, endAt\} or null\}. Cache-Control: public, max-age=60. |
+| POST | /api/v1/admin/buyback-bonus/leads/:leadId/snapshot | For an order booked from the admin panel (roles SUPER_ADMIN, ADMIN, EXECUTIVE): 404 unknown lead, 409 if isCompleted !== 1; otherwise buybackSnapshotForBooking and updateMany where buybackBonusCampaignId IS NULL (idempotent, race-safe). Returns the stored \{amount, campaignId\} or null. |
+
+## Core Business Logic
+
+1.  **Which bonus applies** (logic.ts): a campaign is active when isEnabled && startAt &lt;= now &lt;= endAt; among active campaigns that have a row for the model, the one with the latest startAt (then latest createdAt) wins; amount &lt;= 0 → no bonus.
+
+2.  **Model resolution** (resolveBonusModelId): only Mobile, Tablet, Mac, Watch, Laptop, Console, Camera, Headphone can carry a bonus. For variant types (Mobile/Tablet/Mac/Watch) a variant row is mapped to its parent (isParent = 1, same brand+model, lowest id); others use the row itself.
+
+3.  **Eligibility**: qualifiesForBuybackBonus(answers) = isDeviceTurnedOn !== false. A dead device never gets it.
+
+4.  **Quote**: /evaluateDevice appends buybackBonus + totalPrice; price is unchanged.
+
+5.  **Booking**: createLead.ts calls buybackSnapshotForBooking(leadId) at order placement (POST /lead/:id) and stamps buybackBonusAmount/CampaignId; store leads use buybackSnapshotForStoreLead. Admin-created orders are stamped by the admin route above. Already-stamped leads are never overwritten.
+
+6.  **Display later**: buybackBonusForLead(leadId) returns the stored snapshot (with campaign name/endsAt) or a live preview for unbooked leads. Used by influencer discount preview and gift-card bonus base (giftCardAmount.ts), vendor/customer mails (Orders module).
+
+7.  **Inspection**: buybackBonusRemovedAtInspection(order, inspection) returns the bonus to strip when the device does not turn on at pickup; stripBonusFromInclusiveFinal fixes a final amount that was typed as price + bonus. Used by masterLead.service.ts (Orders).
+
+8.  **Campaign sender** (src/campaigns/buyback, scripts): plan.ts is the plan as data — CAMPAIGN = "BBD", window 2026-10-06..2026-11-05 IST, 17 WhatsApp templates (WA-1B, WA-1T/1P/1L/1O/1C, WA-2, WA-3/3C, WA-4, WA-5, WA-6, WA-7/7G, WA-8, WA-9, each with sendOnIst, tiers, device bucket, coupon TABHAPPY/PHONEHAPPY/LAPHAPPY/MEGAHAPPY), 5 emails E-1..E-5 (coupons \*SMART), HOLDOUT_PERCENT = 5, WEEKLY_WA_CAP = 2, daily cap ramp 5,000 → 10,000 → 15,000 (DAILY_CAP_BY_DATE), TELECALLER_QUOTE_FLOOR = 15000. audience.ts pullAudience() puts every customer in exactly one tier T1-T7 (booking drop-offs, recent quoters by age, past sellers…). holdout.ts excludes a stable 5% of customers from every send. weeklyCap.ts counts MarketingTouch rows on channels WHATSAPP/WA_FLOW since Monday 00:00 IST. dayPlan.ts planDay() decides which templates are open today (date reached, successor approved before retiring, coupon live, Pabbly template APPROVED and not RED). guards.ts: assertNotKilled (bbd_kill), assertBonusLive, assertCouponLive, assertTemplatesSendable, assertHeaderImages, assertSendingQuality (a human-entered quality reading ≤ 180 min old), stop rules on opt-out rate. waveSender.runWave() sends highest tier first, highest quote first, via sendWhatappsMessage (Pabbly, marketing number), respecting suppression, weekly cap and daily cap, BBD_SEND_INTERVAL_MS (default 2000) between sends, concurrency 1, kill switch re-checked every 25 rows; writes one MarketingTouch per send.
+
+9.  **Trigger**: not a src/jobs cron and not an admin route. scripts/buyback-day.ts is meant for a server crontab (0 5 \* \* \* UTC = 10:30 IST per its header) and is DRY-RUN unless --live; scripts/buyback-wave.ts is the manual CLI (--counts, --verify-templates, --quality HIGH, --preflight, --wave CODE --live, --kill, --resume); buyback-email.ts sends E-1 through SES with its own ramp; buyback-scoreboard.ts posts daily numbers to Slack; buyback-coupons.ts creates/verifies the 8 coupon rows; buyback-telecaller-csv.ts exports call lists.
+
+## Status / State Machine
+
+Campaign: isEnabled false/true + date window (no enum).
+
+## Validations & Rules
+
+Bonus only for turned-on devices; amount &gt; 0; latest-start campaign wins; snapshot never overwritten; admin snapshot only for isCompleted === 1; sender refuses a wave on any failed guard, caps 2 marketing WA/customer/week, 5% holdout excluded, daily caps by date, BBD_DAILY_CAP env override, BBD_T1_LITERAL toggles T1 definition.
+
+## Dependencies
+
+Device Catalog (registry, parent resolution), Pricing & Evaluation, Orders (MasterLeads stamping in createLead, masterLead.service), Store / Store Leads, Gift Cards, Influencer Affiliate, Coupon (coupon rows the copy names), Marketing (MarketingTouch, marketingSuppression.service, SystemIntegrations kill switch), Messaging Utilities (Pabbly WhatsApp; SES for email), Admin, Slack webhook (scoreboard).
+
+## Background Jobs / Events
+
+None inside the app; external crontab for scripts/buyback-day.ts (schedule in its header: 0 5 \* \* \*).
+
+## Who Uses It
+
+Customer web/app (preview + quote), admin panel (campaign CRUD directly in DB; snapshot route), internal ops (scripts).

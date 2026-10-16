@@ -1,0 +1,49 @@
+---
+title: "Issue Report"
+description: "In-app bug/problem reporting for partners (vendors and cashboys): what happened, how often, optional evidence and an optional voice note; admins move the ticket through review stages."
+---
+
+## Purpose
+
+In-app bug/problem reporting for partners (vendors and cashboys): what happened, how often, optional evidence (one video or up to 5 screenshots) and an optional voice note; admins move the ticket through review stages and post messages.
+
+## Folder / Files
+
+src/routes/issueReport/index.ts (mounted at /api/v1/issue-report), src/controllers/IssueReport/index.ts, src/services/issueReport/index.ts, src/utils/MulterUpload.ts (IssueEvidenceUpload, 50 MB/file, 7 files). Admin-side handling is in ck-admin (DB writes to status, resolvedAt, VendorIssueReportMessage).
+
+## Data Models
+
+- VendorIssueReport (line 4805) — id uuid, ticketNo Int @unique autoincrement (shown as \#SR-2390), vendorId?, cashboyId? (no FKs), whatHappened IssueReportType (AppClosed \| UploadFailed \| ScreenStuck \| BlankPage), addMoreDetail? (≤2000 chars enforced in code), howOften IssueReportFrequency (EveryTime \| Sometimes \| Once), videoUrl?, imageUrls String\[\], audioUrl?, status IssueReportStatus (Sent \| InReview \| Fixing \| Solved, default Sent), resolvedAt?.
+
+- VendorIssueReportMessage (line 4829) — reportId (cascade), status (stage when sent), message, adminId?.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/issue-report | Multipart fields video (≤1), images (≤6 accepted so the 6th yields a readable error), audio (≤1); body whatHappened, howOften, addMoreDetail. Uploads to issueReports/&lt;reportId&gt;/ then creates the report with status Sent. 201. |
+| GET | /api/v1/issue-report/my | Paginated own reports (page, limit ≤100, status filter) including messages (newest first) and unfiltered per-status counts. |
+
+## Core Business Logic
+
+Validate enums → enforce evidence rule (video XOR images; ≤5 images; video MIME video/\*; images jpeg/png/webp; audio in an explicit MIME allow-list and ≤10 MB = MAX_ISSUE_AUDIO_BYTES, a proxy for ~5 minutes) → upload evidence first → insert. Vendors see admin messages per stage via /my.
+
+## Status / State Machine
+
+Sent → InReview → Fixing → Solved (order shown on the app's progress bar; transitions are made by admins outside this repo). Everything not Solved is "Ongoing" in the app.
+
+## Validations & Rules
+
+whatHappened, howOften required (422); MAX_ISSUE_REPORT_IMAGES = 5; MAX_ISSUE_DETAIL_LENGTH = 2000 (silently truncated); multer LIMIT_FILE_SIZE → "Each file must be 50MB or smaller" (422); MAX_ISSUE_REPORT_PAGE_SIZE = 100.
+
+## Dependencies
+
+Vendor / Cashboy (identity), File Upload (uploadToS3Bucket). External: S3-compatible storage.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Vendor app (vendors and cashboys); Admin panel (triage via DB).

@@ -1,0 +1,74 @@
+---
+title: "Reviews & Review Proof"
+description: "In-app reviews between customer, vendor and cashboy; public platform reviews; and review-proof uploads that earn the vendor a credit refund once admin accepts them."
+---
+
+## Purpose
+
+(a) In-app star/text reviews between the three parties of a completed or failed order (customer ↔ vendor ↔ cashboy). (b) Public display of imported platform reviews (Google/App Store/Play Store). (c) Review-proof refund: after a completed order, the vendor (or the cashboy who worked it) uploads a screenshot proving the customer left a review; once admin accepts it, a configurable % of the order's creditPoints is refunded to the VENDOR's credit wallet.
+
+## Folder / Files
+
+src/routes/reviews/index.ts, src/routes/reviewProof/index.ts, src/controllers/Reviews/index.ts, src/controllers/Reviews/schemas.ts, src/controllers/ReviewProof/index.ts, src/services/review/index.ts (ReviewService), src/services/reviewProof/index.ts (ReviewProofService), upload via src/utils/MulterUpload.ts (Fileupload) and src/services/uploadService.uploadToS3Bucket, migration prisma/migrations/20260606120000_add_review_proof_refund/migration.sql.
+
+## Data Models
+
+- Reviews (id, leadId, reviewedBy ReviewBy, customerId?, vendorId?, cashboyId?, rating Int? 1-5, detailedReview String?). belongsTo MasterLeads, Customers?, Vendors?, Cashboy?. @@unique(\[leadId, reviewedBy, vendorId, cashboyId\]).
+
+- ReviewProof (id, leadId unique, vendorId (credit recipient), proofImage URL, status ReviewProofStatus default Pending, rejectReason?, attemptCount default 1, refundCredits Int?, refundPercentage Float?, reviewedByAdminId Int?, reviewedAt?). belongsTo MasterLeads and Vendors (cascade). One row per order.
+
+- ReviewRefundConfig (single row id=1, refundPercentage Float default 5, isActive default true, updatedByAdminId). Seeded by the migration.
+
+- PlatformReview (id, platform ReviewPlatform, reviewerName, reviewerImage?, rating, reviewText, reviewImages\[\], reviewDate, isVisible, externalReviewId unique).
+
+- ReviewWidget (id, name, widgetType ReviewWidgetType, platform?, isActive, maxReviews 10, minRating 4, show\* flags, autoPlaySpeed 5000, styles Json).
+
+- VendorCreditLogs.category gained ReviewRefund (enum creditCategory: OrderAssigned, OrderLocked, OrderReversed, OrderCompleted, OrderCancelled, OrderFailedAccepted, OrderFailedRejected, PaymentApproved, PaymentRejected, ReviewRefund).
+
+- Enums: ReviewBy \{ Customer, Vendor, Cashboy \}, ReviewProofStatus \{ Pending, Accepted, Rejected, Revoked \}, ReviewPlatform \{ GOOGLE_MY_BUSINESS, APP_STORE, PLAY_STORE \}, ReviewWidgetType \{ CAROUSEL, MASONRY_GRID, STRIP_SLIDER, AVATAR_GROUP, SINGLE_REVIEW_SLIDER, UP_DOWN_MARQUEE, LEFT_RIGHT_MARQUEE, FLOATING_BLOCK \}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/reviews/customer | Customer reviews the order (zod SubmitReviewSchema: leadId uuid, rating 1-5 optional, detailedReview ≤2000; text required when rating ≤3). Order must be Completed or Failed, owned by the customer, not already reviewed. |
+| POST | /api/v1/reviews/vendor | Vendor reviews the customer; lead must be assigned to this vendor. |
+| POST | /api/v1/reviews/cashboy | Cashboy reviews; lead must be assigned to this cashboy. |
+| GET | /api/v1/reviews/customer?customerId=&page=&limit= | Reviews ABOUT a customer (reviewedBy Vendor/Cashboy) with device/vendor/cashboy names. |
+| GET | /api/v1/reviews/vendor?vendorId= | Reviews about a vendor (reviewedBy Customer/Cashboy). |
+| GET | /api/v1/reviews/cashboy?cashboyId= | Reviews about a cashboy (reviewedBy Customer/Vendor). |
+| GET | /api/v1/reviews/platform?platform=&rating=&page=&limit= | Visible PlatformReview rows, newest reviewDate first, limit ≤100 (default 10). |
+| GET | /api/v1/reviews/eligibility/:leadId | \{canCustomerReview, canVendorReview, canCashboyReview, existingReviews\} for the lead. |
+| POST | /api/v1/review-proof | Multipart proofImage, body leadId. Upload / re-upload review proof for a Completed order the actor worked. Image stored under reviewProof/&lt;leadId&gt;/ (demo-lead aware). |
+| GET | /api/v1/review-proof/my?page=&limit=&status= | Own proofs (vendor: by vendorId; cashboy: proofs on leads with its cashboyId) + totalRefundCredits (Accepted only). |
+| GET | /api/v1/review-proof/config | Active refundPercentage (0 when config inactive). |
+| GET | /api/v1/review-proof/transactions?page=&limit=&startDate=&endDate= | VendorCreditLogs with category = ReviewRefund (Credited = refund, Debited = revoke reversal). |
+| GET | /api/v1/review-proof/lead/:leadId | Proof status for one order incl. canReupload, maxAttempts. |
+
+## Core Business Logic
+
+- **Reviews**: eligibility = order Completed or Failed; each party may review once per lead (checked via existing rows and the composite unique). Submitting stores the other parties' ids on the row so "reviews about X" queries work. getVendorAverageRating (used elsewhere) averages reviewedBy=Customer rows with a rating.
+
+- **Review-proof refund flow**: 1) Vendor or cashboy uploads a screenshot for a Completed order they are stamped on (lead.vendorId / lead.cashboyId). The proof row is always stored under the order's VENDOR (cashboys have no wallet). 2) Row created Pending, attemptCount=1. 3) Admin verifies (accept / reject with rejectReason / revoke) and on accept records refundCredits and refundPercentage and writes a VendorCreditLogs entry with category=ReviewRefund (status Credited); a later revoke debits it back. **The admin accept/reject/revoke and the config editor are NOT in this backend** — the admin panel (ck-admin) does it directly on the shared DB; how the credit is computed there is Unclear from this code beyond the migration comment "refunds a configurable % of the order's creditPoints to the vendor's wallet". 4) Vendor sees Accepted totals in /my and ledger lines in /transactions.
+
+- **Platform reviews**: read-only here; nothing in src or scripts creates PlatformReview or ReviewWidget rows (imported elsewhere — Unclear from code).
+
+## Status / State Machine
+
+ReviewProofStatus: Pending → Accepted \| Rejected (admin, outside this repo); Rejected → Pending on re-upload (vendor/cashboy, resets rejectReason, reviewedByAdminId, reviewedAt, increments attemptCount); Accepted → Revoked (admin, credits debited back); Revoked is terminal (re-upload refused). Pending and Accepted block new uploads.
+
+## Validations & Rules
+
+Upload: actor must be vendor/cashboy, leadId required, file required and must be an image; max 20 MB. MAX_REVIEW_UPLOAD_ATTEMPTS = 3 total uploads per order. Order must be Completed (not Failed). Error → HTTP: LEAD_NOT_FOUND 404, NOT_AUTHORIZED 403, NOT_COMPLETED/NO_VENDOR 422, ALREADY_PENDING/ALREADY_ACCEPTED/REVOKED/MAX_ATTEMPTS 409. Reviews: rating 1-5, text ≤2000, text mandatory for rating ≤3 (enforced in zod and again in service); duplicate review → thrown Error. getPlatformReviews zod: limit ≤100.
+
+## Dependencies
+
+Orders (MasterLeads status/vendorId/cashboyId/creditPoints), Vendor (Vendors), Cashboy, Vendor Payments & Credits (VendorCreditLogs category ReviewRefund), File Upload (Multer/S3), Customer / User, Admin (accept/reject lives in ck-admin). External: S3-compatible storage.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Customer app/web (/reviews/customer, /reviews/eligibility, /reviews/platform — ck-web2.0 calls these), Vendor app and Cashboy app (/reviews/vendor, /reviews/cashboy, all /review-proof/\*), Admin panel (reads/updates ReviewProof, ReviewRefundConfig, Reviews directly in DB).

@@ -1,0 +1,68 @@
+---
+title: "Encryption & Security utils"
+description: "Cross-cutting plumbing: CORS, helmet, body parsing, error handling, Prisma/Redis clients, logging, response helpers, field encryption for payment data, log redaction and fraud hashing."
+---
+
+## Purpose
+
+Cross-cutting plumbing: CORS allowlist, helmet, body parsing with raw-body capture, error handling, Prisma/Redis clients, logging, response helpers, optional payload encryption, field encryption for payment data, log redaction, fraud hashing, QA gates.
+
+## Folder / Files
+
+src/middleware/encrypt.ts, src/services/encription/encription.ts, src/utils/fieldEncryption.ts, src/utils/logRedaction.ts, src/utils/fraudFingerprint.ts, src/utils/qaTools.ts, src/controllers/debug/, src/config/corsOrigins.ts, src/middleware/errorHandler.ts, src/middleware/database.middleware.ts, src/lib/database.ts, src/lib/cache.ts, src/lib/metrics.ts, src/utils/prisma.ts, src/utils/logger.ts, src/utils/ApiError.ts, src/utils/apiResponse.ts, src/utils/asyncHandler.ts.
+
+## Data Models
+
+FraudRegistry (via fraudFingerprint.ts: phoneHash, emailHash, imeiHashes\[\]), TokenBlacklist (used by authorize, documented in Auth & OTP).
+
+## API Endpoints
+
+None.
+
+## Core Business Logic
+
+- **CORS** (corsOrigins.ts): fixed allowlist of CashKr web, admin and local development origins plus ADMIN_FRONTEND_URL.
+
+- **helmet** (app.ts): crossOriginResourcePolicy: cross-origin, crossOriginEmbedderPolicy: false. compression, morgan("dev"), cookieParser, express.json(\{limit:"10mb", verify\}) storing req.rawBody for HMAC webhooks (Razorpay, PhonePe). app.set("trust proxy", 1).
+
+- **express-rate-limit** usage: Acefone webhookLimiter (100/min/IP), careers presignLimiter (20/15 min) and applicationLimiter (10/h), otpLimiter in controllers/otp/index.ts (15 per 10 min per IP). Also a per-IP limiter in the Pabbly intent webhook and the Redis cancel limiter in Chat.
+
+- **errorHandler.ts**: notFound sets 404; errorHandler honours an upstream status else 500 and returns \{code, message\}; stack traces are only included outside production, so NODE_ENV must be "production" on the live server.
+
+- **database.middleware.ts / lib/database.ts**: attaches req.db = new OptimizedPrismaClient() (wraps the shared prisma + its own ioredis connection; executeQuery(fn, cacheKey?) caches JSON in Redis for 300 s and warns on &gt;100 ms). **No `req.db` consumer found in routes/controllers** (only wiring in app.ts).
+
+- **utils/prisma.ts**: single PrismaClient — Accelerate mode when DATABASE_URL starts with prisma:// or prisma+postgres://, else @prisma/adapter-pg pool; always \$extends(withAccelerate()); cached on global outside production.
+
+- **lib/cache.ts** CacheManager (prefix + TTL, ioredis REDIS_HOST/REDIS_PORT default 6380; invalidatePrefix uses KEYS pattern) — used by 7 files. **lib/metrics.ts** QueryMetricsCollector in-memory slow-query list — no importers found.
+
+- **logger.ts**: winston, levels error…debug, console + winston-daily-rotate-file (logs/error-%DATE%.log, logs/combined-%DATE%.log, 20 MB, 14 days); level debug only when NODE_ENV==='development'.
+
+- **ApiError** (statusCode, forbidden(), unauthorized()), **ApiResponse** (\{success, data, message\}), **asyncHandler** (catches, logs, responds err.statusCode or 500 with \{success:false, message\} — it does not call next).
+
+- **fieldEncryption.ts**: AES-256-CBC with random IV, stored base64(iv):base64(cipher), key from ENCRYPTION_KEY; used by utils/paymentFields.ts, controllers/Lead, controllers/customerPayment, services/lead/masterLead.service, services/giftCard/giftCardOrder.service for customer payout details.
+
+- **logRedaction.ts**: maskEmail, maskPhone — used by WhatsApp/EngineMailer/Pabbly/NodeMailer utilities and notification.service.
+
+- **fraudFingerprint.ts**: hashIdentifier = HMAC-SHA256 with a salt env (value lower-cased/trimmed); saveFraudFingerprint hashes phone/email and all IMEIs from the customer's MasterLeads into FraudRegistry; checkFraudRegistry matches by any hash. Used by user registration/deletion, influencer, admin fraud.
+
+- **qaTools.ts**: isPaymentQaToolsEnabled() = PAYMENT_QA_TOOLS==='true' AND NODE_ENV!=='production' (fail-closed gate for test checkout / provider override in Vendor Payments).
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+Env names used: ENCRYPTION_KEY, JWT_SECRET, PUBLIC_KEY, REDIS_HOST, REDIS_PORT, DATABASE_URL, NODE_ENV, ADMIN_FRONTEND_URL, PAYMENT_QA_TOOLS.
+
+## Dependencies
+
+Used by every module. External: Redis, Prisma Accelerate (optional), winston.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Internal.

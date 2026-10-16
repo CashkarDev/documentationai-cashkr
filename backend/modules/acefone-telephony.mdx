@@ -1,0 +1,67 @@
+---
+title: "Acefone Telephony"
+description: "Number masking for partner↔customer calls: Acefone's dial-plan webhook asks the backend where to transfer a call, based on the latest LeadCallMapping."
+---
+
+## Purpose
+
+Number masking for partner↔customer calls. Vendors/cashboys dial a DID (shared or vendor-dedicated); Acefone's dial-plan webhook asks this backend where to transfer the call, and the backend answers with the customer's or partner's real number based on the latest LeadCallMapping.
+
+## Folder / Files
+
+src/routes/acefoneDialPlan/route.ts (mounted at /api/v1/acefone-dialplan), src/controllers/AcefoneController/acefone.controller.ts (1115 lines), src/controllers/AcefoneController/test.ts (unrouted TestAcefone), src/services/acefoneService/acefone.service.ts (getCustomerByVendorPhone, 18 lines, no callers found), src/utils/resolveCallDid.ts.
+
+## Data Models
+
+- LeadCallMapping — leadId→MasterLeads, vendorId (vendor OR cashboy id), vendorPhone (+91…), customerId, customerPhone, isActive; unique (leadId, vendorId); indexes on (customerPhone, updatedAt), (vendorId, updatedAt).
+
+- CallHistory (call_history) — leadId, callerType (vendor\|customer\|cashboy), callerPhone, targetPhone, calledAt, callDuration?, validUntil (now+24h), callId?. No FK.
+
+- VendorDID (vendor_dids) — didNumber unique (digits only), vendorId?→Vendors (null = spare pool), isActive, assignedAt, releasedAt, releaseReason, notes.
+
+- VendorDIDHistory (vendor_did_history) — past assignments. **Not written by this backend**.
+
+- DidCallDailyStat (did_call_daily_stats) — unique (date, didNumber, direction), totalCalls, answeredCalls, talkSeconds. VendorCallDailyStat (vendor_call_daily_stats) — same per vendor. **Neither is read or written by this backend** (admin-owned aggregates).
+
+- acefone_call_record — created by migration prisma/migrations/20261012120000_acefone_call_record/migration.sql (PK callId, direction, status, calledAt, callDuration, answeredSeconds, didNumber, agentNumber, clientNumber, agentName, recordingUrl, hangupCause, raw JSONB, syncedAt; indexes on (clientNumber, calledAt), (agentNumber, calledAt), calledAt). Local 30-day copy of the Acefone CDR to avoid the 100-calls/hour API quota. **There is no Prisma model for it in this repo's `schema.prisma` and the referenced `scripts/sync-acefone-call-records.ts` is not in this repo** — the sync and reads live in ck-admin.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/acefone-dialplan/create-relationship | Partner taps "Call customer": records/activates the LeadCallMapping for this (lead, caller) and returns the DID to dial. |
+| POST | /api/v1/acefone-dialplan/step1 | Acefone dial-plan webhook. Body \{uuid, call_id, call_to_number, caller_id_number, start_stamp\}. Returns a transfer instruction (number) or a system recording prompt. |
+
+## Core Business Logic
+
+1.  **create-relationship:** userId = cashboyId if present, else vendorId (cashboy first because a cashboy's token also carries the parent vendor id). Loads the lead's customer phone/vendorId/cashboyId; caller must be the lead's vendor or its assigned cashboy (403 otherwise). DID = active VendorDID of the lead's vendor, else the shared DID_NUMBER. In one transaction: deactivate the caller's other active mappings, then upsert (leadId, vendorId) with isActive=true, caller phone, customer phone. Writes a LeadLogs row (action:"Call"). Response includes didNumber and the message "Customer callbacks will come to you."
+
+2.  **step1 webhook — dedicated DID branch:** getVendorByDID(call_to_number) (digits only, isActive=true). If the DID belongs to a vendor:
+
+    - Caller is a vendor/cashboy (last 10 digits matched against Vendors.phoneNumber then Cashboy.phoneNumber): must own the DID (cashboy via cashboy.vendorId), else prompt. Then take the caller's most recent active LeadCallMapping, record CallHistory, transfer to the mapped customer phone; no mapping → prompt.
+
+    - Caller is a customer: getRecentVendorForCustomer(callerPhone) → most recent active mapping (last 7 days) whose lead is InProgress\|PickupDelayed + Assigned\|OutForPickup\|InspectionStarted and has no failedLead; fallback to the customer's latest lead (7 days) preferring the cashboy, then vendor. If that partner belongs to the DID's vendor, transfer to the partner's phone; else transfer to the DID owner (vendor) phone; nothing found → prompt.
+
+3.  **step1 — shared DID branch:** call_to_number must contain DID_NUMBER (else prompt + error log). Vendor/cashboy caller: top 10 active mappings ordered by updatedAt desc, pick the first whose lead status matches the active set above; transfer to that customer and log CallHistory; if the caller is also a customer ("dual role") route as customer; else prompt ("select a customer first"). Customer caller: same getRecentVendorForCustomer; transfer to partner; else prompt ("no recent orders"). Unknown number → prompt ("registered users only").
+
+4.  resolveCallDid(vendorId) (used by customerOrder/index.ts and masterLead.service.ts) returns the vendor's active DID or the shared DID_NUMBER for embedding a "call" number in order responses.
+
+## Status / State Machine
+
+None. Mapping is isActive true/false.
+
+## Validations & Rules
+
+CallHistory.validUntil = 24 h.
+
+## Dependencies
+
+Orders (MasterLeads, LeadLogs), Vendor (Vendors, VendorDID), Cashboy, Customer / User. External: Acefone (dial-plan webhook caller; this backend makes no outbound Acefone API calls).
+
+## Background Jobs / Events
+
+None in this repo (CDR sync is in ck-admin).
+
+## Who Uses It
+
+Vendor app (create-relationship), Acefone (webhook), Customer app/web indirectly via resolveCallDid.

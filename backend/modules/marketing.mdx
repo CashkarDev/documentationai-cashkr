@@ -1,0 +1,142 @@
+---
+title: "Marketing"
+description: "Marketing messages and measurement: banners, newsletter, tracked /c/ short links, one-click unsubscribe, SES bounce feed, WhatsApp suppression, campaign senders, Meta CAPI and the public coupon feed."
+---
+
+## Purpose
+
+Everything that reaches a customer with a marketing (not transactional) message or measures it: home/landing banners, the newsletter sign-up list, tracked short links (/c/:token) with last-touch attribution, one-click email unsubscribe (/u/:token), the SES bounce/complaint feed (/ses/events), the per-customer WhatsApp suppression machine, the manually-run outbound campaign senders (iPhone pre-launch WhatsApp waves, SES email warm-up ladder, Buyback Days), Meta Conversions API server events, and the public coupon feed.
+
+## Folder / Files
+
+- Banners: src/routes/banners/index.ts, src/controllers/banners/index.ts.
+
+- Newsletter: src/routes/newsletterRoutes/route.ts, src/controllers/newsLetter/index.ts.
+
+- Redirect / click links: src/routes/redirect/index.ts (mounted at /c), src/controllers/redirect/redirect.controller.ts, src/services/redirect/redirectLink.service.ts.
+
+- Unsubscribe: src/routes/unsubscribe/index.ts (mounted at /u), src/controllers/email/unsubscribe.controller.ts, src/utils/unsubscribeToken.ts.
+
+- SES events: src/routes/sesEvents/index.ts (mounted at /ses), src/controllers/email/sesEvents.controller.ts, src/utils/snsSignature.ts.
+
+- Suppression / touches: src/services/lead/notification/marketingSuppression.service.ts, src/utils/warmupHealth.ts, src/utils/pabblyEmailLists.ts.
+
+- Campaigns: src/campaigns/iphonePrelaunch/\{waveSender,audience,assertParams,modelMap\}.ts, src/campaigns/warmup/audience.ts, src/campaigns/buyback/\* (WhatsApp + email sender for Buyback Days; shares the same ledger and guards).
+
+- Scripts that drive them (all CLIs under scripts/, none wired into src/server.ts): iphone-prelaunch-wave.ts, iphone-prelaunch-email-csv.ts, iphone-prelaunch-seed-email-csv.ts, warmup-email-csv.ts, warmup-ses-send.ts, warmup-ladder-run.ts, warmup-health.ts, warmup-audience-audit.ts, phase0-email-list-size.ts, phase1-send.ts, p1-verify-template.ts, buyback-wave.ts, buyback-email.ts, buyback-day.ts, buyback-coupons.ts, buyback-scoreboard.ts, buyback-telecaller-csv.ts, ses-suppression-sync.ts, pabbly-suppression-import.ts, ses-pipeline-probe.ts, backfill-redirect-tb-slug.ts, meta-capi-smoke.ts.
+
+- Meta CAPI: src/utils/metaCapi.ts.
+
+- Public coupons: src/controllers/public/coupons.ts.
+
+## Data Models
+
+- Banners (id uuid, title, image, BannerType enum Regular\|Offer default Regular, deviceType enum BannerDeviceType = All\|LaptopLanding\|MobileLanding\|TabletLanding\|HomeLanding\|MacLanding\|CameraLanding\|WatchLanding\|ConsoleLanding\|HeadphoneLanding default All, isActive default false, platform enum platform = Web\|WebMobileView\|App default Web, startDate/endDate nullable, order Int default 0, slug). No relations.
+
+- NewsLettersEmails (id autoincrement, email unique, createdAt, updatedAt). No relations.
+
+- RedirectLink (token VarChar(12) PK, customerId, leadId?, channel WHATSAPP\|ADMIN\|EMAIL\|PUSH, templateKey VarChar(40) e.g. BOT_OPENING\|REENGAGE\|HOT_LEAD\|IP18_W&lt;n&gt;\|WARMUP_D&lt;n&gt;\|PUSH_NURTURE\|BBD\_\*, destinationUrl, createdAt). Relation-less by design; index on leadId.
+
+- ClickEvent (id cuid, token, customerId, leadId?, channel, templateKey, clickedAt, userAgent VarChar(255)); index (leadId, clickedAt). One row per human click on a RedirectLink.
+
+- EmailSuppression (email PK, customerId?, source VarChar(20) = one_click\|link\|manual\|ses_bounce\|ses_complaint\|ses_validation\|ses_acct_supp\|pabbly_bounced\|pabbly_unsub, sesSuppressedAt? (null = not yet pushed to SES's account list), createdAt).
+
+- MarketingTouch (id, customerId, leadId?, channel WHATSAPP\|PUSH\|EMAIL, templateKey, sentAt, providerResponse Json) - one row per outbound marketing send, the delivery ledger; index (customerId, sentAt).
+
+- CustomerMarketingState (customerId PK, waState ACTIVE\|BACKOFF\|SUPPRESSED default ACTIVE, waConsecutiveUnengaged Int, waBackoffUntil?, waBackoffCount Int, lastEngagementAt?, updatedAt).
+
+- Related columns on Customers: whatsappOptIn (default true), whatsappOptInAt, lastMarketingWhatsappAt, lastMarketingPushAt, firebaseId.
+
+- LeadAttribution (owned by Lead & Nurture) is upserted by the redirector (lastTouchChannel, lastTouchTemplate, lastTouchAt, utm\* on create).
+
+- SystemIntegrations rows used as flags: ses_sns (SNS liveness heartbeat), warmup_kill, iphone_prelaunch_kill, p1_kill.
+
+- Coupon (owned by Coupon module) is read by the public coupons feed.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/banner | Lists active banners inside their start/end schedule. Query: platform, deviceType, bannerType (case-insensitive enum match, 400 on unknown), active=true/false, page, pageSize (default 50, max 100). platform=App short-circuits to platform=App + isActive=true. Ordered by order asc (nulls last) then createdAt desc. |
+| GET | /api/v1/newsletter | Newsletter list. |
+| GET | /api/v1/newsletter/id/:id | One row by numeric id (404 if missing). |
+| GET | /api/v1/newsletter/email/:email | One row by email (404 if missing). |
+| POST | /api/v1/newsletter | Body \{ email \}; 400 if empty, 409 on duplicate, 201 on create. |
+| DELETE | /api/v1/newsletter/:id | Deletes a row by id (404 if missing). |
+| GET | /c/:token | Redirect links. Looks up RedirectLink; unknown token -&gt; 302 to SHORT_LINK_FALLBACK_URL (default https://www.cashkr.com). Known token -&gt; writes ClickEvent, calls recordEngagement, upserts LeadAttribution last-touch (if leadId), then 302 to destinationUrl. Link-preview crawlers get the 302 only, nothing logged. |
+| POST | /u/:token | RFC 8058 one-click unsubscribe from the mailbox provider. Verifies token, upserts EmailSuppression (source one_click), then SES PutSuppressedDestination and stamps sesSuppressedAt. 200 "unsubscribed" / 400 "invalid token" / 500. |
+| GET | /u/:token | Same as POST but source link and returns a small HTML page. |
+| POST | /ses/events | SubscriptionConfirmation → confirmed only for AWS SNS hosts. Notification → permanent bounce / complaint recipients upserted into EmailSuppression (source ses_bounce/ses_complaint, or ses_validation/ses_acct_supp for "not attempted" sub-types); other kinds only logged. Every handled event stamps SystemIntegrations.ses_sns.lastSyncAt. 403 on topic/signature mismatch, 500 "retry" on DB failure. |
+| GET | /api/v1/public/coupons | Coupon rows with isActive=true, isPrivate=false, accessibility="ALL", startDate&lt;=now&lt;=endDate, newest first. Cached in Redis 120 s. |
+
+## Core Business Logic
+
+- **Banners**: read-only here. The admin panel writes Banners directly in the DB; the backend only serves the live set. "Live" = isActive AND (startDate null or &lt;= now) AND (endDate null or &gt;= now).
+
+- **Redirect links (click tracking + attribution)**: RedirectLinkService.createRedirectLink mints an 8-char base62 token and stores the destination; callers embed the /c/&lt;token&gt; link in WhatsApp templates, push bodies and emails. The customer website proxies /c/:token and /u/:token to this backend (ck-web2.0 next.config.js rewrites) so links live on www.cashkr.com. On tap: (1) writes ClickEvent, (2) marketingSuppression.recordEngagement(customerId) which sets waState=ACTIVE and resets the streak, (3) upserts LeadAttribution last-touch fields (create path also fills utmSource = channel, utmMedium = "bot" for WHATSAPP else channel, utmCampaign = templateKey), then 302s. Logging failure never blocks the redirect. createHotLeadLink builds an ADMIN/HOT_LEAD link to the lead's checkout URL with utm_source=admin&utm_medium=hotlead&utm_campaign=hot_lead; used by the hot-lead sweep and the Pabbly price_objection intent webhook.
+
+- **WhatsApp marketing suppression (engagement-decay proxy)**: Meta's per-user marketing refusals are not visible synchronously, so deliverability is inferred. After each WA marketing send: if there was a previous WA send and no engagement since it, waConsecutiveUnengaged += 1; at 3 → BACKOFF for 3, 7, then 14 days (escalating with waBackoffCount); at 5 → SUPPRESSED. First-ever send never counts. Engagement events: any /c/ click (any channel), Pabbly intent webhook, new lead / order completed. Suppressed customers are excluded from WhatsApp nurture and get the push fallback instead (20 h throttle, skip if order in last 7 days). waBackoffCount is never reset, so repeat offenders escalate faster.
+
+- **MarketingTouch ledger writers**: nurture WA sends (bot services and REENGAGE), Pabbly list enrol (EMAIL_ENROL), push fallback (PUSH_NURTURE), iPhone waves (IP18_W&lt;n&gt;), Buyback Days (BBD\_&lt;CODE&gt;, BBD_E1 email), SES warm-up (WARMUP_D&lt;n&gt;), Phase 1 (P1\_&lt;T&gt;\_&lt;SEG&gt;).
+
+- **Email unsubscribe**: stateless HMAC-signed token, so an old link still works and nobody can unsubscribe a stranger. Our own EmailSuppression row is written FIRST (that is the list the senders read), SES's account-level list second and best-effort. The senders put List-Unsubscribe / List-Unsubscribe-Post headers with the /u/&lt;token&gt; link.
+
+- **SES event feed**: SES config set cashkr-marketing (identity send.cashkr.com) → SNS topic → POST /ses/events. Hard bounces and complaints are suppressed; opens/clicks are deliberately not subscribed. The feed is treated as dead if ses_sns.lastSyncAt is older than SES_SNS_MAX_AGE_HOURS (default 36 h), and the email senders refuse to run in that state.
+
+- **SES warm-up ladder** (warmupHealth.ts + scripts): daily volumes 100, 200, 400, 800, 1500, 3000, 5000. Next day: bounce ≤ 1% and 0 complaints → next rung; bounce 1–2% or a complaint under the stop line → hold; bounce &gt; 2% or complaints &gt; 0.1% → refuse. Rates join MarketingTouch (EMAIL) to EmailSuppression rows created after the send. Audience Tier A = customers who clicked a /c/ link in the last 60 days, latest Mobile quote, valid email, not demo / deleted / blocked, not enrolled in the last 8 days; Pabbly bounced + unsubscribed lists and our EmailSuppression are removed. warmup-ladder-run.ts (11:00 IST daily per docs) checks the kill switch and "already sent today", computes volume, then runs warmup-ses-send.ts (SESv2, From hello@send.cashkr.com, ~1.1 s between sends, kill switch re-checked every 25 rows). warmup-health.ts --enforce --slack flips warmup_kill on at a breach and posts to Slack; --clear "&lt;why&gt;" is the only way to turn it off.
+
+- **iPhone 18 pre-launch WhatsApp waves** (src/campaigns/iphonePrelaunch/waveSender.ts, CLI scripts/iphone-prelaunch-wave.ts --wave &lt;0..7&gt; \[--live\]): DRY-RUN by default. Fixed wave plan: 0 = seeds (cap 10); 1 Pro:G1 cap 500; 2 Pro:G2 1500; 3 Pro:G3 3000; 4 Pro:G4+Base:G1+Base:G2 5000; 5 Base:G3 5000; 6 Base:G4 5000; 7 = last call to Pro non-openers cap 2000. Recency groups G1 ≤30d, G2 ≤90d, G3 ≤180d, G4 older. Audience = latest Apple mobile quote per phone, minus completed/in-progress customers, leads &lt; 7 days old, this week's telecaller queue, demo/deleted/blocked, WA-suppressed, opted-out, unmapped models and generations below the iPhone-13 floor. Guards: kill switch iphone_prelaunch_kill, 9:00–21:00 IST window (except wave 0), 20 h frequency cap, template parameter checks abort the whole wave on mismatch. Each row mints its own /c/ token, sends from the marketing number, 2 s between sends, logs to logs/iphone-prelaunch/.
+
+- **Buyback Days** (src/campaigns/buyback/\*, scripts buyback-wave.ts, buyback-email.ts): same discipline (dry-run default, one wave per run, kill switch, 25-row re-checks, concurrency 1, daily and weekly caps, holdout, guards that the bonus campaign and coupons are live). The email run reuses the warm-up sender rules and refuses to run while the ladder kill switch is on. See BuyBack Bonus Campaigns.
+
+- **Meta CAPI** (src/utils/metaCapi.ts): two custom events, both fire-and-forget and skipped for demo customers: SuccessfulPickup (event_id pickup\_&lt;orderId&gt;) when an order becomes Completed; ReferralRewardCredited (event_id reward\_&lt;orderId&gt;) when an admin approves a referral payout. Sent to the Meta Graph API with action_source "system_generated", hashed email/phone, event_time clamped to 7 days, 5 s timeout. Inert unless META_CAPI_PIXEL_ID and META_CAPI_ACCESS_TOKEN are set; META_CAPI_TEST_EVENT_CODE routes to Test Events.
+
+## Status / State Machine
+
+- CustomerMarketingState.waState: ACTIVE → BACKOFF (3rd consecutive unengaged WA send; window 3d → 7d → 14d) → SUPPRESSED (5th). Any state → ACTIVE on recordEngagement. BACKOFF whose waBackoffUntil has passed is treated as eligible again without a state write.
+
+- EmailSuppression: permanent once written; sesSuppressedAt null → set when SES accepts. A "not attempted" SES event never downgrades an existing bounce/complaint/unsubscribe source.
+
+- Banners: no status enum; "Live" is derived from isActive + dates.
+
+- Kill switches are SystemIntegrations.isActive booleans: warmup_kill, iphone_prelaunch_kill, p1_kill.
+
+## Validations & Rules
+
+- Banner query enums matched case-insensitively; invalid value → 400 listing valid values. pageSize capped at 100.
+
+- Newsletter: email presence checked; uniqueness enforced by the DB.
+
+- Redirect: per-IP rate limit; token is the PK (62^8 space); user-agent stored truncated to 255; known link-preview crawlers are not logged.
+
+- Unsubscribe: UNSUBSCRIBE_TOKEN_SECRET must be ≥ 16 chars; constant-time MAC comparison; email must contain "@".
+
+- SES events: topic ARN must match; SNS signature verified; only bounceType === "Permanent" suppresses.
+
+- Warm-up: bounce limit 2%, complaint limit 0.1%, step-up bounce 1%, refuse if the SES feed is not wired.
+
+- iPhone waves: 9–21 IST window, caps per wave, 20 h frequency cap, template parameter sanitising.
+
+- Meta CAPI: skip when neither hashed email nor phone exists; event_time max age 7 days.
+
+- Public coupons: only accessibility = "ALL", non-private, active and inside dates; 120 s cache.
+
+## Dependencies
+
+- Internal: Lead & Nurture (suppression service, LeadAttribution, CheckoutUrlGenerator, nurture/hot-lead callers), Coupon (Coupon model), Orders (completion → SuccessfulPickup, engagement), Referral Program (ReferralRewardCredited), Webhooks (Pabbly intent engagement + hot-lead links), Notifications (push fallback), Customer / User (marketing columns, demo guard), BuyBack Bonus Campaigns (buyback guards), Cron Jobs (nurture / hot-lead jobs call into this), Admin (Banners and PushNotification written by the admin panel directly).
+
+- External: AWS SESv2, AWS SNS, Pabbly WhatsApp, Pabbly Email Marketing API, Meta Graph API, Slack incoming webhook, Redis.
+
+## Background Jobs / Events
+
+- No src/jobs cron belongs to this module. The nurture cron (Lead & Nurture) calls the suppression gate and push fallback each tick.
+
+- Script crons live in the server crontab, not in the repo. docs/ses-warmup-plan.md documents warmup-ladder-run.ts at 11:00 IST daily and warmup-health.ts hourly. Unclear from code whether they are currently installed.
+
+- Inbound webhook: POST /ses/events (SNS). The Pabbly intent webhook feeds recordEngagement.
+
+- No socket events.
+
+## Who Uses It
+
+Customer web (banners, newsletter POST, public coupons, /c and /u via next.config rewrites), Customer app (banners with platform=App), third party (AWS SNS → /ses/events; mailbox providers → POST /u/:token; Meta receives CAPI events), internal (campaign scripts run by the team on the server; admin panel reads ClickEvent/MarketingTouch/RedirectLink tables directly for its dashboards and manages Banners directly in the DB).

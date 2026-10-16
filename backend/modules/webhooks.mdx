@@ -1,0 +1,59 @@
+---
+title: "Webhooks (Pabbly)"
+description: "Inbound: button taps from the Pabbly Chatflow WhatsApp Yes/No bot (intent) and the STOP keyword flow (opt-out). Outbound: calls to the referral service, ck-admin and Pabbly Email."
+---
+
+## Purpose
+
+Inbound: receive button taps from the Pabbly Chatflow WhatsApp Yes/No bot (intent) and the STOP keyword flow (opt-out), and turn them into lead intent, hot-lead and opt-in state. Outbound: the backend's HTTP "webhooks" to the referral microservice and ck-admin, plus the Pabbly Email Marketing API calls that drive the email drip.
+
+## Folder / Files
+
+src/routes/webhooks/pabbly.ts (mounted at /api/v1/webhooks), src/controllers/webhooks/pabblyIntent.ts, src/controllers/webhooks/pabblyOptOut.ts, src/utils/webhooks.ts (outbound referral / ck-admin calls), src/utils/PabblyEmailUtility.ts, src/utils/pabblyEmailLists.ts, src/services/lead/notification/pabblySyncLead.service.ts. Tests: tests/pabblyIntentResolveLead.test.ts, tests/pabblyIntentNotNow.test.ts.
+
+## Data Models
+
+Writes MasterLeads.whatsappIntentConfirmedAt, whatsappIntentDeclineReason, hotLeadAt/Type/Status; MarketingTouch (channels WA_FLOW, WA_OPTOUT); CustomerMarketingState (engagement reset); Customers.whatsappOptIn; RedirectLink rows via RedirectLinkService (Marketing module). No model of its own.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/webhooks/pabbly/intent | Body \{ phone, intent, reason?, leadId? \}. Normalises phone to 10 digits (accepts 91-prefixed 12 digits). intent mapped by normalizeIntent: yes / "yes, continue" / "yes, sell now" / "yes, lock it" → yes; not_now / not-now → not_now; no / "not now" / "don't lock" → no. Finds the customer by phone (no_customer otherwise), calls marketingSuppression.recordEngagement, resolves the lead (explicit leadId owned by customer → most recently bot-messaged lead → newest open New lead). yes: stamps whatsappIntentConfirmedAt (idempotent duplicate_yes) and returns checkoutUrl (short /c/ link with utm_source=whatsapp, utm_medium=bot, utm_campaign=lead_nurture) + checkoutToken. no: stores normalised reason (better_price, need_time, have_question, else other:&lt;label&gt;, blank → unspecified); better_price → hot lead price_objection, have_question → hot lead question (only if not already hot and not a demo phone) and mints a HOT_LEAD redirect link. not_now: writes MarketingTouch WA_FLOW/BOT_REASON_ASK and returns firstName for the reason-ask template. Every outcome is HTTP 200 with a status field (ok_yes, ok_no, reason_changed, duplicate_yes, ok_not_now, no_customer, no_open_lead, unknown_intent, invalid_phone, rate_limited, internal_error). |
+| POST | /api/v1/webhooks/pabbly/optout | Body \{ phone \}; sets Customers.whatsappOptIn = false for that phone, writes a MarketingTouch WA_OPTOUT/OPTOUT_STOP audit row; returns opted_out / unknown_phone / bad_phone. |
+
+## Core Business Logic
+
+- **Inbound** (above). The intent webhook is the only place price_objection / question hot leads are created; yes_dropoff comes from the sweep cron (Lead & Nurture).
+
+- **Outbound HTTP calls that act as webhooks** (src/utils/webhooks.ts). Events: customer-created (src/controllers/user/registerUser.ts:178, src/routes/admin/referralTransactions/referralTransactions.routes.ts:554) and order-completed (src/services/lead/masterLead.service.ts:1006, payload orderId/customerId/referralId/orderAmount/finalAmount/status).
+
+- **Pabbly Email Marketing API** (PabblyEmailUtility.ts, base PABBLY_EMAIL_BASE_URL): upsertPabblySubscriber (POST /subscribers), removeSubscriberFromList (POST /lists/remove-subscriber, by list ID), getPabblySubscriberByEmail (GET /subscribers/\{email\}), deletePabblySubscriber (DELETE /subscribers body \{ids:\[...\]\}). Callers: pabblySyncLead.service.ts (lead enrol / customer move), src/routes/referralRoutes/referral.routes.ts (list "Referral Credited"), src/controllers/user/deleteAccount.ts, scripts/refer-a-yaar-sync.ts.
+
+- pabblyEmailLists.ts: fetchPabblySet("bounced"\|"unsubscribed") and fetchPabblyDelivered() page through GET /subscribers with 429 retry/back-off; writeDeliveredCache/readDeliveredCache keep a 24 h local cache. Used only by scripts/\* (warm-up / buyback email batches), not by the HTTP app.
+
+- **Pabbly Chatflow (WhatsApp) API**: POST /messages in WhatappsUtility.ts and GET /templates in src/campaigns/buyback/guards.ts (template verification). See Messaging Utilities.
+
+## Status / State Machine
+
+None beyond the lead intent fields (whatsappIntentConfirmedAt set once; whatsappIntentDeclineReason may change → reason_changed).
+
+## Validations & Rules
+
+Shared-secret check before anything else; phone must normalise to 10 digits; reasons whitelisted; other: labels capped at 80 chars; idempotent updates; demo phones never become hot leads; per-IP rate limiting.
+
+## Dependencies
+
+Internal: Lead & Nurture (marketingSuppression, hot-lead columns), Marketing (RedirectLinkService.createRedirectLink/createHotLeadLink, CheckoutUrlGenerator), Customer / User (Customers by phone), Referral Program and Admin (outbound). External: Pabbly Chatflow, Pabbly Email Marketing, referral microservice, ck-admin.
+
+## Background Jobs / Events
+
+None of its own; hot leads created here are later auto-converted by the hot-lead sweep cron.
+
+## Who Uses It
+
+Pabbly Chatflow (third party) for inbound; internal services for outbound.
+
+## Env vars (Pabbly)
+
+PABBLY_WEBHOOK_SECRET, PABBLY_CHATFLOW_BASE_URL, PABBLY_CHATFLOW_API_TOKEN (transactional number), PABBLY_MARKETING_API_TOKEN (marketing number), PABBLY_BOT_API_TOKEN (bot number), PABBLY_EMAIL_API_TOKEN, PABBLY_EMAIL_BASE_URL, PABBLY_EMAIL_LEADS_LIST_NAME (default "Cashkr Leads"), PABBLY_EMAIL_LEADS_LIST_ID, PABBLY_EMAIL_CUSTOMERS_LIST_NAME (default "Cashkr Customers"), PABBLY_EMAIL_COLD_LIST_ID, PABBLY_EMAIL_COLD_LIST_NAME, PABBLY_EMAIL_REFERRAL_CREDITED_LIST_NAME, PABBLY_DELETE_RECREATE_ENABLED. No outbound webhook is sent *to* Pabbly from the app (Pabbly is driven by subscriber upserts / message sends).

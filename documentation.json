@@ -1626,6 +1626,282 @@
         ]
       },
       {
+        "groups": [
+          {
+            "group": "Overview",
+            "icon": "book-open",
+            "pages": [
+              {
+                "icon": "layout-dashboard",
+                "path": "backend/overview",
+                "title": "Backend System Overview"
+              },
+              {
+                "icon": "indian-rupee",
+                "path": "backend/device-price-lifecycle",
+                "title": "Device Price Lifecycle"
+              }
+            ]
+          },
+          {
+            "group": "Customer & Auth",
+            "icon": "user",
+            "pages": [
+              {
+                "path": "backend/modules/auth-and-otp",
+                "title": "Auth & OTP"
+              },
+              {
+                "path": "backend/modules/customer-user",
+                "title": "Customer / User"
+              },
+              {
+                "path": "backend/modules/customer-address",
+                "title": "Customer Address"
+              },
+              {
+                "path": "backend/modules/app-link-firebase-id",
+                "title": "App Link / Firebase ID"
+              }
+            ]
+          },
+          {
+            "group": "Catalog & Pricing",
+            "icon": "tag",
+            "pages": [
+              {
+                "path": "backend/modules/device-catalog",
+                "title": "Device Catalog"
+              },
+              {
+                "path": "backend/modules/pricing-and-evaluation",
+                "title": "Pricing & Evaluation"
+              },
+              {
+                "path": "backend/modules/buyback-bonus-campaigns",
+                "title": "BuyBack Bonus Campaigns"
+              },
+              {
+                "path": "backend/modules/search",
+                "title": "Search"
+              },
+              {
+                "path": "backend/modules/analytics-top-selling",
+                "title": "Analytics / Top Selling"
+              },
+              {
+                "path": "backend/modules/model-request",
+                "title": "Model Request"
+              }
+            ]
+          },
+          {
+            "group": "Orders & Leads",
+            "icon": "package",
+            "pages": [
+              {
+                "path": "backend/modules/orders",
+                "title": "Orders"
+              },
+              {
+                "path": "backend/modules/customer-orders",
+                "title": "Customer Orders"
+              },
+              {
+                "path": "backend/modules/lead-and-nurture",
+                "title": "Lead & Nurture"
+              },
+              {
+                "path": "backend/modules/issues-images-inspection",
+                "title": "Issues Images / Inspection"
+              },
+              {
+                "path": "backend/modules/inspection-code",
+                "title": "Inspection Code"
+              },
+              {
+                "path": "backend/modules/invoice",
+                "title": "Invoice"
+              },
+              {
+                "path": "backend/modules/corporate-buyback",
+                "title": "Corporate Buyback"
+              }
+            ]
+          },
+          {
+            "group": "Store",
+            "icon": "store",
+            "pages": [
+              {
+                "path": "backend/modules/store-store-leads-store-vendors",
+                "title": "Store / Store Leads / Store Vendors"
+              },
+              {
+                "path": "backend/modules/exchange-token",
+                "title": "Exchange Token"
+              },
+              {
+                "path": "backend/modules/settlement-and-cash",
+                "title": "Settlement & Cash"
+              }
+            ]
+          },
+          {
+            "group": "Vendors",
+            "icon": "truck",
+            "pages": [
+              {
+                "path": "backend/modules/vendor",
+                "title": "Vendor"
+              },
+              {
+                "path": "backend/modules/vendor-payments-and-credits",
+                "title": "Vendor Payments & Credits"
+              },
+              {
+                "path": "backend/modules/cashboy",
+                "title": "Cashboy"
+              },
+              {
+                "path": "backend/modules/attendance",
+                "title": "Attendance"
+              },
+              {
+                "path": "backend/modules/vendor-stories",
+                "title": "Vendor Stories"
+              },
+              {
+                "path": "backend/modules/petrol-surge",
+                "title": "Petrol Surge"
+              },
+              {
+                "path": "backend/modules/issue-report",
+                "title": "Issue Report"
+              },
+              {
+                "path": "backend/modules/vendor-account-deletion",
+                "title": "Vendor Account Deletion"
+              }
+            ]
+          },
+          {
+            "group": "Payments & Payouts",
+            "icon": "wallet",
+            "pages": [
+              {
+                "path": "backend/modules/payment-gateway",
+                "title": "Payment Gateway"
+              },
+              {
+                "path": "backend/modules/gift-cards",
+                "title": "Gift Cards"
+              }
+            ]
+          },
+          {
+            "group": "Offers & Growth",
+            "icon": "gift",
+            "pages": [
+              {
+                "path": "backend/modules/coupon",
+                "title": "Coupon"
+              },
+              {
+                "path": "backend/modules/abandoned-coupon-program",
+                "title": "Abandoned Coupon Program"
+              },
+              {
+                "path": "backend/modules/referral-program",
+                "title": "Referral Program"
+              },
+              {
+                "path": "backend/modules/influencer-affiliate",
+                "title": "Influencer Affiliate"
+              },
+              {
+                "path": "backend/modules/reviews-and-review-proof",
+                "title": "Reviews & Review Proof"
+              }
+            ]
+          },
+          {
+            "group": "Communication",
+            "icon": "message-circle",
+            "pages": [
+              {
+                "path": "backend/modules/messaging-utilities",
+                "title": "Messaging Utilities"
+              },
+              {
+                "path": "backend/modules/notifications",
+                "title": "Notifications"
+              },
+              {
+                "path": "backend/modules/marketing",
+                "title": "Marketing"
+              },
+              {
+                "path": "backend/modules/webhooks",
+                "title": "Webhooks (Pabbly)"
+              },
+              {
+                "path": "backend/modules/chat",
+                "title": "Chat"
+              },
+              {
+                "path": "backend/modules/chatbot",
+                "title": "Chatbot (CX Genie)"
+              },
+              {
+                "path": "backend/modules/acefone-telephony",
+                "title": "Acefone Telephony"
+              }
+            ]
+          },
+          {
+            "group": "Platform",
+            "icon": "settings",
+            "pages": [
+              {
+                "path": "backend/modules/admin",
+                "title": "Admin"
+              },
+              {
+                "path": "backend/modules/terms-and-conditions",
+                "title": "Terms & Conditions"
+              },
+              {
+                "path": "backend/modules/careers",
+                "title": "Careers"
+              },
+              {
+                "path": "backend/modules/wipe",
+                "title": "Wipe (ckwipe)"
+              },
+              {
+                "path": "backend/modules/file-upload",
+                "title": "File Upload"
+              },
+              {
+                "path": "backend/modules/encryption-and-security-utils",
+                "title": "Encryption & Security utils"
+              },
+              {
+                "path": "backend/modules/health-and-docs",
+                "title": "Health & Docs"
+              },
+              {
+                "path": "backend/modules/cron-jobs",
+                "title": "Cron Jobs"
+              }
+            ]
+          }
+        ],
+        "icon": "server",
+        "tab": "Backend"
+      },
+      {
         "tab": "API Reference",
         "icon": "terminal",
         "groups": [

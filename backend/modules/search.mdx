@@ -1,0 +1,65 @@
+---
+title: "Search"
+description: "Device search box on the website/app (fuzzy model search + autocomplete over all 12 device tables) and the serviceability lookups by city name / pincode."
+---
+
+## Purpose
+
+Device search box on the website/app (fuzzy model search + autocomplete over all 12 device tables) and the serviceability lookups by city name / pincode.
+
+## Folder / Files
+
+src/routes/search/index.ts (createEnhancedSearchRouter, mounted at /api/v1 root in routes/index.ts); src/services/deviceSearch.service.ts (EnhancedProfessionalSearchService + EnhancedSearchController); src/controllers/citySearch/index.ts (searchCity, searchPincode, fuse.js); SQL in prisma/migrations/Search_Migrations/\*.sql (00_Create_Search_Index, 00_Enhanced_Fuzzy, 01_Add_Img_To_Search_Index, 02_Hybrid_Search, 03..07 fixes, search_setup_migrations.sql); legacy/unused: src/controllers/search/index.ts (ProfessionalSearchService, createProfessionalSearchRouter) and src/services/optimizedSearch.service.ts (OptimizedDeviceSearchService, createSearchRouter, calls search_devices()).
+
+## Data Models
+
+- DeviceSearchIndex (device_id + device_type unique, brand, model, series, model_number, base_url, model_code, img, search_text, search_vector tsvector, search_compact; GIN trigram index on search_text, GIN on search_vector, indexes on series/model_number). Denormalised copy of all Device tables, rebuilt by the Postgres function sync_device_search_index().
+
+- BrandAliases (brand_canonical, alias) — used by resolve_brand() / add_brand_alias() SQL.
+
+- Pincodes (pincode Int, city, state, deviceType String\[\], isServiceable, lat, lng, zoneId → Zone). Owned by the Vendor/pincode module; read here.
+
+- Postgres functions (from the SQL files): search_devices_v3(query, deviceType, limit, offset) (primary), search_devices_v2 (fallback), search_devices (legacy), normalize_search_query, resolve_brand, extract_series, extract_model_number, autocomplete_devices, sync_device_search_index, refresh_device_search_index, add_brand_alias; extension pg_trgm. The per-table refresh triggers are commented out in the SQL.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | `/api/v1/search?q= or model=&deviceType=&page=&limit= or size=` | zod: q/model string, deviceType enum optional, page ≥1, limit/size ≤100 default 20. Calls search_devices_v3; on SQL error falls back to search_devices_v2; if page 1 is empty returns suggested: true results from token/trigram similarity, then any rows ("popular"). Hydrates img from the Device tables. Returns \{success, query, data\[\{id, deviceType, model, brand, img, baseURL, modelCode, score, matchType\}\], pagination, suggested?\}. |
+| GET | /api/v1/search/autocomplete?q=&limit=&deviceType= | Prefix ≥2 chars; resolve_brand first, then brand-limited or trigram suggestions "&lt;brand&gt; &lt;model&gt;". Always 200 (\{suggestions: \[\]\} on error). |
+| POST | /api/v1/search/sync | Runs SELECT sync_device_search_index() to rebuild the index. |
+| GET | /api/v1/search/stats | Row counts per device_type in the index. |
+| POST | /api/v1/search/alias | Body \{brand, alias\} → add_brand_alias(). |
+| GET | /api/v1/search/aliases | All aliases grouped by canonical brand. |
+| GET | /api/v1/search/cities?city= | city=all → sorted distinct serviceable city names. Else loads every Pincodes row (city ≠ "Other"), prefix match first, then fuse.js fuzzy (keys: \["city"\], threshold 0.3), else the "Other" rows; response grouped city → pincodes → deviceTypes. 404 when nothing. |
+| GET | /api/v1/search/pincode?pincode= | Serviceable rows for a numeric pincode grouped with deviceTypes; 404 "Service not available". |
+
+## Core Business Logic
+
+1.  search_devices_v3 normalises the query (brand alias resolution, series and model-number extraction), then scores each index row by tiers: series match +10000 / mismatch −5000, brand +8000, model number +5000 / −2000, exact text 3000, compact 2800, prefix 2000/1800, contains 1000/800, tsvector 500+rank, trigram similarity ×600/×400/×300, keyword bonuses (e.g. "ultra").
+
+2.  The Node service pages the SQL result; total is estimated (offset + rows, with a count query capped at 500 when a page is full).
+
+3.  The index is only rebuilt when someone calls POST /search/sync (or runs the SQL); new catalog rows are invisible to search until then (docs/DEVICE_TYPE_CONTEXT.md §Search).
+
+4.  City search runs fully in Node: whole Pincodes table per request, no cache.
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+zod on /search; autocomplete requires ≥2 chars; limit ≤ 100; pincode must parse as a number.
+
+## Dependencies
+
+Device Catalog (Device tables for img), Vendor (Pincodes), Postgres pg_trgm; fuse.js@^7 (only used in citySearch).
+
+## Background Jobs / Events
+
+None (no cron rebuilds the index; DB triggers are commented out).
+
+## Who Uses It
+
+Customer web + app (search, autocomplete, city/pincode serviceability); ops (sync/alias).

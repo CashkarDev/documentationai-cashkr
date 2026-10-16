@@ -1,0 +1,47 @@
+---
+title: "App Link / Firebase ID"
+description: "Two small device-facing helpers: the Android deep-link interstitial that carries referral/UTM params into the app, and the endpoint apps call after login to register their FCM token."
+---
+
+## Purpose
+
+Two small device-facing helpers: the Android deep-link interstitial that carries referral/UTM params into the app, and the endpoint apps call after login to register their FCM token.
+
+## Folder / Files
+
+src/routes/appLink/index.ts, src/controllers/appLink/appLink.controller.ts, src/routes/firebaseId/index.ts, src/controllers/FirebaseIdController/index.ts, src/controllers/FirebaseIdController/schemas.ts. Test: tests/appLink.route.test.ts.
+
+## Data Models
+
+No table of its own. Writes Customers.firebaseId / fcmPlatform, Vendors.firebaseId / fcmPlatform, Cashboy.firebaseId / fcmPlatform.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /app-open | Whitelists query params referral-code (1–32 chars of A-Z, a-z, 0-9, \_ and -), utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid (control chars stripped, max 200 chars). Android UA with a code -&gt; 200 HTML interstitial that opens the app through an Android intent URL with a browser fallback. Anything else (no code, iOS, desktop) -&gt; 302 to APP_LINK_WEB_BASE + APP_LINK_DESKTOP_PATH (default /) with params and loop-guard ck_pt=1. Headers Cache-Control: no-store, Referrer-Policy: no-referrer. The code itself is validated later by the referral service. |
+| PUT | /api/v1/setFirebaseId | zod \{firebaseId non-empty, userType customer or vendor or cashboy, platform android or ios optional\} (422 on failure). Picks the table from userType and the id from req.user, 404 if the row is missing, overwrites firebaseId and (if sent) fcmPlatform. If userType=vendor and req.user.userKind==="vendor", fires pushAvailableOrdersAfterLogin(vendorId) (deduped daily, fire-and-forget). |
+
+## Core Business Logic
+
+See table. Env: APP_LINK_WEB_BASE (default https://www.cashkr.com), APP_LINK_WEB_PATH (/app), APP_LINK_DESKTOP_PATH (/), ANDROID_PACKAGE_NAME (in.cashkar.www).
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+Param whitelist and length caps above; HTML/JS escaping helpers (jsString, htmlAttr) for the inline script; the row id comes from the authenticated user, so a mismatched userType just yields 404.
+
+## Dependencies
+
+Auth & OTP (authorize); Notifications (pushAvailableOrdersAfterLogin in src/services/lead/availableOrders.service.ts, FCM consumers read firebaseId/fcmPlatform); Referral Program (the code is validated later by /api/v1/referral/validate).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+/app-open: public web visitors following share links (nginx rewrite). /setFirebaseId: Customer app, Vendor app (vendor + cashboy). StoreVendors have no path here.

@@ -1,0 +1,60 @@
+---
+title: "Vendor Account Deletion"
+description: "Lets a partner request deletion of their vendor account; ops refunds unused credits and an admin approves (anonymise and purge) or rejects within a 7-working-day SLA."
+---
+
+## Purpose
+
+Lets a partner request deletion of their vendor account from the app; ops calls them, refunds unused credits (₹10 per credit), and an admin approves (which anonymises the vendor and their cashboys, purges photos/documents, revokes sessions and sends an SMS) or rejects within a 7-working-day SLA.
+
+## Folder / Files
+
+Vendor routes in src/routes/user/index.ts (/api/v1/user/account-deletion/\*), src/controllers/vendorAccountDeletion/index.ts + schemas.ts (zod), src/routes/admin/vendorAccountDeletions/vendorAccountDeletions.routes.ts (mounted at /api/v1/admin/vendor-account-deletions), src/controllers/adminVendorAccountDeletion/index.ts, src/services/vendorAccountDeletion/logic.ts (pure helpers), src/services/vendorAccountDeletion/vendorAccountDeletion.service.ts (DB + side effects), src/utils/MulterUpload.ts (PayoutQrUpload, 10 MB). Tests: tests/vendorAccountDeletion.logic.test.ts. Background doc: docs/vendor-account-deletion.md.
+
+## Data Models
+
+VendorAccountDeletionRequest (line 6126) — id, referenceId (unique, CKDEL- + 8 chars), vendorId → Vendors (cascade), status VendorAccountDeletionStatus (PENDING \| COMPLETED \| CANCELLED \| REJECTED), reason (≤255), details? (≤200), requestedOn, vendorPhoneMasked? (last 4 digits), creditsAtRequest, walletRefunded, walletRefundNote?, payout destination payoutUpiId?, payoutAccountName?, payoutAccountNumber?, payoutIfsc?, payoutBankName?, payoutQrUrl?, decidedAt?, decidedByAdminId?, adminNote? (≤500), cancelledAt?, completedAt?. The migration adds a partial unique index UNIQUE(vendorId) WHERE status='PENDING'. Related: Vendors.isDeleted/deletedAt/status, TokenBlacklist (marker ACCOUNT_DELETED\_&lt;userId&gt;\_&lt;stamp&gt;), Cashboy, PartnerLoginSession, VendorAttendance, ChatRoom, ChatAuditLog, VendorNotification, VendorNotificationEvent, VendorPincodes.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/user/account-deletion/request | Multipart optional payoutQrImage + fields vendorId (must equal token vendor, else 403), reason, details?, payout fields. 200 success:false if active orders, or if credits &gt; 0 and no payout destination, or QR upload fails. Creates PENDING request or returns the existing one (idempotent). Always HTTP 200 on business outcomes. |
+| GET | /api/v1/user/account-deletion/status | Latest request as \{ status, requestedOn, referenceId, adminNote \}; empty view (status "") when none. Never 404. |
+| POST | /api/v1/user/account-deletion/cancel | Body vendorId, referenceId?. Cancels only a PENDING request (conditional updateMany); otherwise 200 success:false with current state. |
+| GET | /api/v1/admin/vendor-account-deletions | Queue list; status = one of the four or ALL (default PENDING, oldest first), page, pageSize ≤100. Rows include dueBy, isOverdue, wallet and payout details, vendor contact. |
+| GET | /api/v1/admin/vendor-account-deletions/:id | One request plus orders stats (vendorOrderStats) and cashboys list. |
+| POST | /api/v1/admin/vendor-account-deletions/:id/approve | Body walletRefunded? (default false), walletRefundNote?, adminNote?. 409 unless PENDING, vendor not already deleted, (credits = 0 or walletRefunded), and no active orders. Runs the purge. |
+| POST | /api/v1/admin/vendor-account-deletions/:id/reject | Body adminNote?. Sets REJECTED if PENDING, else 409. |
+
+## Core Business Logic
+
+1.  **Request**: countActiveVendorOrders = MasterLeads with primaryStatus ∈ \{InProgress, PickupDelayed, Reserved\} AND secondaryStatus ∈ \{Assigned, InspectionStarted, OutForPickup, Reserved\} + unexpired ReservedLeads in PENDING/RESERVED. If &gt; 0 the vendor is told to finish first. If creditsAvailable &gt; 0, a payout destination is required (payoutUpiId or payoutQrUrl or account number + IFSC). Reference id generation retries up to 5 times on collision; a P2002 from the pending-per-vendor index returns the racing row.
+
+2.  **Cancel**: only PENDING; conditional update protects against a concurrent approval.
+
+3.  **Approve** (approveDeletionRequest): checks above, then collects asset URLs (8 Vendors document columns, payout QR, each cashboy's Aadhaar/selfie, PartnerLoginSession.selfieImageUrl, attendance punch-in/out selfies). In one transaction: insert TokenBlacklist markers for vendor and cashboys (10-year expiry); delete ChatAuditLog + ChatRoom for the vendor; delete PartnerLoginSession rows; null attendance selfie URLs; delete VendorNotification, VendorNotificationEvent, VendorPincodes; anonymise Vendors (Deleted Vendor, deleted+&lt;id&gt;@deleted.cashkr.local, phone DELETED\_&lt;id&gt;\_&lt;stamp&gt;, all images null, deviceAssigned=\[\], credits 0, maxLeads 0, isApproved=false, status="barred", isDeleted=true, deletedAt); anonymise each cashboy; mark request COMPLETED (payoutQrUrl nulled). After commit, best effort: delete objects from the bucket in batches of 20 (deleteFromS3Bucket), then sendAccountDeletionSMS (SmsUtility). The Vendors row is kept because invoices, payments and leads reference it.
+
+4.  **Reject**: conditional update to REJECTED with adminNote (shown to the vendor in the app).
+
+5.  **SLA**: deletionDueBy = requestedOn + 7 working days (IST Sat/Sun skipped, no holiday calendar); isOverdue only for PENDING.
+
+## Status / State Machine
+
+PENDING → CANCELLED (vendor) \| REJECTED (admin) \| COMPLETED (admin approve). Terminal states cannot change. One PENDING per vendor (partial unique index).
+
+## Validations & Rules
+
+zod createDeletionRequestSchema: reason 1–255, details ≤200, valid UPI id, account number 9–18 digits, valid IFSC (uppercased), bank name/holder ≤120; bank trio all-or-none. approveDeletionSchema, rejectDeletionSchema (adminNote ≤500). Token/body vendorId mismatch → 403. CREDIT_TO_RUPEE = 10 is used in the vendor-facing message.
+
+## Dependencies
+
+Vendor (Vendors, VendorPincodes), Cashboy, Orders (MasterLeads/ReservedLeads active check), Auth & OTP (TokenBlacklist, authorize isDeleted gate), Chat (ChatRoom/ChatAuditLog deletion), Notifications (VendorNotification tables), Attendance (selfie URLs), File Upload (uploadToS3Bucket, deleteFromS3Bucket), Messaging Utilities (SmsUtility.sendAccountDeletionSMS). External: S3-compatible storage, SMS provider.
+
+## Background Jobs / Events
+
+None (no SLA reminder job). SMS on approval.
+
+## Who Uses It
+
+Vendor app (request/status/cancel); Admin panel (queue, approve, reject).

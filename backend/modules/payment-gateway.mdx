@@ -1,0 +1,74 @@
+---
+title: "Payment Gateway (Razorpay, PhonePe)"
+description: "Instant online top-up of vendor credits through PhonePe with automatic Razorpay fallback, webhooks and a PhonePe reconcile job; also reused by ckwipe license purchases."
+---
+
+## Purpose
+
+Instant online top-up of vendor credits. PhonePe (fee default 1.5%) is the primary gateway with an automatic Razorpay fallback (fee from RAZORPAY_FEE_PERCENT, documented 2.5%); both auto-approve credits through approveVendorCredit. The same PhonePe service is reused by the ckwipe license purchase flow.
+
+## Folder / Files
+
+src/routes/vendorPayments/index.ts (mount /api/v1/payment), src/controllers/vendorPayment/paymentGateway.controller.ts, razorpay.controller.ts, phonepe.controller.ts, testCheckout.controller.ts, src/services/paymentGateway/paymentGateway.service.ts, src/services/razorpay/index.ts, src/services/phonepe/index.ts, src/services/vendorPayment/phonepeReconcile.service.ts, src/jobs/phonepeReconcile.job.ts, src/utils/qaTools.ts, raw-body capture in src/app.ts (express.json verify → req.rawBody). Migrations prisma/migrations/20260408_add_razorpay_fields (PaymentMethod enum MANUAL_UPI/RAZORPAY, gatewayFee, gatewayResponse JSONB, razorpay\* columns, screenshot nullable) and 20260613000000_add_phonepe_payment (enum value PHONEPE, phonepe\* columns, unique phonepeMerchantOrderId). Packages: razorpay SDK, pg-sdk-node (PhonePe StandardCheckoutClient, CreateSdkOrderRequest, StandardCheckoutPayRequest, CallbackType).
+
+## Data Models
+
+VendorPayments (see Vendor Payments & Credits) is the only table: paymentMethod, gatewayFee, razorpayOrderId/PaymentId/Signature, phonepeMerchantOrderId/OrderId/TransactionId, gatewayResponse (last raw gateway payload / status). Wipe license purchases use WipeLicenseOrder (Wipe module).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/payment/payments/initiate | Unified order creation. Body \{amount\} (₹, incl. GST, min 10,000). PhonePe-first with Razorpay fallback (initiatePaymentWithFallback). Returns provider, SDK token / order id, fee, creditsToReceive. QA-only body fields channel: WEB, forceProvider honoured only when PAYMENT_QA_TOOLS=true and NODE_ENV != production. |
+| POST | /api/v1/payment/payments/verify | Provider-aware verify (provider or inferred from fields). PhonePe → Order Status API; Razorpay → HMAC check. Approves credits. |
+| GET | /api/v1/payment/payments/attempts | Last 30 PHONEPE/RAZORPAY rows for the vendor with status success/failed/pending. |
+| GET | /api/v1/payment/test-checkout | HTML page running Razorpay checkout.js for ?key&order (QA). |
+| GET | /api/v1/payment/test-checkout/phonepe-return | HTML landing page after a PhonePe WEB payment; tells tester to call verify. |
+| POST | /api/v1/payment/razorpay/createOrder | Razorpay-only order (min ₹10,000, fee RAZORPAY_FEE_PERCENT), inserts pending RAZORPAY row. |
+| POST | /api/v1/payment/razorpay/verify | Verifies the Razorpay payment signature (HMAC-SHA256 of order id and payment id) and approves credits. |
+| GET | /api/v1/payment/razorpay/attempts | Last 20 RAZORPAY rows. |
+| POST | /api/v1/payment/razorpay/webhook | payment.captured → store payment id + entity, approve credits; payment.failed → log Rejected + store entity; other events ignored (200). |
+| POST | /api/v1/payment/phonepe/createOrder | PhonePe-only SDK order (createSdkOrder), merchantOrderId CKC&lt;uuid&gt;, inserts pending PHONEPE row; returns merchantId, env, orderId, token. |
+| POST | /api/v1/payment/phonepe/verify | Checks the order through PhonePe's Order Status API and approves credits when COMPLETED. |
+| GET | /api/v1/payment/phonepe/attempts | Last 20 PHONEPE rows. |
+| POST | /api/v1/payment/phonepe/webhook | CHECKOUT_ORDER_COMPLETED/PG_ORDER_COMPLETED → approve; \*\_FAILED → markPhonePeFailed; others ignored. |
+
+Related (Wipe module): POST /api/v1/wipe/buy, POST /api/v1/wipe/verify-payment, POST /api/v1/wipe/phonepe-webhook use src/services/phonepe for ckwipe license purchases.
+
+## Core Business Logic
+
+1.  **Amounts.** creditAmount = what the vendor selects (₹, GST-inclusive). Charge = creditAmount + round(creditAmount × fee%). PhonePe fee PHONEPE_FEE_PERCENT default 1.5; Razorpay fee RAZORPAY_FEE_PERCENT **required** (throws if unset). VendorPayments.amount stores creditAmount (not the inflated total); gatewayFee stored separately. Credits quoted = floor((creditAmount/1.18)/10) for PhonePe, round(...) for Razorpay service.
+
+2.  **Unified initiate (`initiatePaymentWithFallback`).** Primary from PAYMENT_PRIMARY_PROVIDER (default PHONEPE; RAZORPAY skips PhonePe with no reverse fallback). PhonePe path: generate merchantOrderId → createSdkOrder (APP) or createWebCheckoutOrder (WEB, QA) → insert pending row. On a *gateway* error only (network codes, HTTP 502/503/504, timeouts): call getOrderStatus(merchantOrderId); status API down → 503 PHONEPE_STATUS_API_DOWN; COMPLETED → insert PHONEPE row, return alreadyCompleted (controller then approves credits); PENDING → 409 PHONEPE_PAYMENT_PENDING; FAILED/other → Razorpay order with fallbackReason. Razorpay failure → 503 PAYMENT_GATEWAYS_UNAVAILABLE (QA tools can return a mock order). Non-code errors are hidden behind a generic 500 message.
+
+3.  **Verification / idempotency.** Razorpay: client signature check races the webhook; both call approveVendorCredit, which is idempotent per paymentId (already_approved) and guards duplicate transaction ids across rows. Unique DB columns on razorpayOrderId, razorpayPaymentId, phonepeMerchantOrderId prevent duplicate rows; a P2002 on the pre-approval update is tolerated. PhonePe: no client signature — the backend is the source of truth via Order Status API; webhook validated by the SDK.
+
+4.  **Reconciliation (PhonePe only).** reconcilePendingPhonePePayments polls unapproved PHONEPE rows aged between floorMinutes and maxAgeHours, ordered by updatedAt asc, batch batchSize; skips rows whose persisted gatewayResponse.state === "FAILED"; backoff by age via nextPollIntervalMinutes (&lt;30 min: 5; &lt;6 h: 15; &lt;24 h: 60; &lt;48 h: 240; else drop), using updatedAt as the last-check clock. COMPLETED → same update + approveVendorCredit(... "(reconciled)"); FAILED → markPhonePeFailed; PENDING → persist status (bumps updatedAt), warn if older than alertAfterHours. Transient errors do not bump updatedAt.
+
+5.  **Refunds.** refundPayment(paymentId) (paymentGateway.service.ts): RAZORPAY → razorpay.payments.refund(razorpayPaymentId, \{speed: "normal"\}); PHONEPE → manual_required (dashboard); MANUAL_UPI → failed. **No caller in src** (dead code).
+
+6.  **Business flows using payments.** Vendor credit top-up (this module). ckwipe license purchase. Gift cards are *issued* via Woohoo SVC balance, not paid by a customer gateway. No customer-side payment gateway exists in this repo.
+
+## Status / State Machine
+
+No dedicated status column; derived: isApproved=true → success; VendorPaymentsLogs.paymentProgress === "Rejected" → failed; else pending. PhonePe states from SDK: PENDING \| COMPLETED \| FAILED. Razorpay webhook events handled: payment.captured, payment.failed. PhonePe callback types handled: CHECKOUT_ORDER_COMPLETED, PG_ORDER_COMPLETED, CHECKOUT_ORDER_FAILED, PG_ORDER_FAILED.
+
+## Validations & Rules
+
+amount must parse to a positive integer and be ≥ 10,000 (all three createOrder paths). Razorpay signatures compared with crypto.timingSafeEqual. Webhook returns 400 for bad signature, 200 for unknown orders/events (to stop retries), 500 only on exceptions. QA tooling (PAYMENT_QA_TOOLS) fails closed when NODE_ENV=production. PHONEPE_SIMULATE_DOWN=true simulates a PhonePe outage for testing.
+
+## Dependencies
+
+Vendor Payments & Credits (approveVendorCredit, markPhonePeFailed), Vendor (vendor prefill), Invoice (via triggerVendorInvoice), Notifications (via approve). External: Razorpay SDK + webhooks, PhonePe pg-sdk-node (sandbox/production via PHONEPE_ENV).
+
+## Background Jobs / Events
+
+startPhonePeReconcileJob (src/jobs/phonepeReconcile.job.ts): cron PHONEPE_RECONCILE_CRON default "\*/5 \* \* \* \*" Asia/Kolkata, overlap guard; params PHONEPE_RECONCILE_FLOOR_MINUTES (2), PHONEPE_RECONCILE_MAX_AGE_HOURS (48), PHONEPE_RECONCILE_ALERT_HOURS (6), PHONEPE_RECONCILE_BATCH_SIZE (50). Webhooks: /razorpay/webhook, /phonepe/webhook. No Razorpay reconciliation job.
+
+## Env vars
+
+RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, RAZORPAY_WEBHOOK_SECRET, RAZORPAY_FEE_PERCENT (required, no default); PHONEPE_CLIENT_ID, PHONEPE_CLIENT_SECRET, PHONEPE_CLIENT_VERSION (1), PHONEPE_ENV (SANDBOX\|PRODUCTION), PHONEPE_MERCHANT_ID, PHONEPE_FEE_PERCENT (1.5), PHONEPE_REDIRECT_URL, PHONEPE_WEBHOOK_USERNAME, PHONEPE_WEBHOOK_PASSWORD, PHONEPE_SIMULATE_DOWN; PAYMENT_PRIMARY_PROVIDER (PHONEPE), PAYMENT_QA_TOOLS; PHONEPE_RECONCILE\_\* (above); CACHE_TTL.
+
+## Who Uses It
+
+Vendor app (PhonePe/Razorpay SDKs), Razorpay and PhonePe servers (webhooks), QA via browser pages, ckwipe desktop/web client (wipe routes).

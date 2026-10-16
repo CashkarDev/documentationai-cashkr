@@ -1,0 +1,50 @@
+---
+title: "Abandoned Coupon Program"
+description: "Admin-configured amounts/expiries for the two abandoned-cart coupons (first and second nudge) plus redemption stats."
+---
+
+## Purpose
+
+Admin-configured amounts/expiries for the two abandoned-cart coupons (first and second nudge) plus redemption stats. Only one program can be active at a time.
+
+## Folder / Files
+
+src/routes/admin/abandonedCouponProgram/index.ts, src/services/abandonedCoupon/abandonedCouponProgram.service.ts, consumer src/services/lead/abandonedCart.service.ts, migration prisma/migrations/20260425120330_add_abandoned_coupon_program/migration.sql (creates table, adds CouponToken.programId + index + FK ON DELETE SET NULL).
+
+## Data Models
+
+AbandonedCouponProgram (id serial, name, isActive default false, firstCouponAmount Int, firstCouponExpiry Int default 72 (hours), secondCouponAmount Int, secondCouponExpiry Int default 72, minOrderValue Int?, maxRedemptions Int?, totalRedemptions Int default 0, startsAt?, endsAt?, createdBy String? (admin email), notes Text?). hasMany CouponToken via programId.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/admin/abandoned-coupon-programs | List all programs, newest first. |
+| POST | /api/v1/admin/abandoned-coupon-programs | Create; requires name, firstCouponAmount, secondCouponAmount; expiries default 72. createdBy = admin email. |
+| PATCH | /api/v1/admin/abandoned-coupon-programs/:id | Partial update; minOrderValue/maxRedemptions/startsAt/endsAt/notes can be set to null. |
+| POST | /api/v1/admin/abandoned-coupon-programs/:id/activate | Transaction: deactivate all, activate this one (overwrites createdBy with the activating admin). |
+| GET | /api/v1/admin/abandoned-coupon-programs/:id/stats | totalGenerated, totalRedeemed, redemptionRate, totalDiscountGiven from CouponToken rows with this programId, plus last 50 redemptions. |
+
+## Core Business Logic
+
+When such a token is applied, CouponService.applyCoupon increments totalRedemptions. **Does anything in `src` trigger sending?** No. AbandonedCartService is instantiated only in scripts/test-abandoned-cart-flow.ts. No file in src/jobs/ or src/server.ts references it (jobs started: pickupReminder, pickupDelayed, leaderboardReindex, leadNurture, hotLeadSweep, cleanupActivityLogs, giftCardReconcile, vendorCreditNotify, phonepeReconcile, attendanceAutoPunchOut, inspectionCodeRepair, modelRequestAvailable, careersRetention). In production this module is admin CRUD + stats only.
+
+## Status / State Machine
+
+isActive boolean; exactly one active enforced by activateProgram. No deactivate endpoint (only activating another).
+
+## Validations & Rules
+
+Only presence of name, firstCouponAmount, secondCouponAmount; integers via parseInt without NaN checks. minOrderValue, maxRedemptions, startsAt, endsAt are stored but never enforced anywhere in src (no reader besides CRUD).
+
+## Dependencies
+
+Coupon (CouponToken, applyCoupon increments totalRedemptions), Lead & Nurture (abandonedCart.service.ts), Admin (authenticateAdmin).
+
+## Background Jobs / Events
+
+None in src. scripts/test-abandoned-cart-flow.ts can run processAbandonedCarts() manually.
+
+## Who Uses It
+
+Admin panel (ck-admin page). Indirectly nothing in production.

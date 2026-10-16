@@ -1,0 +1,68 @@
+---
+title: "Careers"
+description: "Public job board on cashkr.com (listings + candidate applications with CV/cover-letter uploads to private object storage) and an admin inbox for HR to manage roles and applications."
+---
+
+## Purpose
+
+Public job board on cashkr.com (listings + candidate applications with CV/cover-letter uploads to private object storage) and an admin inbox for HR to manage roles and applications.
+
+## Folder / Files
+
+src/routes/careers/index.ts (mounted /api/v1/careers), src/routes/admin/careers/careers.routes.ts (mounted /api/v1/admin/careers in src/app.ts), src/controllers/careers/\{index,schemas\}.ts, src/controllers/adminCareers/\{index,schemas\}.ts, src/services/careers/\{careers.service,careersStorage,careersRetention,logic\}.ts, src/repository/careers.repository.ts, src/repository/baseRepository.ts (generic BaseRepo with paginated findAll using Accelerate cacheStrategy \{ttl:60, swr:60\}; not used by careers), src/jobs/careersRetention.job.ts.
+
+## Data Models
+
+- CareerJob — slug unique (locked after postedAt), title, department, location, workplaceType CareerWorkplaceType (ONSITE \| HYBRID \| REMOTE), employmentType CareerEmploymentType (FULL_TIME \| PART_TIME \| CONTRACTOR \| TEMPORARY \| INTERN), status CareerJobStatus (OPEN \| CLOSED), postedAt, validThrough, aboutTheRole, jobDescription\[\], jobRequirements\[\], skills\[\], benefits\[\], createdById; hasMany CareerApplication.
+
+- CareerApplication — jobId→CareerJob (cascade), fullName, email (lowercased), countryCode, phone, cvFileKey, coverLetterFileKey?, status CareerApplicationStatus (NEW \| IN_REVIEW \| SHORTLISTED \| REJECTED \| HIRED), notes, ipAddress, userAgent; unique (jobId, email).
+
+- CareerUpload — fileKey unique, kind CareerUploadKind (CV \| COVER_LETTER), contentType, sizeBytes, expiresAt, consumedAt, ipAddress.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/careers/jobs | Open jobs (public summary). |
+| GET | /api/v1/careers/jobs/:slug | Job detail by slug (404 if missing). |
+| POST | /api/v1/careers/uploads/presign | Body \{kind: cv or cover_letter, filename, contentType, sizeBytes\} → presigned PUT URL + fileKey + requiredHeaders, 10-min TTL; writes CareerUpload. |
+| POST | /api/v1/careers/applications | Body \{jobId, fullName, email, countryCode?, phone, cvFileKey, coverLetterFileKey?\} → creates application (201). |
+| GET | /api/v1/admin/careers/applications | Paginated list (jobId, status, search, page, limit ≤100). |
+| PATCH | /api/v1/admin/careers/applications/:id/status | Body \{status, notes?\}. |
+| GET | /api/v1/admin/careers/applications/:id/file | ?kind=cv or cover_letter → 5-min signed GET URL with a friendly filename. |
+| GET | /api/v1/admin/careers/jobs | Paginated jobs (status, search). |
+| POST | /api/v1/admin/careers/jobs | Create job; slug derived from title if absent; validThrough must be in the future; 409 on slug clash. |
+| PATCH | /api/v1/admin/careers/jobs/:id/status | \{status: OPEN or CLOSED\}; first OPEN stamps postedAt. |
+| GET | /api/v1/admin/careers/jobs/:id | Job detail. |
+| PUT | /api/v1/admin/careers/jobs/:id | Update; slug change rejected (422) once postedAt set. |
+| DELETE | /api/v1/admin/careers/jobs/:id | Delete job (applications cascade). |
+
+## Core Business Logic
+
+1.  Presign: validate contentType ∈ ALLOWED_UPLOAD_TYPES (PDF, DOC, DOCX, JPEG, PNG), 0 &lt; sizeBytes ≤ MAX_UPLOAD_BYTES (50 MB); key careers/YYYY/MM/&lt;uuid&gt;.&lt;ext&gt;; presignUpload signs Content-Type and Content-Length (PRESIGN_TTL_SECONDS = 600); no public ACL.
+
+2.  Submit: job must exist and be OPEN (410 otherwise); verifyFileKey for CV (and cover letter): well-formed key, ledger row of the right kind, not consumed, created within CLAIM_WINDOW_MS (2 h), object exists via HeadObject and size/type match; insert application (P2002 → 409 duplicate); then mark uploads consumed (best-effort).
+
+3.  Admin file download: presignDownload(fileKey, "&lt;name&gt; - CV.&lt;ext&gt;"), DOWNLOAD_TTL_SECONDS = 300.
+
+4.  Retention job (30 4 \* \* \* Asia/Kolkata): sweepAbandonedUploads deletes never-consumed uploads older than the claim window (object + ledger, batches ≤50); purgeExpiredApplications deletes applications older than CAREERS_RETENTION_MONTHS (default 12) only when CAREERS_RETENTION_ENABLED=true, otherwise logs a dry-run count.
+
+## Status / State Machine
+
+Job OPEN ↔ CLOSED (free toggle). Application NEW → IN_REVIEW → SHORTLISTED → REJECTED/HIRED is not enforced — any value from the enum may be set.
+
+## Validations & Rules
+
+zod schemas (public: first issue → 400 with field; admin: 422 + flattened issues); slug is lowercase words joined by hyphens, 3–180 chars; bullet lists ≤50 items, skills ≤30; rate limits on presign (20 per 15 min) and applications (10 per hour) per IP.
+
+## Dependencies
+
+File Upload (own S3 client in careersStorage.ts, not uploadService), Admin (authenticateAdmin), Encryption & Security utils (asyncHandler, logger). External: S3-compatible private object storage.
+
+## Background Jobs / Events
+
+startCareersRetentionJob — see Cron Jobs table.
+
+## Who Uses It
+
+Customer web (ck-web2.0 app/(static)/careers/\*), Admin panel (admin routes).

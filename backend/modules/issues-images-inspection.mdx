@@ -1,0 +1,46 @@
+---
+title: "Issues Images / Inspection"
+description: "The catalogue of inspection questions/options per device type with their images, used by the customer evaluation flow and the vendor requote screen."
+---
+
+## Purpose
+
+The catalogue of inspection questions/options per device type (body, screen, functional, accessories, warranty, SIM, console extras) with their images, used by the customer evaluation flow and the vendor requote screen; plus the vendor's six-side device photo set taken at inspection.
+
+## Folder / Files
+
+src/controllers/issuesImages/index.ts (handler issuesImages), src/routes/issuesImages/index.ts (router file, NOT the one mounted), mount in src/routes/index.ts line 74 router.use("/issuesImages", issuesImages); prisma/apply-issueimages-seed.cjs; InspectionImages written by LeadController.uploadRequoteImages (Orders, PUT /api/v1/upload/reqoteImages).
+
+## Data Models
+
+**IssuesImages** (id, deviceType DeviceType, issueId code such as B1, P0, A3, issueType issueType, issueName, issueImage URL, isActive default true; index \[deviceType, isActive\]) — retired options are kept with isActive=false so invoices/summaries still resolve old codes. Enum issueType \{ Body, Warranty, Screen, Accessories, Physical, Technical, NumberOfCDs @map("Number of CDs"), ExtraControllers @map("Extra Controllers"), SimType \}. **InspectionImages** (leadId unique → MasterLeads, deviceSide1..deviceSide6, selfPhoto). Related reads: CameraLens (id, brand, lensName; value hidden), DeviceWatches (id, brand, model, size).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/issuesImages?deviceType=&lt;DeviceType&gt;&brand=&deviceWatchesId= | Returns active IssuesImages for the device type grouped by issueType (data.Body\[\], data.Screen\[\], …). Camera: adds cameraLens\[\] (optionally filtered by brand, case-insensitive). Watch: adds watchSizes\[\] = distinct case sizes of the same brand+model as deviceWatchesId (\{deviceWatchesId, size, label "44 mm"\}), empty when the id is missing/unknown. 422 on bad params, 404 "No data found" when the type has no rows. |
+
+## Core Business Logic
+
+Validate with zod (deviceType enum, optional trimmed brand, deviceWatchesId ≤255). Run the issues query and, only for Camera/Watch, the extra queries in parallel; group by issueType. The codes returned are what POST /evaluation and PUT /order/requote persist in the Data&lt;Type&gt; rows; requoteOrder.getIssueNames, InvoiceController.resolveIssueNames and deviceSummary.service map codes back to issueName (falling back to the raw code). Seed: prisma/apply-issueimages-seed.cjs runs prisma/migrations/seed_issueimages_new_devices_manual.sql in two phases (phase 1 ALTER TYPE … ADD VALUE statements autocommitted, phase 2 inserts in one transaction), then prints counts for Camera/Console/Watch/Headphone.
+
+## Status / State Machine
+
+None (isActive flag only).
+
+## Validations & Rules
+
+zod requestSchema; "no issue" codes are a letter followed by 0 (for example B0, A0) and are treated as "No issue"/"No accessories" in requote messages.
+
+## Dependencies
+
+Device Catalog (CameraLens, DeviceWatches), used by Pricing & Evaluation, Orders (requote), Invoice, Customer Orders (deviceSummary).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Customer web/app (evaluation UI), vendor app (requote picker, watch sizes, camera lenses).

@@ -1,0 +1,70 @@
+---
+title: "Terms & Conditions"
+description: "Versioned vendor Terms & Conditions with section-level change tracking, acceptance records per vendor, and re-acceptance forcing when a new version is published."
+---
+
+## Purpose
+
+Versioned vendor Terms & Conditions with section-level change tracking, acceptance records per vendor, and re-acceptance forcing when a new version is published.
+
+## Folder / Files
+
+src/routes/termsAndCondition/route.ts (mounted as router.use("/terms&condition", authorize, termsAndConditionRoutes) in src/routes/index.ts, i.e. /api/v1/terms&condition), src/services/termsAndCondition/index.ts (TermsAndConditionsService). Also used by src/controllers/vendor/index.ts:445 (checkUserAcceptanceStatus merged into the vendor profile response).
+
+## Data Models
+
+- TermsAndConditions (terms_and_conditions) — version unique (semver), title, isActive, isDraft, publishedAt, createdBy, changesSummary; hasMany TermsSection, TermsSectionChange, UserTermsAcceptance.
+
+- TermsSection (terms_sections) — termsId, sectionNumber (unique per terms), title, content, parentId (self-relation SectionHierarchy), sortOrder, isRequired, sectionType SectionType (HEADER \| CONTENT \| FOOTER \| LEGAL_NOTICE \| CONTACT_INFO).
+
+- TermsSectionChange (terms_section_changes) — termsId, sectionId, changeType ChangeType (ADDED \| MODIFIED \| DELETED \| MOVED), oldContent, newContent, changedBy, isHighlighted, highlightColor default \#ffeb3b.
+
+- UserTermsAcceptance (user_terms_acceptances) — userId→**Vendors.vendorId** (cascade), termsId, acceptedAt, ipAddress, userAgent, acceptanceMethod AcceptanceMethod (CHECKBOX \| BUTTON_CLICK \| SIGNATURE \| BIOMETRIC \| VOICE), acceptedSections Json, isValid, revokedAt, revokedReason; unique (userId, termsId).
+
+- UserTermsStatus (user_terms_status) — userId unique →Vendors, currentTermsId, needsReacceptance, lastAcceptedAt, lastNotifiedAt, notificationCount, emailNotifications, pushNotifications.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/terms&condition/current | Active terms with section hierarchy, highlighted changes, and the caller vendor's acceptance / needsAcceptance. 500 if no active terms. |
+| POST | /api/v1/terms&condition/accept | Body termsId, optional ipAddress, userAgent, acceptanceMethod (CHECKBOX or BUTTON_CLICK). Upserts acceptance + status for the vendor. |
+| GET | /api/v1/terms&condition/versions | Published (non-draft) version list, limited fields. |
+| POST | /api/v1/terms&condition/admin/create | Create a draft version (title, semver version, sections\[\], createdBy). |
+| POST | /api/v1/terms&condition/admin/publish/:termsId | Publish: deactivate all, activate this one, set every UserTermsStatus.needsReacceptance=true. |
+| PUT | /api/v1/terms&condition/admin/section/:sectionId | Update section (draft only); records MODIFIED change. |
+| DELETE | /api/v1/terms&condition/admin/section/:sectionId | Delete section (draft only); records DELETED. Requires body deletedBy. |
+| POST | /api/v1/terms&condition/admin/track-changes | Diff two versions by sectionNumber and write TermsSectionChange rows. |
+| GET | /api/v1/terms&condition/admin/versions | Full version history. |
+| GET | /api/v1/terms&condition/admin/version/:termsId | One version with sections, children, changes, acceptance count. |
+| GET | /api/v1/terms&condition/admin/analytics | Acceptance analytics (?termsId). |
+| GET | /api/v1/terms&condition/admin/pending-users | Paginated UserTermsStatus where needsReacceptance=true (limit ≤100). |
+| POST | /api/v1/terms&condition/admin/notify-users | Increments notificationCount/lastNotifiedAt; does not actually send anything (comment: "Here you would integrate with your notification service"). |
+| POST | /api/v1/terms&condition/admin/bulk-revoke | Marks acceptances isValid=false with reason and sets needsReacceptance=true. |
+| GET | /api/v1/terms&condition/admin/export/:termsId | ?format=json, html or pdf; pdf returns "not implemented yet". |
+
+(15 live endpoints; GET /check-status is commented out in the route file.)
+
+## Core Business Logic
+
+Create draft → (optionally) track-changes against the previous version → publish (single active version; everyone flagged for re-acceptance) → vendor app calls /current, shows highlighted changes, posts /accept → UserTermsAcceptance upsert (revalidates a revoked row) + UserTermsStatus upsert (needsReacceptance=false, currentTermsId). checkUserAcceptanceStatus says needsAcceptance when no acceptance row, or status needsReacceptance, or currentTermsId != active id.
+
+## Status / State Machine
+
+TermsAndConditions: draft (isDraft=true,isActive=false) → published (isDraft=false,isActive=true) → superseded (isActive=false). Sections editable only while isDraft.
+
+## Validations & Rules
+
+express-validator on bodies; zod CreateTermsSchema/AcceptTermsSchema in the service (version must be semver, e.g. 1.2.0); handleValidation returns 400. All errors otherwise returned as 500 with error.message.
+
+## Dependencies
+
+Vendor (FKs to Vendors), Admin (Admin table).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Vendor app (/current, /accept, profile status).

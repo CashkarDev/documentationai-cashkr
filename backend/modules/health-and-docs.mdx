@@ -1,0 +1,55 @@
+---
+title: "Health & Docs"
+description: "Liveness endpoint for CI/CD and a static landing page; plus how the service is built, deployed and run."
+---
+
+## Purpose
+
+Liveness endpoint for CI/CD and a static landing page; plus how the service is built, deployed and run.
+
+## Folder / Files
+
+src/app.ts (/health, /), src/docs/home.ts, src/server.ts, README.md (generic "Express API Starter with Typescript" template — no project specifics), DEPLOYMENT.md, ecosystem.config.js, buildspec.yml, .github/workflows/\{staging-ci-deploy.yml,production-deploy.yml\}, .platform/ (legacy Elastic Beanstalk config, predeploy hook pnpm prisma generate).
+
+## Data Models
+
+None.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /health | SELECT 1 through Prisma; 200 \{status:'healthy', timestamp, uptime, environment\} or 503 \{status:'unhealthy', error\}. |
+| GET | / | Static HTML "Cashkr API" landing page (links to a /docs path that does not exist in the app). |
+
+## Core Business Logic (build / deploy / run)
+
+- Runtime: Node ≥20.14 (engines), Express app on PORT (default 9000 in server.ts). server.ts attaches Socket.IO, registers unhandledRejection/uncaughtException loggers, runs assertDeviceRegistry, and starts all 13 cron jobs only when isPrimaryInstance() (NODE_APP_INSTANCE undefined or '0').
+
+- Build: pnpm build = webpack → dist/server.js; pnpm dev = nodemon; pnpm test = jest; pnpm lint.
+
+- PM2: ecosystem.config.js app name **`CashkrBackend`**, script: dist/server.js, instances: 1, exec_mode: fork, max_memory_restart: 1024M, kill_timeout 5000. The GitHub prod workflow reloads **`backend-prod`**; package.json prod script starts **`StageBackend`**. DEPLOYMENT.md: git pull && pnpm install && pnpm build && pm2 reload ecosystem.config.js --update-env && pm2 save; rollback = checkout previous commit and repeat.
+
+- CI/CD: staging-ci-deploy.yml on push to stage, production-deploy.yml on push to main. Both: Node 20, pnpm 10, pnpm install --frozen-lockfile, prisma generate, lint, jest (with Postgres/Redis services), build, Slack notice on failure; then deploy over SSH to the server: reset to the branch, install, prisma generate, prisma migrate deploy, pnpm build, pm2 reload, then up to 8× curl /health with rollback on failure (prod).
+
+- buildspec.yml (AWS CodeBuild, legacy): builds and zips dist + .platform + prisma for Elastic Beanstalk.
+
+## Status / State Machine
+
+None.
+
+## Validations & Rules
+
+Health depends on DB reachability only (Redis not checked).
+
+## Dependencies
+
+Encryption & Security utils (prisma), Cron Jobs (started from server.ts).
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+CI/CD health check, ops.

@@ -1,0 +1,54 @@
+---
+title: "Customer Address (sub-module)"
+description: "Saved pickup addresses for customers (one per type: Home, Office, Other), plus registration, profile, payout details and account deletion rules for the Customer module."
+---
+
+## Files
+
+src/controllers/customerAddress/customerAddress.ts, routes in src/routes/user/index.ts.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/user/address | zod \{address &lt;=255, pincode Int 100000..999999, addressType Home or Office or Other, city letters/spaces &lt;=100, lat?, lng?\}. Customer must be active (404 otherwise). 409 if the customer already has an address of that type (one address per type). Logs ADDRESS_ADDED. 201. |
+| GET | /api/v1/user/address | Lists the customer's addresses (addressId, address, addressType, city, pincode, lat, lng). |
+| PATCH | /api/v1/user/address | zod \{addressId uuid, ...optional fields\}. Address must belong to the caller (404). Changing type must not collide with another address of that type (409). Logs ADDRESS_UPDATED. |
+
+## Core Business Logic
+
+1.  Registration: OTP verified first (Auth & OTP), then /registercustomer. Uniqueness is checked only against non-deleted customers, so a deleted phone can re-register (the anonymised row keeps DELETED\_&lt;ts&gt; as its phone, which is why phone @unique does not collide). The fraud registry can still refuse a re-registration if an admin set riskScore &gt;= 50.
+
+2.  Profile: getcustomer is the single profile call and also proxies the referral summary from the separate referral service.
+
+3.  Payout details: one Payments row per customer; UPI or bank; values encrypted at rest with fieldEncryption.
+
+4.  Account deletion / archival (deleteAccount.ts):
+
+    - Refuse (403) when MasterLeads has an order with primaryStatus="Generated" & secondaryStatus="OrderGenerated", or primaryStatus in \[Reserved, InProgress, PickupDelayed\] & secondaryStatus in \[Assigned, OutForPickup, InspectionStarted\].
+
+    - In one transaction: insert two TokenBlacklist rows (the current JWT, 1-year expiry, and marker ACCOUNT_DELETED\_&lt;customerId&gt;\_&lt;ts&gt;, 10-year expiry); saveFraudFingerprint (HMAC-SHA256 of phone, email and IMEIs from Generated/InProgress/Completed or isCompleted=1 leads -&gt; FraudRegistry with deletionType="self_deleted"); copy phone/email/name to DeletedCustomerArchive; anonymise Customers (phone="DELETED\_&lt;ts&gt;", name "Deleted User", email="deleted+&lt;id&gt;@deleted.cashkr.local", firebaseId=null, isDeleted=true); overwrite all Addresses with "Deleted address"/"Deleted".
+
+    - After commit: upsertPabblySubscriber(\{email: original, status:"unsubscribed", source:"api"\}) fire-and-forget; synchronous activityLogger.logSync(ACCOUNT_DELETED); clear cookie.
+
+    - The row is never physically deleted, so orders, reviews, chats keep their FK.
+
+## Status / State Machine
+
+None. Flags: isDeleted, isBlocked (set by Admin), doNotContact.
+
+## Validations & Rules
+
+zod schemas quoted above; names letters/spaces only; email via zod .email(); 10-digit numeric phone; address type uniqueness per customer; cookie accessToken httpOnly, secure in production, sameSite strict, 30 days.
+
+## Dependencies
+
+Auth & OTP (generateAccessToken, verifyToken, authorize, TokenBlacklist); Admin (activityLogger, FraudRegistry); Marketing (registerCampaignService, Pabbly via PabblyEmailUtility.upsertPabblySubscriber); Orders (MasterLeads status check and IMEIs); Encryption & Security utils (fieldEncryption, fraudFingerprint).
+
+## Background Jobs / Events
+
+None. Outbound webhook customer-created to the referral service on registration.
+
+## Who Uses It
+
+Customer web (ck-web2.0) and Customer app. Admin panel reads DeletedCustomerArchive / Customers directly from the DB (no endpoint here).

@@ -1,0 +1,125 @@
+---
+title: "Lead & Nurture"
+description: "Captures a device quote as a lead, converts it into a pickup order at checkout, records attribution, and runs the WhatsApp / email / push nurture and the Hot Leads queue."
+---
+
+## Purpose
+
+Captures a customer's device quote as a "lead" (a MasterLeads row with isCompleted = 0), converts it into a pickup order on checkout, records where the lead came from (LeadAttribution), and runs the WhatsApp / email / push nurture that chases unconverted leads. Also feeds the admin "Hot Leads" telecalling queue.
+
+<Callout kind="tip">This module writes `deviceGeneratedPrice` (Quoted). See [Device Price Lifecycle](/backend/device-price-lifecycle) for how it becomes Requote and Final.</Callout>
+
+## Folder / Files
+
+- Routes: src/routes/lead/index.ts (mounted at /api/v1/lead), src/routes/otp/leadOtp/index.ts (mounted at /api/v1/otp/lead/).
+
+- Controller: src/controllers/Lead/index.ts (LeadController, LeadQueries, DeviceDataMapper), src/controllers/Lead/schema.ts (zod), src/controllers/otp/LeadOtpController.ts.
+
+- Lead creation/completion: src/services/lead/createLead.ts (LeadService2), src/services/lead/masterLead.service.ts (LeadService, 4,403 lines; mostly the order lifecycle used by the Orders module).
+
+- Other files in src/services/lead/ (17 total) that belong to the Orders / Vendor lifecycle rather than lead capture: abandonedCart.service.ts, availableOrders.service.ts, failedLead.ts, inspectionCode.service.ts, inspectionTimer.service.ts, lead-assignment.service.ts, lead-reservation.service.ts, orderBonuses.ts (influencer + referral bonus resolution), orderCancellation.service.ts, pickupDelayed.service.ts, pickupReminder.service.ts, pickupSlot.service.ts (PICKUP_WINDOW_DAYS = 7, slots SLOT_10_13, SLOT_13_16, SLOT_16_19), query.ts, storeFailedLead.ts (Store module), hotLeadSweep.service.ts.
+
+- Nurture: src/services/lead/notification/leadNurture.service.ts, nurtureHoldout.ts, nurtureContext.ts (QUOTE_VALIDITY_DAYS = 7, dead-price guard, coupon-token button URL), marketingSuppression.service.ts, pushFallback.service.ts, botOpening.service.ts, botReengage.service.ts, quoteConfirmationBonus.service.ts, speedBonusExpiry.service.ts (no longer called by the cron), pabblySyncLead.service.ts, notification.service.ts (NotificationService, transactional push/WhatsApp/email for the order lifecycle), notificationTemplate.ts (HTML email builders; callers are commented out).
+
+- Jobs: src/jobs/leadNurture.job.ts, src/jobs/hotLeadSweep.job.ts (both started in src/server.ts only on the primary instance).
+
+- Attribution: src/utils/requestAttribution.ts.
+
+- Third-party helpers: src/services/onboardCampaign/register.ts (EngineMailer subscriber insert/delete; called only from registerUser.ts), src/services/pushLabGrowth/pushLabGrowthService.ts (PushLap Growth affiliate sales API; imported only by masterLead.service.ts).
+
+- Tests: tests/nurtureDelivery.test.ts, tests/marketingSuppression.test.ts, tests/pushFallback.test.ts, tests/hotLead.service.test.ts, tests/questionHotLead.test.ts, tests/pabblyEmailSync.test.ts, tests/pabblyIntentResolveLead.test.ts, tests/pabblyIntentNotNow.test.ts.
+
+## Data Models
+
+- MasterLeads (the lead AND the order; one row). A lead is a MasterLeads row with isCompleted = 0, primaryStatus = New, secondaryStatus = Initiated. An order is the same row after checkout: isCompleted = 1, primaryStatus = Generated, secondaryStatus = OrderGenerated. Nurture / bot / hot-lead columns: confirmationBonusSent, speedBonusExpirySent, priceDropNudgeSent, quoteExpiryWarningSent, nurtureHeldOut, whatsappIntentConfirmedAt, whatsappIntentDeclineReason, botOpeningSentAt, botReengageSentAt, hotLeadAt, hotLeadType ('yes_dropoff' \| 'price_objection' \| 'question'), hotLeadStatus ('new' \| 'contacted' \| 'converted' \| 'dead'), hotLeadStatusUpdatedAt, hotLeadStatusUpdatedBy, cartDismissedAt, quoteRefreshedAt, influencerId, referralId, affiliateId, isDuplicateConfirmed. Index \[hotLeadStatus, hotLeadType, hotLeadAt\].
+
+- LeadLogs (id, leadId, description, creditPoints, action, reason, actorId → Admin, disposition, remark). Written on "Lead Generated", "Lead Converted to Order", and by every later status change.
+
+- LeadAttribution (leadId unique, utmSource/Medium/Campaign/CampaignId/Content/Term/AdGroup, gclid, gbraid, wbraid, fbclid, landingPage, referrerUrl, platform default "web", deviceCategory, browser, attributionType default "last_touch", lastTouchChannel/Template/At, firstVisitAt). Always created with the lead, even if empty.
+
+- leadOtp (leadId unique, otp, isVerified, sentAt). 4-digit inspection code created at checkout.
+
+- Customers nurture fields: whatsappOptIn (default true), whatsappOptInAt, lastMarketingWhatsappAt, marketingMsgCount, marketingMsgWindowStart, lastMarketingPushAt, isBlocked, isDeleted, firebaseId.
+
+- CustomerMarketingState (customerId PK, waState "ACTIVE" \| "BACKOFF" \| "SUPPRESSED", waConsecutiveUnengaged, waBackoffUntil, waBackoffCount, lastEngagementAt).
+
+- MarketingTouch (id cuid, customerId, leadId?, channel VarChar 10, templateKey VarChar 40, sentAt, providerResponse Json). Channels: WHATSAPP, PUSH, EMAIL, WA_FLOW, WA_OPTOUT. Template keys: BOT_OPENING, LN1_BONUS, REENGAGE, PUSH_NURTURE, EMAIL_ENROL, BOT_REASON_ASK, OPTOUT_STOP.
+
+- AudienceSegment, Campaign, CampaignAudience, CampaignExecution, CampaignStep, NotificationTemplate: **schema-only** in this backend; presumably used by ck-admin directly — unclear from this repo.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/lead/pickup-slots | Returns the next 7 days of bookable pickup dates/slots computed in IST (getPickupSlotOptions). |
+| POST | /api/v1/lead/ | Creates a lead (quote). Validates with the device-type zod schema from deviceRegistry (fallback RegisterLeadSchema), rejects duplicate token, duplicate active order for same device (409 unless userConfirmedDuplicate), stamps influencer attribution from ck_ref cookies, merges request-derived attribution, writes MasterLeads (with deviceGeneratedPrice) + device data row + LeadLogs + LeadAttribution, fire-and-forget Pabbly email enrol, activity log, increments the daily order count, queries the referral microservice for referee discount info. Returns 201 with leadId, orderLimitInfo, referral. |
+| POST | /api/v1/lead/:id | Completes the lead into an order (CompleteLeadSchema): requires addressId (must belong to customer), pickup date + slot/time, price; 410 QUOTE_EXPIRED after 7 days from quoteRefreshedAt/createdAt; validates referralId via referral service; computes influencer + referral bonus (confirmOrderBonuses) and BuyBack bonus snapshot; sets isCompleted=1, Generated/OrderGenerated, creates leadOtp, MasterLeadAddress, coupon usage, WhatsApp order_placed_successfully, Pabbly list move, vendor assignment async; persists whatsappOptIn on the customer; clears ck_ref cookie. |
+| PATCH | /api/v1/lead/:id/payment | Updates paymentType / paymentId on a completed lead (paymentId required unless Cash/GiftCard; payment must belong to the customer). |
+| GET | /api/v1/lead/:id/giftcard | Returns the latest GiftCardOrder status for the lead; when COMPLETE returns the card details to the owning customer. |
+| POST | /api/v1/otp/lead/verify | LeadOTPController.verifyOTPAndUploadImage: checks the vendor owns the lead, compares leadOtp.otp, uploads the image to S3, sets isVerified = true. |
+
+Not routed: LeadController.getLead and getLeadsByUser exist in the controller but no route calls them.
+
+## Core Business Logic
+
+1.  **Lead capture** — POST /api/v1/lead/ → LeadService2.createLead: looks up the device table via getTableNames(deviceType), maps options with DeviceDataMapper, resolves SIM type for mobiles, resolves city from Pincodes, computes tier and creditPoints, creates MasterLeads with nested device data, leadLogs ("Lead Generated") and LeadAttribution. Attribution: client leadAttribution object is merged over request headers (referrerUrl, browser, deviceCategory from Referer/User-Agent; platform default "web"). If influencerId present → recordAttribution (Influencer module). Then syncLeadToPabbly(leadId) upserts the customer into the Pabbly Email list "Cashkr Leads" with custom fields (device_name, order_id, quoted_price, quote_expiry, checkout_url_fast300, checkout_url_first500, winback_url, order_count) and writes a MarketingTouch EMAIL/EMAIL_ENROL row. Skipped for deleted customers, demo phones, nurture-holdout customers, and dead-price quotes.
+
+2.  **Lead → order** — POST /api/v1/lead/:id → LeadService2.completeLead → updateLeadStatus: single masterLeads.update that sets completion fields, upserts leadOtp (random 1000–9999), creates MasterLeadAddress, connects payment; then marketingSuppression.recordEngagement (order = engagement), coupon usedCount + customerCoupon, WhatsApp order_placed_successfully after 1 s, ck-admin order cache invalidation, Pabbly move from "Cashkr Leads" to "Cashkr Customers". Then processLeadAssignmentAsync (auto-assign / reserve / broadcast to vendors).
+
+3.  **Nurture cron** (leadNurture.job.ts, every 10 minutes, Asia/Kolkata) — LeadNurtureService.processAll():
+
+    - Kill switch LEAD_NURTURE_ENABLED=false. Quiet hours: only runs 09:00–21:00 IST.
+
+    - Computes the WA-suppressed customer set once per tick (CustomerMarketingState SUPPRESSED, or BACKOFF still in effect).
+
+    - **Pass 1 — LN1 slot (marketing opening).** Candidates: MasterLeads created 5 min – 14 h ago, isCompleted = 0, cartDismissedAt = null, primaryStatus = New, no failedLead, confirmationBonusSent = false, nurtureHeldOut = false, customer not suppressed, whatsappOptIn = true, not deleted/blocked, no genuine order in the last 7 days, 20 h WhatsApp frequency cap, rolling cap of 6 marketing messages per 30 days. When BOT_OPENING_ENABLED=true the sender is sendBotOpening (template sell_quote_leads_v2 by default, params name/device/price/lock-till date), capped by BOT_DAILY_LIMIT (default 200) per IST day, optionally restricted to BOT_TEST_PHONES. Otherwise the legacy sendQuoteConfirmationBonus (template quote_confirmation_bonuss, FAST300 coupon token in the button URL). Then: abuse filter (customers with more than 10 leads in 30 days and 0 completed are dropped), one message per customer per tick (freshest lead wins), dispatch. About 10% of customers are a stable holdout (stamped nurtureHeldOut = true and never sent). On a successful send: MarketingTouch row, set the flag, bump the marketing counters and recordUnengagedIfDue.
+
+    - **Pass 2 — push fallback** (pushFallback.service.ts): same LN1 window, but only suppressed customers with a firebaseId and no marketing push in the last 20 h; sends an FCM "quote locked" nudge with a /c/ redirect link, writes MarketingTouch PUSH/PUSH_NURTURE.
+
+    - Retired steps (flags/senders still present, not called): LN2 speed_bonus_expiry (1 h), LN3 lead_nudge_price_drop (24 h), LN4 quote_expiry_warning (day 6).
+
+    - **Suppression state machine** (marketingSuppression.service.ts): after each successful WA marketing send, if the *previous* send got no engagement since, waConsecutiveUnengaged++; at 3 → BACKOFF for 3 d / 7 d / 14 d (escalating), at 5 → SUPPRESSED. Engagement events that reset to ACTIVE: Pabbly intent webhook tap, order completion, click on a /c/ redirect link. Creating a lead is deliberately NOT an engagement.
+
+4.  **Hot-lead sweep** (hotLeadSweep.job.ts, every 10 minutes, kill switch HOT_LEAD_SWEEP_ENABLED=false) — (a) leads whose WhatsApp "yes" is older than HOT_LEAD_MINUTES (default 30), still not checked out, not a demo phone → hotLeadAt = now, hotLeadType = "yes_dropoff", hotLeadStatus = "new", plus a hot-lead checkout redirect link. (b) any hot lead that has since been placed → hotLeadStatus = "converted" by "system". price_objection and question hot leads are stamped by the Pabbly intent webhook. Telecaller status changes (contacted, dead) are made by the admin panel directly in the DB.
+
+## Status / State Machine
+
+- LeadPrimaryStatus: New, Generated, InProgress, Completed, Failed, Reserved, PickupDelayed. LeadSecondaryStatus: Initiated, OrderGenerated, Completed, Assigned, OutForPickup, InspectionStarted, Failed, Reserved. This module only performs New/Initiated (create) → Generated/OrderGenerated (complete). Later transitions are in the Orders module.
+
+- Hot lead: hotLeadStatus new → contacted → converted \| dead; code here sets new and converted only.
+
+- CustomerMarketingState.waState: ACTIVE → BACKOFF → SUPPRESSED; any engagement → ACTIVE.
+
+- PaymentType (TS enum in masterLead.service.ts): UPI, Bank, Wallet, Cash, GiftCard.
+
+## Validations & Rules
+
+- RegisterLeadSchema: deviceId, deviceType, token, price &gt; 0, orderType, createdBy, pincode &gt; 0, options, optional leadAttribution (each UTM field max length matches column width). Device-specific option schemas come from deviceRegistry.
+
+- CompleteLeadSchema: pickupType only "SCHEDULED"; paymentId required for UPI/Bank/Wallet and forbidden for Cash/GiftCard; pickupDate required; pickupTime or pickupSlot required; whatsappOptIn boolean optional.
+
+- Daily order cap: checkOrderLimit middleware, per customer, DAILY_LIMIT = 5, resets at midnight; 429 ORDER_LIMIT_EXCEEDED.
+
+- Quote validity: QUOTE_VALIDITY_DAYS = 7; completion returns 410 after that.
+
+- Nurture caps: quiet hours 9–21 IST, 20 h WA frequency cap, 6 msgs / 30 days, 7-day recent-order skip, abuse threshold, ~10% holdout, bot daily cap, one message per customer per tick, dead-price guard (quote == class deadPrice → skip), demo-phone guard.
+
+## Dependencies
+
+- Internal: Orders (masterLead.service.ts, lead-assignment, lead-reservation, notification.service.ts); Customer / User; Customer Address; Device Catalog; Pricing & Evaluation (getLeadTier, LeadPricingSystem, deadPrice); BuyBack Bonus Campaigns (buybackSnapshotForBooking); Coupon (FAST300/FIRST500 tokens, coupon usage on completion); Influencer Affiliate; Gift Cards; Marketing (RedirectLinkService /c/ links, CheckoutUrlGenerator); Notifications; Messaging Utilities; Admin (activityLogger, ck-admin cache invalidation); Encryption & Security utils; Cron Jobs.
+
+- External: Pabbly Chatflow (WhatsApp), Pabbly Email Marketing, Redis (daily limit), EngineMailer (subscriber API), PushLap Growth, ck-admin (ADMIN_PANEL_URL), referral microservice.
+
+## Background Jobs / Events
+
+- startLeadNurtureJob — every 10 minutes, Asia/Kolkata, primary instance only. Env: LEAD_NURTURE_ENABLED, BOT_OPENING_ENABLED, BOT_DAILY_LIMIT, BOT_REENGAGE_ENABLED, BOT_TEST_PHONES, BOT_OPENING_TEMPLATE, BOT_REENGAGE_TEMPLATE, BOT_WA_NUMBER, LEAD_NURTURE_HOLDOUT_DISABLED, SUPPRESSION_TEST_THRESHOLD.
+
+- startHotLeadSweepJob — every 10 minutes, Asia/Kolkata, primary only. Env: HOT_LEAD_SWEEP_ENABLED, HOT_LEAD_MINUTES.
+
+- Outbound side effects on create/complete: Pabbly email upsert/remove, WhatsApp order_placed_successfully, ck-admin cache invalidation, referral service HTTP calls.
+
+- Inbound: Pabbly intent / opt-out webhooks (Webhooks module) write whatsappIntentConfirmedAt, whatsappIntentDeclineReason, hot-lead fields, whatsappOptIn.
+
+## Who Uses It
+
+Customer web (ck-web2.0) and customer Flutter app (lead create/complete/payment/gift card/pickup slots); vendor app (/api/v1/otp/lead/verify); admin panel reads hot-lead and attribution columns directly from the DB; Pabbly (webhooks); internal crons.

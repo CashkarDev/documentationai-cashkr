@@ -1,0 +1,111 @@
+---
+title: "Notifications"
+description: "Push delivery to customer and partner apps through two Firebase projects, dead-token cleanup, push-open tracking, the vendor notification inbox and admin-controlled vendor in-app banners."
+---
+
+## Purpose
+
+Push delivery to the customer and partner Flutter apps through two Firebase projects, dead-token hygiene, recording customer push taps (the open side of the push funnel), the vendor app's persistent notification inbox (Credits / Announcements / Alerts with read state, plus admin broadcasts), and the admin-controlled vendor in-app banner (pull-based, with impression/click/dismiss analytics).
+
+## Folder / Files
+
+- FCM core: src/utils/FCMUtility.ts (singleton firebaseMessaging), src/utils/fcmTokenCleanup.ts, src/config/firebase/firebaseAccounts.ts, src/utils/vendorSession.ts (session gate, read only).
+
+- Customer push opens: src/routes/notifications/index.ts, src/controllers/notificationOpen/index.ts.
+
+- Stub: src/routes/fcm/fcm.ts.
+
+- Vendor inbox: src/controllers/vendorNotification/\{index,admin,schemas\}.ts, src/services/vendorNotification/vendorNotification.service.ts, src/routes/admin/vendorNotifications/vendorNotifications.routes.ts, vendor routes in src/routes/vendor/index.ts:65-74, cron src/jobs/vendorCreditNotify.job.ts.
+
+- Vendor in-app banner: src/controllers/vendorAppNotification/index.ts, src/controllers/adminAppNotification/\{index,schemas\}.ts, src/services/vendorAppNotification/\{vendorAppNotification.service,logic\}.ts, src/repository/vendorAppNotification.repository.ts, src/routes/admin/appNotifications/appNotifications.routes.ts, src/types/vendorAppNotification.types.ts, src/interfaces/vendorAppNotification.interface.ts.
+
+## Data Models
+
+- PushNotification (id, title, body, imageUrl, iconUrl, targetApp, targetType, targetValue, status default "sent", scheduledAt, sentAt, sentBy, recipientCount, successCount, failureCount, metadata Json, campaignId, deepLink, templateId). No relations.
+
+- NotificationOpen (eventId VarChar(64) PK = app-generated UUID per tap, notificationId, customerId?, fcmToken VarChar(512), platform?, appVersion?, openedAt = device tap time, createdAt). Indexes on notificationId, customerId, openedAt. No FK to PushNotification.
+
+- VendorNotification (id uuid, vendorId -&gt; Vendors.vendorId onDelete Cascade, category enum VendorNotificationCategory = CREDIT\|ANNOUNCEMENT\|ALERT, title, body, amount Int? = signed credit points (negative = debit), imageUrl, data Json, isRead default false, readAt, createdAt). Indexes (vendorId,isRead), (vendorId,category,isRead), (vendorId,createdAt).
+
+- VendorCreditOperation.notified Boolean default false (indexed) - the poll flag for the credit cron.
+
+- VendorAppNotification (id uuid, title VarChar(120), message, type VendorAppNotificationType = BANNER\|STRIP\|MODAL default BANNER, severity VendorAppNotificationSeverity = INFO\|SUCCESS\|WARNING\|CRITICAL, imageUrl, ctaLabel VarChar(40), ctaAction VarChar(500), isActive default false, isDismissible default true, displayFrequency VendorAppNotificationFrequency = ALWAYS\|ONCE_PER_SESSION\|ONCE_PER_DAY\|ONCE_EVER default ONCE_PER_DAY, priority Int, startsAt/endsAt, targetType VendorAppNotificationTargetType = ALL\|CITY\|TIER\|VENDOR_IDS, targetValue Json (\{cities:\[...\]\} matches Vendors.city; \{tiers:\[1,2\]\} matches Vendors.vendorType; \{ids:\[...\]\}), platform VendorAppNotificationPlatform = ALL\|ANDROID\|IOS, minAppVersion, version Int default 1, createdById -&gt; Admin.id, createdAt, updatedAt). hasMany VendorNotificationEvent.
+
+- VendorNotificationEvent (id, notificationId -&gt; VendorAppNotification onDelete Cascade, vendorId -&gt; Vendors onDelete Cascade, event VendorNotificationEventType = IMPRESSION\|CLICK\|DISMISS, createdAt). Index (notificationId, event).
+
+- Token storage (one token per row, no device table): Customers.firebaseId (customer project), Vendors.firebaseId, Cashboy.firebaseId (partner project).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/fcm/send | Dead stub: returns \{hello:"world"\}. Sends nothing. |
+| POST | /api/v1/notifications/opened | Records a customer push tap. Zod body: notificationId (1-255), eventId (1-64, PK/dedupe), fcmToken (1-512), openedAt ISO datetime, optional customerId, platform (&lt;=20), appVersion (&lt;=40). customerId from a valid login token wins over the body. 201 \{deduped:false\}; 200 \{deduped:true\} on replay; 400 on bad body (app drops it); 500 on DB error (app retries). |
+| GET | /api/v1/vendor/notifications | Vendor inbox feed, newest first, cursor pagination. Query zod: category (CREDIT/ANNOUNCEMENT/ALERT), cursor (row id), limit 1-50 default 20. Returns items (+ amountRupees = amount × 10) and nextCursor. |
+| GET | /api/v1/vendor/notifications/counts | Unread total and byCategory counts (badge). |
+| PATCH | /api/v1/vendor/notifications/read-all | Marks all unread rows (optionally ?category=) read; returns updated count. |
+| PATCH | /api/v1/vendor/notifications/:id/read | Marks one row read (own rows only); 404 if nothing updated. |
+| GET | /api/v1/vendor/notifications/active | In-app banners this vendor should see now. Reads headers X-Platform (ANDROID/IOS/ALL) and X-App-Version. Returns \{ data, server_time \}, sets ETag and Cache-Control: private, max-age=0, must-revalidate; 304 when If-None-Match matches. Never 500s (returns \[\] on failure). |
+| POST | /api/v1/vendor/notifications/:id/event | Body \{event: "impression" or "click" or "dismiss"\} → fire-and-forget VendorNotificationEvent insert. 202 always; 400 on unknown event. |
+| POST | /api/v1/admin/vendor-notifications/broadcast | Zod: title (1-255), body, optional imageUrl (url), deepLink, urgent (true -&gt; ALERT category / all_vendors_alert topic), optional vendorIds (1-200 ids). Without vendorIds: one VendorNotification row per approved+live vendor via createMany, then ONE FCM topic publish (all_vendors_announcement or all_vendors_alert). With vendorIds: rows for the matching approved+live vendors, then a token multicast to those with a firebaseId; 422 if none matched. Returns recipients, topic, messageId (and pushed, unreachable, skipped for targeted). |
+| GET | /api/v1/admin/notifications | Lists in-app banners with derived status; query zod status (DRAFT/SCHEDULED/LIVE/EXPIRED), search (title/message, case-insensitive), page &gt;=1, limit 1-100 default 20. Loads all rows then filters/paginates in memory. |
+| POST | /api/v1/admin/notifications | Creates a banner (createNotificationSchema). createdById from the admin token. Invalidates the Redis live set and emits socket inapp:refresh. 201. |
+| GET | /api/v1/admin/notifications/:id | One banner with derived status; 404 if missing. |
+| PUT | /api/v1/admin/notifications/:id | Partial update (updateNotificationSchema). Changing any of title, message, imageUrl, ctaLabel, ctaAction increments version (resets the app's dismissal key notif\_\{id\}\_v\{version\}); schedule/priority/isActive changes do not. Invalidate + socket refresh. |
+| DELETE | /api/v1/admin/notifications/:id | Hard delete (events cascade). Invalidate + socket refresh. |
+| PATCH | /api/v1/admin/notifications/:id/toggle | Body \{isActive\}. 422 when activating a banner whose endsAt has passed. Never bumps version. |
+| GET | /api/v1/admin/notifications/:id/stats | \{impressions, clicks, dismisses, uniqueVendors, ctr = clicks/impressions\} from VendorNotificationEvent. |
+
+## Core Business Logic
+
+- **Two Firebase projects**: firebaseAccounts.ts loads the service accounts for the customer project (cashkar-customer) and the partner project (cashkar-partner) from env; it throws at first use if missing. FCMUtility lazily initialises one admin.app per audience (config.for = "customer" \| "vendor") and never falls back to the other project's app.
+
+- **Push send** (firebaseMessaging.sendMessage): drops blank tokens; for vendor audience removes tokens of partners who have not logged in since 00:00 IST (findExpiredPartnerTokens) unless ignoreVendorSession; for a single customer token looks the customer up and skips demo customers; builds a notification + data payload (data always carries title, body, timestamp, leadId, deviceType, pageRoute, imageUrl as strings), Android priority: high, channel high_importance_channel, sound notification.mp3 (overridable per call), iOS apns-priority 10 + mutable-content when an image is set. Single token -&gt; messaging().send; array -&gt; sendEachForMulticast. Transient codes are retried up to 3 attempts with 150 ms × attempt back-off. sendToTopic publishes a notification+data message to an FCM topic.
+
+- **Dead-token cleanup** (fcmTokenCleanup.ts): on not-registered / invalid-token errors the failing token is nulled in Customers.firebaseId (customer audience) or Vendors.firebaseId + Cashboy.firebaseId (vendor audience) on the FIRST failure; sendMessage then returns "skipped: dead token" instead of throwing. Multicast responses are walked per token. Tokens are only ever logged masked.
+
+- **Push funnel (send → delivered → open)**: **Send** = a call into FCMUtility from one of the senders (notification.service.ts for order/lead pushes, availableOrders.service.ts, lead-reservation.service.ts, services/cashboy, lib/leaderboard.ts, socket/chatSocket.ts, and the vendor inbox service). **Delivered** = FCM accepted the message for that token (message id, or successCount/failureCount in the multicast response); dead tokens are removed at this step. For campaign pushes, PushNotification.recipientCount/successCount/failureCount hold those numbers but are written outside this repo. **Open** = the app POSTs /api/v1/notifications/opened with the notificationId it received; open rate = distinct NotificationOpen.notificationId joined to PushNotification.id over successCount. For the vendor inbox the equivalent of "open" is isRead/readAt; for in-app banners it is the IMPRESSION → CLICK/DISMISS events behind /stats.
+
+- **Vendor inbox** (vendorNotification.service.ts): the DB row is the source of truth, the push is best-effort and is never sent inside a transaction. notifyVendor = createVendorNotification + pushVendorNotification (data: pageRoute "/vendorNotifications", type/category, notificationId, amount, amountRupees; Android channel vendor_notifications_channel_v2, sound vendor_notification, iOS vendor_notification.caf). Triggers: credit purchase approval, lead assignment / reservation / lead flows, "New pickup assigned" ALERT row, account status change ALERT from the admin vendor controller (sent with ignoreVendorSession because an unapproved vendor cannot log in), and the credit cron (below). CREDIT_TO_RUPEE = 10 lives server-side so the rate can change without an app release.
+
+- **Admin broadcast**: fan-out rows first (so each vendor has read state; topics persist nothing), then one topic publish. The targeted path is a separate function so a targeted send can never degrade into a topic blast; recipients counts rows written, pushed counts devices FCM accepted.
+
+- **Vendor in-app banner**: admin CRUD writes rows; the live set (isActive and inside startsAt/endsAt, ordered priority desc, updatedAt desc) is cached in Redis (prefix vendor-app-notif, TTL default 300 s), and every write path invalidates it and emits socket "inapp:refresh". On GET /active the service loads the live set + the vendor's city/vendorType, then filters: live window, platform match, minimum app version (a floor with a missing client version hides the banner), target match (fail closed on malformed targetValue), sort by priority; then frequency: ONCE_PER_DAY hidden if an IMPRESSION exists on the same UTC day, ONCE_EVER hidden if any IMPRESSION exists, ALWAYS/ONCE_PER_SESSION always pass (session is client-side).
+
+## Status / State Machine
+
+- Vendor in-app banner derived status (never stored): !isActive -&gt; DRAFT; active and endsAt &lt; now -&gt; EXPIRED; active and startsAt &gt; now -&gt; SCHEDULED; else LIVE. Activating an EXPIRED banner is rejected (422).
+
+- VendorNotification.isRead: false -&gt; true (one-way, via /:id/read or /read-all).
+
+- VendorCreditOperation.notified: false -&gt; true by the cron, in the same transaction as the inbox row.
+
+- PushNotification.status: default "sent"; other values are not defined anywhere in this repo (Unclear from code).
+
+## Validations & Rules
+
+- notifications/opened: zod schema above; 4xx vs 5xx semantics are a contract with the app (4xx = drop, 5xx = retry).
+
+- Vendor inbox: limit clamped 1-50; category enum; broadcast vendorIds 1-200 and an empty array is a 422 (never "no filter").
+
+- In-app banner zod: title &lt;= 120, ctaLabel &lt;= 40, ctaAction/imageUrl &lt;= 500 (imageUrl must be a URL), endsAt &gt; startsAt, ctaLabel and ctaAction all-or-nothing, cannot set isActive=true with a past endsAt, targetValue shape must match targetType, minAppVersion must parse as semver.
+
+- Broadcast eligibility: Vendors.isApproved = true AND status = "live" for both broadcast and targeted sends.
+
+## Dependencies
+
+Internal: Vendor, Cashboy, Customer / User, Orders, Vendor Payments & Credits, Chat. External: Firebase Cloud Messaging via firebase-admin (two projects), Redis (CacheManager), Socket.IO.
+
+## Background Jobs / Events
+
+- Cron src/jobs/vendorCreditNotify.job.ts: every minute (Asia/Kolkata, primary instance). Polls up to 100 VendorCreditOperation rows with notified=false, creates a CREDIT inbox row (amount negative for Deduction, referenceType MANUAL_FINE\|MANUAL_CREDIT), flags the op in the same transaction, then pushes best-effort. Skips overlapping runs.
+
+- Socket event emitted: inapp:refresh \{notificationId\} after any admin banner write.
+
+- FCM topics (contract with the partner app): all_vendors_announcement, all_vendors_alert.
+
+- No webhooks. Customer push campaigns themselves (writers of PushNotification) are not scheduled in this repo.
+
+## Who Uses It
+
+Customer app (receives pushes; POSTs /notifications/opened), Vendor app (/vendor/notifications\* inbox and /active banner, subscribes to the two topics), Cashboy app (pushes only), Admin panel (/api/v1/admin/vendor-notifications/broadcast, /api/v1/admin/notifications\*, and reads PushNotification/NotificationOpen directly for the push dashboard), internal services (every push sender in src/services).

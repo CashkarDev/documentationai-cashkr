@@ -1,0 +1,61 @@
+---
+title: "Settlement & Cash"
+description: "Daily cash settlement between a Store and its StoreVendor for Exchange Tokens redeemed that day, with payment proof upload, verification or dispute, and an admin overview."
+---
+
+## Purpose
+
+Daily cash settlement between a Store (physical partner shop) and its StoreVendor for Exchange Tokens redeemed that day: tokens redeemed roll into one DailySettlement per store per day; the vendor uploads a payment proof, the store owner verifies or disputes it; admin sees an overview. CashBalance, CashTransaction, Expense are admin-panel bookkeeping tables that this backend never touches.
+
+## Folder / Files
+
+src/routes/settlement/index.ts (mount /api/v1/settlement), src/controllers/settlement/index.ts, src/services/settlement/index.ts, src/services/exchangeToken/index.ts (findOrCreateTodaySettlement / updateSettlementTotals).
+
+## Data Models
+
+- DailySettlement (settlementId uuid, storeVendorId → StoreVendors, storeId → Store, totalTokens Int, totalAmount String, settlementDate @db.Date, paymentProof?, paymentMethod?, paymentReference?, lockedAt?, paymentUploadedAt?, verifiedAt?, status SettlementStatus default OPEN, disputeReason?; @@unique(storeId, settlementDate)). hasMany ExchangeToken (tokens).
+
+- CashBalance (id, accountType, accountName, balance Float) hasMany CashTransaction (accountId → CashBalance, type, amount, paymentMethod, transactionId?, category, referenceId?, referenceType?, description, createdById → Admin?). Expense (title, amount, category, date, paymentMethod?, receiptUrl?, isRecurring, recurringFrequency?, createdById → Admin, transactionId?). No code in src/ reads or writes these three; they belong to ck-admin.
+
+- Enum SettlementStatus \{OPEN, PENDING_PAYMENT, PAYMENT_UPLOADED, VERIFIED, DISPUTED\}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/settlement/upload-payment-proof | Body settlementId, paymentMethod?, paymentReference?; uploads proof to S3 settlements/&lt;id&gt;/; sets status PAYMENT_UPLOADED, paymentUploadedAt. |
+| POST | /api/v1/settlement/verify-payment | Body settlementId, status ("VERIFIED" or "DISPUTED"), disputeReason?; VERIFIED → status VERIFIED + verifiedAt; DISPUTED → status DISPUTED + reason; else 400. |
+| GET | /api/v1/settlement/vendor/:vendorId/settlements | All settlements where storeVendorId = :vendorId, newest first, with store name. |
+| GET | /api/v1/settlement/store/:storeId/settlements | All settlements of a store (summary fields). |
+| GET | /api/v1/settlement/:settlementId/details | Full settlement incl. vendor contact and tokens → storeLead → customer name/phone. |
+| POST | /api/v1/settlement/dispute | Body settlementId, disputeReason → DISPUTED. |
+| GET | /api/v1/settlement/admin/overview | Query startDate,endDate,status; last 100 settlements + per-status counts/tokens. |
+| POST | /api/v1/settlement/today | Body vendorId; resolves the vendor's store via StoreVendors.storeId (404 if none) and finds-or-creates today's OPEN settlement (UTC midnight) with its tokens. |
+
+## Core Business Logic
+
+1.  A store vendor completes a store lead; an ExchangeToken is generated (see Exchange Token). When the token is redeemed at the store (POST /api/v1/storeLead/redeem-token), findOrCreateTodaySettlement(storeId, storeVendorId) returns today's row (key = storeId + UTC date) and updateSettlementTotals adds the token amount (string arithmetic via parseInt) and increments totalTokens; the token gets settlementId and status REDEEMED.
+
+2.  The vendor app calls /today to see the running settlement, then /upload-payment-proof with the transfer screenshot.
+
+3.  There is no admin approval step in code; admin/overview is read-only. "Who approves": the store side via verify-payment; admin has no write endpoint here.
+
+## Status / State Machine
+
+OPEN (created) → PAYMENT_UPLOADED (upload) → VERIFIED or DISPUTED (verify-payment / dispute). PENDING_PAYMENT and lockedAt are defined but never set anywhere in src/ (only counted in adminOverview).
+
+## Validations & Rules
+
+Settlement day is the UTC day, not IST. totalAmount is kept as a String and summed with parseInt.
+
+## Dependencies
+
+Store / Store Leads / Store Vendors (Store, StoreVendors, StoreLeads), Exchange Token (tokens feed totals), File Upload (uploadToS3Bucket, Fileupload), demoUser.util isDemoVendor.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Store vendor (partner) app, store owner app/web, Admin panel (/admin/overview). Exact clients: Unclear from code.

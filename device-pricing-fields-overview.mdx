@@ -3,6 +3,8 @@ title: Device Pricing Fields Overview
 description: Understand how price, deviceGeneratedPrice, deviceFinalPrice, and deviceRequotePrice are set and used in device evaluation API responses.
 ---
 
+<Callout kind="alert">Correction (16 Oct 2026): in the backend code the order is **deviceGeneratedPrice → deviceRequotePrice → deviceFinalPrice**. The requote happens at inspection, before completion, and the final price is written last. See [Device Price Lifecycle](/backend/device-price-lifecycle) for the code-verified flow and what changes when a price is edited.</Callout>
+
 ## Overview
 
 Device evaluation responses include multiple price-related fields that represent different stages of the pricing workflow. Each field tracks how a device moves from base catalog price to final approved or requoted price.

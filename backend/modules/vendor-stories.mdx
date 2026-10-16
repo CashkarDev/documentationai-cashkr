@@ -1,0 +1,61 @@
+---
+title: "Vendor Stories"
+description: "Instagram-style \"story rail\" in the vendor app: admins publish stories made of image/video/text pages; vendors view, like and comment on individual pages."
+---
+
+## Purpose
+
+Instagram-style "story rail" in the vendor app: admins publish stories made of image/video/text pages; vendors view, like and comment on individual pages.
+
+## Folder / Files
+
+src/routes/vendorStory/index.ts (mounted at /api/v1/vendor/stories, before /vendor), src/controllers/vendorStory/index.ts. No service layer; CRUD of stories is done by ck-admin directly in the DB.
+
+## Data Models
+
+- VendorStory (line 5282) — name, coverImage, order, isActive; hasMany VendorStoryPage.
+
+- VendorStoryPage (line 5303) — storyId → VendorStory (cascade), type StoryPageType (Image \| Video \| Text), mediaUrl?, text? (slide text or caption), link? (in-app route), linkLabel?, order. Schema comment says a DB CHECK enforces media/text presence per type.
+
+- VendorStoryPageView — unique (pageId, vendorId, cashboyId), viewedAt (first view).
+
+- VendorStoryPageLike — unique (pageId, vendorId, cashboyId).
+
+- VendorStoryPageComment — comment, vendorId, cashboyId default "".
+
+- All engagement rows belong to Vendors (cascade) and to the page (cascade).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| GET | /api/v1/vendor/stories | Active stories ordered by order, createdAt desc, with pages (ordered), per-page likeCount, commentCount, hasLiked, hasSeen; story hasSeen true only when every page is seen and the story has ≥1 page. |
+| POST | /api/v1/vendor/stories/pages/:pageId/view | Idempotent upsert of VendorStoryPageView (keeps first view time). 404 if page missing. |
+| POST | /api/v1/vendor/stories/pages/:pageId/like | Toggle like; returns \{ hasLiked, likeCount \}. |
+| GET | /api/v1/vendor/stories/pages/:pageId/comments | Paginated comments newest first (page, limit default 20), vendorName, isMine. |
+| POST | /api/v1/vendor/stories/pages/:pageId/comments | Create comment (400 if blank); 201 with same shape as list. |
+| DELETE | /api/v1/vendor/stories/comments/:commentId | Delete own comment only (lookup by id + vendorId + cashboyId). |
+
+## Core Business Logic
+
+Actor identity = vendorId plus cashboyId ("" for the vendor themselves, the agent's id when userKind === "cashboy"), so a vendor and each of their agents have separate seen/like state. Retired stories (isActive=false) are filtered, not deleted. No expiry.
+
+## Status / State Machine
+
+None (only isActive).
+
+## Validations & Rules
+
+Comment must be non-blank; no length cap in code (column is Text). Pagination values are parsed with parseInt and not capped. No moderation step.
+
+## Dependencies
+
+Vendor (Vendors / Cashboy identity via authorize). No external services.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Vendor app (read + engagement); Admin panel writes the stories directly to the DB.

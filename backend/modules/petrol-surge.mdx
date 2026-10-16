@@ -1,0 +1,48 @@
+---
+title: "Petrol Surge"
+description: "Field partners claim fuel-bill reimbursement (\"petrol surge\") by submitting the bill date/time/amount and a photo; admins approve or reject and set the reimbursed amount."
+---
+
+## Purpose
+
+Field partners claim fuel-bill reimbursement ("petrol surge") by submitting the bill date/time/amount and a photo; admins approve or reject and set the reimbursed amount.
+
+## Folder / Files
+
+src/routes/petrolSurge/index.ts (mounted at /api/v1/petrol-surge), src/controllers/PetrolSurge/index.ts, src/services/petrolSurge/index.ts, src/utils/MulterUpload.ts (PetrolBillUpload). Admin review endpoints are not in this repo (ck-admin writes status, amount, reviewComment, reviewedByAdminId, reviewedAt directly).
+
+## Data Models
+
+PetrolSurgeClaim (line 4845) — vendorId?, cashboyId? (no FK relations), billDate @db.Date, billTime VarChar(20), billPhoto VarChar(500), billAmount Float (claimed), amount Float? (approved reimbursement), status PetrolSurgeStatus (Pending \| Approved \| Rejected, default Pending), reviewComment?, reviewedByAdminId?, reviewedAt?. Indexes (vendorId, createdAt), (cashboyId, createdAt).
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/petrol-surge | Multipart billPhoto (1 file, ≤20 MB; multer errors → 422), fields billDate, billTime, billAmount. Uploads photo to petrolSurge/&lt;claimId&gt;/bill then creates claim Pending. 201. |
+| GET | /api/v1/petrol-surge/last-submission | Most recent claim or null. |
+| GET | /api/v1/petrol-surge/my | Paginated own claims (page, limit ≤100, status filter) plus per-status counts (unfiltered). |
+
+## Core Business Logic
+
+Validate → upload photo first (so a failed upload leaves no row) → insert with a pre-generated UUID so the S3 folder matches the row id. Service supports a cashboy actor (PetrolSurgeActor), but the controller's getActor only accepts vendors.
+
+## Status / State Machine
+
+Pending → Approved \| Rejected (set by admin outside this repo). No backend transition code.
+
+## Validations & Rules
+
+billDate must parse as a Date (422 INVALID_BILL_DATE); billTime non-empty; billAmount finite and &gt; 0; photo required; MIME in image/jpeg, image/jpg, image/png, image/webp; MAX_PETROL_SURGE_PAGE_SIZE = 100.
+
+## Dependencies
+
+Vendor (identity), File Upload (uploadToS3Bucket). External: S3-compatible storage.
+
+## Background Jobs / Events
+
+None.
+
+## Who Uses It
+
+Vendor app; Admin panel (review, via DB).

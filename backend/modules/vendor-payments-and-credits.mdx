@@ -1,0 +1,78 @@
+---
+title: "Vendor Payments & Credits"
+description: "Vendors prepay for leads by buying credits (₹10 per credit before GST). Covers credit purchases, approval, per-order debits, the credit ledger and credit notifications."
+---
+
+## Purpose
+
+Vendors (partners) prepay for leads by buying "credits". One credit = ₹10 of GST-exclusive spend (credits = floor((amount / 1.18) / 10), src/services/vendorPayment/approveCredit.service.ts). Each lead assignment/lock debits credits from Vendors.creditsAvailable; a lead is only offered to a vendor whose balance covers the lead's dynamic credit cost. This module records credit purchases (manual UPI screenshot or gateway), approves them, writes the credit ledger, and notifies vendors of admin credit ops.
+
+<Callout kind="info">Vendor credits are what the vendor pays CashKr to lock a lead. They are not part of the customer's device price. See [Device Price Lifecycle](/backend/device-price-lifecycle).</Callout>
+
+## Folder / Files
+
+src/routes/vendorPayments/index.ts (mounted at /api/v1/payment), src/controllers/vendorPayment/index.ts (BuyCredit/approve/reject), src/controllers/vendorPayment/paymentLogs.ts (stubs), src/controllers/vendorPayment/schemas.ts (zod + multer), src/services/vendorPayment/index.ts (BuyCredit insert), src/services/vendorPayment/approveCredit.service.ts (shared approval), src/services/vendorPayment/paymentLogs.ts (duplicate stub of the controller file), src/utils/vendorCredits.ts (atomic debit), src/jobs/vendorCreditNotify.job.ts, src/utils/TierPriceSystem.ts (ExtraCreditRule), src/services/lead/createLead.ts (AddCreditAlgorithm).
+
+## Data Models
+
+- VendorPayments (paymentId Int PK, vendorId → Vendors, amount String (₹ incl. GST, as typed), credits String, isApproved Bool, screenshot?, approvedAt?, transactionId?, paymentMethod PaymentMethod default MANUAL_UPI, gatewayFee?, razorpayOrderId? @unique, razorpayPaymentId? @unique, razorpaySignature?, phonepeMerchantOrderId? @unique, phonepeOrderId?, phonepeTransactionId?, gatewayResponse Json?). hasOne VendorPaymentsLogs.
+
+- VendorPaymentsLogs (id, paymentId @unique → VendorPayments, vendorId → Vendors, paymentProgress PaymentProgress). Only created for MANUAL_UPI purchases; gateway rows have none.
+
+- VendorCreditLogs (uuid, vendorId → Vendors, masterLeadId → MasterLeads, creditPoints Int, label, description, status creditStatus, category creditCategory?, previousCreditPoints?, currentCreditPoints?, storeLeadsLeadId?, storeVendorsVendorId?). Per-order credit ledger.
+
+- creditOperationLogs (id, vendorPreviousCredit, vendorCurrentCredit, description, label) + VendorCreditOperation (id, vendorId → Vendors, operationBy Role \{Admin, Sales\}, creditAmount, status CreditOperationStatus, reason, notified Bool default false, creditOperationLogsId @unique → creditOperationLogs). Admin/manual credit ops ledger; notified is consumed by the notify cron.
+
+- AddCreditAlgorithm (deviceType, from, to, credit, Type1..Type5 Int?) — price-band → credit cost table used for Laptop/Desktop leads (createLead.ts getLaptopCreditPoints); other device types read credit from the device class row.
+
+- ExtraCreditRule (vendorTypeId → VendorTypeConfig, tier, extraCredits, isActive; @@unique(vendorTypeId, tier)) — extra credits per vendor type × lead tier, loaded by TierPriceSystem.ts together with TierConfig.baseCredits.
+
+- Enums: PaymentMethod \{MANUAL_UPI, RAZORPAY, PHONEPE\}, PaymentProgress \{Pending, Approved, Rejected\}, creditStatus \{Credited, Debited\}, creditCategory \{OrderAssigned, OrderLocked, OrderReversed, OrderCompleted, OrderCancelled, OrderFailedAccepted, OrderFailedRejected, PaymentApproved, PaymentRejected, ReviewRefund\}, CreditOperationStatus \{Addition, Deduction\}.
+
+## API Endpoints
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/payment/buyCredit | Manual UPI purchase: rejects if the vendor has any MANUAL_UPI row still Pending; validates the screenshot file, uploads it to S3 (vendorPayments/), zod VendorBuyCredit, computes credits = round((amount/1.18)/10), inserts VendorPayments (isApproved=false) + VendorPaymentsLogs (Pending). |
+| GET | /api/v1/payment/reject/:paymentId | Stub: returns \{message: "Credit purchased successfully"\} and changes nothing. |
+| GET | /api/v1/payment/paymentLogs | Stub (same message, no data). |
+| GET | /api/v1/payment/paymentLogs/:paymentId | Stub. |
+| GET | /api/v1/payment/creditLogs | Stub. |
+
+Gateway endpoints under the same mount are listed in the [Payment Gateway](/backend/modules/payment-gateway) module.
+
+## Core Business Logic
+
+1.  **Credit cost of a lead.** createLead.ts getCreditPoints: Laptop/Desktop → AddCreditAlgorithm band for the price; else the device class credit. masterLead.service.ts calculateDynamicCreditPoints adds extraCredits from TierPriceSystem.getLeadPrice(vendorType, tier) (TierConfig.baseCredits + ExtraCreditRule.extraCredits). checkVendorCredit only returns a vendor whose creditsAvailable &gt;= dynamicCredits.
+
+2.  **Debit per order.** All four assignment/lock paths (lead-assignment.service.ts, lead-reservation.service.ts, createLead.ts, masterLead.service.ts lock) call debitVendorCredits(tx, \{vendorId, amount, logs\}): a single updateMany with WHERE creditsAvailable &gt;= amount and decrement; 0 rows → throws InsufficientCreditsError which rolls back the surrounding transaction. It then writes VendorCreditLogs rows with status Debited, category OrderAssigned or OrderLocked, previous/current balance.
+
+3.  **Buying credits (manual).** Vendor uploads a UPI screenshot via /buyCredit; row sits Pending. Approval is done from ck-admin (it reads the same DB and triggers the invoice itself).
+
+4.  **Buying credits (gateway).** See Payment Gateway. Both gateways end in approveVendorCredit(\{paymentId, transactionId, approvedBy: "RAZORPAY" or "PHONEPE"\}).
+
+5.  **`approveVendorCredit` (shared, idempotent).** Steps: load payment; if isApproved → already_approved no-op; duplicate-transaction guard: looks for another approved row with the same transactionId → failed ("Reject this request instead"); credits = floor((amount/1.18)/10), must be &gt; 0; one transaction: update payment (isApproved, transactionId, approvedAt, credits), log → Approved, set Vendors.creditsAvailable = previous + credits (read-then-set, not increment), insert creditOperationLogs + VendorCreditOperation (operationBy "Admin", status "Addition", label "Credit Purchase"). After commit: leaderboard cache invalidation, for gateway approvals triggerVendorInvoice(paymentId) → ck-admin internal endpoint mints the Tax Invoice, and notifyVendor(\{category: "CREDIT", title: "Credits added"\}).
+
+6.  **Refunds / credit-backs.** This backend never writes a VendorCreditLogs row with status Credited (only reads in lib/leaderboard.ts, controllers/vendor/index.ts, OrdersMutation.ts, reviewProof). Categories OrderReversed, OrderCancelled, OrderFailedAccepted, ReviewRefund, PaymentApproved, PaymentRejected are only read here (vendor transaction history, review-refund list). Who writes them: Unclear from code — presumably ck-admin against the shared DB.
+
+7.  **Credit value in ₹.** Purchase: ₹10 per credit before 18% GST (₹11.80 incl. GST). Minimum gateway purchase ₹10,000 → 847 credits. No ₹ value per credit is applied anywhere on the debit side (credits are abstract lead costs).
+
+## Status / State Machine
+
+VendorPaymentsLogs.paymentProgress: Pending → Approved (approve paths) or Rejected (gateway payment.failed / PhonePe FAILED, only if a log row exists). VendorPayments.isApproved false → true (never reverts). VendorCreditLogs.status Credited/Debited is a direction flag, not a lifecycle.
+
+## Validations & Rules
+
+VendorBuyCredit zod: amount non-empty string, screenShot required, vendorId uuid. Manual purchase blocked while any MANUAL_UPI row is Pending. No amount minimum on the manual path (controller) but approveVendorCredit rejects when credits would be 0. Credits formula mismatch: controller calculateExcludingGST and services/razorpay calculateCreditsFromAmount use Math.round, while approveVendorCredit and services/phonepe use Math.floor (comment in phonepe service: ₹20,000 quoted 1695, granted 1694). Debit is concurrency-safe (atomic WHERE guard).
+
+## Dependencies
+
+Vendor (Vendors.creditsAvailable, VendorTypeConfig/TierConfig via TierPriceSystem), Orders (debits inside lead assign/lock), Pricing & Evaluation (AddCreditAlgorithm bands), Notifications (vendorNotification.service notifyVendor, pushVendorNotification), Analytics / Top Selling (leaderboard cache), File Upload (S3), Invoice (ck-admin internal endpoint via src/utils/webhooks.ts), Payment Gateway (callers of approveVendorCredit). External: S3-compatible storage, ck-admin HTTP.
+
+## Background Jobs / Events
+
+startVendorCreditNotifyJob (src/jobs/vendorCreditNotify.job.ts): cron "\*/1 \* \* \* \*" Asia/Kolkata, overlap-guarded; calls notifyPendingCreditOperations(100) which, per VendorCreditOperation with notified=false, creates a vendor inbox notification (category CREDIT, title "Credits added"/"Credits deducted", referenceType MANUAL_CREDIT/MANUAL_FINE) and sets notified=true in one transaction, then pushes FCM. Started in src/server.ts on the primary instance.
+
+## Who Uses It
+
+Vendor app (buyCredit, attempts, credit history screens); Admin panel (approvals, manual credit operations).

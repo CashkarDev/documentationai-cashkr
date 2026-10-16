@@ -1,0 +1,103 @@
+---
+title: "Referral Program"
+description: "Refer-a-friend: a customer shares a code/link; the referee gets a payout bonus on their first order and the referrer earns a wallet reward that admin approves and pays out via UPI."
+---
+
+## Purpose
+
+Refer-a-friend: a customer shares a code/link; the referee gets a payout bonus on their first order and the referrer earns a wallet reward that admin approves and pays out via UPI. The program, codes, referrals, wallet, transactions and withdrawals live in a SEPARATE referral microservice (REFERRAL_SERVICE_URL); this backend proxies, stamps referralId on orders, computes the referee bonus at checkout, and fires webhooks/notifications.
+
+## Folder / Files
+
+src/routes/referralRoutes/referral.routes.ts (customer + internal), src/controllers/ReferralController/referral.controller.ts, src/routes/admin/referralProgram/referralProgram.routes.ts, src/routes/admin/referralTransactions/referralTransactions.routes.ts, src/services/referral/referralDiscount.service.ts, src/services/referral/referrerContact.ts, src/services/lead/orderBonuses.ts (shared with influencer), src/utils/webhooks.ts (sendReferralWebhook), src/controllers/user/registerUser.ts (customer-created webhook), src/controllers/Lead/index.ts (eligibility + stamping at lead creation), src/services/lead/masterLead.service.ts (order-completed webhook, requote preservation), scripts/sync-existing-customers-to-referral.ts, prisma/seed-referral-pages.sql, src/routes/appLink (/app-open?referral-code= handoff, see docs/referral-share-link.md). Tests: tests/referralTransactionShape.test.ts.
+
+## Data Models (this DB)
+
+- MasterLeads.referralId String? (bare, indexed) — the referral service's referral id stamped on the referee's lead.
+
+- ReferralProgram (id, name, description, code unique, rewardAmount Int, rewardType default "CASH", minTradeValue, isActive, startDate, endDate) — present in schema but NO code in src/scripts reads or writes it (legacy/unused; the live program config is in the microservice).
+
+- Page (id, key unique, name, icon, parentKey, sortOrder, isActive) hasMany AdminPermission — prisma/seed-referral-pages.sql upserts admin nav pages referral-programs, referral-transactions, referral-payouts.
+
+- ReferralClick and CodeRedemption belong to the Influencer module, NOT to this referral program.
+
+- Wallet / transaction / withdrawal tables: none in prisma/schema.prisma. They live in the referral microservice.
+
+## API Endpoints
+
+\{RS\} = REFERRAL_SERVICE_URL.
+
+| **Method** | **Route** | **What it does** |
+|---|---|---|
+| POST | /api/v1/referral/generate | Proxy → POST \{RS\}/api/v1/referral-codes (user JWT forwarded). On 409 "already have" falls back to GET my-code. |
+| GET | /api/v1/referral/my-code | Proxy → GET \{RS\}/api/v1/referral-codes/my-code. |
+| GET | /api/v1/referral/stats | Proxy → GET \{RS\}/api/v1/referral-codes/my-code/stats. |
+| GET | /api/v1/referral/my-referrals | Proxy → GET \{RS\}/api/v1/referrals/my-referrals. |
+| POST | /api/v1/referral/internal/credited | Callback from the referral service after admin approves a referrer reward: sends WhatsApp template REFER_A_YAAR_CREDIT_TEMPLATE (default refer_a_yaar_wallet_credit) and enrols the referrer's email in the Pabbly list "Referral Credited". |
+| GET | /api/v1/referral/internal/completed-orders-count?customerId= | Returns count of Completed MasterLeads; the service uses it for its minCompletedOrders rule. |
+| POST | /api/v1/referral/validate | Proxy → POST \{RS\}/api/v1/referrals/validate \{code, customerId\}. |
+| POST | /api/v1/referral/calculate-discount | Proxy → POST \{RS\}/api/v1/referrals/calculate-discount \{code, orderAmount\}. |
+| POST | /api/v1/referral/apply | calculate-discount, then POST \{RS\}/api/v1/referrals with referralCode, ipAddress, userAgent, metadata\{leadId, orderAmount\}; stamps MasterLeads.referralId (updateMany where \{leadId, customerId\}); returns finalAmount = orderAmount + discount. |
+| GET | /api/v1/referral/wallet | Proxy → GET \{RS\}/api/v1/wallet. |
+| POST | /api/v1/referral/wallet/withdraw | Requires amount &gt; 0 and non-empty upiId; proxy → POST \{RS\}/api/v1/wallet/withdraw. |
+| GET | /api/v1/referral/wallet/transactions | Proxy → GET \{RS\}/api/v1/wallet/transactions. |
+| GET | /api/v1/referral/wallet/withdrawals | Proxy → GET \{RS\}/api/v1/wallet/withdrawals. |
+| POST | /api/v1/referral/wallet/withdrawals/:id/cancel | Proxy → POST \{RS\}/api/v1/wallet/withdrawals/:id/cancel. |
+| GET | /api/v1/admin/referral-programs/active | Proxy → GET \{RS\}/api/v1/referral-programs/active. |
+| GET | /api/v1/admin/referral-programs | Proxy list. |
+| GET | /api/v1/admin/referral-programs/:id | Proxy get. |
+| POST | /api/v1/admin/referral-programs | Proxy create. |
+| PATCH | /api/v1/admin/referral-programs/:id | Proxy update. |
+| POST | /api/v1/admin/referral-programs/:id/activate | Proxy activate. |
+| POST | /api/v1/admin/referral-programs/:id/deactivate | Proxy deactivate. |
+| DELETE | /api/v1/admin/referral-programs/:id | Proxy delete. |
+| GET | /api/v1/admin/referral-programs/:id/stats | Proxy stats. |
+| GET | /api/v1/admin/referral/transactions/stats | Proxy → \{RS\}/api/v1/admin/transactions/stats. |
+| GET | /api/v1/admin/referral/transactions | Proxy list with filters. |
+| GET | /api/v1/admin/referral/transactions/:id | Proxy get. |
+| POST | /api/v1/admin/referral/transactions/:id/approve | Proxy approve; then fire-and-forget Meta CAPI ReferralRewardCredited (event_id reward\_&lt;orderId&gt;, referrer's hashed phone/email). |
+| POST | /api/v1/admin/referral/transactions/:id/reject | Proxy reject. |
+| POST | /api/v1/admin/referral/transactions/bulk-approve | Proxy bulk approve; one CAPI event per approved item. |
+| GET | /api/v1/admin/referral/withdrawals | Proxy list. |
+| GET | /api/v1/admin/referral/withdrawals/:id | Proxy get. |
+| POST | /api/v1/admin/referral/withdrawals/:id/process | Proxy "process withdrawal (UPI payout)". |
+| POST | /api/v1/admin/referral/withdrawals/:id/reject | Proxy reject. |
+| POST | /api/v1/admin/referral/sync-existing-customers?dryRun&limit&cursor | Sends customer-created webhook for existing customers (batch 100, max 500) so the service creates CustomerReference + ₹50 wallet. |
+
+## Core Business Logic
+
+1.  **Code generation / share link**: entirely in the microservice (POST referral-codes). Share URL www.cashkr.com/app?referral-code=… is handled by the App Link module (/app-open), see docs/referral-share-link.md.
+
+2.  **Signup attribution**: registerUser.ts fires sendReferralWebhook('customer-created', \{customerId, phone, email, firstName, lastName, referralCode?\}). The service creates a PENDING referral when the code resolves.
+
+3.  **Click attribution**: none in this backend for the referral program (no click table; ReferralClick is influencer-only).
+
+4.  **Checkout preview**: Lead/index.ts (lead creation) queries \{RS\}/referrals/my-referrals for a PENDING referral of a first-order customer, stamps MasterLeads.referralId, fetches \{RS\}/referral-programs/active, and stores the original order amount via \{RS\}/referrals/:id/original-order-amount. GET /api/v1/influencer/lead-bonus shows the combined influencer + referral bonus using previewOrderBonuses.
+
+5.  **Referee bonus at order placement**: createLead.completeLead → confirmOrderBonuses → computeRefereeDiscount (referralDiscount.service.ts) re-derives the amount on the server from the active program's referee config (flat, or PERCENT with maxDiscount and minOrderValue). The result is ADDED to deviceGeneratedPrice. Requote preserves it via getGrantedRefereeDiscount (server-to-server). See [Device Price Lifecycle](/backend/device-price-lifecycle).
+
+6.  **Reward crediting on completion**: when the order becomes Completed and it is the customer's FIRST completed order and referralId is set → sendReferralWebhook('order-completed', \{orderId, customerId, referralId, orderAmount (deviceGeneratedPrice), finalAmount (deviceFinalPrice), status:'COMPLETED'\}). This only makes the referrer reward PENDING in the service.
+
+7.  **Admin approve/pay**: admin approves the transaction (proxied). The service then calls back POST /api/v1/referral/internal/credited → WhatsApp + Pabbly list. Withdrawals: customer requests via /wallet/withdraw (amount + UPI id); admin process (UPI payout) or reject; customer may cancel. Actual money movement is inside the service (Unclear from this code).
+
+8.  **Wallet balance**: proxied GET /wallet; sync script/endpoint gives existing customers a ₹50 signup wallet (per script header).
+
+## Status / State Machine
+
+Referral statuses seen in code: PENDING (and "completed/cancelled" mentioned in Lead/index.ts). Transaction/withdrawal statuses are owned by the microservice — Unclear from code.
+
+## Validations & Rules
+
+/wallet/withdraw: amount &gt; 0, upiId non-empty. /apply: code required; discount must be valid per service. completed-orders-count supports the service's minCompletedOrders rule. ipAddress and userAgent are forwarded on /apply for the service's checks. All service calls have 5 s timeout (10 s for generate) and never block order flows.
+
+## Dependencies
+
+Customer / User (registerUser), Orders (masterLead.service completion webhook, createLead bonus), Lead & Nurture (Lead/index.ts eligibility), Influencer Affiliate (orderBonuses.ts shared resolver, lead-bonus endpoint), Messaging Utilities (WhatappsUtility.sendWhatappsMessage, PabblyEmailUtility.upsertPabblySubscriber), Marketing (utils/metaCapi.trackReferralRewardCredited), Admin (authenticateAdmin), App Link / Firebase ID (/app-open). External: referral microservice (axios), Pabbly, WhatsApp, Meta CAPI.
+
+## Background Jobs / Events
+
+No cron. Outgoing webhooks: customer-created, order-completed. Incoming callback: /internal/credited. Meta CAPI event ReferralRewardCredited at admin approval only (not at completion, to avoid dedup clash on reward\_&lt;orderId&gt;).
+
+## Who Uses It
+
+Customer app + web (ck-web2.0 calls /referral/\*), Admin panel (/api/v1/admin/referral-programs, /api/v1/admin/referral/\*), referral microservice (internal endpoints).

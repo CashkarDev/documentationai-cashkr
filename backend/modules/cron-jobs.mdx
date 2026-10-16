@@ -1,0 +1,46 @@
+---
+title: "Cron Jobs"
+description: "All 13 scheduled jobs of the backend: schedule, what each does, tables touched and kill switches."
+---
+
+## Purpose
+
+All scheduled work. Every job is a cron CronJob started in src/server.ts only on the primary PM2 instance (isPrimaryInstance() from src/utils/cluster.ts), all with timezone Asia/Kolkata, all start: true (run on schedule, not on boot).
+
+## Folder / Files
+
+src/jobs/\*.job.ts (13 files), src/server.ts, src/utils/cluster.ts.
+
+## Jobs
+
+| **Job** | **File** | **Schedule (cron, Asia/Kolkata)** | **What it does** | **Tables touched** | **Guard** |
+|---|---|---|---|---|---|
+| Pickup reminder | src/jobs/pickupReminder.job.ts | 0 8 \* \* \* | PickupReminderService.processPickupReminders(): leads with pickupDate = today and active status; sends FCM push, WhatsApp only when push cannot reach the customer. | MasterLeads (+ Customers read) | primary instance only |
+| Pickup delayed | src/jobs/pickupDelayed.job.ts | 0 9 \* \* \* | PickupDelayedService.processPickupDelayed(): leads whose pickupDate is in the past and status not in Completed/Failed/New/PickupDelayed; marks them PickupDelayed and notifies (WhatsApp/push/email util). | MasterLeads | primary instance only |
+| Leaderboard reindex | src/jobs/leaderboard.reindex.job.ts | LEADERBOARD_REINDEX_CRON or 0 3 \* \* \* | reindexAll(\{notify:false\}): recomputes vendor leaderboard from credit logs and leads into Redis. | VendorCreditLogs, MasterLeads (read); Redis | primary instance only |
+| Lead nurture | src/jobs/leadNurture.job.ts | \*/10 \* \* \* \* | LeadNurtureService.processAll(): WhatsApp nurture drip for unconverted leads (Pabbly/WhatsApp utilities). | MasterLeads | primary; skipped when LEAD_NURTURE_ENABLED === "false" |
+| Hot lead sweep | src/jobs/hotLeadSweep.job.ts | \*/10 \* \* \* \* | HotLeadSweepService.processHotLeadSweep(): stamps "yes but no checkout after HOT_LEAD_MINUTES (30)" leads as hot (yes_dropoff), mints hot-lead redirect links, auto-converts hot leads that completed. | MasterLeads, DemoUsers (exclusion), RedirectLink via service | primary; skipped when HOT_LEAD_SWEEP_ENABLED === "false" |
+| Cleanup activity logs | src/jobs/cleanupActivityLogs.job.ts | 0 4 \* \* \* | Deletes CustomerActivityLog rows older than 90 days in batches of 10,000. | CustomerActivityLog | primary instance only |
+| Gift card reconcile | src/jobs/giftCardReconcile.job.ts | GIFTCARD_RECONCILE_CRON or \* \* \* \* \* | reconcileStuckPendingOrders(\{floor 1 min, deadline 3 min\}) polls Woohoo for stuck gift-card orders; on success calls LeadService.finalizeLeadCompletion so the order flips to Completed. | GiftCardOrder, MasterLeads, Customers | primary; env GIFTCARD_RECONCILE_DEADLINE_MINUTES, GIFTCARD_RECONCILE_FLOOR_MINUTES |
+| Vendor credit notify | src/jobs/vendorCreditNotify.job.ts | \*/1 \* \* \* \* | notifyPendingCreditOperations(100): sends FCM + in-app notification for VendorCreditOperation rows with notified=false. | VendorCreditOperation, VendorNotification, Vendors | primary; in-process overlap lock |
+| PhonePe reconcile | src/jobs/phonepeReconcile.job.ts | PHONEPE_RECONCILE_CRON or \*/5 \* \* \* \* | reconcilePendingPhonePePayments: polls PhonePe for pending vendor credit purchases (floor 2 min, max age 48 h, alert after 6 h, batch 50); credits missed payments, settles failures. | VendorPayments, VendorPaymentsLogs | primary; overlap lock; env PHONEPE_RECONCILE_FLOOR_MINUTES/MAX_AGE_HOURS/ALERT_HOURS/BATCH_SIZE |
+| Attendance auto punch-out | src/jobs/attendanceAutoPunchOut.job.ts | ATTENDANCE_AUTO_PUNCHOUT_CRON or 55 23 \* \* \* | AttendanceService.autoPunchOutOpenShifts(): closes still-open shifts with remark "Auto punched out at day end". | VendorAttendance, AttendanceLocationHeartbeat (+ Cashboy/Store read) | primary instance only |
+| Inspection code repair | src/jobs/inspectionCodeRepair.job.ts | \*/15 \* \* \* \* | ensureOpenOrdersHaveCodes(): creates missing LeadOtp inspection codes for open orders and logs the repaired tokens. | LeadOtp, MasterLeads | primary instance only |
+| Model request available | src/jobs/modelRequestAvailable.job.ts | \*/10 \* \* \* \* | processModelRequestAvailableSweep(): for ModelRequest rows with status='added' and notifiedAt IS NULL, sends "model now available" WhatsApp/Pabbly and stamps notifiedAt. | ModelRequest | primary; skipped when MODEL_REQUEST_AVAILABLE_SWEEP_ENABLED === "false" |
+| Careers retention | src/jobs/careersRetention.job.ts | 30 4 \* \* \* | sweepAbandonedUploads() (deletes unconsumed uploads + objects) then purgeExpiredApplications() (deletes applications older than CAREERS_RETENTION_MONTHS, default 12). | CareerUpload, CareerApplication; object storage | primary; purge is dry-run unless CAREERS_RETENTION_ENABLED === "true" |
+
+## Core Business Logic
+
+Each job wraps its service call in try/catch and logs; none persists run history.
+
+## Validations & Rules
+
+Kill switches and schedule overrides via env vars listed above; two jobs (PhonePe reconcile, vendor credit notify) have an in-memory overlap guard.
+
+## Dependencies
+
+Orders, Lead & Nurture, Vendor Payments & Credits, Gift Cards (Woohoo), Notifications, Attendance, Inspection Code, Model Request, Careers, Admin (customer activity logs), Messaging Utilities.
+
+## Who Uses It
+
+Internal.
