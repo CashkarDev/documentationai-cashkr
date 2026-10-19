@@ -26,11 +26,11 @@ Vendors (and field agents) can report app problems from their app — with a des
 | Ticket | Ticket number, e.g. `#SR-1001` (sortable). |
 | Reported by | Name, role (e.g. Vendor, Cashboy) and phone. |
 | Problem | Problem type (e.g. App closed, Screen stuck, Upload failed, Blank page) and the reporter's description (sortable). |
-| Frequency | Every time / Sometimes (sortable). |
+| Frequency | Every time / Sometimes / Once (sortable). |
 | Media | Count of attached screenshots and voice notes. |
 | Status | **Sent**, **In review**, **Fixing** or **Solved** (sortable). |
 | Replies | Reply count and the latest reply, or "None". |
-| Reported | Date/time and how long it has been open (e.g. "open for 3d"). |
+| Reported | Date/time and how long it has been open (e.g. "open for 3d") (sortable). |
 
 Results are paginated (12 per page by default).
 
@@ -46,13 +46,13 @@ Click a row to open the ticket panel:
 
 | Section | Contents |
 | --- | --- |
-| Header | Ticket number, status badge and reported time. |
+| Header | Ticket number, status badge, reported time and — for solved tickets — the solved time. |
 | Reported by | Name, role, phone and email. |
 | What happened | Problem type, frequency and description. |
 | Attachments | Screenshots (click to open full size) and voice notes. |
 | **Update status** | Sent · In review · Fixing · Solved. |
 | **Reply log** | Previous replies with status at the time, timestamp and admin name. |
-| **Add another reply** | Up to 2,000 characters. Shown to the vendor under their report. |
+| **Message to the vendor** / **Add another reply** | Up to 2,000 characters. Shown to the vendor under their report. Labelled *Message to the vendor* when the ticket has no replies yet, *Add another reply* once a reply log exists. |
 
 Click **Save changes** to apply the status change and reply, or **Cancel** to close.
 

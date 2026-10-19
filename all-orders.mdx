@@ -39,7 +39,7 @@ The **Orders** menu groups its views into three sections:
 | Active | **Upcoming** | Orders with an upcoming pickup |
 | Active | **Reserved** | Orders in the reserved state |
 | Active | **In Progress** | Orders currently being worked on by a vendor |
-| Needs Attention | **Not Assigned** | Orders without a vendor |
+| Needs Attention | **Not Assigned** | Orders without a vendor (count badge) |
 | Needs Attention | **Assigned · No Action** | Assigned orders where the vendor has not acted (count badge) |
 | Needs Attention | **Delayed** | Orders past their pickup SLA (count badge) |
 | Needs Attention | **Flagged** | Orders with customer issues requiring attention |
@@ -59,8 +59,8 @@ Use **All Orders** when you need a complete picture across all these categories.
 | **Model** | Device model being sold |
 | **City** | Pickup city |
 | **Type** | Device category badge (Mobile, Tablet, Laptop, …) |
-| **Status** | Current order status badge (for example Completed, Pickup Delayed, Failed By Vendor, Failed By Customer, Failed By Cashkr) |
-| **SLA** | SLA state. Closed orders show **Settled**; open orders show how late or how much time is left, with the SLA stage (for example `2d 4h late · PICKUP`) |
+| **Status** | Current order status badge (for example Generated, Completed, Pickup Delayed, Failed By Vendor, Failed By Customer, Failed By Cashkr) |
+| **SLA** | SLA state. Closed orders show **Settled**; open orders show how late or how much time is left, with the SLA stage (for example `2d 4h late · PICKUP`, or `UNCLAIMED` when no vendor has locked the order yet) |
 
 The list is paginated (25 rows per page) with **Previous / Next** and page numbers.
 
@@ -110,19 +110,21 @@ Click any row to open the order detail drawer on the right. It is available from
 | **Device Specifications** | Customer-reported answers: Device Turned On, RAM, Storage, Physical Condition, Accessories, Technical Condition, Warranty Status, Screen Condition, Body Condition |
 | **Pricing** | Quoted Price, Requote Price and Final Price (shows *Not Set* until the order is completed) |
 | **Order Timeline** | Pickup Schedule (time slot), Pickup Date and City. Open orders show a **Reschedule Pickup** action |
-| **People & Places → Vendor Details** | Vendor name, email and contact, **Order Tier**, Base Credits and Total credits. Open orders show a **Reassign Vendor** action |
+| **People & Places → Vendor Details** | Vendor name, email and contact, **Order Tier**, Base Credits and Total credits. Open orders show a **Reassign Vendor** action, or **Assign Vendor** when no vendor is assigned yet |
 | **People & Places → Cashboy Details** | Assigned cashboy, or *No Cashboy assigned* |
 | **Customer Information** | Customer name, email, phone (with **Click to call**) and the pickup address with its address label (Home, Office, …) |
-| **History & Audit** | Activity Timeline, inspection timer, credit history and inspection photos (see below) |
+| **History & Audit** | Activity Timeline, inspection timer, call recordings, credit history and inspection photos (see below) |
 | **Reviews & Feedback** | **View All Reviews** link |
 | **Conversation** | **Customer–Vendor Chat** (read-only; admin views are logged) with an **Open** action |
 
 ### History & Audit details
 
-- **Activity Timeline** — Every event on the order with date and time, tagged by type: CREATED (lead generated), CONVERTED (lead converted to order by a sales rep), LOCKED (vendor locked the order, with credits), ASSIGNED, ACTIVITY (status changes, vendor calls with reason), CALLBACK, PICKUP-CONFIRMED, REQUOTED and COMPLETED. The newest event is marked **Latest**.
+- **Activity Timeline** — Every event on the order with date and time, tagged by type: CREATED (lead generated), CONVERTED (lead converted to order by a sales rep), LOCKED (vendor locked the order, with credits), ASSIGNED, ACTIVITY (status changes, vendor calls with reason), CALLBACK, PICKUP-CONFIRMED, REQUOTED, COMPLETED and CANCELLED (order failed/cancelled, with credits). The newest event is marked **Latest**.
 - **Inspection** — Whether the inspection was **On time**, Time taken vs Allowed, Started and Due by timestamps, and the vendor's **Delay reason**.
-- **Credit History** — Credit transactions linked to the order (for example *Lead Locked by Vendor* — Debited) with before/after balance.
-- **Device Inspection** — Inspection photos: Device Side One to Six and a Self Photo.
+- **Call Recordings** — Shown when calls are linked to the order, with a count: each entry shows direction (for example Inbound), call result (for example missed), duration, timestamp and the client number.
+- **Credit History** — Credit transactions linked to the order (for example *Lead Locked by Vendor* or *Order Assigned By Admin* — Debited) with before/after balance.
+- **Device Inspection** — Inspection photos: Device Side One to Six and a Self Photo (*No documents available* when none were uploaded).
+- **Order Failed** — On failed orders only: Primary Status (who failed it), Secondary Status (reason), Proof (for example Self Photo) and Failed on date. See [To Be Failed](/to-be-failed).
 
 ### Drawer actions
 
@@ -131,7 +133,8 @@ Click any row to open the order detail drawer on the right. It is available from
 | **Flag this order for escalation** | Open orders | Raises the order for escalation |
 | **Send a reminder to the vendor or customer** | Open orders | Sends a reminder about the order |
 | **Reschedule Pickup** | Open orders | Changes the pickup date/slot |
-| **Reassign Vendor** | Open orders | Moves the order to another vendor |
+| **Reassign Vendor** | Open orders with a vendor | Moves the order to another vendor |
+| **Assign Vendor** | Open orders with no vendor | Assigns a vendor to the order |
 | **Cancel Order** | Open orders (footer) | Cancels the order |
 | **Mark as Stolen** | Completed orders (footer) | Marks the device as stolen |
 

@@ -20,7 +20,9 @@ Each row in the Not Assigned list represents one order that is currently waiting
 - **City** — City where the pickup needs to happen.
 - **Type** — Device category: Mobile, Laptop, Tablet, or Mac.
 - **Status** — Current status of the order: **Generated** or **Pickup Delayed**.
-- **SLA** — Time left or time late against the order SLA (same column as the other order lists).
+- **SLA** — Time left or time late against the order SLA (same column as the other order lists). Orders here show the SLA stage **UNCLAIMED**, for example `3d 22h late · UNCLAIMED`, because no vendor has locked them yet.
+
+The sidebar shows a count badge next to **Not Assigned** with the number of unassigned orders. Below the table, the footer shows *Page X of Y | Total N results*.
 
 When there are no unassigned orders, the page shows **No Orders Found**. Click a row to open the order detail drawer (see [All Orders](/all-orders#order-detail-drawer)).
 
@@ -65,7 +67,7 @@ Click **Filters** in the header to open the filter panel.
 
 For orders sitting in Not Assigned, especially those with **Pickup Delayed** status, admins should:
 
-- **Assign a vendor** — Open the order detail drawer and use **Reassign Vendor** in the Vendor Details section.
+- **Assign a vendor** — Open the order detail drawer and use **Assign Vendor** in the Vendor Details section (it shows *No vendor assigned* until a vendor is set).
 - **Check Coverage Gaps** — Use **Orders → Coverage Gaps** to see which pincodes have no vendor, a device gap, or vendors that are out of credits, at capacity or inactive.
 - **Nudge existing vendors** — Contact vendors in the matching pincode and prompt them to accept the order.
 - **Reassign to nearby areas** — Assign the order to a vendor from a nearby pincode if none are available in the exact pincode.

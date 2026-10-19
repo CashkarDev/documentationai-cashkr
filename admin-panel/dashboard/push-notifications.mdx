@@ -1,0 +1,99 @@
+---
+title: Push Notifications
+description: The Push Notifications performance dashboard — delivery, taps, leads and orders for every push notification, broken down by app, audience, send hour and sender.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → MARKETING → **Push Notifications** (`/dashboard/push-performance`)
+
+Push Notifications measures what happens after a push goes out: *delivery, taps, leads and orders for every notification — by campaign, audience and time*. Notifications themselves are composed and sent from **Marketing → Push Notifications** (the push hub); this dashboard only reports on them.
+
+<Callout kind="info">
+The app reports a **tap**, not an impression, so "opened" and "tapped" are the same figure on this page. **Uninstalled** means the app was removed or the device token expired — the nearest thing to an opt-out that Firebase reports.
+</Callout>
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 30 days. Presets: Today, Yesterday, This Week, Last 7 days, Last 30 days, This Month, Last Month, All Time. |
+| **App** | All apps, Customer app or Vendor app. |
+| **Audience** | All audiences, Everyone on the app, Topic / segment, Individual users. |
+| **Campaign** | All campaigns or one campaign by name. |
+| **Notifications CSV** | Downloads one row per notification for the current filters. |
+| **Daily CSV** | Downloads the day-by-day series for the current filters. |
+| **Refresh** | Reloads the numbers. |
+
+## What the screen shows
+
+### KPI cards
+
+| Card | Meaning |
+| --- | --- |
+| **Notifications** | Notifications sent in the period, with how many are scheduled ahead. |
+| **Sent** | Device tokens targeted. |
+| **Delivered** | Tokens reached, with delivery %, failed count and uninstalled count. |
+| **Tapped** | Taps, with tap rate (taps ÷ delivered). |
+| **Leads** | Leads attributed to a notification, as % of tappers. |
+| **Orders** | Orders from those leads, with completed count and % of leads. |
+
+### Funnel
+
+**Sent → Delivered → Tapped → Leads → Orders → Completed**, each step with its count and its rate against the step before (for example *% of sent*, *% of delivered*, *% of tappers*).
+
+<Callout kind="info">
+A lead counts for a notification in two ways: the lead names the notification directly, or the customer tapped the notification and created a lead within **24 hours**. The note under the funnel shows how many leads came each way.
+</Callout>
+
+### Day by day
+
+Sent and delivered per day, with taps drawn on top. Leads and orders are placed on the day they were created, which can be the day after the notification went out.
+
+### Delivery status
+
+Every notification created in the period, including ones that never went out:
+
+| Status | Shows |
+| --- | --- |
+| **Sent** | Notifications sent, with delivered and failed device counts. |
+| **Scheduled** | Notifications scheduled, with how many are still to go out. |
+| **Test** | Test sends and how many devices they targeted. |
+
+### Why sends failed
+
+Firebase's reason for every device that was not reached in the period (for example *App uninstalled or token expired*), with count and share. **Retry from History** opens the push hub's History tab.
+
+### Breakdown tables
+
+Four tables share the same columns: **Segment, Sends, Delivered, Uninstalled, Tapped, Tap %, Leads, Orders**. Each segment also shows how many notifications it covers.
+
+| Table | Segments by |
+| --- | --- |
+| **By app** | Customer app vs vendor app. |
+| **By audience** | Who the notification was addressed to (everyone, topic / segment, individual users). |
+| **By send hour** | Hour of the day it went out, in IST. The tap-rate column shows the best slot. |
+| **By sender** | The admin who pressed send (*Unknown* when not recorded). |
+
+### Every notification
+
+One row per notification in the period (for example *5 of 5 in this period*). Click a column header to sort.
+
+| Column | Meaning |
+| --- | --- |
+| **Notification** | Title and send time. |
+| **Audience** | App (Customer / Vendor) and audience type. |
+| **Sent / Delivered / Deliv %** | Tokens targeted, reached, and delivery rate. |
+| **Uninstalled** | Tokens that failed because the app was removed or the token expired. |
+| **Tapped / Tap %** | Taps and tap rate. |
+| **Leads / Orders / Completed** | Downstream results attributed to the notification. |
+
+**Open the push hub** at the bottom opens **Marketing → Push Notifications** on its History tab.
+
+## Actions
+
+The dashboard is read-only apart from the two CSV downloads. To send, schedule or retry a notification, use the push hub (**Marketing → ACQUISITION → Push Notifications**).
+
+<Callout kind="tip">
+Use **By send hour** to pick the time slot for the next campaign, and **Why sends failed** to see how much of your audience has uninstalled — a high uninstalled share means the targeted list needs cleaning, not a better message.
+</Callout>
