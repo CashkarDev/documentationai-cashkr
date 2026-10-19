@@ -38,11 +38,11 @@ Lead ID, **Seller** name and phone, **Collected by** (vendor), **Device**, **Dev
 
 ### Inventory & grading
 
-Inventory and grading details once the device is in stock, otherwise *Not yet in inventory.*
+Once the device is in stock: **Inventory ID**, **Entered at**, **Status** (e.g. In Stock, Sold), **Condition**, **Purchase price** and **Vendor**. Before that it shows *Not yet in inventory.*
 
 ### Outbound — where it went
 
-Sale details once the device is sold, otherwise *Not sold yet.*
+Once the device is sold: **Sale ID**, **Sold at**, **Buyer**, **Buyer phone**, **Buyer addr.**, **Sale price**, **Total amount**, **Received**, **Pending**, **Method** and **Txn ID**, followed by a **Payment installments** list (date/time, amount and method, reference and note — e.g. *Initial payment at sale*). Before that it shows *Not sold yet.*
 
 ### Event timeline
 
@@ -53,6 +53,9 @@ A chronological list of every event for the device and its lead, each with date/
 | `LEAD_CREATED` | Lead created for the device |
 | `LEAD_LOG` | Lead converted to order, order locked by vendor, status changes (Out For Pickup, Inspection Started), order completed |
 | `CALL` | Vendor called the customer |
+| `INVENTORY_IN` | Device entered inventory |
+| `SOLD` | Device sold to a buyer |
+| `PAYMENT_IN` | Payment received from the buyer (e.g. initial payment at sale) |
 
 <Callout kind="tip">
 Use Device Trail for disputes and audits — for example to confirm what a seller was paid, or to trace a returned device back to its original purchase.

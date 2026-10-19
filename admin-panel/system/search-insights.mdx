@@ -1,0 +1,144 @@
+---
+title: Search Insights
+description: The Search Insights screen — what customers search for on the website and app, searches that found nothing, the devices they pick, and how that demand turns into quotes and bookings.
+---
+
+## Overview
+
+**Sidebar path:** System → DEVICES CATALOG → **Search Insights** (`/search-insights`)
+
+Search Insights shows *what customers search for on cashkr.com and in the Cashkr app* — the terms they type, including searches that found nothing, and the devices they pick from the results. Use it to find catalog gaps, see which models are in demand, and check whether that demand becomes orders.
+
+## Filters
+
+| Control | Description |
+| --- | --- |
+| **Date range** | Defaults to the last 7 days. Presets: Today, Yesterday, This Week, Last 7 days, Last 30 days, This Month, Last Month, All Time. |
+| **Device type** | All device types, or one type (for example Mobile, Tablet, Laptop, Camera, Headphone, Console, Drone, Desktop, Mac, Watch). |
+| **Filter by model or brand** | Text filter on the current tab. |
+| **Searches from** chips | **Website** or **App** — limits searches to one channel. Hover a chip for its definition. |
+| **Tab-specific controls** | **Only terms not found** (Search terms), sort order (Demand vs orders), gap type chips (Catalog gaps). |
+| **Reset** | Clears all filters. |
+
+<Callout kind="info">
+Older app versions don't report which result was picked, so their searches show no clicks.
+</Callout>
+
+## What the screen shows
+
+### KPI cards
+
+| Card | Meaning |
+| --- | --- |
+| **Searches** | Terms typed. |
+| **Results clicked** | Devices picked from search results. |
+| **Not found** | Searches that matched no device (so look-alikes were shown), with % of searches. Recorded from 17 Oct 2026. |
+| **Distinct devices** | Different devices clicked. |
+| **Visitors** | Sessions that searched. |
+
+Below the cards: **Searches from** (Website · App counts) and **Clicks by type** (count per device type).
+
+### Tabs
+
+<Tabs>
+<Tab title="Devices clicked">
+
+One row per device picked from search results.
+
+| Column | Meaning |
+| --- | --- |
+| **#** | Rank. |
+| **Device** | Model and brand. |
+| **Type** | Device type. |
+| **Clicks** | Times it was picked. |
+| **Visitors** | Distinct sessions that picked it. |
+| **Most typed as** | The search term most often used to reach it. |
+| **Distinct terms** | How many different terms led to it. |
+| **Last clicked** | Time of the latest pick. |
+
+</Tab>
+<Tab title="Search terms">
+
+One row per term typed. Tick **Only terms not found** to see only failed searches.
+
+| Column | Meaning |
+| --- | --- |
+| **Term** | What the customer typed. |
+| **Searches** | Times it was searched. |
+| **Visitors** | Distinct sessions. |
+| **Clicks** | Results picked after searching. |
+| **Results** | How many devices matched (for example *16 found*), or **Not found**. |
+| **Last searched** | Time of the latest search. |
+
+</Tab>
+<Tab title="Demand vs orders">
+
+One row per model across every channel, joining search demand to the order funnel. Orders can't be split by website or app yet, so the Website / App filter doesn't apply here. Hover a column header or a signal for its definition.
+
+**Sort:** Most clicked, Most quoted, Most checkouts, Most bookings, Lowest quote → booking, Lowest checkout → booking.
+
+| Column | Meaning |
+| --- | --- |
+| **Device** | Model, brand and type. Click to open the device. |
+| **Clicks** | Picked from search results. |
+| **Quotes** | People shown a price for the model (recorded from 17 Oct 2026). |
+| **Checkouts** | Orders started at checkout, booked or not. |
+| **Bookings / Completed** | Orders booked and completed. |
+| **Quote → book** | Bookings since quote tracking began ÷ people quoted. |
+| **Checkout → book** | Bookings ÷ checkouts. |
+| **Avg quoted** | Average quoted price of the bookings. |
+| **Final vs quoted** | Average gap between final and quoted price on completed orders. |
+| **Price up to** | Current catalog price of the top variant. |
+| **Signal** | Flags demand that isn't converting. Until there are enough quotes, the signal uses checkout → booking. |
+
+</Tab>
+<Tab title="Catalog gaps">
+
+Searches the catalog is failing. Chips switch between **Not found** and **Never picked** (3+ searches and no result picked). Not found counts start from 17 Oct 2026.
+
+| Column | Meaning |
+| --- | --- |
+| **Term** | Search term. |
+| **Why** | Not found or Never picked. |
+| **Searches / Visitors** | Volume. |
+| **Picked** | Results picked anyway. |
+| **Model requests** | Matching requests under **Model Requests**. |
+| **Last searched** | Time of the latest search. |
+
+</Tab>
+<Tab title="Trends">
+
+Mini charts for **Searches**, **Results clicked**, **People quoted** (from 17 Oct 2026) and **Not found**, each with the change against the previous period of the same length.
+
+- **Rising — picked more than before** and **Falling — picked less than before** list devices whose search picks moved. A device needs at least 3 picks in one of the two periods to appear.
+
+</Tab>
+<Tab title="Brands">
+
+Every channel, like Demand vs orders. Expand a brand to see its families.
+
+Columns: **Brand / family, Models, Clicks, Quotes, Checkouts, Bookings, Completed, Checkout → book, Share of clicks, Share of bookings**.
+
+<Callout kind="info">
+**Share of bookings** is red when it is under half the brand's share of clicks (interest that doesn't turn into orders) and green when it is over 1.5×. Only brands with at least 2% of clicks are coloured.
+</Callout>
+
+</Tab>
+<Tab title="Where from">
+
+| Block | Contents |
+| --- | --- |
+| **Website vs app** | Channel, Searches, Picks, Pick rate, Quoted, Not found — always both channels, whatever the Website / App filter. |
+| **Search boxes** | Box (for example Header search, Home page search, app-home, app-category, App (older versions)), Searches, Picks, Pick rate, Not found. A low pick rate means the results shown in that box miss. |
+| **Cities** | Top cities by checkouts for the selected device type and text filter. Taken from orders across all channels — searches carry no location. |
+
+</Tab>
+</Tabs>
+
+## Actions
+
+The screen is read-only. Click a device on **Demand vs orders** to open it in the device catalog. To add a missing model, use **Model Requests** or the **Devices Catalog** pages in the same sidebar group.
+
+<Callout kind="tip">
+Check **Catalog gaps** every week. A term that is *Not found* many times usually means a missing model or a spelling the search doesn't match — add the model or ask tech to add the alias.
+</Callout>

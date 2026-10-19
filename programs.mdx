@@ -1,32 +1,37 @@
 ---
 title: Referral Programs
-description: Configure and manage referral programs in the Admin Panel, including referrer rewards, referee discounts, schedule windows, conditions, and performance.
+description: Configure and manage referral programs in the Admin Panel, including referrer rewards, friend (referee) rewards, schedule windows, conditions, and performance.
 ---
 
 ## Overview
 
 **Sidebar path:** Marketing → Referral Programs (`/referral-programs`)
 
-The Referral Programs page lets you define the programs that reward existing customers (referrers) for bringing new customers (referees) to Cashkr. Each program controls what the referrer gets, what the referee gets, when the program runs, and the conditions that must be met.
+The Referral Programs page lets you define the programs that reward existing customers (referrers) for bringing new customers (friends / referees) to Cashkr. Each program controls what the referrer gets, what the friend gets, when the program runs, and the conditions that are recorded with it.
 
 <Callout kind="info">
-Use this page to create, edit, switch on/off, review performance of, and delete referral programs.
+Use this page to create, edit, duplicate, schedule the next, switch on/off, review performance of, and delete referral programs.
 </Callout>
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774601017243-bak0760pxcf-program-page.program page?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="683" alt="Admin Panel Referral Programs list showing referral programs and actions" />
 
+## Currently live card
+
+At the top of the page a **Currently live** card shows the live programme: its name, a one-line summary (referrer reward, friend reward and end date), **Referrals**, **Cost so far**, and an **Edit** button. If the live programme's name looks like a test, a warning asks you to rename it, because customers may see it.
+
 ## What the list shows
 
-**Status tabs:** All, Live, Scheduled, Expired, Inactive.
+**Status tabs** (each with a count): All, Live, Scheduled, Expired, Inactive.
 
 | Column | What it shows |
 | --- | --- |
 | **Programme** | Program name with its description below (sortable). |
 | **Status** | Live, Scheduled, Expired or Inactive. |
-| **Referrer gets** | Flat amount (e.g. ₹100) or percentage, with the cap shown as "up to ₹X". |
-| **Referee gets** | Flat amount or percentage, with "min order ₹X" when a minimum order value is set. |
-| **Conditions** | Minimum completed orders (e.g. "1+ completed orders"), use limit ("No use limit" or "N uses each") and validity days. |
+| **Referrer gets** | Flat amount (e.g. ₹100) or percentage, e.g. "10% of sale value, max ₹500". |
+| **Friend gets** | Flat amount or percentage (with its cap) for the new customer. |
+| **Conditions** | Minimum sale value ("Sales above ₹X"), minimum completed sales (e.g. "1+ completed sale"), friends per referrer ("N friends each") and validity ("N days valid"). |
 | **Runs** | Start → end window (e.g. "Immediately → No end"); sortable. |
+| **Results** | Referrals and completed referrals, total paid, and cost per new customer. |
 | **On** | Switch showing whether the program is switched on. |
 | **⋮** | Row actions menu. |
 
@@ -43,6 +48,8 @@ Pagination at the bottom shows "Showing X–Y of Z" with a **Per page** selector
 
 - **Edit** — open the program form with current values.
 - **Performance** — shows how the program has performed since it started: Referrals, Completed, Referrer rewards, Referee discounts, Total cost, Avg referrer reward.
+- **Duplicate** — create a copy of the programme as a starting point.
+- **Schedule next** — opens **Create New Referral Program** pre-filled from this programme, with the schedule starting when this one ends, so the next programme follows on without a gap.
 - **Switch off** / switch on — same as the **On** switch.
 - **Delete** — permanently remove the program.
 
@@ -61,28 +68,30 @@ Click **Add programme** (top right) to open **Create New Referral Program**.
 
 Times are in IST. An active program only applies to new referrals while the current time falls inside this window.
 </Step>
-<Step title="Referee (New Customer) Settings" icon="user-plus" title-type="p">
-- **Discount Type** — Percentage or Flat Amount.
-- **Discount Value** — e.g. 10 for 10%.
-- **Minimum Order Value** (optional) — e.g. 1000.
-- **Maximum Discount** (optional) — cap on a percentage discount, e.g. 500.
-
-Example: 10% with a ₹300 cap on a ₹5,000 device price → 10% is ₹500, capped to ₹300, so the referee gets ₹5,300.
+<Step title="Friend gets (new customer)" icon="user-plus" title-type="p">
+- **Reward type** — **Flat amount** or **Percentage of sale value**.
+- **Friend's reward** — ₹ amount (extra rupees on top of the friend's sale price) or % of the sale value.
+- **Only on sales above ₹** (optional) — e.g. 10000. Below this sale value neither side is rewarded; the service applies it to the referrer too.
+- **Reward capped at ₹** (optional, percentage only) — the most a friend can get, however high the sale.
 </Step>
-<Step title="Referrer (Existing Customer) Settings" icon="gift" title-type="p">
-- **Reward Type** — Percentage or Flat Amount.
-- **Reward Value** — e.g. 100.
-- **Maximum Reward** (optional) — cap on a percentage reward.
+<Step title="Referrer gets (existing customer)" icon="gift" title-type="p">
+- **Reward type** — **Flat amount** or **Percentage of friend's sale value**.
+- **Referrer's reward** — e.g. 100. Paid once the friend's sale completes.
+- A cap can be set when the reward is a percentage.
 
-The reward is calculated after the referee completes their order and must be approved by an admin before it reaches the referrer's wallet.
+The reward is calculated after the friend completes their sale and must be approved by an admin before it reaches the referrer's wallet.
 </Step>
-<Step title="Conditions & Limits" icon="sliders-horizontal" title-type="p">
-- **Min Completed Orders** (optional) — e.g. 1.
-- **Validity Days** (optional) — e.g. 30.
-- **Max Uses Per Referrer** (optional) — e.g. 10; blank means no use limit.
+<Step title="Conditions & limits" icon="sliders-horizontal" title-type="p">
+- **Minimum completed sales (not applied)** — e.g. 1.
+- **Friends per referrer (not applied)** — e.g. 20.
+- **Referral valid for, days (not applied)** — e.g. 90.
+
+These three are saved with the programme, but the referral service does not apply them yet — setting them changes nothing for customers today.
 </Step>
 <Step title="Status" icon="toggle-right" title-type="p">
-**Active Status** — enable or disable the program, then click **Create Program**.
+**Switched on** — off by default, which saves the programme as a draft that customers won't see until it is switched on.
+
+A **Summary** box shows what the friend and referrer get, the most a referral can cost (or a warning that an uncapped percentage has no ceiling), and the eligibility and dates. Click **Create Program** to save.
 </Step>
 </Steps>
 
@@ -104,11 +113,11 @@ The referrer shares their unique code or link with a friend.
 <Step title="New customer registers with the code" icon="users" title-type="p">
 The code links permanently to that customer; they can never use another referral code.
 </Step>
-<Step title="Referee sells a device and gets the discount" icon="smartphone" title-type="p">
-The referee discount is applied automatically to the device price at checkout.
+<Step title="Friend sells a device and gets the extra" icon="smartphone" title-type="p">
+The friend's reward is applied automatically to the device price at checkout.
 </Step>
 <Step title="Referrer reward is generated and approved" icon="circle-check" title-type="p">
-After the referee's order completes, the reward appears in **Referral Transactions** as Pending. An admin approves it and it is added to the referrer's wallet.
+After the friend's order completes, the reward appears in **Referral Transactions** as Pending. An admin approves it and it is added to the referrer's wallet.
 </Step>
 <Step title="Referrer withdraws" icon="wallet" title-type="p">
 Withdrawal requests appear in **Referral Payouts** for admins to process.
@@ -129,10 +138,10 @@ Keep only one program live at a time where possible. The same referral code work
 
 - **Referral Transactions** — pending and approved referral rewards.
 - **Referral Payouts** — referrer wallet withdrawal requests.
-- **Customer app / website** — referral code validation and automatic referee discount at checkout.
+- **Customer app / website** — referral code validation and automatic friend reward at checkout.
 
 ## Important notes
 
-- Referee discounts apply automatically and cannot be reversed after the order completes.
+- Friend rewards apply automatically and cannot be reversed after the order completes.
 - Referrer rewards stay Pending until an admin approves them — check that the order genuinely qualifies first.
-- Use **Performance** to monitor the total cost of a program before extending or re-running it.
+- Use **Performance** and the **Results** column to monitor the total cost of a program before extending or re-running it.

@@ -1,27 +1,28 @@
 ---
 title: Notifications
-description: Compose, schedule, and track push notifications to the Customer and Vendor apps from the Push Notification Hub — campaigns, templates, segments, analytics, history, and scheduled sends.
+description: Compose, test, schedule, and track push notifications to the Customer and Vendor apps from the Push Notification Hub — compose, analytics, history, and scheduled sends.
 ---
 
 ## Overview
 
 **Sidebar path:** Marketing → Push Notifications (`/notification`)
 
-The **Push Notification Hub** lets admins send, schedule, and manage push notification campaigns for the **Customer App** (Cashkr users) and the **Vendor App** (partner vendors). Each tab is reachable directly through the URL, for example `/notification?tab=history`.
+The **Push Notification Hub** lets admins send, schedule, and manage push notifications for the **Customer App** (Cashkr users), the **Vendor App** (partner vendors), or **both apps** at once. Each tab is reachable directly through the URL, for example `/notification?tab=history`.
 
-<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774605845240-tbvglmk9z4j-notifications.notifications?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="840" alt="Push Notification Hub showing the Compose form, live preview, and tabs for campaigns, templates, segments, analytics, history, and scheduled notifications." />
+<Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774605845240-tbvglmk9z4j-notifications.notifications?q=85&fm=auto&auto=compress%2Cformat" width="1919" height="840" alt="Push Notification Hub showing the Compose form, live preview, and tabs." />
 
 ## Tabs
 
 | Tab | What it is for |
 | --- | --- |
-| **Compose** | Write a one-off notification, choose app and audience, send now or schedule. |
-| **Campaigns** | Create and manage multi-step campaigns (one-time, drip, recurring, A/B test). |
-| **Templates** | Reusable notification content with dynamic variables. |
-| **Segments** | Reusable audience definitions built from filter conditions. |
-| **Analytics** | Delivery performance and outcomes for a selected period. |
+| **Compose** | Write a one-off notification, choose app and audience, send a test, send now or schedule. |
+| **Analytics** | Delivery performance and outcomes (taps, leads, orders) for a selected period. |
 | **History** | Log of every notification sent, with status and delivery counts. |
-| **Scheduled** | Notifications queued for a future date and time. |
+| **Scheduled** | Notifications queued for a future date and time, with edit, reschedule and cancel. |
+
+<Callout kind="info">
+The hub no longer shows separate **Campaigns**, **Templates** or **Segments** tabs. Existing campaigns, segments and active templates are still counted on the **Analytics** tab.
+</Callout>
 
 ## Compose tab
 
@@ -31,18 +32,23 @@ The left side holds the **Compose Notification** form; the right side shows a **
 | --- | --- |
 | **Title** \* | Counter shows `0/50` — keep it under 50 characters so it isn't cut off. |
 | **Body** \* | Counter shows `0/120` — keep it under 120 characters so it isn't cut off. |
+| **Personalise** | Click a variable to insert it: `{first_name}`, `{device}`, `{quote_amount}`. Example: *Hi \{first\_name\}, your \{device\} is worth \{quote\_amount\}.* becomes *Hi Rahul, your iPhone 13 is worth ₹24,500.* |
 | **Banner Image** (optional) | Upload an image or paste its URL. JPG or PNG under 1 MB, roughly 2:1. Shown large only when the reader expands the notification. |
-| **Target App** \* | **Customer App** (Cashkr users) or **Vendor App** (partner vendors). One app per notification. |
-| **Audience** \* | **All Users**, **Topic** (enter a topic name, e.g. offers, updates) or **Specific Users** (paste customer/vendor IDs separated by commas). |
-| **Schedule for later** | Toggle on to show **Date** and **Time (IST)** pickers. |
+| **Target App** \* | **Customer App** (Cashkr users), **Vendor App** (partner vendors), or **Both apps** (one announcement to both). |
+| **Audience** \* | **All Users** or **Specific Users**. Specific Users opens a picker where you search by name, phone or email and tick recipients; people without a registered device are marked **no device**. |
+| **Schedule for later** | Toggle on to set a **Date** and **Time (IST)** to send. |
 
-The submit button reads **Review & send**, or **Review & schedule** when scheduling is on. It opens a review step before anything is sent.
+Two buttons sit under the form:
+
+- **Send test** — sends the notification as a test (test sends appear in History with status **Test** and the name of the admin who sent them).
+- **Review & send** (or **Review & schedule** when scheduling is on) — opens a review step before anything is sent.
 
 ### Live preview
 
 - Switch between **Android** and **iPhone** mock-ups.
 - Switch between **Collapsed** (how it first appears — truncation depends on the phone) and **Expanded** (shows the banner image).
-- A summary below shows the selected **Target App** and **Audience** (e.g. *Not Chosen Yet*, *Topic*, *Individual*).
+- A light/dark toggle shows the notification on a dark or light phone theme.
+- A summary below shows the selected **Target App** and **Audience** (e.g. *Not Chosen Yet*, or the number of customers picked).
 
 <Callout kind="alert">
 Sent notifications cannot be recalled. Double-check the **Target App** and **Audience** before confirming — sending a customer promotion to the Vendor App (or vice versa) is the most common mistake.
@@ -50,68 +56,18 @@ Sent notifications cannot be recalled. Double-check the **Target App** and **Aud
 
 <Steps>
 <Step title="Write the message" icon="pencil" title-type="p">
-Enter **Title** and **Body** within the character guidance and optionally add a **Banner Image**.
+Enter **Title** and **Body** within the character guidance, add personalisation variables if needed, and optionally add a **Banner Image**.
 </Step>
 <Step title="Pick app and audience" icon="users" title-type="p">
-Choose **Customer App** or **Vendor App**, then **All Users**, a **Topic**, or **Specific Users**.
+Choose **Customer App**, **Vendor App** or **Both apps**, then **All Users** or **Specific Users**.
 </Step>
-<Step title="Check the preview" icon="eye" title-type="p">
-Review Android/iPhone and Collapsed/Expanded views.
+<Step title="Check the preview and test" icon="eye" title-type="p">
+Review Android/iPhone and Collapsed/Expanded views, and use **Send test** to check it on a device.
 </Step>
 <Step title="Send or schedule" icon="send" title-type="p">
 Leave **Schedule for later** off and click **Review & send**, or turn it on, set date and time (IST), and click **Review & schedule**.
 </Step>
 </Steps>
-
-## Campaigns tab
-
-Lists campaigns as cards showing name, status badge (e.g. **Active**, **Paused**), type badge (e.g. **One-time**), and **Sent** / **Delivered** counts.
-
-**Filters:** search box, **Status** (All Status, Draft, Active, Paused, Completed), **Type** (All Types, One-time, Drip, Recurring, A/B Test), and a refresh button.
-
-**Row actions (⋯ menu):** **Pause** for an active campaign, **Resume** for a paused one. The arrow opens the campaign.
-
-**New Campaign** opens a 5-step wizard: **Basics → Audience → Content → Schedule → Review**. The Basics step asks for:
-
-| Field | Details |
-| --- | --- |
-| **Campaign Name** \* | e.g. *Welcome Series* |
-| **Description** | What the campaign is about. |
-| **Goal** | e.g. *Increase app opens, Re-engage dormant users*. |
-| **Target App** | Customer or Vendor. |
-| **Campaign Type** | **One-time** (send once to audience), **Drip Series** (multi-step automated sequence), **Recurring** (daily, weekly, or monthly), **A/B Test** (test different variants). |
-
-## Templates tab
-
-Cards show template name, title and body, deep link (if any), and how many campaigns use it. A **Test-site link** badge flags templates whose link points to a test/staging site — fix these before using them in production.
-
-**Filters:** search, **All Apps** (Customer/Vendor), refresh.
-
-**Card actions:** **Edit**, **Duplicate**, and **Delete** (in the ⋯ menu).
-
-**New Template** form:
-
-| Field | Details |
-| --- | --- |
-| **Active** | Toggle whether the template is available. |
-| **Template Name** \* | Internal name. |
-| **Target App** | Customer or Vendor. |
-| **Available Variables** | `{{firstName}}`, `{{lastName}}`, `{{fullName}}`, `{{city}}`, `{{phone}}`, `{{email}}` — click to insert into the body; type manually for the title. |
-| **Notification Title** \* | Up to 255 characters. |
-| **Notification Body** \* | Message text. |
-| **Image URL** (optional) | Image shown with the notification. |
-| **Deep Link** (optional) | The screen users see when tapping, e.g. `/myorders`, `/sell/mobile`. |
-
-A phone preview updates as you type. Save with **Create Template**.
-
-## Segments tab
-
-Lists saved audience segments with search, **All Apps** filter, and refresh. When empty, use **Create Segment**.
-
-**New Segment** form:
-
-- **Details:** **Name** \* (e.g. *Mumbai Customers*), **Description**, **Target App** (Customer / Vendor), **Filter Logic** (**Match ALL** or **Match ANY**).
-- **Filter Conditions:** pick a field — **City**, **Registration Date**, **Has Push Token**, **Is Blocked**, **Email**, **Phone**, **Pincode** — operator **equals**, and a value. Use **Add Condition** for more rules.
 
 ## Analytics tab
 
@@ -119,26 +75,25 @@ Filters: period (e.g. **Last 30 days**) and **All Apps**.
 
 - **KPI cards:** Total Sent, Delivered, Failed, Delivery Rate.
 - **Summary counts:** Active campaigns, Campaigns this period, Segments, Active templates.
-- **Charts:** Notifications Over Time; Campaigns by Type.
+- **Charts:** Notifications Over Time (Sent / Delivered / Failed); Campaigns by Type.
 - **Recent Campaigns** table: Campaign, Type, Status, App, Sent, Delivered, Rate, Date.
-- **What Notifications Produced:** taps, leads and orders attributed to opened notifications.
+- **What Notifications Produced:** a funnel of **Delivered** (of sent), **Uninstalled** (app removed or token expired), **Tapped** (tap rate), **Leads** (% of tappers), **Orders** (% of leads) and **Completed** (pickups done), followed by a per-notification table with columns **Notification**, **Delivered**, **Uninstalled**, **Tapped**, **Leads**, **Orders**, **Completed**, **Tap %**.
 
 ## History tab
 
-Table columns: **Notification** (title and body), **Target** (app + audience type such as *Individual*), **Status**, **Delivery** (delivered / targeted), **Date**.
+Table columns: **Notification** (title and body), **Target** (app + audience type such as *Individual*), **Status**, **Delivery** (delivered / targeted, with the failed count and reason such as *App uninstalled or token expired*), **Date** (test sends also show who sent them).
 
-**Filters:** search, **Status** (All Status, Sent, Scheduled, Failed, Cancelled), **All Apps**, **Refresh**. A total count is shown, with pagination.
+**Filters:** search, **Status** (All Status, Sent, Sending, Scheduled, Failed, Cancelled, Test), **All Apps**, **Refresh**. A total count is shown, with pagination.
 
 Click a row to expand it and see the **Full Title**, **Full Body**, **Image** URL and **Target Value**.
 
 ## Scheduled tab
 
-Shows the number of queued notifications with a **Refresh** button. When empty, **Go to Compose** takes you back to schedule one.
+Shows the number of queued notifications with a **Refresh** button. Each card shows the app, audience type, title, body, the scheduled time in IST (or **Due now**), and actions **Edit**, **Reschedule** and **Cancel**. When empty, **Go to Compose** takes you back to schedule one.
 
 ## Best practices
 
-- **Preview before sending** — check both Collapsed and Expanded views on Android and iPhone.
-- **Prefer targeted audiences** — use topics, segments or specific users instead of All Users to avoid notification fatigue.
-- **Use templates** for recurring messages and keep deep links pointing to production, not test sites.
+- **Preview and test before sending** — check both Collapsed and Expanded views on Android and iPhone, and use **Send test**.
+- **Prefer targeted audiences** — pick specific users instead of All Users to avoid notification fatigue.
 - **Check Scheduled** before creating new sends to avoid duplicates.
 - **Review Analytics and History** after each send to confirm delivery and catch failures.

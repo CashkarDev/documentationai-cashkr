@@ -14,7 +14,7 @@ description: The Data Health (Data Quality) dashboard — lead field completenes
 | Control | Description |
 | --- | --- |
 | **Date range** | Defaults to the last 30 days. |
-| **Refresh** | Reloads the data. |
+| **Refresh** | Circular-arrow icon next to the date range; reloads the data. |
 | **AI Analyst Insight → Analyze Data** | Generates an AI summary. |
 
 ## What the screen shows
@@ -34,7 +34,7 @@ A score with a *Critical* → *Healthy* bar (for example *Needs Attention*).
 | **Quality Metrics** | Overall Score, City Coverage, Model Coverage, Source Coverage, Vendor Coverage. |
 | **Data Hygiene** | Default Values, Duplicate Phones, Test Data, High Issues, Medium Issues — each with a badge such as *Clean* or *Detected*. |
 | **Attribution Health** | Attribution Rate, Attributed, Total Leads, Critical Missing. |
-| **Data Freshness** | Lead Lag, Attribution Lag, Latest Lead, Latest Attribution. |
+| **Data Freshness** | Lead Lag, Attribution Lag (flagged e.g. *Slow* or *Stale*), Latest Lead, Latest Attribution. |
 | **Daily Quality Trend** | Average quality and City, Model, UTM Source coverage per day. |
 
 ### Detail tabs
@@ -42,9 +42,9 @@ A score with a *Critical* → *Healthy* bar (for example *Needs Attention*).
 | Tab | Shows |
 | --- | --- |
 | **Lead Fields** | Coverage for every tracked field, worst first — field, importance (Low / Medium / High), group (contact, assignment, payment, pricing, location), filled / total and %. Footer counts Healthy, Fair and Critical fields. |
-| **Attribution** | Attribution coverage details. |
-| **Data Issues** | Individual data problems found. |
-| **Lead Status** | Lead status distribution. |
+| **Attribution** | Coverage for each lead attribution field (UTM Content, UTM Term, Google Click ID, Facebook Click ID, Referrer URL, UTM Source, UTM Medium) with importance, count and %. |
+| **Data Issues** | Hygiene issues with High / Medium severity, a recommended action and affected-record count (e.g. test/internal leads, test pincode, duplicate phone numbers). |
+| **Lead Status** | Lead counts by primary × secondary status combination, with a distribution bar. |
 
 ### Quality scoring
 

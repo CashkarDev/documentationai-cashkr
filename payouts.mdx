@@ -11,7 +11,9 @@ The Referral Payouts page lists every withdrawal request customers raise from th
 
 <Image src="https://blob-cdn.documentation.ai/org-39cfb2dd-42b8-41e4-a035-d7210b5839fe/doc-1aebdaec-9f45-458a-9429-3234288b0c70/1774604152886-iljdame7yw8-payouts.payouts?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="698" alt="Referral Payouts page listing wallet withdrawal requests with status tabs, filters and table." />
 
-Header buttons: **Export CSV** and **Refresh**.
+Header buttons: **Upload paid file**, **Export CSV** and **Refresh**.
+
+**Upload paid file** lets you upload a payout file with the **UTR** column filled in, to mark those payouts paid in one go (for example, the exported CSV after your bank transfers are done).
 
 ## Status tabs
 
@@ -21,26 +23,28 @@ Header buttons: **Export CSV** and **Refresh**.
 
 | Column | What it shows |
 | --- | --- |
-| **Customer** | Customer name, phone and customer ID. The filter icon next to the name shows only that customer's payouts. |
+| ☐ | Row checkbox. |
+| **Customer** | Customer name and phone, with **Copy customer ID** and an **Only this customer** filter link. |
 | **Amount** | Amount requested (sortable). |
-| **UPI ID** | Where the money should be sent. |
-| **Wallet** | Customer's wallet balance at the time of the request. |
+| **UPI ID** | Where the money should be sent. Warnings flag a **New UPI ID for this customer** or a customer **Paid to N UPI IDs**. |
+| **Wallet now** | The customer's referral wallet balance **now** — not at the time of the request. |
 | **Status** | Pending, Approved, Processing, Completed, Rejected or Failed. |
 | **Requested** | Request date and time (sortable). |
-| **Payment** | Transaction reference, processed time and the admin who processed it. |
-| **⋮** | Row actions. |
+| **UTR / Txn ref** | Transaction reference, processed time and the admin who processed it. References that don't look like a bank UTR are flagged **Not a bank reference**; **Approver not recorded** shows when no admin was saved. |
+
+The footer shows "Showing X–Y of Z", the **₹ total on this page**, and a **Total for this filter** button.
 
 ## Filters
 
-- **Search** by Customer ID (or use a row's filter button).
+- **Search** by exact Customer ID (or use a row's **Only this customer** link).
 - **Requested between** — from / to dates.
 - **Sort:** Newest first, Oldest first, Largest amount, Smallest amount.
 
 ## Actions
 
-**View details** (⋮ menu) opens **Payout request**: amount, UPI ID, status, customer, wallet balance, requested and processed times, processed by, transaction ref, remarks, payout ID and customer ID.
+Click a row to open the **Payout request** side panel (*Who asked, where the money goes, and what has been done about it*): amount, UPI ID, status, customer, wallet balance now, requested and processed times, recorded by, UTR / Txn ref (with a warning when it can't be matched to a bank statement), remarks, payout ID and customer ID.
 
-Requests that are still open (Pending / Approved / Processing) are moved forward from the row menu; completed requests only offer **View details**.
+Requests that are still open (Pending / Approved / Processing) are moved forward from the request; completed requests are view-only.
 
 ## Process a withdrawal
 
@@ -49,13 +53,13 @@ Requests that are still open (Pending / Approved / Processing) are moved forward
 Open the **Pending** tab. Check that the **Amount** does not exceed the **Wallet** balance.
 </Step>
 <Step title="Verify UPI ID and amount" icon="shield" title-type="p">
-Open **View details** and confirm the UPI ID belongs to the right customer.
+Open the request and confirm the UPI ID belongs to the right customer. Take extra care when the row is flagged **New UPI ID for this customer** or **Paid to N UPI IDs**.
 </Step>
 <Step title="Transfer manually" icon="send" title-type="p">
 Send the exact amount to the UPI ID through your bank or payment gateway and keep the reference.
 </Step>
 <Step title="Record and complete" icon="circle-check" title-type="p">
-Update the request with the **transaction reference** and remarks and mark it completed. The Payment column then shows the reference, time and admin. Use **Rejected** for requests that should not be paid.
+Update the request with the bank **UTR / transaction reference** and remarks and mark it completed — or, for many payouts at once, fill the UTR column in the payout file and use **Upload paid file**. The UTR / Txn ref column then shows the reference, time and admin. Use **Rejected** for requests that should not be paid.
 </Step>
 </Steps>
 
@@ -71,7 +75,7 @@ The wallet in the customer app shows **Total Balance**, **Total Earned** and **T
 
 - Process **Pending** requests promptly and keep an eye on **Processing** so nothing gets stuck.
 - Only complete a payout after confirming the customer actually received the money.
-- Always enter the correct transaction reference for audit and reconciliation.
+- Always enter the real bank UTR as the transaction reference for audit and reconciliation — entries flagged **Not a bank reference** can't be matched to a statement.
 - Use **Export CSV** for finance reconciliation.
 
 ## Connections to other modules

@@ -682,6 +682,11 @@
                     "icon": "message-circle",
                     "path": "admin-panel/dashboard/nurture-analytics",
                     "title": "Nurture Analytics"
+                  },
+                  {
+                    "icon": "bell-ring",
+                    "path": "admin-panel/dashboard/push-notifications",
+                    "title": "Push Notifications"
                   }
                 ]
               },
@@ -1208,6 +1213,11 @@
                     "title": "Model Requests",
                     "path": "admin-model-requests",
                     "icon": "clipboard-list"
+                  },
+                  {
+                    "icon": "search",
+                    "path": "admin-panel/system/search-insights",
+                    "title": "Search Insights"
                   },
                   {
                     "title": "Phone",
