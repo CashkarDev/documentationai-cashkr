@@ -1,6 +1,6 @@
 ---
 title: Notifications
-description: Compose, test, schedule, and track push notifications to the Customer and Vendor apps from the Push Notification Hub — compose, analytics, history, and scheduled sends.
+description: Compose, test, schedule, and track push notifications to the Customer and Vendor apps from the Push Notification Hub — compose, history, and scheduled sends, with a link to the Push Notifications performance dashboard.
 ---
 
 ## Overview
@@ -15,13 +15,13 @@ The **Push Notification Hub** lets admins send, schedule, and manage push notifi
 
 | Tab | What it is for |
 | --- | --- |
+| **Performance** | A link (not a tab) that opens the **Push Notifications** performance dashboard (`/dashboard/push-performance`) — delivery, taps, leads and orders for every notification. See [Push Notifications dashboard](/admin-panel/dashboard/push-notifications). |
 | **Compose** | Write a one-off notification, choose app and audience, send a test, send now or schedule. |
-| **Analytics** | Delivery performance and outcomes (taps, leads, orders) for a selected period. |
 | **History** | Log of every notification sent, with status and delivery counts. |
 | **Scheduled** | Notifications queued for a future date and time, with edit, reschedule and cancel. |
 
 <Callout kind="info">
-The hub no longer shows separate **Campaigns**, **Templates** or **Segments** tabs. Existing campaigns, segments and active templates are still counted on the **Analytics** tab.
+The hub no longer has an **Analytics** tab (or separate **Campaigns**, **Templates** or **Segments** tabs). Opening `/notification?tab=analytics` now shows the Compose tab; delivery and outcome reporting lives on the Push Notifications dashboard reached through **Performance**.
 </Callout>
 
 ## Compose tab
@@ -69,21 +69,15 @@ Leave **Schedule for later** off and click **Review & send**, or turn it on, set
 </Step>
 </Steps>
 
-## Analytics tab
+## Performance
 
-Filters: period (e.g. **Last 30 days**) and **All Apps**.
-
-- **KPI cards:** Total Sent, Delivered, Failed, Delivery Rate.
-- **Summary counts:** Active campaigns, Campaigns this period, Segments, Active templates.
-- **Charts:** Notifications Over Time (Sent / Delivered / Failed); Campaigns by Type.
-- **Recent Campaigns** table: Campaign, Type, Status, App, Sent, Delivered, Rate, Date.
-- **What Notifications Produced:** a funnel of **Delivered** (of sent), **Uninstalled** (app removed or token expired), **Tapped** (tap rate), **Leads** (% of tappers), **Orders** (% of leads) and **Completed** (pickups done), followed by a per-notification table with columns **Notification**, **Delivered**, **Uninstalled**, **Tapped**, **Leads**, **Orders**, **Completed**, **Tap %**.
+Click **Performance** at the start of the tab row to open the **Push Notifications** dashboard (Dashboards → Marketing → Push Notifications). It reports Sent, Delivered, Tapped, Leads and Orders for a date range, filtered by app, audience and campaign, with an option to show test runs and CSV exports. Details are on the [Push Notifications dashboard](/admin-panel/dashboard/push-notifications) page.
 
 ## History tab
 
-Table columns: **Notification** (title and body), **Target** (app + audience type such as *Individual*), **Status**, **Delivery** (delivered / targeted, with the failed count and reason such as *App uninstalled or token expired*), **Date** (test sends also show who sent them).
+Table columns: **Notification** (title and body), **Target** (app + audience type such as *Individual*), **Status**, **Delivery** (delivered / targeted, with the failed count and reason such as *App uninstalled or token expired*), **Date** (with *by* the admin who sent it).
 
-**Filters:** search, **Status** (All Status, Sent, Sending, Scheduled, Failed, Cancelled, Test), **All Apps**, **Refresh**. A total count is shown, with pagination.
+**Filters:** **Search notifications...**, **Status** (All Status, Sent, Sending, Scheduled, Failed, Cancelled, Test), **All Apps**, **Refresh**. A total count is shown, with pagination.
 
 Click a row to expand it and see the **Full Title**, **Full Body**, **Image** URL and **Target Value**.
 
@@ -96,4 +90,4 @@ Shows the number of queued notifications with a **Refresh** button. Each card sh
 - **Preview and test before sending** — check both Collapsed and Expanded views on Android and iPhone, and use **Send test**.
 - **Prefer targeted audiences** — pick specific users instead of All Users to avoid notification fatigue.
 - **Check Scheduled** before creating new sends to avoid duplicates.
-- **Review Analytics and History** after each send to confirm delivery and catch failures.
+- **Review Performance and History** after each send to confirm delivery and catch failures.

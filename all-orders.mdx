@@ -53,14 +53,14 @@ Use **All Orders** when you need a complete picture across all these categories.
 
 ## What the All Orders table shows
 
-| Column         | Description                                                                                                                                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Created At** | Date and time the order was created (for example, `2026-Jan-05 02:50 PM`)                                                                                                                                     |
-| **Model**      | Device model being sold                                                                                                                                                                                       |
-| **City**       | Pickup city                                                                                                                                                                                                   |
-| **Type**       | Device category badge (Mobile, Tablet, Laptop, …)                                                                                                                                                             |
-| **Status**     | Current order status badge (for example Generated, Completed, Pickup Delayed, Failed By Vendor, Failed By Customer, Failed By Cashkr)                                                                         |
-| **SLA**        | SLA state. Closed orders show **Settled**; open orders show how late or how much time is left, with the SLA stage (for example `2d 4h late · PICKUP`, or `UNCLAIMED` when no vendor has locked the order yet) |
+| Column           | Description                                                                                                                                                                                                   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Order Placed** | Date and time the order was placed (for example, `2026-Jan-05 02:50 PM`)                                                                                                                                      |
+| **Model**        | Device model being sold                                                                                                                                                                                       |
+| **City**         | Pickup city                                                                                                                                                                                                   |
+| **Type**         | Device category badge (Mobile, Tablet, Laptop, …)                                                                                                                                                             |
+| **Status**       | Current order status badge (for example Generated, Completed, Pickup Delayed, Failed By Vendor, Failed By Customer, Failed By Cashkr)                                                                         |
+| **SLA**          | SLA state. Closed orders show **Settled**; open orders show how late or how much time is left, with the SLA stage (for example `2d 4h late · PICKUP`, or `UNCLAIMED` when no vendor has locked the order yet) |
 
 The list is paginated (25 rows per page) with **Previous / Next** and page numbers.
 
@@ -105,17 +105,17 @@ Click any row to open the order detail drawer on the right. It is available from
 
 ### Sections
 
-| Section                               | What it contains                                                                                                                                                                   |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Device Specifications**             | Customer-reported answers: Device Turned On, RAM, Storage, Physical Condition, Accessories, Technical Condition, Warranty Status, Screen Condition, Body Condition                 |
-| **Pricing**                           | Quoted Price, Requote Price and Final Price (shows _Not Set_ until the order is completed)                                                                                         |
-| **Order Timeline**                    | Pickup Schedule (time slot), Pickup Date and City. Open orders show a **Reschedule Pickup** action                                                                                 |
-| **People & Places → Vendor Details**  | Vendor name, email and contact, **Order Tier**, Base Credits and Total credits. Open orders show a **Reassign Vendor** action, or **Assign Vendor** when no vendor is assigned yet |
-| **People & Places → Cashboy Details** | Assigned cashboy, or _No Cashboy assigned_                                                                                                                                         |
-| **Customer Information**              | Customer name, email, phone (with **Click to call**) and the pickup address with its address label (Home, Office, …)                                                               |
-| **History & Audit**                   | Activity Timeline, inspection timer, call recordings, credit history and inspection photos (see below)                                                                             |
-| **Reviews & Feedback**                | **View All Reviews** link                                                                                                                                                          |
-| **Conversation**                      | **Customer–Vendor Chat** (read-only; admin views are logged) with an **Open** action                                                                                               |
+| Section                               | What it contains                                                                                                                                                                                                                                                            |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Device Specifications**             | Customer-reported answers: Device Turned On, RAM, Storage, Physical Condition, Accessories, Technical Condition, Warranty Status, Screen Condition, Body Condition                                                                                                          |
+| **Pricing**                           | Quoted Price, Requote Price and Final Price (shows _Not Set_ until the order is completed). Orders failed after a requote also show **Expected Price**, and orders with a coupon show _Coupon on this order: CODE (₹amount)_                                                |
+| **Order Timeline**                    | Pickup Schedule (time slot), Pickup Date and City. Open orders show a **Reschedule Pickup** action                                                                                                                                                                          |
+| **People & Places → Vendor Details**  | Vendor name, email and contact, **Order Tier**, Base Credits and Total credits. Open orders show a **Reassign Vendor** action, or **Assign Vendor** when no vendor is assigned yet                                                                                          |
+| **People & Places → Cashboy Details** | Assigned cashboy, or _No Cashboy assigned_                                                                                                                                                                                                                                  |
+| **Customer Information**              | Customer name, email, phone (with **Click to call**), the pickup address with its address label (Home, Office, Other Address, …) and a **Source** block: Channel (for example Direct), Platform (for example `web · desktop`), Landing page (with copy button) and Referrer |
+| **History & Audit**                   | Activity Timeline, inspection timer, call recordings, credit history and inspection photos (see below)                                                                                                                                                                      |
+| **Reviews & Feedback**                | **View All Reviews** link                                                                                                                                                                                                                                                   |
+| **Conversation**                      | **Customer–Vendor Chat** (read-only; admin views are logged) with an **Open** action                                                                                                                                                                                        |
 
 ### History & Audit details
 
