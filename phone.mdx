@@ -100,6 +100,10 @@ The page has four tabs: **Models**, **Brands**, **Classes**, and **Pricing**. Ta
       </Step>
     </Steps>
 
+    <Callout kind="info">
+      Model names must be unique within a brand. Saving a model (create or edit) whose name matches another model of the same brand is rejected as a duplicate (409, "'<model>' already exists"); use the existing model instead or choose a different name.
+    </Callout>
+
     <Callout kind="alert">
       Deleting a model removes it from the customer app and website. Customers will no longer see or select this model for buyback.
     </Callout>

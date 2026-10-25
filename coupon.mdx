@@ -14,9 +14,11 @@ Coupons (**Marketing → Programs → Coupons**) let marketing and operations te
 
 ## What the coupons screen shows
 
+A notice above the list warns when coupons are about to end (for example, _1 coupon ends in the next 7 days_) and names each one with its end date.
+
 | Column           | Description                                                                                                                                                 |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Code / Title** | Coupon code (with a copy button), title, and device types it covers                                                                                         |
+| **Code / Title** | Coupon code (with a copy button), title, and device types it covers. Code-only coupons carry a **SECRET** badge next to the code                            |
 | **Status**       | Active, Upcoming, Expired, or Inactive                                                                                                                      |
 | **Extras**       | Extra ₹ added to the order                                                                                                                                  |
 | **Paid ≈**       | Approximate payout so far: completed orders × today's extra (— when nothing is paid yet)                                                                    |
@@ -25,7 +27,9 @@ Coupons (**Marketing → Programs → Coupons**) let marketing and operations te
 | **Valid**        | Start → end date. Expired coupons show an **Extend** button                                                                                                 |
 | **On**           | Quick on/off toggle                                                                                                                                         |
 
-Each row also has an **Actions** menu. The **Code**, **Title**, **Extras**, **Usage** and **Valid** column headers can be clicked to sort. Use **Export CSV** to download the list.
+Click the copy button next to a code to copy it; a toast confirms, for example _SAVE09 copied_.
+
+Each row also has an **Actions** menu (**Edit**, **Duplicate**, **Extend**, **Switch off / Switch on**, **Delete**). Click anywhere else on a row to open its **Coupon details** panel. The **Code**, **Title**, **Extras**, **Usage** and **Valid** column headers can be clicked to sort. Use **Export CSV** to download the list.
 
 **Bulk actions** – tick coupons (or the header checkbox to select all on the page) to open the bulk toolbar: **Switch on**, **Switch off**, **Extend**, **Delete**, and **Clear selection**.
 
@@ -56,7 +60,7 @@ Marketing and operations teams use coupons to:
 - **Devices** – filter by device type.
 - **Extras ₹** – minimum and maximum extra amount.
 - **Running between** – coupons valid within a date range.
-- **Secret only** – lists code-only (private) coupons _instead of_ public ones, not alongside them.
+- **Public / secret** – **Public and secret** (default, both kinds), **Public only**, or **Secret only** (code-only coupons).
 - **Include generated** – shows single-use bonus codes issued automatically per order (hidden by default).
 - **Sort** – Newest first, Oldest first, Ending soonest, Starting latest, Most used, Biggest extras, Code A–Z.
 - **Clear filters** – resets all filters.
@@ -69,46 +73,53 @@ Marketing and operations teams use coupons to:
 
 <Steps>
   <Step title="Add a new coupon" icon="plus" title-type="p">
-    Click **Add coupon** to open **Create New Coupon**. Fields marked \* are required. The form is split into three steps – **1 Offer**, **2 Who and what**, **3 Schedule and limits** – and a live summary line at the top shows the extra, device types, eligibility, platform, uses per customer, dates and whether it will be saved switched off. Use **Next** to move between steps.
+    Click **Add coupon** to open **Create New Coupon** ("Fill in the details to create a new coupon."). It is a single scrolling form that creates one coupon at a time, in four sections.
 
-    **How many coupons** – choose one of three modes:
+    **Basic Information**
 
-    - **One coupon** – a single code.
-    - **Several codes** – one set of rules, several codes, each with its own **Code**, **Title**, **Extras (₹)** and **Brand** (default **Every brand**). Use **Add code** / remove buttons to manage rows. Everything else in the form applies to every code.
-    - **Generate codes** – a batch of one-use, code-only codes for a partner, downloaded as a CSV. Enter a shared **Title**, a **Code prefix** (for example `INFLU`) and **How many codes**. Each code is the prefix plus 6 letters and numbers, works once for one customer, and never shows at checkout. Code-only is always on, and uses-per-customer / user-limit fields are not shown.
+    - **Coupon Code:** A unique code customers use to apply the coupon, for example `SAVE20`.
+    - **Title:** Descriptive title for the coupon.
+    - **Description:** Detailed description of the offer.
+    - **Platform:** `WEB`, `APP`, or `BOTH` – which platform the coupon can be used on.
+    - **Extras (₹):** Flat rupee amount added to the order (defaults to 10).
+    - **Min Device Value (₹) / Max Device Value (₹):** Lowest and highest device quote the coupon applies to. Leave both empty for any price.
+    - **Uses per customer:** How many times one customer may use it (defaults to 3).
+    - **User Limit Type:** **All Customers** (no cap) or **Custom** – then set **Customers allowed**, how many different customers may use it in total.
 
-    **1 · Offer**
+    **Schedule (IST - Kolkata Timezone)**
 
-    - **Coupon Code\*:** A unique code customers use to apply the coupon, for example `IPHONE500`.
-    - **Title\*:** Descriptive title, for example "Extra ₹500 on iPhone".
-    - **Description\*:** Detailed description of the offer.
-    - **Platform\*:** `WEB`, `APP`, or `BOTH`.
-    - **Extras (₹)\*:** Flat rupee amount added to the order.
+    - **Start Date & Time:** When the coupon goes live (defaults to now).
+    - **End Date & Time:** Last minute the coupon can be used (defaults to 30 days later, 23:59).
 
-    **2 · Who and what**
+    **Restrictions & Targeting**
 
-    - **Customer Eligibility\*:** All Customers or First-time Customers.
-    - **Device Types\*:** Mobile, Tablet, Laptop, Mac, Watch, Camera, Console, Headphone.
-    - **Brands (optional):** Select brands per chosen device type (with **Select all**). Leave empty to apply to all brands of the selected device types.
-    - **Only for devices quoted between (₹):** Lowest and highest quote. The coupon shows at checkout only when the device's quote is in this range, and a requote outside it removes the extra. Leave both empty for any price.
-    - **Code-only (Private):** Hides the coupon from checkout offers (see Coupon types below).
+    - **Customer Eligibility:** All Customers or First-time Customers.
+    - **Device Types:** Mobile, Tablet, Laptop, Mac, Watch, Camera, Console, Headphone.
+    - **Brands (optional):** For each chosen device type a brand list appears (for example _Mobile Brands · 18 brands_, with **Select all**). Leave empty to apply to all brands of the selected device types.
 
-    **3 · Schedule and limits**
+    **Status**
 
-    - **Start Date & Time\* (IST, Kolkata):** When the coupon goes live.
-    - **End Date & Time\*:** Last minute the coupon can be used.
-    - **Uses per customer\*:** How many times one customer may use the coupon.
-    - **User Limit Type\*:** **All Customers** (no cap) or **Custom** – then set **Customers allowed\***, the total number of different customers who may use it.
-    - **Overall cap:** Cap in **Total uses** or **₹ budget**. Leave empty for no overall cap. Once reached, the coupon stops showing at checkout and a typed code is refused.
-    - **Switched on:** New coupons are saved switched off. Switch on to make it live from the start time.
+    - **Active Status:** Enable or disable the coupon. Disabled coupons cannot be used by customers. On by default.
+    - **Code-only (Private):** Hides the coupon from checkout offers (see Coupon types below). Off by default.
+    - **Show on Coupons page:** Lists the coupon on the website's coupons page while it is switched on and in date. Checkout offers are not affected. Off by default.
 
-    If other coupons cover the same devices and dates, the form lists them with a warning so you can check the offers don't compete at checkout.
-
-    Click **Create Coupon** on the last step. The coupon appears in the list and becomes available based on its status and validity dates.
+    Click **Create Coupon** to save, or **Cancel** to close. The coupon appears in the list and becomes available based on its status and validity dates.
   </Step>
 
   <Step title="Edit a coupon" icon="edit" title-type="p">
-    Open **Actions → Edit** to update any field, such as platform, extras, device value range, usage limits, eligibility, device types, brands, dates, and status.
+    Open **Actions → Edit** (or **Edit** in the Coupon details panel) to open **Edit Coupon** – the same form pre-filled – and update any field, such as platform, extras, device value range, usage limits, eligibility, device types, brands, dates, status, code-only and **Show on Coupons page**. Click **Update Coupon** to save.
+  </Step>
+
+  <Step title="View coupon details and history" icon="eye" title-type="p">
+    Click a row to open **Coupon details** ("What this coupon gives, to whom, and how much of it is left."). It shows the code (with **Copy code**), title, description and who last changed it, then:
+
+    - **Status**, **Extras**, **Valid** (start → end), **Uses per customer**, **Customers allowed**, **Overall cap**, **Customer type**, **Shows on** (platform), **Devices** and **Brands**.
+    - **Usage** – uses against any cap with a plain-language note, plus **Uses**, **Customers**, **Sold** and **Paid ≈**.
+    - **Switched on** – whether customers can use it right now, with an on/off switch.
+    - **Who used it** – customers who have used the code.
+    - **History** – every edit with who made it and when, and each changed field shown as old → new (for example _Switched on: No → Yes_, _On coupons page: No → Yes_).
+
+    The panel also has **Edit** and **Delete** buttons.
   </Step>
 
   <Step title="Duplicate a coupon" icon="copy" title-type="p">
@@ -141,7 +152,7 @@ Marketing and operations teams use coupons to:
   - Brand is selected for a specific device type, such as a particular phone brand.
   - Coupon applies only to the selected brand within the chosen device type.
 - **Code-only (Private)**
-  - Won't appear in checkout offers — customers must type the code manually.
+  - Won't appear in checkout offers — customers must type the code manually. Marked **SECRET** in the list.
   - Works only on the **device types** selected on the coupon.
   - Brands and Min/Max Device Value do **not** block a typed code, but a requote outside the Min/Max range still removes the extra.
 - **Generated (single-use) codes**
@@ -161,9 +172,9 @@ Coupon validation happens automatically during checkout (website and app) based 
 - **Uses per customer**
   - If uses per customer is 2, each customer can redeem the coupon two times.
 - **Min / Max Device Value (quote range)**
-  - If the highest quote is 20000 and the lowest is 5000, the coupon applies only to devices quoted between 5000 and 20000.
+  - If the max value is 20000 and the min is 5000, the coupon applies only to devices quoted between 5000 and 20000. A requote outside the range removes the extra.
 - **Overall cap**
-  - When the total-uses or ₹-budget cap is reached, the coupon stops showing at checkout and a typed code is refused.
+  - Where a coupon has an overall cap (shown in Coupon details), the coupon stops showing at checkout and a typed code is refused once it is reached. The Create/Edit form on this version does not set an overall cap.
 - **Customer Eligibility**
   - First-time Customers: valid only for customers selling for the first time, up to the uses-per-customer limit.
   - All Customers: valid for both new and existing customers, subject to other limits.
@@ -175,6 +186,7 @@ Coupon validation happens automatically during checkout (website and app) based 
 ## Where coupons are applied
 
 - Coupons are shown and applied on both the customer website and app checkout pages (except code-only coupons, which must be typed).
+- Coupons with **Show on Coupons page** switched on are also listed on the website's coupons page while they are switched on and in date.
 - The system validates each coupon based on platform, device type, brand, customer eligibility, device value range, usage limits, and validity window before applying the extra.
 
 ## How coupon system works? (embed code)

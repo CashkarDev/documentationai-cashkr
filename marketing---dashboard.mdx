@@ -61,6 +61,27 @@ Three splits: **Web vs App** (with conversion), **Android vs iOS** (and other OS
 
 Each section ends with a short **Why this format** note explaining how to read it.
 
+## CMO tab (Executive dashboard)
+
+`/dashboard/executive?tab=cmo` shows a related **Marketing Report** console with its own layout. It has a **Period** picker (last 7 days, compared with the previous 7 days) and a **Refresh Google Ads** button, then numbered sections:
+
+| # | Section | Contents |
+| --- | --- | --- |
+| 1 | **Marketing overview** | Spend, Revenue, ROAS, Sessions, Leads, Orders, CPL, CPA, Lead → Order CR. |
+| 2 | **Activity over time** | Daily Leads and Orders (left axis) against Spend (right axis). |
+| 3 | **Best & worst channel** | Best channel by attributed orders; worst channel spending without orders. |
+| 4 | **Channel performance** | Channel, Spend, Sessions, Leads, Orders, Google / Meta report, CPL, CPA, CR%, Completion %, with a Total row and a note on how our order count differs from platform-reported orders. |
+| 5 | **Paid campaign performance** | Top performer, Biggest waste, Needs attention; table of Campaign, Ad group, Spend, Clicks, CTR, CPC, Leads, Orders, By product, CPL, CPA (target CPA ₹60). |
+| 6 | **Funnel performance** | Impressions → Clicks → Sessions → Leads → Orders → Completed, with drop-offs. |
+| 7 | **Geo / city performance** | City, Leads, Orders, Completion %, Revenue. |
+| 8 | **State performance** | State, Leads, Orders, Lead → Order, Completion %, Revenue (from the lead pincode). |
+| 10 | **Device & platform** | Web vs App, Android vs iOS, Device type, and a device table (Spend, Sessions, Leads, Orders, Session → Lead, CPA (ads)). |
+| 11 | **Promotions impact** | Coupon orders and revenue, referral leads and revenue, active coupons and usage rate. |
+
+<Callout kind="alert">
+**Refresh Google Ads** triggers a pull of ad-platform data. Use it only when you need fresh spend figures.
+</Callout>
+
 ## Actions
 
 The report is read-only.

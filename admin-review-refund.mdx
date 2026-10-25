@@ -54,6 +54,14 @@ The refund is calculated as **order credits × refund %** and rounded to whole c
 
 Clicking a proof thumbnail opens **Review Proof — &lt;order token&gt;**, showing the vendor and device, the full-size proof image, **Order credits**, **Refund** (with %), and — for rejected items — the **Reason**.
 
+The dialog also carries the actions for the item's status, so you can decide without going back to the table:
+
+| Status | Dialog shows |
+| --- | --- |
+| Pending | **Refund on accept** (credits and %), plus **Reject** and **Accept & Refund &lt;credits&gt;**. |
+| Accepted | **Revoke & Reverse Refund**. |
+| Rejected / Revoked | Details only (and the reason, if rejected), with **Close**. |
+
 ## Verification flow
 
 <Steps>
