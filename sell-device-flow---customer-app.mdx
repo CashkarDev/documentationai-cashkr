@@ -10,6 +10,8 @@ Sell Device in the Customer App covers the full journey from HomeScreen entry to
 
 Customers start from the HomeScreen, pass the pincode serviceability gate, select their device, answer condition questions, get a price quote, and confirm a pickup order with address, slot, and payment method.
 
+When a customer sells the phone they are using, **Model detection** identifies the device automatically and fills in the questions for them, so they only review the answers instead of searching for the model and answering every question by hand. See [Model detection (auto-fill)](#model-detection-auto-fill).
+
 <Callout kind="info" collapsed="false">
   Customer App behavior matches the website Sell Device flow, with the same pricing and order logic, but uses mobile screens and the HomeScreen serviceability gate as the entry point.
 </Callout>
@@ -18,6 +20,7 @@ Customers start from the HomeScreen, pass the pincode serviceability gate, selec
 
 <Callout kind="info" collapsed="false">
   - **Serviceability gate first:** Always validate pincode via the Area module from the HomeScreen. Block the journey if the pincode is not serviceable.
+  - **Model detection:** On Android and iOS, the app detects the phone it is running on and pre-fills the model and the question answers. Every auto-filled answer stays editable, and the price is always calculated from the answers the customer finally submits.
   - **Dynamic catalog and pricing:** Device types, brands, models, variants, and pricing come from Admin Panel configuration. Only show products that have valid class and pricing.
   - **Condition-driven pricing:** Warranty, battery, screen, physical or technical issues, and accessories answers map to a device class, which drives the final price.
   - **Optional coupon:** Apply a coupon on the quote screen at checkout. Skip if no coupon is entered.
@@ -51,7 +54,18 @@ Use these steps to design, implement, and test the in-app journey.
     **Success signal:** The app shows device type options instead of an error after entering pincode.
   </Step>
 
+  <Step title="Detect this phone (Model detection)" icon="scan" title-type="p">
+    - When the customer is selling the phone the app is installed on, the app runs **Model detection** (Android and iOS).
+    - The app identifies the device's brand, model and variant details and selects them automatically, so the customer does not need to search for the model.
+    - The detected details are used to pre-fill the condition questions in the next steps.
+    - If the customer is selling a different device, or wants to change what was detected, they pick the device manually as described in the next step.
+
+    **Success signal:** The app opens the Device Q\&A screen for the detected model, with the answers already filled in.
+  </Step>
+
   <Step title="Select device type, brand, model, and variant" icon="smartphone" title-type="p">
+    Use this step when Model detection is not used (for example, the customer is selling another device) or the customer changes the detected device.
+
     - App displays device types such as **Mobile**, **Laptop**, **Tablet**, **Mac**, **Camera**, **Headphone**, **Watch**, and **Console**.
     - Customer selects a **device type**.
     - App fetches and shows a filtered list of **brands**, then **models**, then **variants** from the **Product** module.
@@ -61,7 +75,8 @@ Use these steps to design, implement, and test the in-app journey.
   </Step>
 
   <Step title="Answer device condition Q&A" icon="list-ordered" title-type="p">
-    - Customer answers structured questions covering:
+    - If Model detection ran, the answers are **pre-filled**. The customer reviews them and can change any answer before continuing.
+    - Otherwise the customer answers structured questions covering:
       - Warranty status
       - Battery condition
       - Screen condition
@@ -139,6 +154,27 @@ Use these steps to design, implement, and test the in-app journey.
 
 <Callout kind="info" collapsed="false">
   Amazon Gift Card is available only for orders with a total value less than ₹10,000. Gift card details are shared with the customer after the vendor completes the order — not at payment selection. See [Amazon Gift Card Payment Option](/amazon-gift-card-payment) for full details.
+</Callout>
+
+## Model detection (auto-fill)
+
+Model detection lets a customer sell the phone they are holding without searching the catalog or answering every question by hand.
+
+| Item | Behaviour |
+| --- | --- |
+| **Platforms** | Customer App on **Android** and **iOS**. |
+| **Which device** | Only the phone the app is running on. To sell any other device, the customer selects it manually. |
+| **What is detected** | Everything the app can read about the model: brand, model and variant details (such as storage and RAM). |
+| **What is filled in** | The device selection and the condition-question answers, so the Q\&A screen opens already answered. |
+| **Editing** | Every auto-filled answer can be changed by the customer before getting the price. |
+| **Pricing** | Unchanged: the answers the customer finally submits are mapped to a class and priced through **Class and Pricing**, exactly as for manual answers. |
+
+<Callout kind="info" collapsed="false">
+  Auto-filled answers are a starting point, not a verified condition. The vendor still inspects the device at pickup, and the price can be requoted if the actual condition differs from the submitted answers.
+</Callout>
+
+<Callout kind="tip" collapsed="false">
+  Support tip: if a customer says the app picked the wrong model or answer, ask them to change it on the Q\&A screen (or pick the device manually) before booking. The quote always follows the final submitted answers.
 </Callout>
 
 ## Per-Type Condition Q\&A Variations
@@ -264,6 +300,11 @@ Use this list as a test checklist for QA and for handling edge cases in implemen
 - **Network errors**
   - Simulate API failures (Area, Products, Pricing, Coupons, Orders, Payment).
   - Confirm the app shows user-friendly error states and allows safe retry or exit without duplicate orders.
+- **Model detection**
+  - On an Android phone and on an iPhone, start Sell Device for this phone and confirm the correct brand, model and variant are selected and the Q\&A answers are pre-filled.
+  - Change one auto-filled answer and confirm the quote updates.
+  - Choose to sell a different device and confirm manual selection still works.
+  - Confirm the order in Admin shows the submitted (final) answers, not only the detected ones.
 - **Lead vs order behavior**
   - Reach the final price screen as a logged-in customer, then close the app before Confirm Order.
   - Verify a **Lead** is created in Admin → Leads and no order exists.
@@ -273,13 +314,15 @@ Use this list as a test checklist for QA and for handling edge cases in implemen
 <Callout kind="tip" collapsed="false">
   - **Developers**
     - Centralize calls to **Area**, **Products**, **Class and Pricing**, **Coupons**, and **Orders** modules so both website and Customer App share logic where possible.
-    - Implement a single **state machine** or flow controller that enforces step order: serviceability → device selection → Q\&A → quote and coupon → address → slot → order → payment.
+    - Implement a single **state machine** or flow controller that enforces step order: serviceability → device selection (Model detection or manual) → Q\&A (pre-filled when detected) → quote and coupon → address → slot → order → payment.
+    - Store which answers were auto-filled vs changed by the customer, so support can tell the difference when a requote happens.
     - Use strong typing or schemas so device Q\&A answers and classes match Admin configuration, avoiding pricing mismatches.
     - Ensure idempotent **order creation** to avoid duplicates if the confirmation request is retried.
 </Callout>
 
 <Callout kind="tip" collapsed="false">
   - **Testers**
+    - Run the **Model detection** path on at least one Android phone and one iPhone, including editing an auto-filled answer.
     - Run the **happy path** for each device type (Mobile, Laptop, Tablet, Mac, Camera, Headphone, Watch, Console) across at least one serviceable pincode.
     - Verify that every change in Q\&A answers updates the quote according to Admin **Class and Pricing** rules.
     - Check that **order vs lead** behavior matches [Lead Creation - Customer App](/lead-creation---customer-app).
