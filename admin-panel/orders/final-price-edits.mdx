@@ -1,0 +1,47 @@
+---
+title: Final Price Edits
+description: Audit log of every correction made to a completed order's Final Price — who changed it, from what, to what, and why.
+---
+
+## Overview
+
+**Sidebar path:** Orders → CLOSED → **Final Price Edits** (`/orders/final-price-edits`)
+
+Final Price Edits lists every correction made to a completed order's Final Price. It is a read-only log: corrections are made on the order itself, and each one is recorded here.
+
+## What the table shows
+
+The page shows the latest 200 corrections.
+
+| Column | Description |
+| --- | --- |
+| **Date** | When the correction was made |
+| **Order** | The order that was corrected |
+| **Was** | Final Price before the correction |
+| **Now** | Final Price after the correction |
+| **By** | Admin who made the correction |
+| **Reason** | Reason entered for the correction |
+
+When nothing has been corrected yet, the page shows *No corrections yet.*
+
+## How to correct a Final Price
+
+<Steps>
+  <Step title="Open the completed order" icon="folder" title-type="p">
+    Find the order in any Orders view and click it to open the [order drawer](/all-orders#order-detail-drawer).
+  </Step>
+  <Step title="Use the pencil on the Final Price card" icon="edit" title-type="p">
+    In the **Pricing** section, click the pencil on the **Final Price** card and enter the corrected amount and the reason.
+  </Step>
+  <Step title="Check the log" icon="check-circle" title-type="p">
+    The correction appears at the top of Final Price Edits with your name and reason.
+  </Step>
+</Steps>
+
+<Callout kind="alert">
+The Final Price feeds finance reports, GST and the vendor's records. Correct it only with a clear reason, and write the reason so someone else can follow it later.
+</Callout>
+
+<Callout kind="info">
+Which roles can see the pencil, and whether a correction also adjusts vendor credits, is not shown on the screen. Confirm with the tech team before relying on either.
+</Callout>

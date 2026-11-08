@@ -560,113 +560,23 @@
             "icon": "layers",
             "pages": [
               {
-                "title": "Admin Panel Overview",
+                "icon": "eye",
                 "path": "admin-panel-overview",
-                "icon": "eye"
+                "title": "Admin Panel Overview"
               },
               {
-                "title": "Authentication",
+                "icon": "lock",
                 "path": "authentication---admin-panel",
-                "icon": "lock"
+                "title": "Authentication"
               },
               {
-                "group": "Dashboard",
+                "group": "Dashboards",
                 "icon": "gauge",
                 "pages": [
                   {
-                    "title": "CEO Report",
-                    "path": "ceo-report",
-                    "icon": "briefcase"
-                  },
-                  {
-                    "title": "TV Display",
-                    "path": "tv-display",
-                    "icon": "tv"
-                  },
-                  {
-                    "title": "Overview",
+                    "icon": "eye",
                     "path": "overview---dashboard",
-                    "icon": "eye"
-                  },
-                  {
-                    "title": "Growth",
-                    "path": "growth",
-                    "icon": "trending-up"
-                  },
-                  {
-                    "title": "Funnel",
-                    "path": "funnel",
-                    "icon": "filter"
-                  },
-                  {
-                    "title": "Marketing",
-                    "path": "marketing---dashboard",
-                    "icon": "megaphone"
-                  },
-                  {
-                    "title": "Operations & SLA",
-                    "path": "operations-sla",
-                    "icon": "activity"
-                  },
-                  {
-                    "title": "Expansion",
-                    "path": "expansion",
-                    "icon": "map"
-                  },
-                  {
-                    "title": "Pricing",
-                    "path": "pricing",
-                    "icon": "tag"
-                  },
-                  {
-                    "title": "Failed Report",
-                    "path": "failed-report",
-                    "icon": "x-circle"
-                  },
-                  {
-                    "title": "Data Quality",
-                    "path": "data-quality",
-                    "icon": "check-circle"
-                  },
-                  {
-                    "title": "Reviews & Reputation",
-                    "path": "reviews-reputation",
-                    "icon": "star"
-                  },
-                  {
-                    "title": "Trust & Safety",
-                    "path": "trust-safety",
-                    "icon": "shield"
-                  },
-                  {
-                    "title": "Sales & Pipelines",
-                    "path": "sales-pipelines",
-                    "icon": "target"
-                  },
-                  {
-                    "title": "Inventory",
-                    "path": "inventory",
-                    "icon": "box"
-                  },
-                  {
-                    "title": "Finance",
-                    "path": "finance---dashboard",
-                    "icon": "banknote"
-                  },
-                  {
-                    "title": "Coupons",
-                    "path": "coupons",
-                    "icon": "ticket"
-                  },
-                  {
-                    "title": "Influencers",
-                    "path": "influencers",
-                    "icon": "megaphone"
-                  },
-                  {
-                    "title": "Referrals",
-                    "path": "referrals",
-                    "icon": "gift"
+                    "title": "Overview"
                   },
                   {
                     "icon": "crown",
@@ -674,14 +584,111 @@
                     "title": "Leadership"
                   },
                   {
+                    "icon": "briefcase",
+                    "path": "ceo-report",
+                    "title": "Executive"
+                  },
+                  {
+                    "icon": "megaphone",
+                    "path": "marketing---dashboard",
+                    "title": "Marketing Report"
+                  },
+                  {
+                    "group": "Growth",
+                    "icon": "trending-up",
+                    "pages": [
+                      {
+                        "icon": "filter",
+                        "path": "funnel",
+                        "title": "Funnel"
+                      },
+                      {
+                        "icon": "target",
+                        "path": "sales-pipelines",
+                        "title": "Sales"
+                      },
+                      {
+                        "icon": "map",
+                        "path": "expansion",
+                        "title": "Geography"
+                      }
+                    ],
+                    "path": "growth"
+                  },
+                  {
+                    "icon": "activity",
+                    "path": "operations-sla",
+                    "title": "Operations / SLA"
+                  },
+                  {
+                    "group": "CX & Reviews",
+                    "icon": "star",
+                    "pages": [
+                      {
+                        "icon": "x-circle",
+                        "path": "failed-report",
+                        "title": "Failures"
+                      },
+                      {
+                        "icon": "star",
+                        "path": "reviews-reputation",
+                        "title": "Reviews"
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Vendors",
                     "icon": "store",
-                    "path": "admin-panel/dashboard/vendors",
-                    "title": "Vendors Dashboard"
+                    "pages": [
+                      {
+                        "icon": "shield",
+                        "path": "trust-safety",
+                        "title": "Trust"
+                      }
+                    ],
+                    "path": "admin-panel/dashboard/vendors"
+                  },
+                  {
+                    "group": "Inventory & Pricing",
+                    "icon": "box",
+                    "pages": [
+                      {
+                        "icon": "tag",
+                        "path": "pricing",
+                        "title": "Pricing"
+                      }
+                    ],
+                    "path": "inventory"
+                  },
+                  {
+                    "icon": "banknote",
+                    "path": "finance---dashboard",
+                    "title": "Finance"
+                  },
+                  {
+                    "icon": "ticket",
+                    "path": "dashboard",
+                    "title": "Coupons"
+                  },
+                  {
+                    "icon": "gift",
+                    "path": "referrals",
+                    "title": "Referrals"
                   },
                   {
                     "icon": "message-circle",
                     "path": "admin-panel/dashboard/nurture-analytics",
                     "title": "Nurture Analytics"
+                  },
+                  {
+                    "icon": "calendar-days",
+                    "path": "admin-panel/dashboard/buyback-days",
+                    "title": "Buyback Days"
+                  },
+                  {
+                    "icon": "megaphone",
+                    "path": "influencers",
+                    "title": "Influencers"
                   },
                   {
                     "icon": "bell-ring",
@@ -691,347 +698,384 @@
                 ]
               },
               {
-                "group": "Orders - B2C",
+                "group": "Orders",
                 "icon": "package",
                 "pages": [
                   {
-                    "title": "All Orders",
-                    "path": "all-orders",
-                    "icon": "list"
+                    "expandable": false,
+                    "group": "Active",
+                    "pages": [
+                      {
+                        "icon": "list",
+                        "path": "all-orders",
+                        "title": "All Orders"
+                      },
+                      {
+                        "icon": "map",
+                        "path": "admin-panel/orders/live-order-map",
+                        "title": "Live Order Map"
+                      },
+                      {
+                        "icon": "calendar-clock",
+                        "path": "admin-panel/orders/upcoming",
+                        "title": "Upcoming"
+                      },
+                      {
+                        "icon": "bookmark",
+                        "path": "reserved",
+                        "title": "Reserved"
+                      },
+                      {
+                        "icon": "loader",
+                        "path": "in-progress",
+                        "title": "In Progress"
+                      }
+                    ]
                   },
                   {
-                    "title": "In Progress",
-                    "path": "in-progress",
-                    "icon": "loader"
+                    "expandable": false,
+                    "group": "Needs Attention",
+                    "pages": [
+                      {
+                        "icon": "user-x",
+                        "path": "not-assigned",
+                        "title": "Not Assigned"
+                      },
+                      {
+                        "icon": "pause",
+                        "path": "no-action",
+                        "title": "Assigned · No Action"
+                      },
+                      {
+                        "icon": "clock",
+                        "path": "delayed",
+                        "title": "Delayed"
+                      },
+                      {
+                        "icon": "flag",
+                        "path": "flagged",
+                        "title": "Flagged"
+                      },
+                      {
+                        "icon": "alert-triangle",
+                        "path": "to-be-failed",
+                        "title": "To Be Failed"
+                      },
+                      {
+                        "icon": "map-pin-off",
+                        "path": "admin-panel/orders/coverage-gaps",
+                        "title": "Coverage Gaps"
+                      }
+                    ]
                   },
                   {
-                    "title": "Not Assigned",
-                    "path": "not-assigned",
-                    "icon": "user-x"
-                  },
-                  {
-                    "title": "No Action",
-                    "path": "no-action",
-                    "icon": "pause"
-                  },
-                  {
-                    "title": "Delayed",
-                    "path": "delayed",
-                    "icon": "clock"
-                  },
-                  {
-                    "title": "Reserved",
-                    "path": "reserved",
-                    "icon": "bookmark"
-                  },
-                  {
-                    "title": "Flagged",
-                    "path": "flagged",
-                    "icon": "flag"
-                  },
-                  {
-                    "icon": "map",
-                    "path": "admin-panel/orders/live-order-map",
-                    "title": "Live Order Map"
-                  },
-                  {
-                    "icon": "calendar-clock",
-                    "path": "admin-panel/orders/upcoming",
-                    "title": "Upcoming"
-                  },
-                  {
-                    "icon": "map-pin-off",
-                    "path": "admin-panel/orders/coverage-gaps",
-                    "title": "Coverage Gaps"
-                  },
-                  {
-                    "icon": "clipboard-check",
-                    "path": "admin-panel/orders/order-audit",
-                    "title": "Order Audit"
-                  },
-                  {
-                    "icon": "circle-x",
-                    "path": "admin-panel/orders/failed-no-requote",
-                    "title": "Failed (No Requote)"
+                    "expandable": false,
+                    "group": "Closed",
+                    "pages": [
+                      {
+                        "icon": "clipboard-check",
+                        "path": "admin-panel/orders/order-audit",
+                        "title": "Order Audit"
+                      },
+                      {
+                        "icon": "circle-x",
+                        "path": "admin-panel/orders/failed-no-requote",
+                        "title": "Failed (No Requote)"
+                      },
+                      {
+                        "icon": "pencil",
+                        "path": "admin-panel/orders/final-price-edits",
+                        "title": "Final Price Edits"
+                      }
+                    ]
                   }
                 ]
               },
               {
-                "group": "Leads",
+                "group": "B2C Sales",
                 "icon": "user-plus",
                 "pages": [
                   {
-                    "icon": "user-check",
-                    "path": "admin-panel/b2c-sales/my-leads",
-                    "title": "My Leads"
+                    "expandable": false,
+                    "group": "To Work",
+                    "pages": [
+                      {
+                        "icon": "user-check",
+                        "path": "admin-panel/b2c-sales/my-leads",
+                        "title": "My Leads"
+                      },
+                      {
+                        "icon": "flame",
+                        "path": "admin-panel/b2c-sales/hot-leads",
+                        "title": "Hot Leads"
+                      },
+                      {
+                        "icon": "sparkles",
+                        "path": "new-leads",
+                        "title": "New Leads"
+                      },
+                      {
+                        "icon": "phone-missed",
+                        "path": "admin-panel/b2c-sales/not-called",
+                        "title": "Not Called"
+                      },
+                      {
+                        "icon": "phone",
+                        "path": "callbacks",
+                        "title": "Callbacks"
+                      },
+                      {
+                        "icon": "rotate-ccw",
+                        "path": "admin-panel/b2c-sales/retention",
+                        "title": "Retention"
+                      }
+                    ]
                   },
                   {
-                    "icon": "flame",
-                    "path": "admin-panel/b2c-sales/hot-leads",
-                    "title": "Hot Leads"
+                    "expandable": false,
+                    "group": "Outcomes",
+                    "pages": [
+                      {
+                        "icon": "badge-check",
+                        "path": "admin-panel/b2c-sales/converted-orders",
+                        "title": "Converted Orders"
+                      },
+                      {
+                        "icon": "user-x",
+                        "path": "admin-panel/b2c-sales/lost-leads",
+                        "title": "Lost Leads"
+                      },
+                      {
+                        "icon": "smile",
+                        "path": "admin-panel/b2c-sales/customer-satisfaction",
+                        "title": "Customer Satisfaction"
+                      }
+                    ]
                   },
                   {
-                    "title": "New Leads",
-                    "path": "new-leads",
-                    "icon": "sparkles"
+                    "expandable": false,
+                    "group": "Team",
+                    "pages": [
+                      {
+                        "icon": "users",
+                        "path": "admin-panel/team/assignment",
+                        "title": "Assignment"
+                      },
+                      {
+                        "icon": "activity",
+                        "path": "admin-panel/team/live-floor",
+                        "title": "Live Floor"
+                      },
+                      {
+                        "icon": "alert-triangle",
+                        "path": "admin-panel/team/escalations",
+                        "title": "Escalations"
+                      },
+                      {
+                        "icon": "clipboard-check",
+                        "path": "admin-panel/team/reviews",
+                        "title": "Reviews"
+                      },
+                      {
+                        "icon": "moon",
+                        "path": "admin-panel/team/day-close",
+                        "title": "Day Close"
+                      }
+                    ]
                   },
                   {
-                    "icon": "phone-missed",
-                    "path": "admin-panel/b2c-sales/not-called",
-                    "title": "Not Called"
-                  },
-                  {
-                    "title": "Callbacks",
-                    "path": "callbacks",
-                    "icon": "phone"
-                  },
-                  {
-                    "icon": "rotate-ccw",
-                    "path": "admin-panel/b2c-sales/retention",
-                    "title": "Retention"
-                  },
-                  {
-                    "icon": "badge-check",
-                    "path": "admin-panel/b2c-sales/converted-orders",
-                    "title": "Converted Orders"
-                  },
-                  {
-                    "icon": "user-x",
-                    "path": "admin-panel/b2c-sales/lost-leads",
-                    "title": "Lost Leads"
+                    "expandable": false,
+                    "group": "Support",
+                    "pages": [
+                      {
+                        "icon": "headphones",
+                        "path": "admin-panel/support/cx-desk",
+                        "title": "CX Desk"
+                      },
+                      {
+                        "icon": "share-2",
+                        "path": "admin-panel/support/referrals",
+                        "title": "Referrals"
+                      },
+                      {
+                        "icon": "settings",
+                        "path": "admin-panel/support/cx-settings",
+                        "title": "CX Settings"
+                      },
+                      {
+                        "icon": "bot",
+                        "path": "admin-panel/support/ai-health",
+                        "title": "AI Health"
+                      }
+                    ]
                   }
                 ]
               },
               {
-                "group": "Team",
-                "icon": "users",
-                "pages": [
-                  {
-                    "icon": "users",
-                    "path": "admin-panel/team/assignment",
-                    "title": "Lead Assignment"
-                  },
-                  {
-                    "icon": "activity",
-                    "path": "admin-panel/team/live-floor",
-                    "title": "Live Floor"
-                  },
-                  {
-                    "icon": "alert-triangle",
-                    "path": "admin-panel/team/escalations",
-                    "title": "Escalations"
-                  },
-                  {
-                    "icon": "clipboard-check",
-                    "path": "admin-panel/team/reviews",
-                    "title": "Executive Reviews"
-                  },
-                  {
-                    "icon": "moon",
-                    "path": "admin-panel/team/day-close",
-                    "title": "Day Close"
-                  }
-                ]
-              },
-              {
-                "group": "Support",
-                "icon": "headphones",
-                "pages": [
-                  {
-                    "icon": "headphones",
-                    "path": "admin-panel/support/cx-desk",
-                    "title": "CX Desk"
-                  },
-                  {
-                    "icon": "share-2",
-                    "path": "admin-panel/support/referrals",
-                    "title": "Support Referrals"
-                  },
-                  {
-                    "icon": "settings",
-                    "path": "admin-panel/support/cx-settings",
-                    "title": "CX Settings"
-                  },
-                  {
-                    "icon": "bot",
-                    "path": "admin-panel/support/ai-health",
-                    "title": "AI Health"
-                  }
-                ]
-              },
-              {
-                "group": "Vendors - B2C",
+                "group": "Vendors",
                 "icon": "truck",
                 "pages": [
                   {
-                    "title": "B2C Vendors",
-                    "path": "b2c-vendors",
-                    "icon": "users"
+                    "expandable": false,
+                    "group": "Roster",
+                    "pages": [
+                      {
+                        "icon": "users",
+                        "path": "b2c-vendors",
+                        "title": "All Vendors"
+                      },
+                      {
+                        "icon": "user-plus",
+                        "path": "new-vendors---b2c",
+                        "title": "New Applications"
+                      },
+                      {
+                        "icon": "rocket",
+                        "path": "admin-panel/vendors/activation-tracker",
+                        "title": "Activation Tracker"
+                      },
+                      {
+                        "icon": "clipboard-check",
+                        "path": "onboarding-b2c",
+                        "title": "Onboarding"
+                      },
+                      {
+                        "icon": "store",
+                        "path": "admin-panel/vendors/store-vendors",
+                        "title": "Store Vendors"
+                      },
+                      {
+                        "icon": "trending-up",
+                        "path": "b2c-vendor-tiers",
+                        "title": "Vendor Tiers"
+                      },
+                      {
+                        "icon": "timer",
+                        "path": "inspection-duration",
+                        "title": "Inspection Durations"
+                      },
+                      {
+                        "icon": "phone-call",
+                        "path": "did-number-management",
+                        "title": "Vendor DIDs"
+                      },
+                      {
+                        "icon": "user-x",
+                        "path": "admin-panel/vendors/account-deletions",
+                        "title": "Account Deletions"
+                      }
+                    ]
                   },
                   {
-                    "title": "B2C Vendor Tiers",
-                    "path": "b2c-vendor-tiers",
-                    "icon": "trending-up"
+                    "expandable": false,
+                    "group": "Performance",
+                    "pages": [
+                      {
+                        "icon": "trophy",
+                        "path": "admin-panel/vendors/vendor-leaderboard",
+                        "title": "Leaderboard"
+                      },
+                      {
+                        "icon": "bar-chart-3",
+                        "path": "admin-panel/vendors/vendor-report",
+                        "title": "Vendor Report"
+                      },
+                      {
+                        "icon": "badge-indian-rupee",
+                        "path": "admin-panel/vendors/pricing-review",
+                        "title": "Pricing Review"
+                      }
+                    ]
                   },
                   {
-                    "title": "DID Number Management",
-                    "path": "did-number-management",
-                    "icon": "phone-call"
+                    "expandable": false,
+                    "group": "Money",
+                    "pages": [
+                      {
+                        "icon": "coins",
+                        "path": "credits",
+                        "title": "Credits & Payments"
+                      },
+                      {
+                        "icon": "battery-low",
+                        "path": "admin-panel/vendors/low-credit-vendors",
+                        "title": "Low Credit"
+                      },
+                      {
+                        "icon": "gavel",
+                        "path": "fines",
+                        "title": "Vendor Fines"
+                      },
+                      {
+                        "icon": "rotate-ccw",
+                        "path": "admin-review-refund",
+                        "title": "Review Refunds"
+                      },
+                      {
+                        "icon": "percent",
+                        "path": "admin-panel/vendors/review-refund-settings",
+                        "title": "Review Refund Settings"
+                      }
+                    ]
                   },
                   {
-                    "title": "Review Refund",
-                    "path": "admin-review-refund",
-                    "icon": "rotate-ccw"
+                    "expandable": false,
+                    "group": "Comms",
+                    "pages": [
+                      {
+                        "icon": "bell",
+                        "path": "admin-panel/vendors/vendor-notifications",
+                        "title": "Notifications"
+                      },
+                      {
+                        "icon": "bug",
+                        "path": "admin-panel/vendors/issue-reports",
+                        "title": "Issue Reports"
+                      },
+                      {
+                        "icon": "graduation-cap",
+                        "path": "admin-panel/vendors/training-hub",
+                        "title": "Training Hub"
+                      },
+                      {
+                        "icon": "circle-play",
+                        "path": "admin-panel/vendors/vendor-stories",
+                        "title": "Stories"
+                      }
+                    ]
                   },
                   {
-                    "title": "Petrol Surge",
-                    "path": "petrol-surge---admin-panel",
+                    "badge": "Proposed",
                     "icon": "fuel",
-                    "badge": "Proposed"
-                  },
-                  {
-                    "icon": "rocket",
-                    "path": "admin-panel/vendors/activation-tracker",
-                    "title": "Activation Tracker"
-                  },
-                  {
-                    "icon": "store",
-                    "path": "admin-panel/vendors/store-vendors",
-                    "title": "Store Vendors"
-                  },
-                  {
-                    "icon": "user-x",
-                    "path": "admin-panel/vendors/account-deletions",
-                    "title": "Account Deletions"
-                  },
-                  {
-                    "icon": "trophy",
-                    "path": "admin-panel/vendors/vendor-leaderboard",
-                    "title": "Leaderboard"
-                  },
-                  {
-                    "icon": "bar-chart-3",
-                    "path": "admin-panel/vendors/vendor-report",
-                    "title": "Vendor Report"
-                  },
-                  {
-                    "icon": "badge-indian-rupee",
-                    "path": "admin-panel/vendors/pricing-review",
-                    "title": "Pricing Review"
-                  },
-                  {
-                    "icon": "battery-low",
-                    "path": "admin-panel/vendors/low-credit-vendors",
-                    "title": "Low Credit"
-                  },
-                  {
-                    "icon": "percent",
-                    "path": "admin-panel/vendors/review-refund-settings",
-                    "title": "Review Refund Settings"
-                  },
-                  {
-                    "icon": "bell",
-                    "path": "admin-panel/vendors/vendor-notifications",
-                    "title": "Vendor Notifications"
-                  },
-                  {
-                    "icon": "bug",
-                    "path": "admin-panel/vendors/issue-reports",
-                    "title": "Issue Reports"
-                  },
-                  {
-                    "icon": "graduation-cap",
-                    "path": "admin-panel/vendors/training-hub",
-                    "title": "Training Hub"
-                  },
-                  {
-                    "icon": "circle-play",
-                    "path": "admin-panel/vendors/vendor-stories",
-                    "title": "Stories"
+                    "path": "petrol-surge---admin-panel",
+                    "title": "Petrol Surge"
                   }
                 ]
               },
               {
-                "group": "Quality - B2C",
-                "icon": "shield-check",
+                "group": "Inventory & Catalog",
+                "icon": "box",
                 "pages": [
                   {
-                    "title": "To Be Failed",
-                    "path": "to-be-failed",
-                    "icon": "alert-triangle"
+                    "icon": "boxes",
+                    "path": "vendors---b2c",
+                    "title": "All Inventory"
                   },
                   {
-                    "title": "Fines",
-                    "path": "fines",
-                    "icon": "gavel"
+                    "icon": "package",
+                    "path": "admin-panel/inventory-catalog/products",
+                    "title": "Products"
                   }
                 ]
               },
               {
-                "group": "Expansion",
-                "icon": "map",
+                "group": "Merchandise",
+                "icon": "shopping-bag",
                 "pages": [
                   {
-                    "title": "Area",
-                    "path": "area",
-                    "icon": "map-pin"
-                  },
-                  {
-                    "title": "New Vendors - B2C",
-                    "path": "new-vendors---b2c",
-                    "icon": "user-plus"
-                  },
-                  {
-                    "title": "Onboarding B2C",
-                    "path": "onboarding-b2c",
-                    "icon": "clipboard-check"
-                  }
-                ]
-              },
-              {
-                "group": "Store",
-                "icon": "store",
-                "pages": [
-                  {
-                    "title": "Leads",
-                    "path": "store",
-                    "icon": "list"
-                  },
-                  {
-                    "title": "Completed",
-                    "path": "completed",
-                    "icon": "check-circle"
-                  },
-                  {
-                    "title": "Failed",
-                    "path": "failed",
-                    "icon": "x-circle"
-                  }
-                ]
-              },
-              {
-                "group": "Buyback - B2B",
-                "icon": "building-2",
-                "pages": [
-                  {
-                    "title": "Deals",
-                    "path": "deals",
-                    "icon": "handshake"
-                  },
-                  {
-                    "title": "Leads",
-                    "path": "leads---buyback",
-                    "icon": "user-plus"
-                  },
-                  {
-                    "title": "Clients",
-                    "path": "clients",
-                    "icon": "briefcase"
-                  },
-                  {
-                    "title": "Inspection",
-                    "path": "inspection",
-                    "icon": "search"
+                    "icon": "shopping-bag",
+                    "path": "admin-merchandise-store",
+                    "title": "Products & Orders"
                   }
                 ]
               },
@@ -1040,95 +1084,141 @@
                 "icon": "banknote",
                 "pages": [
                   {
-                    "title": "Credits",
-                    "path": "credits",
-                    "icon": "coins"
+                    "expandable": false,
+                    "group": "Money In / Out",
+                    "pages": [
+                      {
+                        "icon": "tag",
+                        "path": "device-sales",
+                        "title": "Device Sales"
+                      },
+                      {
+                        "icon": "building-2",
+                        "path": "b2b",
+                        "title": "B2B Buyback"
+                      },
+                      {
+                        "icon": "rotate-ccw",
+                        "path": "returns",
+                        "title": "Returns"
+                      },
+                      {
+                        "icon": "shopping-cart",
+                        "path": "device-purchases",
+                        "title": "Device Purchases"
+                      },
+                      {
+                        "icon": "receipt",
+                        "path": "expenses",
+                        "title": "Expenses"
+                      },
+                      {
+                        "icon": "clipboard-list",
+                        "path": "admin-panel/finance/purchase-orders",
+                        "title": "Purchase Orders"
+                      },
+                      {
+                        "icon": "hourglass",
+                        "path": "admin-panel/finance/pending-payments",
+                        "title": "Pending Payments"
+                      },
+                      {
+                        "icon": "wallet",
+                        "path": "cash-in-hand",
+                        "title": "Cash In Hand"
+                      },
+                      {
+                        "icon": "users",
+                        "path": "admin-panel/finance/internal-vendors",
+                        "title": "Internal Vendors"
+                      }
+                    ]
                   },
                   {
-                    "title": "Device Purchases",
-                    "path": "device-purchases",
-                    "icon": "shopping-cart"
+                    "expandable": false,
+                    "group": "Records",
+                    "pages": [
+                      {
+                        "icon": "history",
+                        "path": "admin-panel/finance/purchases",
+                        "title": "Purchases"
+                      }
+                    ]
                   },
                   {
-                    "title": "Device Sales",
-                    "path": "device-sales",
-                    "icon": "tag"
+                    "expandable": false,
+                    "group": "Reports",
+                    "pages": [
+                      {
+                        "icon": "route",
+                        "path": "admin-panel/finance/device-trail",
+                        "title": "Device Trail"
+                      },
+                      {
+                        "icon": "file-text",
+                        "path": "reports---finance",
+                        "title": "All Reports"
+                      }
+                    ]
                   },
                   {
-                    "title": "B2B",
-                    "path": "b2b",
-                    "icon": "building-2"
-                  },
-                  {
-                    "title": "Returns",
-                    "path": "returns",
-                    "icon": "rotate-ccw"
-                  },
-                  {
-                    "title": "Expenses",
-                    "path": "expenses",
-                    "icon": "receipt"
-                  },
-                  {
-                    "title": "Cash In Hand",
-                    "path": "cash-in-hand",
-                    "icon": "wallet"
-                  },
-                  {
-                    "title": "Reports",
-                    "path": "reports---finance",
-                    "icon": "file-text"
-                  },
-                  {
-                    "icon": "clipboard-list",
-                    "path": "admin-panel/finance/purchase-orders",
-                    "title": "Purchase Orders"
-                  },
-                  {
-                    "icon": "hourglass",
-                    "path": "admin-panel/finance/pending-payments",
-                    "title": "Pending Payments"
-                  },
-                  {
-                    "icon": "users",
-                    "path": "admin-panel/finance/internal-vendors",
-                    "title": "Internal Vendors"
-                  },
-                  {
+                    "badge": "Not in panel",
                     "icon": "fuel",
                     "path": "admin-panel/finance/petrol-surge-claims",
                     "title": "Petrol Surge Claims"
-                  },
-                  {
-                    "icon": "history",
-                    "path": "admin-panel/finance/purchases",
-                    "title": "Purchase History"
-                  },
-                  {
-                    "icon": "route",
-                    "path": "admin-panel/finance/device-trail",
-                    "title": "Device Trail"
                   }
                 ]
               },
               {
-                "group": "Inventory",
-                "icon": "box",
+                "group": "Channels",
+                "icon": "store",
                 "pages": [
                   {
-                    "title": "All Inventory",
-                    "path": "vendors---b2c",
-                    "icon": "boxes"
+                    "expandable": false,
+                    "group": "Store",
+                    "pages": [
+                      {
+                        "icon": "list",
+                        "path": "store",
+                        "title": "Leads"
+                      },
+                      {
+                        "icon": "check-circle",
+                        "path": "completed",
+                        "title": "Completed"
+                      },
+                      {
+                        "icon": "x-circle",
+                        "path": "failed",
+                        "title": "Failed"
+                      }
+                    ]
                   },
                   {
-                    "icon": "package",
-                    "path": "admin-panel/inventory-catalog/products",
-                    "title": "Products"
-                  },
-                  {
-                    "title": "Merchandise Store",
-                    "path": "admin-merchandise-store",
-                    "icon": "shopping-bag"
+                    "expandable": false,
+                    "group": "Buyback B2B",
+                    "pages": [
+                      {
+                        "icon": "handshake",
+                        "path": "deals",
+                        "title": "Deals"
+                      },
+                      {
+                        "icon": "user-plus",
+                        "path": "leads---buyback",
+                        "title": "Leads"
+                      },
+                      {
+                        "icon": "briefcase",
+                        "path": "clients",
+                        "title": "Clients"
+                      },
+                      {
+                        "icon": "search",
+                        "path": "inspection",
+                        "title": "Inspection"
+                      }
+                    ]
                   }
                 ]
               },
@@ -1137,230 +1227,79 @@
                 "icon": "megaphone",
                 "pages": [
                   {
-                    "title": "Banner",
-                    "path": "banner",
-                    "icon": "image"
+                    "expandable": false,
+                    "group": "Acquisition",
+                    "pages": [
+                      {
+                        "icon": "image",
+                        "path": "banner",
+                        "title": "Banners"
+                      },
+                      {
+                        "icon": "bell",
+                        "path": "notifications",
+                        "title": "Push Notifications"
+                      }
+                    ]
                   },
                   {
-                    "title": "Coupon Dashboard",
-                    "path": "dashboard",
-                    "icon": "gauge"
+                    "expandable": false,
+                    "group": "Programs",
+                    "pages": [
+                      {
+                        "icon": "ticket",
+                        "path": "coupon",
+                        "title": "Coupons"
+                      },
+                      {
+                        "icon": "ticket-percent",
+                        "path": "admin-panel/marketing/abandoned-coupons",
+                        "title": "Abandoned Coupons"
+                      },
+                      {
+                        "icon": "list",
+                        "path": "programs",
+                        "title": "Referral Programs"
+                      },
+                      {
+                        "icon": "repeat",
+                        "path": "transactions",
+                        "title": "Referral Transactions"
+                      },
+                      {
+                        "icon": "banknote",
+                        "path": "payouts",
+                        "title": "Referral Payouts"
+                      }
+                    ]
                   },
                   {
-                    "title": "Coupon",
-                    "path": "coupon",
-                    "icon": "ticket"
-                  },
+                    "expandable": false,
+                    "group": "Reputation",
+                    "pages": [
+                      {
+                        "icon": "message-square",
+                        "path": "reviews",
+                        "title": "Platform Reviews"
+                      },
+                      {
+                        "badge": "Not in panel",
+                        "icon": "layout-grid",
+                        "path": "widgets",
+                        "title": "Widgets"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "HR",
+                "icon": "briefcase",
+                "pages": [
                   {
-                    "icon": "ticket-percent",
-                    "path": "admin-panel/marketing/abandoned-coupons",
-                    "title": "Abandoned Coupons"
-                  },
-                  {
-                    "title": "Notifications",
-                    "path": "notifications",
-                    "icon": "bell"
-                  },
-                  {
-                    "title": "Careers",
+                    "icon": "briefcase",
                     "path": "careers---admin-panel",
-                    "icon": "briefcase"
-                  }
-                ]
-              },
-              {
-                "group": "Referrals",
-                "icon": "gift",
-                "pages": [
-                  {
-                    "title": "Programs",
-                    "path": "programs",
-                    "icon": "list"
-                  },
-                  {
-                    "title": "Transactions",
-                    "path": "transactions",
-                    "icon": "repeat"
-                  },
-                  {
-                    "title": "Payouts",
-                    "path": "payouts",
-                    "icon": "banknote"
-                  }
-                ]
-              },
-              {
-                "group": "Platform Reviews",
-                "icon": "star",
-                "pages": [
-                  {
-                    "title": "Reviews",
-                    "path": "reviews",
-                    "icon": "message-square"
-                  },
-                  {
-                    "title": "Widgets",
-                    "path": "widgets",
-                    "icon": "layout-grid"
-                  }
-                ]
-              },
-              {
-                "group": "Devices",
-                "icon": "smartphone",
-                "pages": [
-                  {
-                    "title": "Model Requests",
-                    "path": "admin-model-requests",
-                    "icon": "clipboard-list"
-                  },
-                  {
-                    "icon": "search",
-                    "path": "admin-panel/system/search-insights",
-                    "title": "Search Insights"
-                  },
-                  {
-                    "title": "Phone",
-                    "path": "phone",
-                    "icon": "smartphone"
-                  },
-                  {
-                    "title": "Tablet",
-                    "path": "tablet",
-                    "icon": "tablet"
-                  },
-                  {
-                    "title": "Laptop",
-                    "path": "laptop",
-                    "icon": "laptop"
-                  },
-                  {
-                    "title": "Mac",
-                    "path": "mac",
-                    "icon": "monitor"
-                  },
-                  {
-                    "title": "Camera",
-                    "path": "camera",
-                    "icon": "camera"
-                  },
-                  {
-                    "title": "Headphone",
-                    "path": "headphone",
-                    "icon": "headphones"
-                  },
-                  {
-                    "title": "Watch",
-                    "path": "watch",
-                    "icon": "watch"
-                  },
-                  {
-                    "title": "Console",
-                    "path": "console",
-                    "icon": "gamepad-2"
-                  }
-                ]
-              },
-              {
-                "group": "Fraud & Safety",
-                "icon": "shield",
-                "pages": [
-                  {
-                    "title": "Stolen Devices",
-                    "path": "stolen-devices",
-                    "icon": "siren"
-                  },
-                  {
-                    "icon": "shield-alert",
-                    "path": "admin-panel/system/fraud-trust-audit",
-                    "title": "Fraud & Trust Audit"
-                  }
-                ]
-              },
-              {
-                "group": "Users",
-                "icon": "users",
-                "pages": [
-                  {
-                    "title": "Cashkr",
-                    "path": "cashkr",
-                    "icon": "user"
-                  },
-                  {
-                    "icon": "contact",
-                    "path": "admin-panel/users/customers",
-                    "title": "Customers"
-                  }
-                ]
-              },
-              {
-                "group": "Settings",
-                "icon": "settings",
-                "pages": [
-                  {
-                    "title": "Connections",
-                    "path": "connections",
-                    "icon": "plug"
-                  },
-                  {
-                    "title": "Master Logs",
-                    "path": "master-logs",
-                    "icon": "scroll-text"
-                  },
-                  {
-                    "title": "Admin Users",
-                    "path": "admin-users",
-                    "icon": "user-check"
-                  },
-                  {
-                    "title": "Demo Users",
-                    "path": "demo-users",
-                    "icon": "user"
-                  },
-                  {
-                    "title": "Terms & Conditions",
-                    "path": "terms-conditions",
-                    "icon": "scale"
-                  },
-                  {
-                    "title": "Inspection Duration",
-                    "path": "inspection-duration",
-                    "icon": "timer"
-                  },
-                  {
-                    "icon": "activity",
-                    "path": "admin-panel/system/data-health",
-                    "title": "Data Health"
-                  },
-                  {
-                    "icon": "history",
-                    "path": "admin-panel/system/customer-activity-logs",
-                    "title": "Customer Activity Logs"
-                  },
-                  {
-                    "icon": "mail",
-                    "path": "admin-panel/system/contact-messages",
-                    "title": "Contact Messages"
-                  },
-                  {
-                    "icon": "life-buoy",
-                    "path": "admin-panel/system/help-support",
-                    "title": "Help & Support"
-                  },
-                  {
-                    "icon": "settings",
-                    "path": "admin-panel/system/settings",
-                    "title": "Settings"
-                  },
-                  {
-                    "icon": "monitor",
-                    "path": "admin-panel/system/live-ticker",
-                    "title": "Live Ticker"
-                  },
-                  {
-                    "icon": "user-check",
-                    "path": "admin-panel/system/attendance",
-                    "title": "Attendance"
+                    "title": "Careers"
                   }
                 ]
               },
@@ -1372,6 +1311,181 @@
                     "icon": "wallet",
                     "path": "admin-panel/cost-monitor/overview",
                     "title": "Overview"
+                  }
+                ]
+              },
+              {
+                "group": "System",
+                "icon": "settings",
+                "pages": [
+                  {
+                    "expandable": false,
+                    "group": "People",
+                    "pages": [
+                      {
+                        "icon": "user",
+                        "path": "cashkr",
+                        "title": "Users"
+                      },
+                      {
+                        "icon": "contact",
+                        "path": "admin-panel/users/customers",
+                        "title": "Customers"
+                      },
+                      {
+                        "icon": "user-check",
+                        "path": "admin-users",
+                        "title": "Admin Users"
+                      },
+                      {
+                        "icon": "user",
+                        "path": "demo-users",
+                        "title": "Demo Users"
+                      }
+                    ]
+                  },
+                  {
+                    "expandable": false,
+                    "group": "Devices Catalog",
+                    "pages": [
+                      {
+                        "icon": "smartphone",
+                        "path": "phone",
+                        "title": "Phone"
+                      },
+                      {
+                        "icon": "tablet",
+                        "path": "tablet",
+                        "title": "Tablet"
+                      },
+                      {
+                        "icon": "laptop",
+                        "path": "laptop",
+                        "title": "Laptop"
+                      },
+                      {
+                        "icon": "monitor",
+                        "path": "mac",
+                        "title": "Mac"
+                      },
+                      {
+                        "icon": "gamepad-2",
+                        "path": "console",
+                        "title": "Console"
+                      },
+                      {
+                        "icon": "camera",
+                        "path": "camera",
+                        "title": "Camera"
+                      },
+                      {
+                        "icon": "headphones",
+                        "path": "headphone",
+                        "title": "Headphone"
+                      },
+                      {
+                        "icon": "watch",
+                        "path": "watch",
+                        "title": "Watch"
+                      },
+                      {
+                        "icon": "clipboard-list",
+                        "path": "admin-model-requests",
+                        "title": "Model Requests"
+                      },
+                      {
+                        "icon": "image",
+                        "path": "admin-panel/system/issue-images",
+                        "title": "Issue Images"
+                      },
+                      {
+                        "icon": "search",
+                        "path": "admin-panel/system/search-insights",
+                        "title": "Search Insights"
+                      }
+                    ]
+                  },
+                  {
+                    "expandable": false,
+                    "group": "Locations",
+                    "pages": [
+                      {
+                        "icon": "map-pin",
+                        "path": "area",
+                        "title": "Areas & Zones"
+                      }
+                    ]
+                  },
+                  {
+                    "expandable": false,
+                    "group": "Admin",
+                    "pages": [
+                      {
+                        "icon": "plug",
+                        "path": "connections",
+                        "title": "Connections"
+                      },
+                      {
+                        "icon": "activity",
+                        "path": "admin-panel/system/data-health",
+                        "title": "Data Health"
+                      },
+                      {
+                        "icon": "scroll-text",
+                        "path": "master-logs",
+                        "title": "Master Logs"
+                      },
+                      {
+                        "icon": "mail",
+                        "path": "admin-panel/system/mailboxes",
+                        "title": "Mailboxes"
+                      },
+                      {
+                        "icon": "history",
+                        "path": "admin-panel/system/customer-activity-logs",
+                        "title": "Customer Activity Logs"
+                      },
+                      {
+                        "icon": "mail",
+                        "path": "admin-panel/system/contact-messages",
+                        "title": "Contact Messages"
+                      },
+                      {
+                        "icon": "siren",
+                        "path": "stolen-devices",
+                        "title": "Stolen Devices"
+                      },
+                      {
+                        "icon": "shield-alert",
+                        "path": "admin-panel/system/fraud-trust-audit",
+                        "title": "Fraud & Trust Audit"
+                      },
+                      {
+                        "icon": "scale",
+                        "path": "terms-conditions",
+                        "title": "Terms & Conditions"
+                      },
+                      {
+                        "icon": "life-buoy",
+                        "path": "admin-panel/system/help-support",
+                        "title": "Help & Support"
+                      },
+                      {
+                        "icon": "settings",
+                        "path": "admin-panel/system/settings",
+                        "title": "Settings"
+                      },
+                      {
+                        "icon": "tv",
+                        "path": "tv-display",
+                        "title": "Live Ticker"
+                      },
+                      {
+                        "icon": "user-check",
+                        "path": "admin-panel/system/attendance",
+                        "title": "Attendance"
+                      }
+                    ]
                   }
                 ]
               }

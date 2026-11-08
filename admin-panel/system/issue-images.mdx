@@ -1,0 +1,56 @@
+---
+title: Issue Images
+description: Manage the images and availability of the condition and issue options customers and vendors pick in the apps, per device type.
+---
+
+## Overview
+
+**Sidebar path:** System → DEVICES CATALOG → **Issue Images** (`/issue-images`)
+
+Issue Images controls the picture shown next to each condition or issue option in the **customer app** and **vendor app** (for example *Flawless*, *0 – 3 Months*, *SIM tray + eSIM*), and whether that option is available at all.
+
+<Callout kind="alert">
+The website uses its own images. Changes made here reach the customer and vendor apps only, not the website.
+</Callout>
+
+## Choosing a device
+
+A dropdown at the top switches the device type: **Mobile**, **Tablet**, **Laptop**, **Mac**, **Console**, **Camera**, **Headphone**, **Watch**.
+
+The page then shows one table per option group for that device. For Mobile the groups are **Body**, **Warranty**, **Screen**, **Accessories**, **Physical**, **Technical** and **SIM Type**. Other devices show only the groups their condition codes use (see each device page under Devices Catalog).
+
+## What each table shows
+
+| Column | Description |
+| --- | --- |
+| **Image** | The current image for the option |
+| **Code** | Condition code, for example `B1`, `W2`, `SIM3` |
+| **Name** | Option label shown in the app |
+| **Status** | Active or inactive |
+| **Active** | Toggle that turns the option on or off in the apps |
+| *(action)* | **Change image** — upload a new image for this option |
+
+## Changing an image
+
+<Steps>
+  <Step title="Pick the device" icon="smartphone" title-type="p">
+    Choose the device type from the dropdown.
+  </Step>
+  <Step title="Find the option" icon="search" title-type="p">
+    Scroll to the group and find the row by its code and name.
+  </Step>
+  <Step title="Upload" icon="upload" title-type="p">
+    Click **Change image** on that row and choose the file. Keep new images in the same style as the rest of the set so the options look consistent.
+  </Step>
+  <Step title="Check it" icon="check-circle" title-type="p">
+    Reload the page and confirm the new image shows on the right row.
+  </Step>
+</Steps>
+
+<Callout kind="warning">
+Turning **Active** off removes the option from the apps. If the option is a condition customers must answer, check the device's class deductions on its Devices Catalog page before switching it off.
+</Callout>
+
+<Callout kind="info">
+The staging admin panel keeps its own copy of these images. An upload on one panel does not appear on the other.
+</Callout>

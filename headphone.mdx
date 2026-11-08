@@ -5,7 +5,7 @@ description: Manage headphone models, brands, condition classes, and pricing for
 
 ## Manage headphone devices
 
-The Headphone page (**Headphone Management**, route `/headphone`) in **Admin Panel → Devices** controls every headphone and earbud model available for buyback. It has four tabs: **Models**, **Brands**, **Classes**, and **Pricing**, using the shared device layout described on the [Phone](/phone) page.
+The Headphone page (**Headphone Management**, route `/headphone`) in **System → Devices Catalog** controls every headphone and earbud model available for buyback. It has four tabs: **Models**, **Brands**, **Classes**, and **Pricing**, using the shared device layout described on the [Phone](/phone) page.
 
 Headphones use the `mobilePriceEvaluation` strategy with a narrow condition set: **age** `W1`–`W4`, **physical and functional** `P1`–`P3`, and **accessories** `A1`–`A3`. There are no body, battery, screen, or technical fault codes, and no additions, so `finalPrice` is `basePrice` minus deductions, floored at `deadPrice`.
 

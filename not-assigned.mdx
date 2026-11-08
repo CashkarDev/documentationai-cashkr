@@ -111,17 +111,17 @@ Use the Not Assigned view as a daily operational queue:
 - Prioritise **Pickup Delayed** orders, as these have already crossed the customer's expected pickup date.
 - Manually assign delayed orders to available vendors to prevent further dissatisfaction.
 - A rising number of Not Assigned orders suggests a coverage gap in a specific city or pincode — confirm it in **Coverage Gaps**.
-- Cross-check with the **Expansion → Area** page to confirm vendor coverage for affected pincodes.
+- Cross-check with **System → Locations → Areas & Zones** to confirm vendor coverage for affected pincodes.
 
 ## Connections to other modules
 
 Understanding how Not Assigned links to other modules helps you resolve root causes, not just symptoms:
 
 - **In Progress** — Once a vendor accepts or is manually assigned to the order, it moves from Not Assigned to **In Progress**.
-- **Vendors - B2C** — Vendor pincode and device type assignments control which orders each vendor can see and accept.
-- **Expansion → Area** — Pincode serviceability and vendor coverage here directly affect whether orders get assigned or stay in Not Assigned.
+- **Vendors → All Vendors** — Vendor pincode and device type assignments control which orders each vendor can see and accept.
+- **System → Locations → Areas & Zones** — Pincode serviceability and vendor coverage there directly affect whether orders get assigned or stay in Not Assigned.
 - **Leads** — Orders converted from leads appear in Not Assigned if no vendor has been assigned yet.
-- **Quality - B2C** — Prolonged unassigned or Pickup Delayed orders can negatively impact overall service quality metrics.
+- **Dashboards → Operations / SLA** — Prolonged unassigned or Pickup Delayed orders pull down the SLA metrics shown there.
 
 ## Important notes
 

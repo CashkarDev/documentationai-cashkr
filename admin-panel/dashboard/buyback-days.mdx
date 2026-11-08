@@ -1,0 +1,72 @@
+---
+title: Buyback Days
+description: Campaign analytics for Cashkr BuyBack Days — WhatsApp and email sends, Meta-capped messages, opt-outs, quotes, bookings and completions by template, by day, and coupon usage per campaign week.
+---
+
+## Overview
+
+**Sidebar path:** Dashboards → OPERATING → **Buyback Days** (`/buyback-days`)
+
+The Buyback Days dashboard measures the [Cashkr BuyBack Days](/cashkr-buyback-days) campaign (6 Oct – 5 Nov 2026): how many campaign messages went out, how many were refused, and how many quotes, bookings and completed pickups followed them.
+
+<Callout kind="info">
+Attribution is message-based. A quote or booking is credited to a campaign message only when that message reached the customer within the 7 days before it. When a customer was reached on both WhatsApp and email, the channel that messaged later gets the credit.
+</Callout>
+
+## Controls
+
+| Control | Description |
+| --- | --- |
+| **Refresh** | Reloads the data. |
+| **Date range** | Defaults to the campaign window (Oct 06, 2026 – Nov 05, 2026). |
+| **Week chips** | **All**, **Tablet Week** (6–12 Oct), **Phone Week** (13–19 Oct), **Laptop Week** (20–29 Oct), **Dhamaka Week** (30 Oct – 5 Nov). |
+| **Channel** | **WhatsApp** or **Email**. |
+
+## KPI cards
+
+| Card | Meaning |
+| --- | --- |
+| **Sent** | Campaign messages sent. |
+| **Capped** | Messages Meta refused with error #131049, so they were never delivered. |
+| **Opt-outs** | Customers who opted out. |
+| **Quoted** | Quotes that a campaign message preceded within 7 days. |
+| **Booked** | Orders booked after a campaign message. |
+| **Completed** | Orders picked up in the selected dates. |
+| **Holdout lift** | Lift against the holdout group (shows — when no figure is available). |
+
+## Tables
+
+### By template
+
+Columns: **Template**, **Sends**, **Recipients**, **Capped**, **Quoted**, **Booked**, **Completed**.
+
+For each template: this period's quotes and orders that the template preceded within 7 days. The latest message wins, and a lead's own button tap counts only when no message reached it. Quotes are filed by quote date (the same day the CMO report uses), orders by the day they were booked, and completions by the day they were picked up (any campaign order, as the main dashboard counts them).
+
+### By day
+
+Columns: **Date**, **Sent**, **Capped**, **Opt-outs**, **First touched**, **Quoted**, **Booked**.
+
+Days are IST. **First touched** is the first Buyback Days WhatsApp a customer received that day. **Quoted** and **Booked** are that day's quotes and bookings that a Buyback Days WhatsApp preceded within 7 days.
+
+### Coupons
+
+Columns: **Week**, **Code**, **Used (period)**, **Used (lifetime)**, **Active**, **Window (IST)**.
+
+Lists the `*HAPPY` coupon codes named in the WhatsApp templates. *Used* counts coupons applied to a lead, excluding demo accounts — **period** for the selected dates, **lifetime** for all time.
+
+### Coupon usage by day
+
+Columns: **Date**, **TABHAPPY**, **PHONEHAPPY**, **LAPHAPPY**, **MEGAHAPPY**, **Total**. One row per IST day on which a coupon was applied; days with no redemption are not listed.
+
+## Actions
+
+The dashboard is read-only. Use the date range, week chips and channel switch to change the view.
+
+<Callout kind="tip">
+A high **Capped** count means Meta is limiting marketing messages to those customers. Sending more to the same audience will not get through; check the template mix and audience instead.
+</Callout>
+
+## Related
+
+- [Hot Leads](/admin-panel/b2c-sales/hot-leads) — the **Buyback Days** tab lists campaign leads waiting for a call.
+- [Coupons](/coupon) — where the `*HAPPY` codes are created and edited.

@@ -1,11 +1,12 @@
 ---
 title: Order Audit
-description: Sign off completed orders that were paid below the quoted price, working through automatic-check results first.
+description: >-
+  Sign off completed orders that were paid below the quoted price, working
+  through automatic-check results first.
 ---
-
 ## Overview
 
-Open **Orders → Closed → Order Audit**. *Every completed order paid below the quoted price gets a person's sign-off.* Clear **Needs a look** first.
+Open **Orders → Closed → Order Audit**. _Every completed order paid below the quoted price gets a person's sign-off._ Clear **Needs a look** first.
 
 Audit results also show up as order statuses elsewhere: **Completed · Awaiting audit**, **Completed · Audited** and **Completed · Audit flagged** (available in the All Orders Status filter).
 
@@ -13,14 +14,43 @@ Audit results also show up as order statuses elsewhere: **Completed · Awaiting 
 
 The page is split into four queue cards. Each shows a count; click a card to open that queue.
 
-| Queue | Meaning |
-| --- | --- |
-| **Needs a look** | An automatic check failed — go through it properly |
-| **Looks clean** | Every check passed — compare the screenshot and approve |
-| **Flagged** | Waiting on your follow-up |
-| **Approved** | Orders approved today |
+| Queue            | Meaning                                                 |
+| ---------------- | ------------------------------------------------------- |
+| **Needs a look** | An automatic check failed — go through it properly      |
+| **Looks clean**  | Every check passed — compare the screenshot and approve |
+| **Flagged**      | Waiting on your follow-up                               |
+| **Approved**     | Orders approved today                                   |
 
-When a queue is empty the page shows *Nothing waiting here.*
+When a queue is empty the page shows _Nothing waiting here._
+
+When the backlog is very large, a banner says so and only the oldest 1,500 orders are ranked in the list. The footer shows the page and the total, for example _Page 1 of 59 · 1454 orders_.
+
+## The order list
+
+Each row shows the device, order token, vendor shop, city, completion time and final price, plus red tags for every automatic check that failed. Tags seen on the live screen include:
+
+| Tag                         | Meaning                                            |
+| --------------------------- | -------------------------------------------------- |
+| **Late**                    | The order was late against its SLA                 |
+| **Open CX case**            | A customer support case is still open on the order |
+| **Vendor flagged recently** | The vendor has a recent flag against them          |
+| **No payout screenshot**    | No proof of payment to the customer was uploaded   |
+| **Requote −N%**             | The final price dropped by N% from the quote       |
+
+The screen does not define the tags; the meanings above are read from the tag names, and the full list of automatic checks is not shown on the screen.
+
+## Review panel
+
+Click a row to open the review panel. The header shows the status badges (for example _Completed_, device type, _Awaiting audit_), the device, its points, the order token, the inspection code and the queue it sits in (for example _Needs a look_).
+
+| Section                  | Contents                                                                                                                                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Timing**               | Order placed, Vendor took it, Pickup slot, Completed, Inspection took, Vendor's delay reason                                                                                                                        |
+| **Completion documents** | IMEI and the uploaded photos: ID front, ID back, Signature, Bill                                                                                                                                                    |
+| **CX cases**             | Support cases linked to the order                                                                                                                                                                                   |
+| **Order details**        | Device specifications, Pricing (Quoted Price — with any bonus shown as _₹X + ₹Y bonus_ — Requote Price, Final Price), Order Timeline and People & Places, as in the [order drawer](/all-orders#order-detail-drawer) |
+
+The footer holds the three decisions: **Flag**, **Approve with remark** and **Approve**.
 
 ## Filters and search
 
@@ -31,14 +61,16 @@ When a queue is empty the page shows *Nothing waiting here.*
   <Step title="Start with Needs a look" icon="alert-triangle" title-type="p">
     These orders failed an automatic check. Review the price drop, inspection photos and timeline carefully before deciding.
   </Step>
+
   <Step title="Clear Looks clean" icon="check-circle" title-type="p">
     All checks passed. Compare the screenshot with the order and approve.
   </Step>
+
   <Step title="Follow up on Flagged" icon="flag" title-type="p">
     Orders you flagged wait here until the follow-up with the vendor or customer is done.
   </Step>
 </Steps>
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   Only completed orders paid **below** the quoted price enter the audit. Orders paid at the quoted price do not need a sign-off.
 </Callout>

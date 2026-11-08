@@ -9,6 +9,21 @@ Changes to this documentation site. Product release notes live with the owning t
 History before August 2026 has not been backfilled. Entries below start from the documentation restructure.
 </Callout>
 
+<Update label="2026-11-08" description="Admin Panel docs checked against the live panel" tags={["admin-panel", "navigation"]}>
+## What changed
+
+- Checked every Admin Panel page against the live sidebar and screens at kmapv2.admin.cashkr.com. Most pages already matched; the changes below cover what did not.
+- **Navigation now mirrors the live sidebar**: Dashboards, Orders, B2C Sales, Vendors, Inventory & Catalog, Merchandise, Finance, Channels, Marketing, HR, Cost Monitor and System, with the same sub-headings (for example *Needs Attention*, *Roster*, *Devices Catalog*). Old groups such as *Quality - B2C*, *Expansion*, *Leads*, *Users* and *Settings* are gone; their pages moved to where the panel now shows them. Dashboard tabs (Funnel, Sales, Geography, Failures, Trust, Pricing) sit under their parent dashboard.
+- **New pages** for screens that had no docs: [Buyback Days](/admin-panel/dashboard/buyback-days), [Final Price Edits](/admin-panel/orders/final-price-edits), [Customer Satisfaction](/admin-panel/b2c-sales/customer-satisfaction), [Issue Images](/admin-panel/system/issue-images) and [Mailboxes](/admin-panel/system/mailboxes).
+- **Updated pages**: Admin Panel Overview (sidebar table), All Orders, In Progress, Not Assigned, Assigned · No Action, Delayed, To Be Failed (status cards), Order Audit (order list tags and review panel), Hot Leads (Buyback Days tab), Internal Vendors, Demo Users and the device catalog pages (sidebar paths).
+- **Marked as not in the panel**: Petrol Surge Claims and Widgets. Both screens return *This page could not be found*; their pages stay, with a warning, until the owning team decides.
+- **Taken out of the navigation (files kept)**: `coupons`, `data-quality` and `admin-panel/system/live-ticker`. Each duplicated another page that documents the same screen (`dashboard`, `admin-panel/system/data-health` and `tv-display`).
+
+<Callout kind="alert">
+**Sidebar problems found in the panel:** System → Linode Costs opens a 404 page, and Finance → Internal Vendors redirects to the Store Vendors screen. These are product issues, not documentation ones.
+</Callout>
+</Update>
+
 <Update label="2026-08-19" description="Vendor and cashboy attendance documented" tags={["vendor-app", "admin-panel", "attendance"]}>
 ## What changed
 

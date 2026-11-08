@@ -1,0 +1,84 @@
+---
+title: Mailboxes
+description: Create and manage company @cashkr.com mailboxes on the mail server — owners, quotas, storage, sync with aaPanel, password resets and credential hand-over to HR.
+---
+
+## Overview
+
+**Sidebar path:** System → ADMIN → **Mailboxes** (`/admin/mail`)
+
+Mailboxes lists the company mailboxes on the mail server. A new mailbox's login goes to HR for hand-over; later changes are announced to the user in their own mailbox. **Passwords are shown once and never stored.**
+
+## Header actions
+
+| Control | What it does |
+| --- | --- |
+| **Mailbox settings** (sliders icon) | Opens the settings for credential recipients and user notices (see below). |
+| **Sync from aaPanel** | Pulls the current mailbox list and storage from aaPanel, the mail server's control panel. |
+| **Create mailbox** | Opens the create form. |
+
+## Summary cards
+
+| Card | Meaning |
+| --- | --- |
+| **Total** | All mailboxes, with the number of domains |
+| **Active** | Mailboxes that can log in |
+| **Disabled** | Mailboxes switched off |
+| **Missing in aaPanel** | Mailboxes recorded in the admin panel that the last sync did not find in aaPanel (read from the card label) |
+| **Storage used** | Space used across all mailboxes and its share of the total |
+
+## Filters
+
+Search by address, name or owner; **All domains**; **All statuses**; sort (default **Address**); 25 per page.
+
+## What the table shows
+
+| Column | Description |
+| --- | --- |
+| **Mailbox** | Display name and address |
+| **Storage** | Space used against the quota, with a bar and percentage |
+| **Quota** | Mailbox size limit |
+| **Status** | Active or Disabled |
+| **Owner** | Staff member it belongs to, or *Shared* |
+| **Created** | Creation date |
+| **Last synced** | When the storage figure was last refreshed from aaPanel |
+
+## Mailbox panel
+
+Click a row to open the mailbox panel:
+
+- **Actions:** **Edit**, **Reset password**, **Disable**, **Delete**.
+- **Storage:** used, quota, free space and when it was measured.
+- **Details:** Owner, Domain, Quota, Created (including *imported by sync* for mailboxes that came in through **Sync from aaPanel**) and Last synced.
+- **Activity:** changes made to the mailbox from the panel.
+
+<Callout kind="alert">
+When someone leaves, **Disable** the mailbox first. Use **Delete** only once nobody needs the mailbox or its mail — what Delete does to mail already on the server is not shown on the screen, so confirm with the tech team before using it.
+</Callout>
+
+## Creating a mailbox
+
+The **Create mailbox** form "creates the mailbox on the mail server, records who it belongs to, and can email the login to HR".
+
+| Section | Fields |
+| --- | --- |
+| **Who it is for** | **Display name** (shown as the sender name; also suggests the address) and **Owner (staff member)** or *Shared / no owner* |
+| **Address** | **Local part** and **Domain** (`cashkr.com`) |
+| **Mailbox** | **Quota (GB)**; **Domain admin** (aaPanel's "is admin" flag — rarely needed); **Generate a password** (a strong 20-character password made on the server and shown once) |
+| **Hand-over** | **Email the credentials to** — recipients for the login |
+
+<Callout kind="alert">
+Copy the generated password at once if you need it — it is shown only once and the panel does not store it. Never paste it into chat or tickets; use the hand-over email.
+</Callout>
+
+## Mailbox settings
+
+| Setting | Description |
+| --- | --- |
+| **Credential recipients** | Who receives a new mailbox's login to hand it over (for example HR). Add a recipient from the list of mailboxes and staff. |
+| **Notify users in their own mailbox** | When a mailbox is edited, enabled or its password is reset, the user gets a notice there. It never contains the password; a reset tells them who holds it. |
+| **Shown to admins and recipients** | Domains, IMAP (`mail.cashkr.com:993`, SSL/TLS) and SMTP (`mail.cashkr.com:465` SSL/TLS · `587` STARTTLS). These come from the server's `MAIL_*` environment and change with a deploy. |
+
+## Related
+
+- [Emails of Cashkr](/emails-of-cashkr) — which address to use for which kind of email.
